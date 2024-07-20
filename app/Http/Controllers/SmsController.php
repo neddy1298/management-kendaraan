@@ -26,13 +26,13 @@ class SmsController extends Controller
                 'verify' => $cacertPath,
             ])
             ->post($url, [
-                'from' => env('VONAGE_NUMBER'),
+                'from' => env('VONAGE_FROM_NUMBER'),
                 'to' => env('WHATSAPP_NUMBER'),
                 'message_type' => 'text',
                 'text' => $message,
                 'channel' => 'whatsapp'
             ]);
-
+        
         // return $response->json();
         if ($response->successful()) {
             return ['status' => 'success'];
