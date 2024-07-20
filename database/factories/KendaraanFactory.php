@@ -2,14 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Penduduk;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Date;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PermohonanKtp>
  */
-class PermohonanKtpFactory extends Factory
+class KendaraanFactory extends Factory
 {
     /**
      * The model's default state.
@@ -18,12 +16,10 @@ class PermohonanKtpFactory extends Factory
      */
     public function definition(): array
     {
-        
-        $penduduk = Penduduk::get()->pluck('nik')->toArray();
 
         return [
-            'nik' => fake()->randomElement($penduduk),
-            'jenis_permohonan' => fake()->randomElement(['Baru', 'Perpanjangan', 'Penggantian']),
+            'plat_nomor' => fake()->unique()->numerify('B######'),
+            'jumlah_roda' => fake()->randomElement(['2', '4', '6', '8', '10']),
             'keterangan' => fake()->text(),
             'created_at' => now(),
             'updated_at' => now(),

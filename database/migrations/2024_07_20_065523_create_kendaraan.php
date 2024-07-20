@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_kepala_keluarga', function (Blueprint $table) {
-            $table->string('nkk')->primary();
-            $table->string('nama_kepala_keluarga');
-            $table->string('rt');
-            $table->string('rw');
-            $table->text('alamat');
+        Schema::create('tbl_kendaraan', function (Blueprint $table) {
+            $table->id();
+            $table->string('plat_nomor', 10);
+            $table->string('jumlah_roda', 20);
+            $table->text('keterangan');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_kepala_keluarga');
+        Schema::dropIfExists('tbl_kendaraan');
     }
 };

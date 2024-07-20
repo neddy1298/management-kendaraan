@@ -14,20 +14,10 @@ class Kendaraan extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'nik',
-        'jenis_permohonan',
+        'plat_nomor',
+        'jumlah_roda',
         'keterangan',
         'updated_at',
         'created_at',
     ];
-
-    public function penduduk()
-    {
-        return $this->belongsTo(Penduduk::class, 'nik', 'nik');
-    }
-
-    public function kepalaKeluarga()
-    {
-        return $this->belongsTo(KepalaKeluarga::class, 'nkk', 'nkk');
-    }
 }
