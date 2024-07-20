@@ -1,47 +1,115 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+<!doctype html>
+<html lang="en">
 
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Meta -->
+    <meta name="description" content="Best Bootstrap Admin Dashboards">
+    <meta name="author" content="Bootstrap Gallery" />
+    <link rel="canonical" href="https://www.bootstrap.gallery/">
+    <meta property="og:url" content="https://www.bootstrap.gallery">
+    <meta property="og:title" content="Admin Templates - Dashboard Templates | Bootstrap Gallery">
+    <meta property="og:description" content="Marketplace for Bootstrap Admin Dashboards">
+    <meta property="og:type" content="Website">
+    <meta property="og:site_name" content="Bootstrap Gallery">
+    <link rel="shortcut icon" href="{{ asset('images/favicon.svg') }}">
+
+    <!-- Title -->
+    <title>Login - Permohonan KTP</title>
+
+
+    <!-- *************
+   ************ Common Css Files *************
+  ************ -->
+
+    <!-- Animated css -->
+    <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
+
+    <!-- Bootstrap font icons css -->
+    <link rel="stylesheet" href="{{ asset('fonts/bootstrap/bootstrap-icons.css') }}">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="{{ asset('css/main.min.css') }}">
+
+
+</head>
+
+<body class="login-container">
+
+    <!-- Loading wrapper start -->
+    <div id="loading-wrapper">
+        <div class="spinner">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+            <div class="line4"></div>
+            <div class="line5"></div>
+            <div class="line6"></div>
+        </div>
+    </div>
+    <!-- Loading wrapper end -->
+
+    <!-- Login box start -->
     <form method="POST" action="{{ route('login') }}">
         @csrf
-
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
+        <div class="login-box">
+            <div class="login-form">
+                <a href="index.html" class="login-logo">
+                    <img src="{{ asset('images/logo.svg') }}" alt="Vico Admin" />
                 </a>
-            @endif
+                <div class="login-welcome">
+                    Selamat Datang, <br />Silahkan login menggunakan akun admin.
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-control" autocomplete="off" name="email">
+                    @if ($errors->has('email'))
+                        <div class="text-red">
+                            {{ $errors->first('email') }}
+                        </div>
+                    @endif
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <label class="form-label">Password</label>
+                    </div>
+                    <input type="password" class="form-control" name="password">
+                    @if ($errors->has('password'))
+                        <div class="text-red">
+                            {{ $errors->first('password') }}
+                        </div>
+                    @endif
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
+                </div>
+                <div class="login-form-actions">
+                    <button type="submit" class="btn"> <span class="icon"> <i
+                                class="bi bi-arrow-right-circle"></i> </span>
+                        Login</button>
+                </div>
+            </div>
         </div>
     </form>
-</x-guest-layout>
+    <!-- Login box end -->
+
+    <!-- *************
+   ************ Required JavaScript Files *************
+  ************* -->
+    <!-- Required jQuery first, then Bootstrap Bundle JS -->
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('js/modernizr.js') }}"></script>
+    <script src="{{ asset('js/moment.js') }}"></script>
+
+    <!-- *************
+   ************ Vendor Js Files *************
+  ************* -->
+
+    <!-- Main Js Required -->
+    <script src="{{ asset('js/main.js') }}"></script>
+
+</body>
+
+</html>
