@@ -45,7 +45,7 @@ class SmsController extends Controller
     {
 
     // Example using Vonage
-    $basic  = new \Vonage\Client\Credentials\Basic('5a33e442', 'bxkdBERH9QuLwNHV');
+    $basic  = new \Vonage\Client\Credentials\Basic(env('VONAGE_USERNAME'), env('VONAGE_PASSWORD'));
     $client = new \Vonage\Client($basic);
 
     // Set the CA bundle path for Guzzle with a relative path
@@ -55,7 +55,7 @@ class SmsController extends Controller
             $client->setHttpClient($guzzleClient);
 
         $message = $client->sms()->send(
-            new \Vonage\SMS\Message\SMS("6282125241014", "Contoh Text", 'Ini adalah contoh SMS')
+            new \Vonage\SMS\Message\SMS(env('WHATSAPP_NUMBER'), "Contoh Text", 'Ini adalah contoh SMS')
         );
 
         // Return a response
