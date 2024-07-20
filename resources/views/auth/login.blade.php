@@ -15,10 +15,10 @@
     <meta property="og:description" content="Marketplace for Bootstrap Admin Dashboards">
     <meta property="og:type" content="Website">
     <meta property="og:site_name" content="Bootstrap Gallery">
-    <link rel="shortcut icon" href="{{ asset('images/favicon.svg') }}">
+    <link rel="shortcut icon" href="{{ asset('images/logokbr.ico') }}">
 
     <!-- Title -->
-    <title>Login - Permohonan KTP</title>
+    <title>Management Kendaraan</title>
 
 
     <!-- *************
@@ -57,8 +57,9 @@
         @csrf
         <div class="login-box">
             <div class="login-form">
-                <a href="index.html" class="login-logo">
-                    <img src="{{ asset('images/logo.svg') }}" alt="Vico Admin" />
+                <a href="" class="login-logo">
+                    <img src="{{ asset('images/kotabogor.png') }}" alt="Kota Bogor"/>&nbsp;&nbsp;
+                    <img src="{{ asset('images/dishub.png') }}" alt="Dinas Perhubungan" />
                 </a>
                 <div class="login-welcome">
                     Selamat Datang, <br />Silahkan login menggunakan akun admin.

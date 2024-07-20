@@ -15,7 +15,7 @@
                 <meta property="og:description" content="Marketplace for Bootstrap Admin Dashboards">
     <meta property="og:type" content="Website">
     <meta property="og:site_name" content="Bootstrap Gallery">
-    <link rel="shortcut icon" href="">
+    <link rel="shortcut icon" href="{{ asset('images/logokbr.ico') }}">
 
     <!-- Title -->
     <title>Management Kendaraan</title>
