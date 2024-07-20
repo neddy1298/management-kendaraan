@@ -10,9 +10,9 @@ class SmsController extends Controller
     public function sendWhatsapp($message)
     {
         // Using vonage API
-        $url = 'https://messages-sandbox.nexmo.com/v1/messages';
-        $username = '5a33e442';
-        $password = 'bxkdBERH9QuLwNHV';
+        $url = env('VONAGE_URL');
+        $username = env('VONAGE_USERNAME');
+        $password = env('VONAGE_PASSWORD');
         $cacertPath = storage_path('cacert.pem'); // Update this path to where you saved cacert.pem
 
         // dump($message);
@@ -26,8 +26,8 @@ class SmsController extends Controller
                 'verify' => $cacertPath,
             ])
             ->post($url, [
-                'from' => '14157386102',
-                'to' => '6285156678113',
+                'from' => env('VONAGE_NUMBER'),
+                'to' => env('WHATSAPP_NUMBER'),
                 'message_type' => 'text',
                 'text' => $message,
                 'channel' => 'whatsapp'
