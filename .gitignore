@@ -19,5 +19,4 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-.idx/.data/mysql/ddl_recovery.log
-.idx/.data/mysql/ib_logfile0
+/composer-home
