@@ -18,7 +18,7 @@
     <link rel="shortcut icon" href="">
 
     <!-- Title -->
-    <title>Permohonan KTP</title>
+    <title>Management Kendaraan</title>
 
 
     <!-- *************
@@ -82,65 +82,43 @@
 
                 <!-- Breadcrumb start -->
                 <ol class="breadcrumb d-md-flex d-none">
-                    
-                    {{-- 1 --}}
-                    @if ($page == 'Home')
+                    @php
+                        $pages = [
+                            'Home' => ['route' => 'home', 'icon' => 'bi-house', 'text' => 'Home'],
+                            'Kendaraan' => ['route' => 'kendaraan.index', 'icon' => 'bi bi-truck', 'text' => 'Kendaraan'],
+                            'Maintenance' => ['route' => null, 'icon' => 'bi bi-gear', 'text' => 'Maintenance'],
+                            'User' => ['route' => 'profile.edit', 'icon' => 'bi bi-person-circle', 'text' => 'User']
+                        ];
+                
+                        $pages2 = [
+                            'Kendaraan' => 'kendaraan.index',
+                            'User' => 'kendaraan.index'
+                        ];
+                
+                        $pages3 = [
+                            'create' => 'Tambah Baru',
+                            'edit' => 'Edit'
+                        ];
+                    @endphp
+                
+                    @if(isset($pages[$page]))
                         <li class="breadcrumb-item">
-                            <i class="bi bi-house"></i>
-                            <a href="{{ route('home') }}">Home</a>
-                        </li>
-                        
-                    @elseif ($page == 'Permohonan')
-                        <li class="breadcrumb-item">
-                            <i class="bi bi-file-earmark"></i>
-                            <a href="{{ route('permohonan.index') }}">Permohonan</a>
-                        </li>
-
-                    @elseif ($page == 'Master Data')
-                    <li class="breadcrumb-item">
-                        <i class="bi bi-list"></i>
-                        Data Master
-                    </li>
-
-                    @elseif ($page == 'Pengguna')
-                        <li class="breadcrumb-item">
-                            <i class="bi bi-file-earmark"></i>
-                            <a href="{{ route('profile.edit') }}">Pengguna</a>
-                        </li>
-                    @endif
-
-                    {{-- 2 --}}
-                    @if ($page2 == 'KTP')
-                        <li class="breadcrumb-item">
-                            <a href="{{ route('permohonan.index') }}">KTP</a>
-                        </li>
-                    @elseif ($page2 == 'Kepala Keluarga')
-                        <li class="breadcrumb-item">
-                            <a href="{{ route('kepala_keluarga.index') }}">Kepala Keluarga</a>
-                        </li>
-                    @elseif ($page2 == 'Penduduk')
-                        <li class="breadcrumb-item">
-                            <a href="{{ route('penduduk.index') }}">Penduduk</a>
-                        </li>
-                    @elseif ($page2 == 'Desa')
-                        <li class="breadcrumb-item">
-                            <a href="{{ route('desa.index') }}">Desa</a>
-                        </li>
-                    @elseif ($page2 == 'Pengguna')
-                        <li class="breadcrumb-item">
-                            <a href="{{ route('permohonan.index') }}">Pengguna</a>
+                            <i class="bi {{ $pages[$page]['icon'] }}"></i>
+                            @if($pages[$page]['route'])
+                                <a href="{{ route($pages[$page]['route']) }}">{{ $pages[$page]['text'] }}</a>
+                            @else
+                                {{ $pages[$page]['text'] }}
+                            @endif
                         </li>
                     @endif
-
-                    {{-- 3 --}}
-                    @if ($page3 == 'create')
-                        <li class="breadcrumb-item">Tambah Baru</li>
-                    @elseif($page3 == 'edit')
-                        <li class="breadcrumb-item">Edit</li>
-                    @else
-                        <li class="breadcrumb-item">Semua</li>
+                
+                    @if(isset($pages2[$page2]))
+                        <li class="breadcrumb-item">
+                            <a href="{{ route($pages2[$page2]) }}">{{ $page2 }}</a>
+                        </li>
                     @endif
                 </ol>
+                
                 <!-- Breadcrumb end -->
             </div>
             <!-- Page header ends -->

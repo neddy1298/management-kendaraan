@@ -18,11 +18,11 @@
                         <span class="menu-text">Home</span>
                     </a>
                 </li>
-                <li class="{{ $page == 'Permohonan' ? 'active' : '' }}">
-                    <a href="{{ route('permohonan.index') }}"
-                        class="{{ $page == 'Permohonan' ? 'current-page' : '' }}">
-                        <i class="bi bi-file-earmark"></i>
-                        <span class="menu-text">Permohonan KTP</span>
+                <li class="{{ $page == 'Kendaraan' ? 'active' : '' }}">
+                    <a href="{{ route('kendaraan.index') }}"
+                        class="{{ $page == 'Kendaraan' ? 'current-page' : '' }}">
+                        <i class="bi bi-truck"></i>
+                        <span class="menu-text">Data Kendaraan</span>
                     </a>
                 </li>
                 {{-- <li class="{{ $page == 'Laporan' ? 'active' : '' }}">
@@ -31,29 +31,29 @@
                         <span class="menu-text">Laporan</span>
                     </a>
                 </li> --}}
-                <li class="sidebar-dropdown {{ $page == 'Master Data' ? 'active' : '' }}">
+                <li class="sidebar-dropdown {{ $page == 'Maintenance' ? 'active' : '' }}">
                     <a href="#">
-                        <i class="bi bi-list"></i>
-                        <span class="menu-text">Master Data</span>
+                        <i class="bi bi-gear"></i>
+                        <span class="menu-text">Maintenance</span>
                     </a>
                     <div class="sidebar-submenu">
                         <ul>
                             <li>
-                                <a href="{{ route('kepala_keluarga.index') }}" class="{{ $page2 == 'Kepala Keluarga' ? 'current-page' : '' }}">Kepala Keluarga</a>
+                                <a href="" class="{{ $page2 == 'Pajak' ? 'current-page' : '' }}">Pajak</a>
                             </li>
                             <li>
-                                <a href="{{ route('penduduk.index') }}" class="{{ $page2 == 'Penduduk' ? 'current-page' : '' }}">Penduduk</a>
+                                <a href="" class="{{ $page2 == 'Pelumas' ? 'current-page' : '' }}">Pelumas</a>
                             </li>
                             <li>
-                                <a href="{{ route('desa.index') }}" class="{{ $page2 == 'Desa' ? 'current-page' : '' }}">Desa</a>
+                                <a href="" class="{{ $page2 == 'Bensin' ? 'current-page' : '' }}">Bensin</a>
                             </li>
                         </ul>
                     </div>
                 </li>
-                <li class="{{ $page == 'Pengguna' ? 'active' : '' }}">
-                    <a href="{{ route('profile.edit') }}" class="{{ $page == 'Pengguna' ? 'current-page' : '' }}">
+                <li class="{{ $page == 'User' ? 'active' : '' }}">
+                    <a href="{{ route('profile.edit') }}" class="{{ $page == 'User' ? 'current-page' : '' }}">
                         <i class="bi bi-person-circle"></i>
-                        <span class="menu-text">Pengguna</span>
+                        <span class="menu-text">User</span>
                     </a>
                 <li>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST">
