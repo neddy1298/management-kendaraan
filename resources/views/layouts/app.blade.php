@@ -133,7 +133,7 @@
 
                 <!-- App Footer start -->
                 <div class="app-footer">
-                    <span>© Arise admin 2023</span>
+                    <span>© Dinas Komunikasi dan Informatika Kota Bogor 2024. All rights reserved.</span>
                 </div>
                 <!-- App footer end -->
             </div>
