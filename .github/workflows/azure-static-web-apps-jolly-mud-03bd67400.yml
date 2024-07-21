@@ -23,7 +23,7 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'  # or the version you need
+          php-version: '8.3'  # or the version you need
 
       - name: Install Composer dependencies
         run: composer install --no-dev --no-progress --no-suggest --prefer-dist
@@ -34,16 +34,19 @@ jobs:
       - name: Build front-end assets
         run: npm install && npm run prod
 
+      - name: Set up environment variables
+        run: php artisan config:cache
+
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_JOLLY_MUD_03BD67400 }}
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_<GENERATED_HOSTNAME> }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          app_location: "./public" # Adjust as necessary
-          api_location: "" # Adjust as necessary
-          output_location: "." # Adjust as necessary
+          app_location: "." # Root of the Laravel app
+          api_location: "" # No separate API location
+          output_location: "public" # Public directory for deployment
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
@@ -54,5 +57,5 @@ jobs:
         id: closepullrequest
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_JOLLY_MUD_03BD67400 }}
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_<GENERATED_HOSTNAME> }}
           action: "close"
