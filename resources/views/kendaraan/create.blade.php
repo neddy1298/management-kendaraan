@@ -1,8 +1,8 @@
 @extends('layouts.app', ['page' => 'Permohonan', 'page2' => 'KTP', 'page3' => 'create'])
 
 @section('css')
-    <link rel="stylesheet" href="{{ secure_asset('vendor/daterange/daterange.css') }}">
-    <link rel="stylesheet" href="{{ secure_asset('vendor/bs-select/bs-select.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/daterange/daterange.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/bs-select/bs-select.css') }}">
 @endsection
 
 @section('content')
@@ -322,10 +322,10 @@
         }
     </script>
     <!-- Bootstrap Select JS -->
-    <script src="{{ secure_asset('vendor/bs-select/bs-select.min.js') }}"></script>
-    <script src="{{ secure_asset('vendor/bs-select/bs-select-custom.js') }}"></script>
+    <script src="{{ asset('vendor/bs-select/bs-select.min.js') }}"></script>
+    <script src="{{ asset('vendor/bs-select/bs-select-custom.js') }}"></script>
 
     <!-- Date Range JS -->
-    <script src="{{ secure_asset('vendor/daterange/daterange.js') }}"></script>
-    <script src="{{ secure_asset('vendor/daterange/custom-daterange.js') }}"></script>
+    <script src="{{ asset('vendor/daterange/daterange.js') }}"></script>
+    <script src="{{ asset('vendor/daterange/custom-daterange.js') }}"></script>
 @endsection
