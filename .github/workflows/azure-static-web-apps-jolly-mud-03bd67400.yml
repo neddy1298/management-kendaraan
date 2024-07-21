@@ -28,6 +28,15 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-dev --no-progress --no-suggest --prefer-dist
 
+      - name: Copy .env.example to .env
+        run: cp .env.example .env
+
+      - name: Set environment variables
+        run: |
+          echo "APP_ENV=production" >> .env
+          echo "APP_DEBUG=false" >> .env
+          echo "APP_URL=https://jolly-mud-03bd67400.5.azurestaticapps.net" >> .env
+
       - name: Generate application key
         run: php artisan key:generate
 
