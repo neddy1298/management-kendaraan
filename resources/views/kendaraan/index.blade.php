@@ -11,6 +11,9 @@
     <div class="row">
         <div class="col-12">
 
+            @php 
+            $message = "Contoh message yang akan dikirim ke WA\n-1. lorem ipsum dolor sit amet consectetur adipiscing elit\n2. lorem ipsum dolor sit amet consectetur adipiscing elit\n3. lorem ipsum dolor sit amet consectetur adipiscing elit\n4. lorem ipsum dolor sit amet consectetur adipiscing elit\n5. lorem ipsum dolor sit amet consectetur adipiscing elit";
+            @endphp
         <!-- Card start -->
         <div class="card">
             <div class="card-body">
@@ -19,11 +22,13 @@
                             class="bi bi-pencil-square"></i> Tambah Baru</a>
                     <a href="{{ route('kendaraan.printAll') }}" class="btn btn-primary" target="_blank"><i class="bi bi-printer"></i>
                         Cetak</a>
+                    <a href="{{ route('send-wa', $message) }}" class="btn btn-success" target="_blank"><i class="bi bi-whatsapp"></i>
+                        Kirim WA</a>
                 </div>
             </div>
         </div>
         <!-- Card end -->
-
+{{ $message }}
         </div>
         <div class="col-sm-12 col-12">
             @if (session('success'))
