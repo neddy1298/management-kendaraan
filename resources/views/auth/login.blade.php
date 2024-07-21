@@ -15,7 +15,7 @@
     <meta property="og:description" content="Marketplace for Bootstrap Admin Dashboards">
     <meta property="og:type" content="Website">
     <meta property="og:site_name" content="Bootstrap Gallery">
-    <link rel="shortcut icon" href="{{ mix('images/logokbr.ico') }}">
+    <link rel="shortcut icon" href="{{ secure_asset('images/logokbr.ico') }}">
 
     <!-- Title -->
     <title>Management Kendaraan</title>
@@ -26,13 +26,13 @@
   ************ -->
 
     <!-- Animated css -->
-    <link rel="stylesheet" href="{{ mix('css/animate.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('css/animate.css') }}">
 
     <!-- Bootstrap font icons css -->
-    <link rel="stylesheet" href="{{ mix('fonts/bootstrap/bootstrap-icons.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('fonts/bootstrap/bootstrap-icons.css') }}">
 
     <!-- Main css -->
-    <link rel="stylesheet" href="{{ mix('css/main.min.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('css/main.min.css') }}">
 
 
 </head>
@@ -58,8 +58,8 @@
         <div class="login-box">
             <div class="login-form">
                 <a href="" class="login-logo">
-                    <img src="{{ mix('images/kotabogor.png') }}" alt="Kota Bogor"/>&nbsp;&nbsp;
-                    <img src="{{ mix('images/dishub.png') }}" alt="Dinas Perhubungan" />
+                    <img src="{{ secure_asset('images/kotabogor.png') }}" alt="Kota Bogor"/>&nbsp;&nbsp;
+                    <img src="{{ secure_asset('images/dishub.png') }}" alt="Dinas Perhubungan" />
                 </a>
                 <div class="login-welcome">
                     Selamat Datang, <br />Silahkan login menggunakan akun admin.
@@ -99,17 +99,17 @@
    ************ Required JavaScript Files *************
   ************* -->
     <!-- Required jQuery first, then Bootstrap Bundle JS -->
-    <script src="{{ mix('js/jquery.min.js') }}"></script>
-    <script src="{{ mix('js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ mix('js/modernizr.js') }}"></script>
-    <script src="{{ mix('js/moment.js') }}"></script>
+    <script src="{{ secure_asset('js/jquery.min.js') }}"></script>
+    <script src="{{ secure_asset('js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ secure_asset('js/modernizr.js') }}"></script>
+    <script src="{{ secure_asset('js/moment.js') }}"></script>
 
     <!-- *************
    ************ Vendor Js Files *************
   ************* -->
 
     <!-- Main Js Required -->
-    <script src="{{ mix('js/main.js') }}"></script>
+    <script src="{{ secure_asset('js/main.js') }}"></script>
 
 </body>
 
