@@ -53,7 +53,7 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_JOLLY_MUD_03BD67400 }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          app_location: "/public" # Root of the Laravel app
+          app_location: "public" # Root of the Laravel app
           api_location: "" # No separate API location
           output_location: "public" # Public directory for deployment
 
