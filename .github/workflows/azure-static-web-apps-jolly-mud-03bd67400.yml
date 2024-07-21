@@ -48,7 +48,6 @@ jobs:
       - name: Build front-end assets
         run: |
           npm install
-          npm run dev
 
       - name: Optimize configuration
         run: php artisan config:cache
