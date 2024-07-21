@@ -5,6 +5,7 @@ use App\Http\Controllers\KepalaKeluargaController;
 use App\Http\Controllers\PendudukController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KendaraanController;
+use App\Http\Controllers\SmsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -12,6 +13,13 @@ Route::get('/', function () {
 })->middleware(['auth', 'verified'])->name('home');
 
 Route::middleware('auth')->group(function () {
+
+    Route::get('/send-sms', [SmsController::class, 'sendSms'])->name('send-sms');
+    Route::get('/send-wa/{message}', [SmsController::class, 'sendWhatsapp'])->name('send-wa');
+
+    // Route::post('/send-azure-message', [SmsController::class, 'sendAzureMessage'])->name('send-sms');
+
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
