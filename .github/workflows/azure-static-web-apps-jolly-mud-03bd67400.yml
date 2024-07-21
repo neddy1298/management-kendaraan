@@ -40,8 +40,18 @@ jobs:
       - name: Generate application key
         run: php artisan key:generate
 
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'  # or the version you need
+
       - name: Build front-end assets
-        run: npm install && npm run prod
+        run: |
+          npm install
+          npm run production
+
+      - name: Optimize configuration
+        run: php artisan config:cache
 
       - name: Set up environment variables
         run: php artisan config:cache
