@@ -15,7 +15,7 @@
                 <meta property="og:description" content="Marketplace for Bootstrap Admin Dashboards">
     <meta property="og:type" content="Website">
     <meta property="og:site_name" content="Bootstrap Gallery">
-    <link rel="shortcut icon" href="{{ asset('images/logokbr.ico') }}">
+    <link rel="shortcut icon" href="{{ mix('images/logokbr.ico') }}">
 
     <!-- Title -->
     <title>Management Kendaraan</title>
@@ -26,13 +26,13 @@
   ************ -->
 
     <!-- Animated css -->
-    <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/animate.css') }}">
 
     <!-- Bootstrap font icons css -->
-    <link rel="stylesheet" href="{{ asset('fonts/bootstrap/bootstrap-icons.css') }}">
+    <link rel="stylesheet" href="{{ mix('fonts/bootstrap/bootstrap-icons.css') }}">
 
     <!-- Main css -->
-    <link rel="stylesheet" href="{{ asset('css/main.min.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/main.min.css') }}">
 
 
     <!-- *************
@@ -40,7 +40,7 @@
   ************ -->
 
     <!-- Scrollbar CSS -->
-    <link rel="stylesheet" href="{{ asset('vendor/overlay-scroll/OverlayScrollbars.min.css') }}">
+    <link rel="stylesheet" href="{{ mix('vendor/overlay-scroll/OverlayScrollbars.min.css') }}">
 
     @yield('css')
 
@@ -150,23 +150,23 @@
    ************ Required JavaScript Files *************
   ************* -->
     <!-- Required jQuery first, then Bootstrap Bundle JS -->
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('js/modernizr.js') }}"></script>
-    <script src="{{ asset('js/moment.js') }}"></script>
+    <script src="{{ mix('js/jquery.min.js') }}"></script>
+    <script src="{{ mix('js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ mix('js/modernizr.js') }}"></script>
+    <script src="{{ mix('js/moment.js') }}"></script>
 
     <!-- *************
    ************ Vendor Js Files *************
   ************* -->
 
     <!-- Overlay Scroll JS -->
-    <script src="{{ asset('vendor/overlay-scroll/jquery.overlayScrollbars.min.js') }}"></script>
-    <script src="{{ asset('vendor/overlay-scroll/custom-scrollbar.js') }}"></script>
+    <script src="{{ mix('vendor/overlay-scroll/jquery.overlayScrollbars.min.js') }}"></script>
+    <script src="{{ mix('vendor/overlay-scroll/custom-scrollbar.js') }}"></script>
 
     @yield('script')
 
     <!-- Main Js Required -->
-    <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{ mix('js/main.js') }}"></script>
 
 </body>
 

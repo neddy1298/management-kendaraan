@@ -3,8 +3,8 @@
     <!-- Sidebar brand starts -->
     <div class="sidebar-brand">
         <a href="index.html" class="logo">
-            <img src="{{ asset('images/kotabogor.png') }}" alt="Kota Bogor"/>&nbsp;&nbsp;
-            <img src="{{ asset('images/dishub.png') }}" alt="Dinas Perhubungan" />
+            <img src="{{ mix('images/kotabogor.png') }}" alt="Kota Bogor"/>&nbsp;&nbsp;
+            <img src="{{ mix('images/dishub.png') }}" alt="Dinas Perhubungan" />
         </a>
     </div>
     <!-- Sidebar brand starts -->
