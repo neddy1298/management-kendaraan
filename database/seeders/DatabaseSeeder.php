@@ -22,6 +22,6 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
 
-        Kendaraan::factory(50)->create();
+        // Kendaraan::factory(50)->create();
     }
 }

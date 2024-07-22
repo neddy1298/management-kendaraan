@@ -13,11 +13,17 @@ return new class extends Migration
     {
         Schema::create('tbl_kendaraan', function (Blueprint $table) {
             $table->id();
-            $table->string('plat_nomor', 10);
-            $table->string('jumlah_roda', 20);
-            $table->text('keterangan');
+            $table->string('nomor_registrasi', 10)->unique();
+            $table->string('merk_kendaraan', 20);
+            $table->string('jenis_kendaraan', 20);
+            $table->integer('cc_kendaraan');
+            $table->string('bbm_kendaraan', 20);
+            $table->string('roda_kendaraan', 20);
+            $table->string('berlaku_sampai');
             $table->timestamps();
         });
+
+
     }
 
     /**
