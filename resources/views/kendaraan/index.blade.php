@@ -92,4 +92,3 @@
     <!-- Custom Data tables -->
     <script src="{{ secure_asset('vendor/datatables/custom/custom-datatables.js') }}"></script>
 @endsection
-secure_asset('secure_asset('secure_asset('

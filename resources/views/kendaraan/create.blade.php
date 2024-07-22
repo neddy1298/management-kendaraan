@@ -157,12 +157,12 @@
                                         class="form-control {{ $errors->has('alamat') ? 'is-invalid' : '' }}"
                                         id="alamat" value="{{ old('alamat') }}" name="alamat" readonly>
                                     @if ($errors->has('alamat'))
-                    secure_asset('             <div class="invalid-feedback">
-                    secure_asset('                 {{ $errors->first('alamat') }}
+                    <div class="invalid-feedback">
+                    {{ $errors->first('alamat') }}
                                         </div>
                                     @endif
-                    secure_asset('     </div>
-                    secure_asset(' </div>
+                       </div>
+                    </div>
                             <div class="col-xl-6 col-sm-12 col-12">
                                 <div class="mb-3">
                                     <label for="Kelurahan" class="form-label">Kelurahan</label>
