@@ -60,6 +60,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nomor Registrasi</th>
+                                    <th>Merk Kendaraan</th>
                                     <th>Jenis Kendaraan</th>
                                     <th>CC Kendaraan</th>
                                     <th>BBM Kendaraan</th>
@@ -74,6 +75,7 @@
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>{{ $kendaraan->nomor_registrasi }}</td>
+                                        <td>{{ $kendaraan->merk_kendaraan }}</td>
                                         <td>{{ $kendaraan->jenis_kendaraan }}</td>
                                         <td>{{ $kendaraan->cc_kendaraan }} CC</td>
                                         <td>{{ $kendaraan->bbm_kendaraan }}</td>
@@ -88,7 +90,7 @@
                                                 method="POST" style="display: inline-block">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn btn-danger btn-icon"
+                                                <button class="btn btn-danger btn-icon btn-sm mt-2"
                                                     onclick="return confirm('Kamu yakin ingin menghapus data: {{ $kendaraan->nomor_registrasi }} ?')"
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
                                                     <i class="bi bi-trash"></i>

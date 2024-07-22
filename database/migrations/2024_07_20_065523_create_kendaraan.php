@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tbl_kendaraan', function (Blueprint $table) {
             $table->id();
             $table->string('nomor_registrasi', 10)->unique();
-            $table->string('merk_kendaraan', 20);
+            $table->string('merk_kendaraan', 100);
             $table->string('jenis_kendaraan', 20);
             $table->integer('cc_kendaraan');
             $table->string('bbm_kendaraan', 20);
