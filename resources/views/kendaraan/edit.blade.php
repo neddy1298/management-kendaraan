@@ -1,7 +1,7 @@
 @extends('layouts.app', ['page' => 'Permohonan', 'page2' => 'KTP', 'page3' => 'edit'])
 
 @section('css')
-    <link rel="stylesheet" href="{{ secure_asset('asset('vendor/daterange/daterange.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('vendor/daterange/daterange.css') }}">
 @endsectionsecure_asset('
 
 @section('content')
