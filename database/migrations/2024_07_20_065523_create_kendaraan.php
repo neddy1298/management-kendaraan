@@ -12,12 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tbl_kendaraan', function (Blueprint $table) {
-            $table->id();
-            $table->string('plat_nomor', 10);
-            $table->string('jumlah_roda', 20);
-            $table->text('keterangan');
+            $table->string('nomor_registrasi', 10)->primary();
+            $table->string('jenis_kendaraan', 20);
+            $table->integer('cc_kendaraan');
+            $table->string('bbm_kendaraan', 20);
+            $table->string('roda_kenda', 20);
+            $table->date('berlaku_sampai');
             $table->timestamps();
         });
+
+
     }
 
     /**

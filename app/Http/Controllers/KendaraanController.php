@@ -13,6 +13,7 @@ class KendaraanController extends Controller
     public function index()
     {
         $kendaraans = Kendaraan::all();
+        // dump($kendaraans);
         return view('kendaraan.index', compact('kendaraans'));
     }
 }

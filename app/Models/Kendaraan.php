@@ -14,10 +14,12 @@ class Kendaraan extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'plat_nomor',
-        'jumlah_roda',
-        'keterangan',
-        'updated_at',
+        'jenis_kendaraan',
+        'cc_kendaraan',
+        'bbm_kendaraan',
+        'roda_kenda',
+        'berlaku_sampai',
         'created_at',
+        'updated_at',
     ];
 }

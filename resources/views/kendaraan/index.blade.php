@@ -56,10 +56,13 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Plat Nomor</th>
+                                    <th>Nomor Registrasi</th>
                                     <th>Jenis Kendaraan</th>
-                                    <th>Keterangan</th>
-                                    <th>Created At</th>
+                                    <th>CC Kendaraan</th>
+                                    <th>BBM Kendaraan</th>
+                                    <th>Roda Kendaraan</th>
+                                    <th>Berlaku Sampai</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -67,10 +70,13 @@
                                 @foreach ($kendaraans as $kendaraan)
                                 <tr>
                                     <td>{{ $no++ }}</td>
-                                    <td>{{ $kendaraan->plat_nomor }}</td>
-                                    <td>{{ $kendaraan->jumlah_roda }}</td>
-                                    <td>{{ $kendaraan->keterangan }}</td>
-                                    <td>{{ $kendaraan->created_at }}</td>
+                                    <td>{{ $kendaraan->nomor_registrasi }}</td>
+                                    <td>{{ $kendaraan->jenis_kendaraan }}</td>
+                                    <td>{{ $kendaraan->cc_kendaraan }}</td>
+                                    <td>{{ $kendaraan->bbm_kendaraan }}</td>
+                                    <td>{{ $kendaraan->roda_kendaraan }}</td>
+                                    <td>{{ $kendaraan->berlaku_sampai }}</td>
+                                    <td></td>
                                 </tr>                                    
                                 @endforeach
                             </tbody>
