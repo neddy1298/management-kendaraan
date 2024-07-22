@@ -15,8 +15,5 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'role' => 'admin',
         ]);
-
-        $path = storage_path('app/public/tbl_kendaraan.sql');
-        DB::unprepared(file_get_contents($path));
     }
 }
