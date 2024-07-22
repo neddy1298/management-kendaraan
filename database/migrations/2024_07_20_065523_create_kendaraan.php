@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('cc_kendaraan');
             $table->string('bbm_kendaraan', 20);
             $table->string('roda_kendaraan', 20);
-            $table->date('berlaku_sampai');
+            $table->string('berlaku_sampai');
             $table->timestamps();
         });
 
