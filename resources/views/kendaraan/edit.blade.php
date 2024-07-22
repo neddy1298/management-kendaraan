@@ -34,7 +34,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
-                    <form method="POST" action="{{ route('kendaraan.update') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('kendaraan.update', $kendaraan->id) }}" enctype="multipart/form-data">
                         @csrf
                         <!-- Row start -->
                         <div class="row">
