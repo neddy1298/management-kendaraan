@@ -1,8 +1,8 @@
 @extends('layouts.app', ['page' => 'Permohonan', 'page2' => 'KTP', 'page3' => 'create'])
 
 @section('css')
-    <link rel="stylesheet" href="{{ secure_asset('vendor/daterange/daterange.css') }}">
-    <link rel="stylesheet" href="{{ secure_asset('vendor/bs-select/bs-select.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('asset('vendor/daterange/daterange.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('asset('vendor/bs-select/bs-select.css') }}">
 @endsection
 
 @section('content')
@@ -157,12 +157,12 @@
                                         class="form-control {{ $errors->has('alamat') ? 'is-invalid' : '' }}"
                                         id="alamat" value="{{ old('alamat') }}" name="alamat" readonly>
                                     @if ($errors->has('alamat'))
-                                        <div class="invalid-feedback">
-                                            {{ $errors->first('alamat') }}
+                    secure_asset('             <div class="invalid-feedback">
+                    secure_asset('                 {{ $errors->first('alamat') }}
                                         </div>
                                     @endif
-                                </div>
-                            </div>
+                    secure_asset('     </div>
+                    secure_asset(' </div>
                             <div class="col-xl-6 col-sm-12 col-12">
                                 <div class="mb-3">
                                     <label for="Kelurahan" class="form-label">Kelurahan</label>
