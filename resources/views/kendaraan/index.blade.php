@@ -11,24 +11,27 @@
     <div class="row">
         <div class="col-12">
 
-            @php 
-            $message = "Contoh message yang akan dikirim ke WA\n-1. lorem ipsum dolor sit amet consectetur adipiscing elit\n2. lorem ipsum dolor sit amet consectetur adipiscing elit\n3. lorem ipsum dolor sit amet consectetur adipiscing elit\n4. lorem ipsum dolor sit amet consectetur adipiscing elit\n5. lorem ipsum dolor sit amet consectetur adipiscing elit";
+            @php
+                $message =
+                    "Contoh message yang akan dikirim ke WA\n-1. lorem ipsum dolor sit amet consectetur adipiscing elit\n2. lorem ipsum dolor sit amet consectetur adipiscing elit\n3. lorem ipsum dolor sit amet consectetur adipiscing elit\n4. lorem ipsum dolor sit amet consectetur adipiscing elit\n5. lorem ipsum dolor sit amet consectetur adipiscing elit";
             @endphp
-        <!-- Card start -->
-        <div class="card">
-            <div class="card-body">
-                <div class="custom-btn-group">
-                    <a href="{{ route('kendaraan.create') }}" class="btn btn-warning"><i
-                            class="bi bi-pencil-square"></i> Tambah Baru</a>
-                    <a href="{{ route('kendaraan.printAll') }}" class="btn btn-primary" target="_blank"><i class="bi bi-printer"></i>
-                        Cetak</a>
-                    <a href="{{ route('send-wa', $message) }}" class="btn btn-success" target="_blank"><i class="bi bi-whatsapp"></i>
-                        Kirim WA</a>
+            <!-- Card start -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="custom-btn-group">
+                        <a href="{{ route('kendaraan.create') }}" class="btn btn-warning"><i class="bi bi-pencil-square"></i>
+                            Tambah Baru</a>
+                        <a href="{{ route('kendaraan.printAll') }}" class="btn btn-primary" target="_blank"><i
+                                class="bi bi-printer"></i>
+                            Cetak</a>
+                        <a href="{{ route('send-wa', $message) }}" class="btn btn-success" target="_blank"><i
+                                class="bi bi-whatsapp"></i>
+                            Kirim WA</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- Card end -->
-{{ $message }}
+            <!-- Card end -->
+            {{ $message }}
         </div>
         <div class="col-sm-12 col-12">
             @if (session('success'))
@@ -68,16 +71,31 @@
                             <tbody>
                                 @php $no = 1 @endphp
                                 @foreach ($kendaraans as $kendaraan)
-                                <tr>
-                                    <td>{{ $no++ }}</td>
-                                    <td>{{ $kendaraan->nomor_registrasi }}</td>
-                                    <td>{{ $kendaraan->jenis_kendaraan }}</td>
-                                    <td>{{ $kendaraan->cc_kendaraan }}</td>
-                                    <td>{{ $kendaraan->bbm_kendaraan }}</td>
-                                    <td>{{ $kendaraan->roda_kendaraan }}</td>
-                                    <td>{{ $kendaraan->berlaku_sampai }}</td>
-                                    <td></td>
-                                </tr>                                    
+                                    <tr>
+                                        <td>{{ $no++ }}</td>
+                                        <td>{{ $kendaraan->nomor_registrasi }}</td>
+                                        <td>{{ $kendaraan->jenis_kendaraan }}</td>
+                                        <td>{{ $kendaraan->cc_kendaraan }} CC</td>
+                                        <td>{{ $kendaraan->bbm_kendaraan }}</td>
+                                        <td>Roda {{ $kendaraan->roda_kendaraan }}</td>
+                                        <td>{{ $kendaraan->berlaku_sampai }}</td>
+                                        <td>
+                                            <a href="{{ route('kendaraan.edit', $kendaraan->id)  }}" class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
+                                                data-bs-placement="top" title="Edit">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <form action="{{ route('kendaraan.delete', $kendaraan->id) }}"
+                                                method="POST" style="display: inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-danger btn-icon"
+                                                    onclick="return confirm('Kamu yakin ingin menghapus data: {{ $kendaraan->nomor_registrasi }} ?')"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>

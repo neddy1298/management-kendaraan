@@ -91,8 +91,8 @@
                         ];
                 
                         $pages2 = [
-                            'Kendaraan' => 'kendaraan.index',
-                            'User' => 'kendaraan.index'
+                            'Tambah' => 'Tambah Baru',
+                            'Edit' => 'Ubah Data'
                         ];
                 
                         $pages3 = [
@@ -114,7 +114,7 @@
                 
                     @if(isset($pages2[$page2]))
                         <li class="breadcrumb-item">
-                            <a href="{{ route($pages2[$page2]) }}">{{ $page2 }}</a>
+                            {{ $page2 }}
                         </li>
                     @endif
                 </ol>

@@ -27,12 +27,13 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'kendaraan'], function () {
         Route::get('', [KendaraanController::class, 'index'])->name('kendaraan.index');
         Route::get('/create', [KendaraanController::class, 'create'])->name('kendaraan.create');
-        // Route::post('/store', [KendaraanController::class, 'store'])->name('kendaraan.store');
+        Route::post('/store', [KendaraanController::class, 'store'])->name('kendaraan.store');
         Route::get('/print', [KendaraanController::class, 'printAll'])->name('kendaraan.printAll');
         // Route::get('/print/{id}', [KendaraanController::class, 'print'])->name('kendaraan.print');
-        // Route::get('/edit/{id}', [KendaraanController::class, 'edit'])->name('kendaraan.edit');
-        // Route::post('/update/{id}', [KendaraanController::class, 'update'])->name('kendaraan.update');
-        // Route::delete('/delete/{id}', [KendaraanController::class, 'destroy'])->name('kendaraan.delete');
+
+        Route::get('/edit/{id}', [KendaraanController::class, 'edit'])->name('kendaraan.edit');
+        Route::post('/update/{id}', [KendaraanController::class, 'update'])->name('kendaraan.update');
+        Route::delete('/delete/{id}', [KendaraanController::class, 'destroy'])->name('kendaraan.delete');
     });
 
 });
