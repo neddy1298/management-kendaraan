@@ -6,11 +6,11 @@
         <div class="col-xxl-3 col-sm-6 col-12">
             <div class="stats-tile">
                 <div class="sale-icon shade-red">
-                    <i class="bi bi-pie-chart"></i>
+                    <i class="bi bi-car"></i>
                 </div>
                 <div class="sale-details">
-                    <h3 class="text-red">250k</h3>
-                    <p>Sales</p>
+                    <h3 class="text-red">{{ $kendaraan }}</h3>
+                    <p>Jumlah Kendaraan</p>
                 </div>
             </div>
         </div>
