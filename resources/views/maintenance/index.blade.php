@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'Kendaraan', 'page2' => '', 'page3' => ''])
+@extends('layouts.app', ['page' => 'Maintenance', 'page2' => '', 'page3' => ''])
 
 @section('css')
     <!-- Data Tables -->
@@ -19,11 +19,11 @@
             <div class="card">
                 <div class="card-body">
                     <div class="custom-btn-group">
-                        <a href="{{ route('kendaraan.create') }}" class="btn btn-warning"><i class="bi bi-pencil-square"></i>
+                        <a href="{{ route('maintenance.create') }}" class="btn btn-warning"><i class="bi bi-pencil-square"></i>
                             Tambah Baru</a>
-                        <a href="{{ route('kendaraan.printAll') }}" class="btn btn-primary" target="_blank"><i
+                        {{-- <a href="{{ route('maintenance.printAll') }}" class="btn btn-primary" target="_blank"><i
                                 class="bi bi-printer"></i>
-                            Cetak</a>
+                            Cetak</a> --}}
                         <a href="{{ route('send-wa', $message) }}" class="btn btn-success" target="_blank"><i
                                 class="bi bi-whatsapp"></i>
                             Kirim WA</a>
@@ -60,38 +60,33 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nomor Registrasi</th>
-                                    <th>Merk Kendaraan</th>
-                                    <th>Jenis Kendaraan</th>
-                                    <th>CC Kendaraan</th>
-                                    <th>BBM Kendaraan</th>
-                                    <th>Roda Kendaraan</th>
-                                    <th>Berlaku Sampai</th>
+                                    <th>Bahan Bakar Minyak</th>
+                                    <th>Pelumas</th>
+                                    <th>Suku Cadang</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @php $no = 1 @endphp
-                                @foreach ($kendaraans as $kendaraan)
+                                @foreach ($maintenances as $maintenance)
                                     <tr>
                                         <td>{{ $no++ }}</td>
-                                        <td>{{ $kendaraan->nomor_registrasi }}</td>
-                                        <td>{{ $kendaraan->merk_kendaraan }}</td>
-                                        <td>{{ $kendaraan->jenis_kendaraan }}</td>
-                                        <td>{{ $kendaraan->cc_kendaraan }} CC</td>
-                                        <td>{{ $kendaraan->bbm_kendaraan }}</td>
-                                        <td>Roda {{ $kendaraan->roda_kendaraan }}</td>
-                                        <td>{{ date('d F Y', strtotime($kendaraan->berlaku_sampai)) }}</td>
+                                        <td>{{ $maintenance->nomor_registrasi }}</td>
+                                        <td>{{ $maintenance->bahan_bakar_minyak }}</td>
+                                        <td>{{ $maintenance->pelumas_mesin }}</td>
+                                        <td>{{ $maintenance->suku_cadang }}</td>
+                                        {{-- <td>{{ date('d F Y', strtotime($maintenance->berlaku_sampai)) }}</td> --}}
                                         <td>
-                                            <a href="{{ route('kendaraan.edit', $kendaraan->id)  }}" class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
+                                            <a href="{{ route('maintenance.edit', $maintenance->id)  }}" class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
                                                 data-bs-placement="top" title="Edit">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            <form action="{{ route('kendaraan.delete', $kendaraan->id) }}"
+                                            <form action="{{ route('maintenance.delete', $maintenance->id) }}"
                                                 method="POST" style="display: inline-block">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn btn-danger btn-icon btn-sm mt-2"
-                                                    onclick="return confirm('Kamu yakin ingin menghapus data: {{ $kendaraan->nomor_registrasi }} ?')"
+                                                <button class="btn btn-danger btn-icon btn-sm"
+                                                    onclick="return confirm('Kamu yakin ingin menghapus data: {{ $maintenance->nomor_registrasi }} ?')"
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
                                                     <i class="bi bi-trash"></i>
                                                 </button>

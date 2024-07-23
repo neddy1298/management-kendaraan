@@ -15,11 +15,13 @@ class KendaraanFactory extends Factory
     {
 
         return [
-            'plat_nomor' => fake()->unique()->numerify('B######'),
-            'jumlah_roda' => fake()->randomElement(['2', '4', '6', '8', '10']),
-            'keterangan' => fake()->text(),
-            'created_at' => now(),
-            'updated_at' => now(),
+            'nomor_registrasi' => fake()->unique()->numerify('F####A'),
+            'merk_kendaraan' => fake()->word(),
+            'jenis_kendaraan' => fake()->randomElement(['Sedan', 'SUV', 'Hatchback', 'Minivan', 'Truck']),
+            'cc_kendaraan' => fake()->numberBetween(100, 10000),
+            'bbm_kendaraan' => fake()->randomElement(['Bensin', 'Diesel', 'Listrik']),
+            'roda_kendaraan' => fake()->randomElement(['2', '4', '6', '8', '10']),
+            'berlaku_sampai' => fake()->dateTimeBetween('now', '+1 year')->format('Y-m-d'),
         ];
     }
 }

@@ -26,12 +26,13 @@
                         <span class="menu-text">Data Kendaraan</span>
                     </a>
                 </li>
-                {{-- <li class="{{ $page == 'Laporan' ? 'active' : '' }}">
-                    <a href="#" class="{{ $page == 'Laporan' ? 'current-page' : '' }}">
-                        <i class="bi bi-clipboard"></i>
-                        <span class="menu-text">Laporan</span>
+                <li class="{{ $page == 'Maintenance' ? 'active' : '' }}">
+                    <a href="{{ route('maintenance.index') }}"
+                        class="{{ $page == 'Maintenance' ? 'current-page' : '' }}">
+                        <i class="bi bi-gear"></i>
+                        <span class="menu-text">Data Maintenance</span>
                     </a>
-                </li> --}}
+                </li>
                 <li class="sidebar-dropdown {{ $page == 'Maintenance' ? 'active' : '' }}">
                     <a href="#">
                         <i class="bi bi-gear"></i>

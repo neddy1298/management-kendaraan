@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Kendaraan;
+use App\Models\Maintenance;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +18,11 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
 
-        $path = storage_path('app/public/tbl_kendaraan.sql');
-        DB::unprepared(file_get_contents($path));
+        // $path = storage_path('app/public/tbl_kendaraan.sql');
+        // DB::unprepared(file_get_contents($path));
+        Kendaraan::factory()
+        ->count(100)
+        ->has(Maintenance::factory())
+        ->create();
     }
 }
