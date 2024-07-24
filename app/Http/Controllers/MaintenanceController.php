@@ -56,6 +56,7 @@ class MaintenanceController extends Controller
             //'integer' => 'Kolom :attribut harus berupa angka.',
 
         ]);
+        
 
 
         $Maintenance = Maintenance::find($id);
