@@ -133,7 +133,7 @@
 
                 <!-- App Footer start -->
                 <div class="app-footer">
-                    <span>© Dinas Komunikasi dan Informatika Kota Bogor 2024. All rights reserved.</span>
+                    <span>© Dinas Perhubungan Kota Bogor 2024. All rights reserved.</span>
                 </div>
                 <!-- App footer end -->
             </div>

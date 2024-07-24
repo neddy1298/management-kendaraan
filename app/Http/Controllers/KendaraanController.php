@@ -66,9 +66,7 @@ class KendaraanController extends Controller
     }
 
     public function edit($id){
-    
         $kendaraan = Kendaraan::find($id);
-
         $maintenance = Maintenance::join('tbl_mt_group', 'tbl_maintenance.mt_group', '=', 'tbl_mt_group.id')
         ->where('nomor_registrasi', $kendaraan->nomor_registrasi)
         ->select('tbl_maintenance.nomor_registrasi','tbl_mt_group.id', 'tbl_mt_group.nama_group')
@@ -111,7 +109,10 @@ class KendaraanController extends Controller
     }
 
     public function destroy($id){
-        $kendaraan = Kendaraan::findOrFail($id);
+
+        // TODO: Delete data kendaraan
+        $kendaraan = Kendaraan::find($id);
+
         $kendaraan->delete();
 
         return redirect()->route('kendaraan.index')->with('success', 'Data berhasil dihapus.');
