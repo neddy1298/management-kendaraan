@@ -31,7 +31,6 @@
                 </div>
             </div>
             <!-- Card end -->
-            {{ $message }}
         </div>
         <div class="col-sm-12 col-12">
             @if (session('success'))
@@ -55,7 +54,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="highlightRowColumn" class="table custom-table text-center">
+                        <table id="highlightRowColumn" class="table custom-table text-center v-middle">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -82,12 +81,13 @@
                                         <td>Roda {{ $kendaraan->roda_kendaraan }}</td>
                                         <td>{{ date('d F Y', strtotime($kendaraan->berlaku_sampai)) }}</td>
                                         <td>
-                                            <a href="{{ route('kendaraan.edit', $kendaraan->id)  }}" class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
+                                            <a href="{{ route('kendaraan.edit', $kendaraan->id) }}"
+                                                class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
                                                 data-bs-placement="top" title="Edit">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            <form action="{{ route('kendaraan.delete', $kendaraan->id) }}"
-                                                method="POST" style="display: inline-block">
+                                            <form action="{{ route('kendaraan.delete', $kendaraan->id) }}" method="POST"
+                                                style="display: inline-block">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button class="btn btn-danger btn-icon btn-sm mt-2"

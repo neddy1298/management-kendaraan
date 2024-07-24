@@ -19,11 +19,6 @@
             <div class="card">
                 <div class="card-body">
                     <div class="custom-btn-group">
-                        <a href="{{ route('maintenance.create') }}" class="btn btn-warning"><i class="bi bi-pencil-square"></i>
-                            Tambah Baru</a>
-                        {{-- <a href="{{ route('maintenance.printAll') }}" class="btn btn-primary" target="_blank"><i
-                                class="bi bi-printer"></i>
-                            Cetak</a> --}}
                         <a href="{{ route('send-wa', $message) }}" class="btn btn-success" target="_blank"><i
                                 class="bi bi-whatsapp"></i>
                             Kirim WA</a>
@@ -31,7 +26,6 @@
                 </div>
             </div>
             <!-- Card end -->
-            {{ $message }}
         </div>
         <div class="col-sm-12 col-12">
             @if (session('success'))
@@ -60,9 +54,10 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nomor Registrasi</th>
-                                    <th>Bahan Bakar Minyak</th>
-                                    <th>Pelumas</th>
-                                    <th>Suku Cadang</th>
+                                    <th>Belanja BBM</th>
+                                    <th>Belanja Pelumas</th>
+                                    <th>Belanja Suku Cadang</th>
+                                    <th>Unit Kerja</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -72,25 +67,16 @@
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>{{ $maintenance->nomor_registrasi }}</td>
-                                        <td>{{ $maintenance->bahan_bakar_minyak }}</td>
-                                        <td>{{ $maintenance->pelumas_mesin }}</td>
-                                        <td>{{ $maintenance->suku_cadang }}</td>
-                                        {{-- <td>{{ date('d F Y', strtotime($maintenance->berlaku_sampai)) }}</td> --}}
+                                        <td>Rp. {{ $maintenance->belanja_bahan_bakar_minyak ?? 0 }}</td>
+                                        <td>Rp. {{ $maintenance->belanja_pelumas_mesin }}</td>
+                                        <td>Rp. {{ $maintenance->belanja_suku_cadang }}</td>
+                                        <td>{{ $maintenance->nama_group }}</td>
                                         <td>
-                                            <a href="{{ route('maintenance.edit', $maintenance->id)  }}" class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
+                                            <a href="{{ route('maintenance.edit', $maintenance->id) }}"
+                                                class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
                                                 data-bs-placement="top" title="Edit">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            <form action="{{ route('maintenance.delete', $maintenance->id) }}"
-                                                method="POST" style="display: inline-block">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-danger btn-icon btn-sm"
-                                                    onclick="return confirm('Kamu yakin ingin menghapus data: {{ $maintenance->nomor_registrasi }} ?')"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

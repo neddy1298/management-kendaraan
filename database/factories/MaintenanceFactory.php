@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Kendaraan;
+use App\Models\MtGroup;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,11 +18,11 @@ class MaintenanceFactory extends Factory
      */
     public function definition(): array
     {
+        $mt_group = MtGroup::get()->pluck('id')->toArray();
+
         return [
             'nomor_registrasi' => Kendaraan::factory(),
-            'bahan_bakar_minyak' => fake()->randomElement(['2', '3', '5', 'lainnya']),
-            'pelumas_mesin' => fake()->randomElement(['1', '2', 'lainnya']),
-            'suku_cadang' => $this->faker->optional()->word(),
+            'mt_group' =>  $this->faker->randomElement($mt_group),
         ];
     }
 }
