@@ -13,7 +13,9 @@ class MaintenanceController extends Controller
     public function index()
     {
         return view('maintenance.index', [
-            'maintenances' => Maintenance::all(),
+            'maintenances' => Maintenance::join('tbl_mt_group', 'tbl_maintenance.mt_group', '=', 'tbl_mt_group.id')
+                ->select('tbl_maintenance.nomor_registrasi', 'tbl_mt_group.*')
+                ->get(),
         ]);
     }
 
