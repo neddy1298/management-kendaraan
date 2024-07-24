@@ -52,7 +52,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek:
    php artisan migrate
    ```
 
-7. (Opsional) Jalankan seeder
+7. Jalankan seeder
    ```
    php artisan db:seed
    ```
