@@ -26,7 +26,6 @@
                 </div>
             </div>
             <!-- Card end -->
-            {{ $message }}
         </div>
         <div class="col-sm-12 col-12">
             @if (session('success'))
@@ -68,12 +67,13 @@
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>{{ $maintenance->nomor_registrasi }}</td>
-                                        <td>Rp. {{ $maintenance->belanja_bahan_bakar_minyak ??0 }}</td>
+                                        <td>Rp. {{ $maintenance->belanja_bahan_bakar_minyak ?? 0 }}</td>
                                         <td>Rp. {{ $maintenance->belanja_pelumas_mesin }}</td>
                                         <td>Rp. {{ $maintenance->belanja_suku_cadang }}</td>
                                         <td>{{ $maintenance->nama_group }}</td>
                                         <td>
-                                            <a href="{{ route('maintenance.edit', $maintenance->id)  }}" class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
+                                            <a href="{{ route('maintenance.edit', $maintenance->id) }}"
+                                                class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
                                                 data-bs-placement="top" title="Edit">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
