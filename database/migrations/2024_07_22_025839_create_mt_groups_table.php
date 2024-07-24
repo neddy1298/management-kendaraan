@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('tbl_mt_group', function (Blueprint $table) {
             $table->id();
+            $table->string('nama_group')->unique();
             $table->string('bahan_bakar_minyak')->nullable();
             $table->string('pelumas_mesin')->nullable();
             $table->string('suku_cadang')->nullable();
