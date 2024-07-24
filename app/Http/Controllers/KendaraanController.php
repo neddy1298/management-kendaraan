@@ -58,7 +58,7 @@ class KendaraanController extends Controller
 
     public function edit($id){
 
-        $kendaraan = Kendaraan::find($id);
+        $kendaraan = Kendaraan::find($id); 
 
         return view('kendaraan.edit', compact('kendaraan'));
     }
@@ -79,7 +79,7 @@ class KendaraanController extends Controller
             'date_format' => 'Kolom :attribute tidak sesuai format dd/mm/yyyy.',
         ]);
 
-        $kendaraan = Kendaraan::findOrFail($id);
+        $kendaraan = Kendaraan::find($id);
         $kendaraan->update($request->all());
 
         return redirect()->route('kendaraan.index')->with('success', 'Data berhasil diperbarui.');
@@ -89,7 +89,7 @@ class KendaraanController extends Controller
 
     public function destroy($id){
         // TODO: Delete data kendaraan
-        $kendaraan = Kendaraan::findOrFail($id);
+        $kendaraan = Kendaraan::find($id);
         $kendaraan->delete();
 
         return redirect()->route('kendaraan.index')->with('success', 'Data berhasil dihapus.');
