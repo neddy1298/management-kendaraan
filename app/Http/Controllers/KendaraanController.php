@@ -24,6 +24,29 @@ class KendaraanController extends Controller
 
     public function store(Request $request){
         // TODO: Store data kendaraan
+        // $request->validate([
+        //     'nik' => 'required',
+        //     'nkk' => 'required',
+        //     'jenis_permohonan' => 'required',
+        //     'keterangan' => 'required',
+        // ],[
+        //     'required' => 'Kolom :attribute wajib diisi.',
+        //     'numeric' => 'Kolom :attribute harus berupa angka.',
+        // ]);
+
+        // $data = $request->all();
+
+        // // Ubah format tanggal lahir
+        // $tanggal_lahir = Carbon::createFromFormat('d/m/Y', $request->input('tanggal_lahir'))->format('Y-m-d');
+        // $data['tanggal_lahir'] = $tanggal_lahir;
+
+        // $permohonanKtp = PermohonanKtp::create($data);
+
+        // if ($permohonanKtp->wasRecentlyCreated) {
+        //     return redirect()->route('permohonan.index')->with('success', 'Permohonan KTP berhasil disimpan.');
+        // } else {
+        //     return redirect()->route('permohonan.index')->with('error', 'Terjadi kesalahan saat menyimpan permohonan KTP.');
+        // }
         return redirect()->back();
     }
 

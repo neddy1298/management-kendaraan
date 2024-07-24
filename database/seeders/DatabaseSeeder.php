@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Kendaraan;
 use App\Models\Maintenance;
+use App\Models\MtGroup;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +23,10 @@ class DatabaseSeeder extends Seeder
         // DB::unprepared(file_get_contents($path));
         Kendaraan::factory()
         ->count(100)
-        ->has(Maintenance::factory())
+        ->has(
+            MtGroup::factory()
+                ->has(Maintenance::factory()->count(rand(1, 5)))
+        )
         ->create();
     }
 }

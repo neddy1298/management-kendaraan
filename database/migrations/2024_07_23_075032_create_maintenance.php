@@ -16,9 +16,10 @@ return new class extends Migration
                 ->on('tbl_kendaraan')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->string('bahan_bakar_minyak')->nullable();
-            $table->string('pelumas_mesin')->nullable();
-            $table->string('suku_cadang')->nullable();
+            $table->foreignId('mt_group')
+                ->constrained('tbl_mt_group')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

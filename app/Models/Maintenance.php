@@ -15,4 +15,9 @@ class Maintenance extends Model
     {
         return $this->belongsTo(Kendaraan::class, 'nomor_registrasi', 'nomor_registrasi');
     }
+
+    public function mtGroup()
+    {
+        return $this->belongsTo(MtGroup::class, 'mt_group', 'id');
+    }
 }
