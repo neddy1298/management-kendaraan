@@ -13,7 +13,6 @@ class KendaraanController extends Controller
     public function index()
     {
         $kendaraans = Kendaraan::all();
-        // dump($kendaraans);
         return view('kendaraan.index', compact('kendaraans'));
     }
 
@@ -23,7 +22,6 @@ class KendaraanController extends Controller
     }
 
     public function store(Request $request){
-        // TODO: Store data kendaraan
         $request->validate([
             'nomor_registrasi' => 'required|string|max:255',
             'merk_kendaraan' => 'required|string|max:255',
@@ -39,9 +37,10 @@ class KendaraanController extends Controller
             'date_format' => 'Kolom :attribut tidak sesuai format dd/mm/yyyy.',
         ]);
 
-        // $data = $request->all();
-        $data = $request->except('_token');
+        $berlaku_sampai = \DateTime::createFromFormat('d/m/Y', $request->berlaku_sampai)->format('d-m-Y');
+        $data = $request->all();
 
+        $data['berlaku_sampai'] = $berlaku_sampai;
         $Kendaraan = Kendaraan::create($data);
 
         if ($Kendaraan->wasRecentlyCreated) {
@@ -64,7 +63,6 @@ class KendaraanController extends Controller
     }
 
     public function update(Request $request, $id){
-        // TODO: Update data kendaraan
         $request->validate([
             'nomor_registrasi' => 'required|string|max:255',
             'merk_kendaraan' => 'required|string|max:255',
@@ -79,17 +77,25 @@ class KendaraanController extends Controller
             'date_format' => 'Kolom :attribute tidak sesuai format dd/mm/yyyy.',
         ]);
 
+
+        $berlaku_sampai = \DateTime::createFromFormat('d/m/Y', $request->berlaku_sampai)->format('d-m-Y');
+        $data = $request->all();
+
+        $data['berlaku_sampai'] = $berlaku_sampai;
+
         $kendaraan = Kendaraan::find($id);
         $kendaraan->update($request->all());
 
         return redirect()->route('kendaraan.index')->with('success', 'Data berhasil diperbarui.');
 
-        return redirect()->back();
+        // return redirect()->back();
     }
 
     public function destroy($id){
+
         // TODO: Delete data kendaraan
         $kendaraan = Kendaraan::find($id);
+
         $kendaraan->delete();
 
         return redirect()->route('kendaraan.index')->with('success', 'Data berhasil dihapus.');
