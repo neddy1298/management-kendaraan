@@ -18,6 +18,6 @@ class Maintenance extends Model
 
     public function mtGroup()
     {
-        return $this->belongsTo(MtGroup::class, 'mt_group', 'id');
+        return $this->belongsTo(MtGroup::class, 'id', 'mt_group');
     }
 }

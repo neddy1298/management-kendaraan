@@ -13,6 +13,6 @@ class MtGroup extends Model
 
     public function maintenance()
     {
-        return $this->hasOne(Maintenance::class, 'id', 'mt_group');
+        return $this->hasOne(Maintenance::class, 'mt_group', 'id');
     }
 }

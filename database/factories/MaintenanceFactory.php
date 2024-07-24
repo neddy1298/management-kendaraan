@@ -18,9 +18,11 @@ class MaintenanceFactory extends Factory
      */
     public function definition(): array
     {
+        $mt_group = MtGroup::get()->pluck('id')->toArray();
+
         return [
             'nomor_registrasi' => Kendaraan::factory(),
-            'mt_group' => MtGroup::factory(),
+            'mt_group' =>  $this->faker->randomElement($mt_group),
         ];
     }
 }

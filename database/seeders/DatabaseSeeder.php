@@ -21,12 +21,10 @@ class DatabaseSeeder extends Seeder
 
         // $path = storage_path('app/public/tbl_kendaraan.sql');
         // DB::unprepared(file_get_contents($path));
+        MtGroup::factory()->count(10)->create();
         Kendaraan::factory()
         ->count(100)
-        ->has(
-            MtGroup::factory()
-                ->has(Maintenance::factory()->count(rand(1, 5)))
-        )
+        ->has(Maintenance::factory())
         ->create();
     }
 }
