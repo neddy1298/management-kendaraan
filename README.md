@@ -37,14 +37,14 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek:
    ```
 
 5. Konfigurasi database
-   Buka file `.env` dan sesuaikan pengaturan database:
+   Buat database di MySQL/phpmyadmin lalu buka file `.env` dan sesuaikan pengaturan database:
    ```
    DB_CONNECTION=mysql
    DB_HOST=127.0.0.1
    DB_PORT=3306
    DB_DATABASE=nama_database
-   DB_USERNAME=username
-   DB_PASSWORD=password
+   DB_USERNAME=root
+   DB_PASSWORD=
    ```
 
 6. Jalankan migrasi database
