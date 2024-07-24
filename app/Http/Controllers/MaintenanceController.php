@@ -14,11 +14,10 @@ class MaintenanceController extends Controller
      */
     public function index()
     {
-        return view('maintenance.index', [
-            'maintenances' => Maintenance::join('tbl_mt_group', 'tbl_maintenance.mt_group', '=', 'tbl_mt_group.id')
-                ->select('tbl_maintenance.nomor_registrasi', 'tbl_mt_group.*')
-                ->get(),
-        ]);
+        $maintenances = Maintenance::join('tbl_mt_group', 'tbl_maintenance.mt_group', '=', 'tbl_mt_group.id')
+            ->select('tbl_maintenance.*', 'tbl_mt_group.nama_group')
+            ->get();
+        return view('maintenance.index', compact('maintenances'));
     }
 
     /**
@@ -45,20 +44,6 @@ class MaintenanceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // TODO: Implement update method
-        $request->validate([
-            'belanja_bahan_bakar_minyak' => 'required',
-            'belanja_pelumas_mesin' => 'required',
-            'belanja_suku_cadang' => 'required',
-
-        ], [
-            'required' => 'Kolom :attribut wajib diisi.',
-            //'integer' => 'Kolom :attribut harus berupa angka.',
-
-        ]);
-        
-
-
         $Maintenance = Maintenance::find($id);
         $Maintenance->update($request->all());
 
