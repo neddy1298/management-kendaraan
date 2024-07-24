@@ -11,6 +11,16 @@ class Maintenance extends Model
 
     protected $table = 'tbl_maintenance';
 
+    protected $primaryKey = 'id';
+
+    protected $fillable = [
+        'nomor_registrasi',
+        'mt_group',
+        '_token',
+        'created_at',
+        'updated_at',
+    ];
+
     public function kendaraan()
     {
         return $this->belongsTo(Kendaraan::class, 'nomor_registrasi', 'nomor_registrasi');

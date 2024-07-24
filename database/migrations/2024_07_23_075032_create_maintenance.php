@@ -20,6 +20,7 @@ return new class extends Migration
                 ->constrained('tbl_mt_group')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+            $table->string('_token')->nullable();
             $table->timestamps();
         });
     }

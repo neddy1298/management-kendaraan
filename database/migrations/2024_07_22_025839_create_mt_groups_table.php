@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('budget_bahan_bakar_minyak')->nullable();
             $table->integer('budget_pelumas_mesin')->nullable();
             $table->integer('budget_suku_cadang')->nullable();
+            $table->string('_token')->nullable();
             $table->timestamps();
         });
     }
