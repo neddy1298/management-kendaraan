@@ -11,9 +11,9 @@ class Kendaraan extends Model
 
     protected $table = 'tbl_kendaraan';
 
-    protected $primaryKey = 'nomor_registrasi';
+    protected $primaryKey = 'id';
 
-    protected $fiillable = [
+    protected $fillable = [
         'nomor_registrasi',
         'merk_kendaraan',
         'jenis_kendaraan',

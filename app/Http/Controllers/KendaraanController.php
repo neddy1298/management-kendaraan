@@ -24,29 +24,31 @@ class KendaraanController extends Controller
 
     public function store(Request $request){
         // TODO: Store data kendaraan
-        // $request->validate([
-        //     'nik' => 'required',
-        //     'nkk' => 'required',
-        //     'jenis_permohonan' => 'required',
-        //     'keterangan' => 'required',
-        // ],[
-        //     'required' => 'Kolom :attribute wajib diisi.',
-        //     'numeric' => 'Kolom :attribute harus berupa angka.',
-        // ]);
+        $request->validate([
+            'nomor_registrasi' => 'required|string|max:255',
+            'merk_kendaraan' => 'required|string|max:255',
+            'jenis_kendaraan' => 'required|string|max:255',
+            'cc_kendaraan' => 'required|integer',
+            'bbm_kendaraan' => 'required|string|max:255',
+            'roda_kendaraan' => 'required|integer',
+            'berlaku_sampai' => 'required|date_format:d/m/Y',
+
+        ],[
+            'required' => 'Kolom :attribut wajib diisi.',
+            'integer' => 'Kolom :attribut harus berupa angka.',
+            'date_format' => 'Kolom :attribut tidak sesuai format dd/mm/yyyy.',
+        ]);
 
         // $data = $request->all();
+        $data = $request->except('_token');
 
-        // // Ubah format tanggal lahir
-        // $tanggal_lahir = Carbon::createFromFormat('d/m/Y', $request->input('tanggal_lahir'))->format('Y-m-d');
-        // $data['tanggal_lahir'] = $tanggal_lahir;
+        $Kendaraan = Kendaraan::create($data);
 
-        // $permohonanKtp = PermohonanKtp::create($data);
-
-        // if ($permohonanKtp->wasRecentlyCreated) {
-        //     return redirect()->route('permohonan.index')->with('success', 'Permohonan KTP berhasil disimpan.');
-        // } else {
-        //     return redirect()->route('permohonan.index')->with('error', 'Terjadi kesalahan saat menyimpan permohonan KTP.');
-        // }
+        if ($Kendaraan->wasRecentlyCreated) {
+            return redirect()->route('kendaraan.index')->with('success', 'Data berhasil disimpan.');
+        } else {
+            return redirect()->route('kendaraan.index')->with('error', 'Terjadi kesalahan saat menyimpan data.');
+        }
         return redirect()->back();
     }
 
@@ -63,11 +65,35 @@ class KendaraanController extends Controller
 
     public function update(Request $request, $id){
         // TODO: Update data kendaraan
+        $request->validate([
+            'nomor_registrasi' => 'required|string|max:255',
+            'merk_kendaraan' => 'required|string|max:255',
+            'jenis_kendaraan' => 'required|string|max:255',
+            'cc_kendaraan' => 'required|integer',
+            'bbm_kendaraan' => 'required|string|max:255',
+            'roda_kendaraan' => 'required|integer',
+            'berlaku_sampai' => 'required|date_format:d/m/Y',
+        ], [
+            'required' => 'Kolom :attribute wajib diisi.',
+            'integer' => 'Kolom :attribute harus berupa angka.',
+            'date_format' => 'Kolom :attribute tidak sesuai format dd/mm/yyyy.',
+        ]);
+
+        $kendaraan = Kendaraan::find($id);
+        $kendaraan->update($request->all());
+
+        return redirect()->route('kendaraan.index')->with('success', 'Data berhasil diperbarui.');
+
         return redirect()->back();
     }
 
     public function destroy($id){
         // TODO: Delete data kendaraan
+        $kendaraan = Kendaraan::findOrFail($id);
+        $kendaraan->delete();
+
+        return redirect()->route('kendaraan.index')->with('success', 'Data berhasil dihapus.');
+
         return redirect()->back();
     }
 }
