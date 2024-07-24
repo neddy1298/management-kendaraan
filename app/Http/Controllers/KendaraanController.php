@@ -39,9 +39,10 @@ class KendaraanController extends Controller
             'date_format' => 'Kolom :attribut tidak sesuai format dd/mm/yyyy.',
         ]);
 
-        // $data = $request->all();
-        $data = $request->except('_token');
+        $berlaku_sampai = \DateTime::createFromFormat('d/m/Y', $request->berlaku_sampai)->format('d-m-Y');
+        $data = $request->all();
 
+        $data['berlaku_sampai'] = $berlaku_sampai;
         $Kendaraan = Kendaraan::create($data);
 
         if ($Kendaraan->wasRecentlyCreated) {
@@ -79,12 +80,13 @@ class KendaraanController extends Controller
             'date_format' => 'Kolom :attribute tidak sesuai format dd/mm/yyyy.',
         ]);
 
+        // dump($request->all());
         $kendaraan = Kendaraan::find($id);
         $kendaraan->update($request->all());
 
         return redirect()->route('kendaraan.index')->with('success', 'Data berhasil diperbarui.');
 
-        return redirect()->back();
+        // return redirect()->back();
     }
 
     public function destroy($id){
