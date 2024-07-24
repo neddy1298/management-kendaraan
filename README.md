@@ -47,14 +47,9 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek:
    DB_PASSWORD=
    ```
 
-6. Jalankan migrasi database
+6. Jalankan migrasi database dengan dummy data
    ```
-   php artisan migrate
-   ```
-
-7. Jalankan seeder
-   ```
-   php artisan db:seed
+   php artisan migrate:fresh --seed
    ```
 
 8. Jalankan server lokal
