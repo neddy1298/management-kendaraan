@@ -46,5 +46,22 @@ class MaintenanceController extends Controller
     public function update(Request $request, $id)
     {
         // TODO: Implement update method
+        $request->validate([
+            'belanja_bahan_bakar_minyak' => 'required',
+            'belanja_pelumas_mesin' => 'required',
+            'belanja_suku_cadang' => 'required',
+
+        ], [
+            'required' => 'Kolom :attribut wajib diisi.',
+            //'integer' => 'Kolom :attribut harus berupa angka.',
+
+        ]);
+
+
+        $Maintenance = Maintenance::find($id);
+        $Maintenance->update($request->all());
+
+        return redirect()->route('maintenance.index')->with('success', 'Data berhasil diperbarui.');
+        
     }
 }
