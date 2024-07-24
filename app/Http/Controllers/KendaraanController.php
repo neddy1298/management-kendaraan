@@ -79,7 +79,7 @@ class KendaraanController extends Controller
             'date_format' => 'Kolom :attribute tidak sesuai format dd/mm/yyyy.',
         ]);
 
-        $kendaraan = Kendaraan::find($id);
+        $kendaraan = Kendaraan::findOrFail($id);
         $kendaraan->update($request->all());
 
         return redirect()->route('kendaraan.index')->with('success', 'Data berhasil diperbarui.');
