@@ -55,7 +55,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="highlightRowColumn" class="table custom-table text-center">
+                        <table id="highlightRowColumn" class="table custom-table text-center v-middle">
                             <thead>
                                 <tr>
                                     <th>No</th>

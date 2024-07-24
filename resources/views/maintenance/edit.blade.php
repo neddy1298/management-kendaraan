@@ -48,7 +48,7 @@
                             </div>   
                             <div class="col-xl-12 col-sm-12 col-12">
                                 <div class="mb-3">
-                                    <label for="belanja_bahan_bakar_minyak" class="form-label">Jumlah Roda</label>
+                                    <label for="belanja_bahan_bakar_minyak" class="form-label">Belanja BBM</label>
                                     <input type="number"
                                         class="form-control {{ $errors->has('belanja_bahan_bakar_minyak') ? 'is-invalid' : '' }}" id="belanja_bahan_bakar_minyak"
                                         value="{{ $maintenance->belanja_bahan_bakar_minyak }}" name="belanja_bahan_bakar_minyak">
@@ -61,7 +61,7 @@
                             </div>   
                             <div class="col-xl-12 col-sm-12 col-12">
                                 <div class="mb-3">
-                                    <label for="belanja_bahan_bakar_minyak" class="form-label">Jumlah Roda</label>
+                                    <label for="belanja_bahan_bakar_minyak" class="form-label">Belanja Pelumas</label>
                                     <input type="number"
                                         class="form-control {{ $errors->has('belanja_bahan_bakar_minyak') ? 'is-invalid' : '' }}" id="belanja_bahan_bakar_minyak"
                                         value="{{ $maintenance->belanja_bahan_bakar_minyak }}" name="belanja_bahan_bakar_minyak">
@@ -74,7 +74,7 @@
                             </div>   
                             <div class="col-xl-12 col-sm-12 col-12">
                                 <div class="mb-3">
-                                    <label for="belanja_bahan_bakar_minyak" class="form-label">Jumlah Roda</label>
+                                    <label for="belanja_bahan_bakar_minyak" class="form-label">Belanja Suku Cadang</label>
                                     <input type="number"
                                         class="form-control {{ $errors->has('belanja_bahan_bakar_minyak') ? 'is-invalid' : '' }}" id="belanja_bahan_bakar_minyak"
                                         value="{{ $maintenance->belanja_bahan_bakar_minyak }}" name="belanja_bahan_bakar_minyak">
