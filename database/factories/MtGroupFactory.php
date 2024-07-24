@@ -22,7 +22,7 @@ class MtGroupFactory extends Factory
     {
 
         return [
-            'nama_group' => $this->faker->word(),
+            'nama_group' => $this->faker->unique()->word(),
             'bahan_bakar_minyak' => fake()->randomElement(['2', '3', '5', 'lainnya']),
             'pelumas_mesin' => fake()->randomElement(['1', '2', 'lainnya']),
             'suku_cadang' => $this->faker->optional()->word(),
