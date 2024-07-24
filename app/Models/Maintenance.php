@@ -16,6 +16,9 @@ class Maintenance extends Model
     protected $fillable = [
         'nomor_registrasi',
         'mt_group',
+        'belanja_bahan_bakar_minyak',
+        'belanja_pelumas_mesin',
+        'belanja_suku_cadang',
         '_token',
         'created_at',
         'updated_at',

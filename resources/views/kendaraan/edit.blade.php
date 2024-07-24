@@ -131,10 +131,27 @@
                                         <span class="input-group-text">
                                             <i class="bi bi-calendar4"></i>
                                         </span>
-                                        <input type="text" class="form-control datepicker" name="berlaku_sampai" value="{{ $kendaraan->berlaku_sampai }}">
+                                        <input type="text" class="form-control datepicker" name="berlaku_sampai" value="{{ date('d/m/Y', strtotime($kendaraan->berlaku_sampai)) }}">
                                     </div>
                                 </div>
 							</div>
+                            <div class="col-xl-12 col-sm-12 col-12">
+                                <div class="mb-3">
+                                    <label class="form-label d-flex">Unit Kerja</label>
+                                    <select class="select-single js-states form-control" title="Masukkan Unit Kerja</i>"
+                                        data-live-search="true" name="mt_group">
+                                        <option hidden value="{{ $maintenance->id }}">{{ $maintenance->nama_group }}</option>
+                                        @foreach ($mt_groups as $mt_group)
+                                            <option value="{{ $mt_group->id }}">{{ $mt_group->nama_group }}</option>
+                                        @endforeach
+                                    </select>
+                                    @if ($errors->has('mt_group'))
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('mt_group') }}
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                         <!-- Row end -->
 

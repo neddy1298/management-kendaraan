@@ -38,12 +38,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('maintenance')->group(function () {
         Route::get('', [MaintenanceController::class, 'index'])->name('maintenance.index');
-        Route::get('/create', [MaintenanceController::class, 'create'])->name('maintenance.create');
-        Route::post('/store', [MaintenanceController::class, 'store'])->name('maintenance.store');
         Route::get('/edit/{id}', [MaintenanceController::class, 'edit'])->name('maintenance.edit');
         Route::post('/update/{id}', [MaintenanceController::class, 'update'])->name('maintenance.update');
         Route::delete('/delete/{id}', [MaintenanceController::class, 'destroy'])->name('maintenance.delete');
-        // Route::get('/edit/{id}', [MaintenanceController::class, 'edit'])->name('maintenance.printAll');
     });
 
 });

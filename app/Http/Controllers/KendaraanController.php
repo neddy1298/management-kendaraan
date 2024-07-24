@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kendaraan;
+use App\Models\Maintenance;
+use App\Models\MtGroup;
 use Illuminate\Http\Request;
 
 class KendaraanController extends Controller
@@ -18,7 +20,8 @@ class KendaraanController extends Controller
 
     public function create()
     {
-        return view('kendaraan.create');
+        $mt_groups = MtGroup::all();
+        return view('kendaraan.create', compact('mt_groups'));
     }
 
     public function store(Request $request){
@@ -30,6 +33,7 @@ class KendaraanController extends Controller
             'bbm_kendaraan' => 'required|string|max:255',
             'roda_kendaraan' => 'required|integer',
             'berlaku_sampai' => 'required|date_format:d/m/Y',
+            'mt_group' => 'required|integer',
 
         ],[
             'required' => 'Kolom :attribut wajib diisi.',
@@ -38,12 +42,18 @@ class KendaraanController extends Controller
         ]);
 
         $berlaku_sampai = \DateTime::createFromFormat('d/m/Y', $request->berlaku_sampai)->format('d-m-Y');
-        $data = $request->all();
+        $data_kendaraan = $request->except('mt_group');
 
-        $data['berlaku_sampai'] = $berlaku_sampai;
-        $Kendaraan = Kendaraan::create($data);
+        
+        $data_kendaraan['berlaku_sampai'] = $berlaku_sampai;
+        $kendaraan = Kendaraan::create($data_kendaraan);
+        
+        $data_maintenance['nomor_registrasi'] = $request->nomor_registrasi;
+        $data_maintenance['mt_group'] = $request->mt_group;
+        $data_maintenance['_token'] = $request->_token;
+        $data_maintenance = Maintenance::create($data_maintenance);
 
-        if ($Kendaraan->wasRecentlyCreated) {
+        if ($kendaraan->wasRecentlyCreated) {
             return redirect()->route('kendaraan.index')->with('success', 'Data berhasil disimpan.');
         } else {
             return redirect()->route('kendaraan.index')->with('error', 'Terjadi kesalahan saat menyimpan data.');
@@ -56,10 +66,19 @@ class KendaraanController extends Controller
     }
 
     public function edit($id){
-
+    
         $kendaraan = Kendaraan::find($id);
 
-        return view('kendaraan.edit', compact('kendaraan'));
+        $maintenance = Maintenance::join('tbl_mt_group', 'tbl_maintenance.mt_group', '=', 'tbl_mt_group.id')
+        ->where('nomor_registrasi', $kendaraan->nomor_registrasi)
+        ->select('tbl_maintenance.nomor_registrasi','tbl_mt_group.id', 'tbl_mt_group.nama_group')
+        ->first();
+    
+        $mt_groups = MtGroup::all();
+
+        // dump($maintenance);
+    
+        return view('kendaraan.edit', compact('kendaraan', 'mt_groups', 'maintenance'));
     }
 
     public function update(Request $request, $id){
