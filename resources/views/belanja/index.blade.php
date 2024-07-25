@@ -21,8 +21,7 @@
                     <div class="custom-btn-group">
                         <a href="{{ route('belanja.create') }}" class="btn btn-warning"><i class="bi bi-pencil-square"></i>
                             Tambah Baru</a>
-                        <a href="" class="btn btn-primary" target="_blank"><i
-                                class="bi bi-printer"></i>
+                        <a href="" class="btn btn-primary" target="_blank"><i class="bi bi-printer"></i>
                             Cetak</a>
                         <a href="{{ route('send-wa', $message) }}" class="btn btn-success" target="_blank"><i
                                 class="bi bi-whatsapp"></i>
@@ -76,11 +75,23 @@
                                         </td>
                                         <td>{{ date('d F Y', strtotime($belanja->tanggal_belanja)) }}</td>
                                         <td>{{ $belanja->keterangan }}</td>
-                                        <td><a href="{{ route('belanja.edit', $belanja->id) }}"
+                                        <td>
+                                            {{-- <a href="{{ route('belanja.edit', $belanja->id) }}"
                                                 class="btn btn-primary btn-icon" data-bs-toggle="tooltip"
                                                 data-bs-placement="top" title="Details">
                                                 <i class="bi bi-search"></i>
-                                            </a>
+                                            </a> --}}
+                                            <button type="button" class="btn btn-primary btn-icon show-details"
+                                                data-bs-toggle="modal" data-bs-target="#detailModal"
+                                                data-nomor-registrasi="{{ $belanja->nomor_registrasi }}"
+                                                data-bahan-bakar-minyak="{{ $belanja->belanja_bahan_bakar_minyak }}"
+                                                data-pelumas-mesin="{{ $belanja->belanja_pelumas_mesin }}"
+                                                data-suku-cadang="{{ $belanja->belanja_suku_cadangtanggal_belanja }}"
+                                                data-total-belanja="{{ $belanja->belanja_bahan_bakar_minyak + $belanja->belanja_pelumas_mesin + $belanja->belanja_suku_cadangtanggal_belanja }}"
+                                                data-tanggal-belanja="{{ date('d F Y', strtotime($belanja->tanggal_belanja)) }}"
+                                                data-keterangan="{{ $belanja->keterangan }}">
+                                                <i class="bi bi-search"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -91,11 +102,63 @@
             </div>
             <!-- Card end -->
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="detailModalLabel">Detail Belanja</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Nomor Registrasi:</strong> <span id="modalNomorRegistrasi"></span></p>
+                        <p><strong>Tanggal Belanja:</strong> <span id="modalTanggalBelanja"></span></p>
+                        <p><strong>Belanja BBM:</strong> Rp. <span id="modalBahanBakarMinyak"></span>.00</p>
+                        <p><strong>Belanja Pelumas:</strong> Rp. <span id="modalPelumasMesin"></span>.00</p>
+                        <p><strong>Belanja Suku Cadang:</strong> Rp. <span id="modalSukuCadang"></span>.00</p>
+                        <p><strong>Total Belanja:</strong> Rp. <span id="modalTotalBelanja"></span>.00</p>
+                        <p><strong>Keterangan:</strong> <span id="modalKeterangan"></span></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- Row end -->
 @endsection
 
 @section('script')
+    {{-- Custome Scripts --}}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const detailButtons = document.querySelectorAll('.show-details');
+            const modal = document.getElementById('detailModal');
+        
+            detailButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const nomorRegistrasi = this.getAttribute('data-nomor-registrasi');
+                    const bahanBakarMinyak = parseInt(this.getAttribute('data-bahan-bakar-minyak') || 0);
+                    const pelumasMesin = parseInt(this.getAttribute('data-pelumas-mesin') || 0);
+                    const sukuCadang = parseInt(this.getAttribute('data-suku-cadang') || 0);
+                    const totalBelanja = parseInt(this.getAttribute('data-total-belanja') || 0);
+                    const tanggalBelanja = this.getAttribute('data-tanggal-belanja');
+                    const keterangan = this.getAttribute('data-keterangan');
+        
+                    document.getElementById('modalNomorRegistrasi').textContent = nomorRegistrasi;
+                    document.getElementById('modalBahanBakarMinyak').textContent = bahanBakarMinyak.toLocaleString('id-ID');
+                    document.getElementById('modalPelumasMesin').textContent = pelumasMesin.toLocaleString('id-ID');
+                    document.getElementById('modalSukuCadang').textContent = sukuCadang.toLocaleString('id-ID');
+                    document.getElementById('modalTotalBelanja').textContent = totalBelanja.toLocaleString('id-ID');
+                    document.getElementById('modalTanggalBelanja').textContent = tanggalBelanja;
+                    document.getElementById('modalKeterangan').textContent = keterangan;
+                });
+            });
+        });
+        </script>
+
     <!-- Data Tables -->
     <script src="{{ asset('vendor/datatables/dataTables.min.js') }}"></script>
     <script src="{{ asset('vendor/datatables/dataTables.bootstrap.min.js') }}"></script>
