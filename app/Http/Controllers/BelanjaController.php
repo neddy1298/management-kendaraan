@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Belanja;
 use App\Models\Kendaraan;
+use App\Models\Maintenance;
 use Illuminate\Http\Request;
 
 class BelanjaController extends Controller
@@ -50,6 +51,13 @@ class BelanjaController extends Controller
         $belanja = Belanja::create($validatedData);
         
         if ($belanja->wasRecentlyCreated) {
+            $maintenance = Maintenance::where('nomor_registrasi', $validatedData['nomor_registrasi'])->first();
+            $maintenance->update([
+                'belanja_bahan_bakar_minyak' => $maintenance->belanja_bahan_bakar_minyak + $belanja->belanja_bahan_bakar_minyak,
+                'belanja_pelumas_mesin' => $maintenance->belanja_pelumas_mesin + $belanja->belanja_pelumas_mesin,
+                'belanja_suku_cadang' => $maintenance->belanja_suku_cadang + $belanja->belanja_suku_cadang,
+                'keterangan' => $maintenance->keterangan . ' ' . $belanja->keterangan,
+            ]);
             return redirect()->route('belanja.index')->with('success', 'Data berhasil disimpan.');
         } else {
             return redirect()->route('belanja.index')->with('error', 'Terjadi kesalahan saat menyimpan data.');

@@ -42,6 +42,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/edit/{id}', [MaintenanceController::class, 'edit'])->name('maintenance.edit');
         Route::post('/update/{id}', [MaintenanceController::class, 'update'])->name('maintenance.update');
         Route::delete('/delete/{id}', [MaintenanceController::class, 'destroy'])->name('maintenance.delete');
+        Route::get('/get-belanja-details/{nomor_registrasi}', [MaintenanceController::class, 'getBelanjaDetails'])->name('get.belanja.details');
     });
 
     Route::prefix('belanja')->group(function () {
@@ -51,6 +52,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/edit/{id}', [BelanjaController::class, 'edit'])->name('belanja.edit');
         Route::post('/update/{id}', [BelanjaController::class, 'update'])->name('belanja.update');
         Route::delete('/delete/{id}', [BelanjaController::class, 'destroy'])->name('belanja.delete');
+
     });
 
 });

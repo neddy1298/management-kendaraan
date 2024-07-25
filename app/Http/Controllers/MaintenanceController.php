@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Belanja;
 use App\Models\Kendaraan;
 use App\Models\Maintenance;
 use App\Models\MtGroup;
@@ -48,6 +49,11 @@ class MaintenanceController extends Controller
         $Maintenance->update($request->all());
 
         return redirect()->route('maintenance.index')->with('success', 'Data berhasil diperbarui.');
-        
+    }
+
+    public function getBelanjaDetails($nomor_registrasi)
+    {
+        $belanjas = Belanja::where('nomor_registrasi', $nomor_registrasi)->get();
+        return response()->json($belanjas);
     }
 }
