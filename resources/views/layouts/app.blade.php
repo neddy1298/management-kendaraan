@@ -91,6 +91,7 @@
                         ];
                 
                         $pages2 = [
+                            'Master' => 'Master Data',
                             'Tambah' => 'Tambah Baru',
                             'Edit' => 'Ubah Data'
                         ];
