@@ -19,6 +19,12 @@
                         <span class="menu-text">Home</span>
                     </a>
                 </li>
+                <li class="{{ $page == 'Belanja' ? 'active' : '' }}">
+                    <a href="{{ route('belanja.index') }}" class="{{ $page == 'Belanja' ? 'current-page' : '' }}">
+                        <i class="bi bi-cart2"></i>
+                        <span class="menu-text">Data Belanja</span>
+                    </a>
+                </li>
                 <li class="{{ $page == 'Kendaraan' ? 'active' : '' }}">
                     <a href="{{ route('kendaraan.index') }}" class="{{ $page == 'Kendaraan' ? 'current-page' : '' }}">
                         <i class="bi bi-truck"></i>

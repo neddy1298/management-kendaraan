@@ -16,6 +16,7 @@ class Belanja extends Model
         'belanja_bahan_bakar_minyak',
         'belanja_pelumas_mesin',
         'belanja_suku_cadang',
+        'tanggal_belanja',
         'keterangan'
     ];
 

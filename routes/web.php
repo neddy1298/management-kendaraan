@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BelanjaController;
 use App\Http\Controllers\DesaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KepalaKeluargaController;
@@ -41,6 +42,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/edit/{id}', [MaintenanceController::class, 'edit'])->name('maintenance.edit');
         Route::post('/update/{id}', [MaintenanceController::class, 'update'])->name('maintenance.update');
         Route::delete('/delete/{id}', [MaintenanceController::class, 'destroy'])->name('maintenance.delete');
+    });
+
+    Route::prefix('belanja')->group(function () {
+        Route::get('', [BelanjaController::class, 'index'])->name('belanja.index');
+        Route::get('/create', [BelanjaController::class, 'create'])->name('belanja.create');
+        Route::post('/store', [BelanjaController::class, 'store'])->name('belanja.store');
+        Route::get('/edit/{id}', [BelanjaController::class, 'edit'])->name('belanja.edit');
+        Route::post('/update/{id}', [BelanjaController::class, 'update'])->name('belanja.update');
+        Route::delete('/delete/{id}', [BelanjaController::class, 'destroy'])->name('belanja.delete');
     });
 
 });

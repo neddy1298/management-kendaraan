@@ -19,14 +19,15 @@ return new class extends Migration
                 ->on('tbl_kendaraan')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->integer('belanja_bahan_bakar_minyak');
-            $table->integer('belanja_pelumas_mesin');
-            $table->integer('belanja_suku_cadang');
+            $table->integer('belanja_bahan_bakar_minyak')->nullable();
+            $table->integer('belanja_pelumas_mesin')->nullable();
+            $table->integer('belanja_suku_cadang')->nullable();
+            $table->string('tanggal_belanja');
             $table->string('keterangan'); 
             $table->timestamps();
         });
 
-        
+
     }
 
     /**
