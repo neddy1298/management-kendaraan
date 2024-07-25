@@ -3,7 +3,7 @@
     <!-- Sidebar brand starts -->
     <div class="sidebar-brand">
         <a href="index.html" class="logo">
-            <img src="{{ asset('images/kotabogor.png') }}" alt="Kota Bogor"/>&nbsp;&nbsp;
+            <img src="{{ asset('images/kotabogor.png') }}" alt="Kota Bogor" />&nbsp;&nbsp;
             <img src="{{ asset('images/dishub.png') }}" alt="Dinas Perhubungan" />
         </a>
     </div>
@@ -20,17 +20,9 @@
                     </a>
                 </li>
                 <li class="{{ $page == 'Kendaraan' ? 'active' : '' }}">
-                    <a href="{{ route('kendaraan.index') }}"
-                        class="{{ $page == 'Kendaraan' ? 'current-page' : '' }}">
+                    <a href="{{ route('kendaraan.index') }}" class="{{ $page == 'Kendaraan' ? 'current-page' : '' }}">
                         <i class="bi bi-truck"></i>
                         <span class="menu-text">Data Kendaraan</span>
-                    </a>
-                </li>
-                <li class="{{ $page == 'Maintenance' ? 'active' : '' }}">
-                    <a href="{{ route('maintenance.index') }}"
-                        class="{{ $page == 'Maintenance' ? 'current-page' : '' }}">
-                        <i class="bi bi-gear"></i>
-                        <span class="menu-text">Data Maintenance</span>
                     </a>
                 </li>
                 <li class="sidebar-dropdown {{ $page == 'Maintenance' ? 'active' : '' }}">
@@ -40,6 +32,12 @@
                     </a>
                     <div class="sidebar-submenu">
                         <ul>
+                            <li class="{{ $page == 'Master' ? 'active' : '' }}">
+                                <a href="{{ route('maintenance.index') }}"
+                                    class="{{ $page == 'Maintenance' ? 'current-page' : '' }}">
+                                    <span class="menu-text">Master Data</span>
+                                </a>
+                            </li>
                             <li>
                                 <a href="" class="{{ $page2 == 'Pajak' ? 'current-page' : '' }}">Pajak</a>
                             </li>

@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'Maintenance', 'page2' => '', 'page3' => ''])
+@extends('layouts.app', ['page' => 'Maintenance', 'page2' => 'Master', 'page3' => ''])
 
 @section('css')
     <!-- Data Tables -->
