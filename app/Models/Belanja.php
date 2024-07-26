@@ -24,4 +24,9 @@ class Belanja extends Model
     {
         return $this->belongsTo(Kendaraan::class, 'nomor_registrasi', 'nomor_registrasi');
     }
+
+    public function maintenance()
+    {
+        return $this->belongsTo(Maintenance::class, 'nomor_registrasi', 'nomor_registrasi');
+    }
 }

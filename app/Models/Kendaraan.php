@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,14 +20,15 @@ class Kendaraan extends Model
         'bbm_kendaraan',
         'roda_kendaraan',
         'berlaku_sampai',
-        'created_at',
-        'updated_at',
-        '_token',
     ];
 
-    // Correct relationship method name
     public function maintenance()
     {
         return $this->hasOne(Maintenance::class, 'nomor_registrasi', 'nomor_registrasi');
+    }
+
+    public function belanja()
+    {
+        return $this->hasMany(Belanja::class, 'nomor_registrasi', 'nomor_registrasi');
     }
 }

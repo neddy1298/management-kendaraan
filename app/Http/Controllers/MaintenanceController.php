@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Belanja;
-use App\Models\Kendaraan;
 use App\Models\Maintenance;
-use App\Models\MtGroup;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class MaintenanceController extends Controller
@@ -15,45 +14,31 @@ class MaintenanceController extends Controller
      */
     public function index()
     {
-        $maintenances = Maintenance::join('tbl_mt_group', 'tbl_maintenance.mt_group', '=', 'tbl_mt_group.id')
-            ->select('tbl_maintenance.*', 'tbl_mt_group.nama_group')
-            ->get();
-        return view('maintenance.index', compact('maintenances'));
-    }
+        $maintenances = Maintenance::with(['mtGroup', 'kendaraan'])
+            ->select('tbl_maintenance.*', 'tbl_kendaraan.berlaku_sampai', 'tbl_mt_group.nama_group')
+            ->join('tbl_mt_group', 'tbl_maintenance.mt_group', '=', 'tbl_mt_group.id')
+            ->join('tbl_kendaraan', 'tbl_maintenance.nomor_registrasi', '=', 'tbl_kendaraan.nomor_registrasi')
+            ->get()
+            ->map(function ($maintenance) {
+                $maintenance->berlaku_sampai = Carbon::createFromFormat('d/m/Y', $maintenance->berlaku_sampai)->format('Y-m-d');
+                return $maintenance;
+            });
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Maintenance $maintenance)
-    {
-        return view('maintenance.show', [
-            'maintenance' => $maintenance,
-        ]);
-    }
+        $expireDate = $maintenances->filter(function ($maintenance) {
+            return Carbon::parse($maintenance->berlaku_sampai)->lt(Carbon::today());
+        });
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        $maintenance = Maintenance::find($id);
-        return view('maintenance.edit', compact('maintenance'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id)
-    {
-        $Maintenance = Maintenance::find($id);
-        $Maintenance->update($request->all());
-
-        return redirect()->route('maintenance.index')->with('success', 'Data berhasil diperbarui.');
+        return view('maintenance.index', compact('maintenances', 'expireDate'));
     }
 
     public function getBelanjaDetails($nomor_registrasi)
     {
-        $belanjas = Belanja::where('nomor_registrasi', $nomor_registrasi)->get();
+        $belanjas = Belanja::where('nomor_registrasi', $nomor_registrasi)->get()->map(function ($belanja) {
+            if (!is_null($belanja->tanggal_belanja)) {
+                $belanja->tanggal_belanja = Carbon::parse($belanja->tanggal_belanja)->format('d/m/Y');
+            }
+            return $belanja;
+        });
         return response()->json($belanjas);
     }
 }

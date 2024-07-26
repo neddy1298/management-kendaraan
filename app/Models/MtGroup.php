@@ -30,4 +30,9 @@ class MtGroup extends Model
     {
         return $this->hasOne(Maintenance::class, 'mt_group', 'id');
     }
+
+    public function kendaraan()
+    {
+        return $this->hasMany(Kendaraan::class, 'mt_group', 'id');
+    }
 }
