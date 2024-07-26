@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Belanja;
 use App\Models\Kendaraan;
 use App\Models\Maintenance;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class BelanjaController extends Controller
@@ -47,7 +48,7 @@ class BelanjaController extends Controller
             'required_without_all' => 'Minimal salah satu kolom :attribute harus diisi.',
         ]);
         
-        $validatedData['tanggal_belanja'] = \DateTime::createFromFormat('d/m/Y', $validatedData['tanggal_belanja'])->format('d-m-Y');
+        $validatedData['tanggal_belanja'] = Carbon::createFromFormat('d/m/Y', $validatedData['tanggal_belanja']);
         $belanja = Belanja::create($validatedData);
         
         if ($belanja->wasRecentlyCreated) {
@@ -91,8 +92,21 @@ class BelanjaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Belanja $belanja)
+    public function destroy($id)
     {
-        //
+        $belanja = Belanja::find($id);
+        
+        if ($belanja->delete()) {
+            $maintenance = Maintenance::where('nomor_registrasi', $belanja->nomor_registrasi)->first();
+            $maintenance->update([
+                'belanja_bahan_bakar_minyak' => $maintenance->belanja_bahan_bakar_minyak - $belanja->belanja_bahan_bakar_minyak,
+                'belanja_pelumas_mesin' => $maintenance->belanja_pelumas_mesin - $belanja->belanja_pelumas_mesin,
+                'belanja_suku_cadang' => $maintenance->belanja_suku_cadang - $belanja->belanja_suku_cadang,
+                'keterangan' => str_replace($belanja->keterangan, '', $maintenance->keterangan),
+            ]);
+            return redirect()->route('belanja.index')->with('success', 'Data berhasil dihapus.');
+        } else {
+            return redirect()->route('belanja.index')->with('error', 'Terjadi kesalahan saat menghapus data.');
+        }
     }
 }

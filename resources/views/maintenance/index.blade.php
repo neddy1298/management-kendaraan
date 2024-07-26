@@ -52,10 +52,11 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Nomor Registrasi</th>
+                                        <th>Unit Kerja</th>
                                         <th>Belanja BBM</th>
                                         <th>Belanja Pelumas</th>
                                         <th>Belanja Suku Cadang</th>
-                                        <th>Unit Kerja</th>
+                                        <th>Kadaluarsa Pajak</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -65,10 +66,16 @@
                                         <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $maintenance->nomor_registrasi }}</td>
+                                            <td>{{ $maintenance->nama_group }}</td>
                                             <td>Rp. {{ $maintenance->belanja_bahan_bakar_minyak ?? 0 }}</td>
                                             <td>Rp. {{ $maintenance->belanja_pelumas_mesin ?? 0 }}</td>
                                             <td>Rp. {{ $maintenance->belanja_suku_cadang ?? 0 }}</td>
-                                            <td>{{ $maintenance->nama_group }}</td>
+                                            <td>
+                                                <span class="badge {{ strtotime($maintenance->berlaku_sampai) < time() ? 'shade-red' : 'shade-green' }} min-90">
+                                                    {{ $maintenance->berlaku_sampai }}
+                                                </span>
+                                            </td>
+                                            </td>
                                             <td>
                                                 <button type="button" class="btn btn-primary btn-icon show-details"
                                                     data-bs-toggle="modal" data-bs-target="#scrollable"
@@ -79,6 +86,7 @@
                                                     data-total-belanja="{{ $maintenance->belanja_bahan_bakar_minyak + $maintenance->belanja_pelumas_mesin + $maintenance->belanja_suku_cadang }}"
                                                     data-tanggal-belanja="{{ date('F', strtotime($maintenance->tanggal_belanja)) }}"
                                                     data-keterangan="{{ $maintenance->keterangan }}"
+                                                    data-kadaluarsa-pajak="{{ date('d F Y', strtotime($maintenance->berlaku_sampai)) }}"
                                                     data-unit-kerja="{{ $maintenance->nama_group }}">
                                                     <i class="bi bi-search"></i>
                                                 </button>
@@ -110,17 +118,16 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <p><strong>Nomor Registrasi:</strong> <span id="modalNomorRegistrasi"></span></p>
+                                <p><strong>Kadaluarsa Pajak:</strong> <span id="modalKadaluarsaPajak"></span></p>
                                 <p><strong>Belanja Bulan:</strong> <span id="modalTanggalBelanja"></span></p>
                                 <p><strong>Unit Kerja:</strong> <span id="modalUnitKerja"></span></p>
+                                <p><strong>Keterangan:</strong> <span id="modalKeterangan"></span></p>
                             </div>
                             <div class="col-md-6">
                                 <p><strong>Belanja BBM:</strong> Rp. <span id="modalBahanBakarMinyak"></span></p>
                                 <p><strong>Belanja Pelumas:</strong> Rp. <span id="modalPelumasMesin"></span></p>
                                 <p><strong>Belanja Suku Cadang:</strong> Rp. <span id="modalSukuCadang"></span></p>
                                 <p><strong>Total Belanja:</strong> Rp. <span id="modalTotalBelanja"></span></p>
-                            </div>
-                            <div class="col-md-12"> 
-                                <p><strong>Keterangan:</strong> <span id="modalKeterangan"></span></p>
                             </div>
                             <div class="col-md-12 mt-5">
                                 <table id="highlightRowColumn" class="table custom-table text-center">
@@ -167,6 +174,7 @@
                     const sukuCadang = parseInt(this.getAttribute('data-suku-cadang') || 0);
                     const totalBelanja = parseInt(this.getAttribute('data-total-belanja') || 0);
                     const tanggalBelanja = this.getAttribute('data-tanggal-belanja');
+                    const kadaluarsaPajak = this.getAttribute('data-kadaluarsa-pajak');
                     const keterangan = this.getAttribute('data-keterangan');
                     const unitKerja = this.getAttribute('data-unit-kerja');
 
@@ -180,6 +188,7 @@
                     document.getElementById('modalTotalBelanja').textContent = totalBelanja
                         .toLocaleString('id-ID');
                     document.getElementById('modalTanggalBelanja').textContent = tanggalBelanja;
+                    document.getElementById('modalKadaluarsaPajak').textContent = kadaluarsaPajak;
                     document.getElementById('modalKeterangan').textContent = keterangan;
                     document.getElementById('modalUnitKerja').textContent = unitKerja;
 

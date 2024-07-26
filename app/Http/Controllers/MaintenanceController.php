@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Belanja;
-use App\Models\Kendaraan;
 use App\Models\Maintenance;
-use App\Models\MtGroup;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class MaintenanceController extends Controller
@@ -16,8 +15,13 @@ class MaintenanceController extends Controller
     public function index()
     {
         $maintenances = Maintenance::join('tbl_mt_group', 'tbl_maintenance.mt_group', '=', 'tbl_mt_group.id')
-            ->select('tbl_maintenance.*', 'tbl_mt_group.nama_group')
+            ->join('tbl_kendaraan', 'tbl_maintenance.nomor_registrasi', '=', 'tbl_kendaraan.nomor_registrasi')
+            ->select('tbl_maintenance.*', 'tbl_kendaraan.berlaku_sampai', 'tbl_mt_group.nama_group')
             ->get();
+        $maintenances = $maintenances->map(function ($maintenance) {
+            $maintenance->berlaku_sampai = $maintenance->berlaku_sampai = Carbon::createFromFormat('d/m/Y', $maintenance->berlaku_sampai)->format('Y/m/d');
+            return $maintenance;
+        });
         return view('maintenance.index', compact('maintenances'));
     }
 

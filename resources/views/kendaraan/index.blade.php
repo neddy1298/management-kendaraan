@@ -64,7 +64,6 @@
                                     <th>CC Kendaraan</th>
                                     <th>BBM Kendaraan</th>
                                     <th>Roda Kendaraan</th>
-                                    <th>Berlaku Sampai</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -79,7 +78,6 @@
                                         <td>{{ $kendaraan->cc_kendaraan }} CC</td>
                                         <td>{{ $kendaraan->bbm_kendaraan }}</td>
                                         <td>Roda {{ $kendaraan->roda_kendaraan }}</td>
-                                        <td>{{ date('d F Y', strtotime($kendaraan->berlaku_sampai)) }}</td>
                                         <td>
                                             <a href="{{ route('kendaraan.edit', $kendaraan->id) }}"
                                                 class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
@@ -90,7 +88,7 @@
                                                 style="display: inline-block">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn btn-danger btn-icon btn-sm mt-2"
+                                                <button class="btn btn-danger btn-icon btn-sm"
                                                     onclick="return confirm('Kamu yakin ingin menghapus data: {{ $kendaraan->nomor_registrasi }} ?')"
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
                                                     <i class="bi bi-trash"></i>

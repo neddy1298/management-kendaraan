@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kendaraan;
 use App\Models\Maintenance;
 use App\Models\MtGroup;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class KendaraanController extends Controller
@@ -15,6 +16,10 @@ class KendaraanController extends Controller
     public function index()
     {
         $kendaraans = Kendaraan::all();
+        $kendaraans = $kendaraans->map(function ($kendaraan) {
+            $kendaraan->berlaku_sampai = Carbon::createFromFormat('d/m/Y', $kendaraan->berlaku_sampai)->format('Y/m/d');
+            return $kendaraan;
+        });
         return view('kendaraan.index', compact('kendaraans'));
     }
 
@@ -26,7 +31,7 @@ class KendaraanController extends Controller
 
     public function store(Request $request){
         $request->validate([
-            'nomor_registrasi' => 'required|string|max:255',
+            'nomor_registrasi' => 'required|string|max:255|unique:tbl_kendaraan',
             'merk_kendaraan' => 'required|string|max:255',
             'jenis_kendaraan' => 'required|string|max:255',
             'cc_kendaraan' => 'required|integer',
@@ -34,18 +39,17 @@ class KendaraanController extends Controller
             'roda_kendaraan' => 'required|integer',
             'berlaku_sampai' => 'required|date_format:d/m/Y',
             'mt_group' => 'required|integer',
-
         ],[
             'required' => 'Kolom :attribut wajib diisi.',
             'integer' => 'Kolom :attribut harus berupa angka.',
-            'date_format' => 'Kolom :attribut tidak sesuai format dd/mm/yyyy.',
+            'date_format' => 'Kolom :attribut tidak sesuai format d/m/Y.',
+            'unique' => 'Nomor registrasi sudah digunakan.',
         ]);
 
-        $berlaku_sampai = \DateTime::createFromFormat('d/m/Y', $request->berlaku_sampai)->format('d-m-Y');
         $data_kendaraan = $request->except('mt_group');
-
         
-        $data_kendaraan['berlaku_sampai'] = $berlaku_sampai;
+        
+        $data_kendaraan['berlaku_sampai'] = Carbon::createFromFormat('d/m/Y', $request->berlaku_sampai)->format('d/m/Y');
         $kendaraan = Kendaraan::create($data_kendaraan);
         
         $data_maintenance['nomor_registrasi'] = $request->nomor_registrasi;
@@ -80,7 +84,7 @@ class KendaraanController extends Controller
     }
 
     public function update(Request $request, $id){
-        $request->validate([
+        $validatedData = $request->validate([
             'nomor_registrasi' => 'required|string|max:255',
             'merk_kendaraan' => 'required|string|max:255',
             'jenis_kendaraan' => 'required|string|max:255',
@@ -91,15 +95,12 @@ class KendaraanController extends Controller
         ], [
             'required' => 'Kolom :attribute wajib diisi.',
             'integer' => 'Kolom :attribute harus berupa angka.',
-            'date_format' => 'Kolom :attribute tidak sesuai format dd/mm/yyyy.',
+            'date_format' => 'Kolom :attribute tidak sesuai format d/m/Y.',
         ]);
 
 
-        $berlaku_sampai = \DateTime::createFromFormat('d/m/Y', $request->berlaku_sampai)->format('d-m-Y');
-        $data = $request->all();
-
-        $data['berlaku_sampai'] = $berlaku_sampai;
-
+        $validatedData['berlaku_sampai'] = Carbon::createFromFormat('d/m/Y', $validatedData['berlaku_sampai'])->format('d/m/Y');
+        
         $kendaraan = Kendaraan::find($id);
         $kendaraan->update($request->all());
 

@@ -17,7 +17,7 @@
 
                     <div class="card-options">
 
-                        <span class="text-muted">Tanggal Hari ini: {{ now()->format('d-m-Y') }}</span>
+                        <span class="text-muted">Tanggal Hari ini: {{ now()->format('d F Y') }}</span>
                     </div>
                 </div>
                 <div class="card-body">
@@ -82,7 +82,7 @@
                                     <label class="form-label d-flex">Jenis Kendaraan</label>
                                     <select class="form-select" title="Masukkan Jenis Kendaraan"
                                         data-live-search="true" onchange="fillForm(this.value)" name="jenis_kendaraan">
-                                        <option hidden value=""></option>
+                                        <option hidden value="{{ old('jenis_kendaraan') }}">{{ old('jenis_kendaraan') }}</option>
                                         <option value="Sepeda Motor">Sepeda Motor</option>
                                         <option value="Mobil Penumpang">Mobil Penumpang</option>
                                         <option value="Mobil Mikrobus">Mobil Mikrobus</option>
@@ -100,7 +100,7 @@
                                     <label class="form-label d-flex">BBM Kendaraan</label>
                                     <select class="form-select" title="Masukkan Jenis Kendaraan"
                                         data-live-search="true" onchange="fillForm(this.value)" name="bbm_kendaraan">
-                                        <option hidden value=""></option>
+                                        <option hidden value="{{ old('bbm_kendaraan') }}">{{ old('bbm_kendaraan') }}</option>
                                         <option value="Bensin">Bensin</option>
                                         <option value="Solar">Solar</option>
                                     </select>
@@ -131,7 +131,7 @@
                                         <span class="input-group-text">
                                             <i class="bi bi-calendar4"></i>
                                         </span>
-                                        <input type="text" class="form-control datepicker" name="berlaku_sampai">
+                                        <input type="text" class="form-control datepicker" name="berlaku_sampai" value="{{ old('berlaku_sampai') }}">
                                     </div>
                                 </div>
 							</div>

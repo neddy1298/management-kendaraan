@@ -17,7 +17,7 @@
 
                     <div class="card-options">
 
-                        <span class="text-muted">Tanggal Hari ini: {{ now()->format('d-m-Y') }}</span>
+                        <span class="text-muted">Tanggal Hari ini: {{ now()->format('d F Y') }}</span>
                     </div>
                 </div>
                 <div class="card-body">
@@ -131,7 +131,7 @@
                                         <span class="input-group-text">
                                             <i class="bi bi-calendar4"></i>
                                         </span>
-                                        <input type="text" class="form-control datepicker" name="berlaku_sampai" value="{{ date('d/m/Y', strtotime($kendaraan->berlaku_sampai)) }}">
+                                        <input type="text" class="form-control datepicker" name="berlaku_sampai" value="{{ $kendaraan->berlaku_sampai }}">
                                     </div>
                                 </div>
 							</div>

@@ -89,7 +89,8 @@
                                                 data-suku-cadang="{{ $belanja->belanja_suku_cadangtanggal_belanja }}"
                                                 data-total-belanja="{{ $belanja->belanja_bahan_bakar_minyak + $belanja->belanja_pelumas_mesin + $belanja->belanja_suku_cadangtanggal_belanja }}"
                                                 data-tanggal-belanja="{{ date('d F Y', strtotime($belanja->tanggal_belanja)) }}"
-                                                data-keterangan="{{ $belanja->keterangan }}">
+                                                data-keterangan="{{ $belanja->keterangan }}"
+                                                data-id="{{ $belanja->id }}">
                                                 <i class="bi bi-search"></i>
                                             </button>
                                         </td>
@@ -120,6 +121,16 @@
                         <p><strong>Keterangan:</strong> <span id="modalKeterangan"></span></p>
                     </div>
                     <div class="modal-footer">
+                        <form action="" method="POST"
+                            style="display: inline-block" id="modalDeleteBelanja">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger btn-icon btn-sm"
+                                onclick="return confirm('Kamu yakin ingin menghapus data belanja?')"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -146,6 +157,7 @@
                     const totalBelanja = parseInt(this.getAttribute('data-total-belanja') || 0);
                     const tanggalBelanja = this.getAttribute('data-tanggal-belanja');
                     const keterangan = this.getAttribute('data-keterangan');
+                    const id = this.getAttribute('data-id');
         
                     document.getElementById('modalNomorRegistrasi').textContent = nomorRegistrasi;
                     document.getElementById('modalBahanBakarMinyak').textContent = bahanBakarMinyak.toLocaleString('id-ID');
@@ -154,6 +166,7 @@
                     document.getElementById('modalTotalBelanja').textContent = totalBelanja.toLocaleString('id-ID');
                     document.getElementById('modalTanggalBelanja').textContent = tanggalBelanja;
                     document.getElementById('modalKeterangan').textContent = keterangan;
+                    document.getElementById('modalDeleteBelanja').action = "{{ route('belanja.delete', "id") }}".replace('id', id);
                 });
             });
         });
