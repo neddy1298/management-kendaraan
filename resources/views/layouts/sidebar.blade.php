@@ -31,30 +31,12 @@
                         <span class="menu-text">Data Kendaraan</span>
                     </a>
                 </li>
-                <li class="sidebar-dropdown {{ $page == 'Maintenance' ? 'active' : '' }}">
-                    <a href="#">
+                <li class="{{ $page == 'Maintenance' ? 'active' : '' }}">
+                    <a href="{{ route('maintenance.index') }}"
+                        class="{{ $page == 'Maintenance' ? 'current-page' : '' }}">
                         <i class="bi bi-gear"></i>
                         <span class="menu-text">Maintenance</span>
                     </a>
-                    <div class="sidebar-submenu">
-                        <ul>
-                            <li class="{{ $page == 'Master' ? 'active' : '' }}">
-                                <a href="{{ route('maintenance.index') }}"
-                                    class="{{ $page == 'Maintenance' ? 'current-page' : '' }}">
-                                    <span class="menu-text">Master Data</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="" class="{{ $page2 == 'Pajak' ? 'current-page' : '' }}">Pajak</a>
-                            </li>
-                            <li>
-                                <a href="" class="{{ $page2 == 'Pelumas' ? 'current-page' : '' }}">Pelumas</a>
-                            </li>
-                            <li>
-                                <a href="" class="{{ $page2 == 'Bensin' ? 'current-page' : '' }}">Bensin</a>
-                            </li>
-                        </ul>
-                    </div>
                 </li>
                 <li class="{{ $page == 'User' ? 'active' : '' }}">
                     <a href="{{ route('profile.edit') }}" class="{{ $page == 'User' ? 'current-page' : '' }}">

@@ -85,8 +85,9 @@
                     @php
                         $pages = [
                             'Home' => ['route' => 'home', 'icon' => 'bi-house', 'text' => 'Home'],
+                            'Belanja' => ['route' => 'belanja.index', 'icon' => 'bi-cart2', 'text' => 'Belanja'],
                             'Kendaraan' => ['route' => 'kendaraan.index', 'icon' => 'bi bi-truck', 'text' => 'Kendaraan'],
-                            'Maintenance' => ['route' => null, 'icon' => 'bi bi-gear', 'text' => 'Maintenance'],
+                            'Maintenance' => ['route' => 'maintenance.index', 'icon' => 'bi bi-gear', 'text' => 'Maintenance'],
                             'User' => ['route' => 'profile.edit', 'icon' => 'bi bi-person-circle', 'text' => 'User']
                         ];
                 
