@@ -6,7 +6,7 @@
         <div class="col-xxl-3 col-sm-6 col-12">
             <div class="stats-tile">
                 <div class="sale-icon shade-red">
-                    <i class="bi bi-car"></i>
+                    <i class="bi bi-truck"></i>
                 </div>
                 <div class="sale-details">
                     <h3 class="text-red">{{ $kendaraan }}</h3>
