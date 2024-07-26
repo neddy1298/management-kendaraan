@@ -6,17 +6,12 @@
 @endsection
 
 @section('content')
-    <!-- Row start -->
     <div class="row">
         <div class="col-sm-12 col-12">
-
-            <!-- Card start -->
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">Tambah Data Belanja</div>
-
                     <div class="card-options">
-
                         <span class="text-muted">Tanggal Hari ini: {{ now()->format('d-m-Y') }}</span>
                     </div>
                 </div>
@@ -26,9 +21,7 @@
                             <i class="bi bi-x-circle alert-icon"></i>
                             <ul>
                                 @foreach ($errors->all() as $error)
-                                    <li>
-                                        {{ $error }}
-                                    </li>
+                                    <li>{{ $error }}</li>
                                 @endforeach
                             </ul>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -36,60 +29,45 @@
                     @endif
                     <form method="POST" action="{{ route('belanja.store') }}" enctype="multipart/form-data">
                         @csrf
-                        <!-- Row start -->
                         <div class="row">
                             <div class="col-xl-12 col-sm-12 col-12">
                                 <div class="mb-3">
                                     <label class="form-label d-flex">Unit Kerja</label>
-                                    <select class="select-single js-states form-control" title="Masukkan Unit Kerja</i>"
-                                        data-live-search="true" name="nomor_registrasi">
-                                        <option hidden value="{{ old('nomor_registrasi') }}">{{ old('nomor_registrasi') }}
-                                        </option>
+                                    <select class="select-single js-states form-control @error('nomor_registrasi') is-invalid @enderror" 
+                                        title="Masukkan Unit Kerja" 
+                                        data-live-search="true" 
+                                        name="nomor_registrasi">
+                                        <option value="" hidden></option>
                                         @foreach ($kendaraans as $kendaraan)
                                             <option value="{{ $kendaraan->nomor_registrasi }}">
                                                 {{ $kendaraan->nomor_registrasi }} - {{ $kendaraan->merk_kendaraan }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    @if ($errors->has('nomor_registrasi'))
+                                    @error('nomor_registrasi')
                                         <div class="invalid-feedback">
-                                            {{ $errors->first('nomor_registrasi') }}
+                                            {{ $message }}
                                         </div>
-                                    @endif
+                                    @enderror
                                 </div>
                             </div>
 
                             <div class="col-12">
                                 <div class="form-section-title">Total Belanja</div>
                             </div>
-                            <div class="col-xl-4 col-sm-12 col-12">
-                                <div class="mb-3">
-                                    <label for="belanja_bahan_bakar_minyak" class="form-label">Belanja BBM</label>
-                                    
-                                    <div class="input-group">
-                                        <span class="input-group-text">Rp.</span>
-                                        <input type="number" class="form-control" name="belanja_bahan_bakar_minyak">
+
+                            @foreach (['bahan_bakar_minyak' => 'BBM', 'pelumas_mesin' => 'Pelumas', 'suku_cadang' => 'Suku Cadang'] as $field => $label)
+                                <div class="col-xl-4 col-sm-12 col-12">
+                                    <div class="mb-3">
+                                        <label for="belanja_{{ $field }}" class="form-label">Belanja {{ $label }}</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">Rp.</span>
+                                            <input type="number" class="form-control" name="belanja_{{ $field }}" id="belanja_{{ $field }}">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-xl-4 col-sm-12 col-12">
-                                <div class="mb-3">
-                                    <label for="belanja_pelumas_mesin" class="form-label">Belanja Pelumas</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">Rp.</span>
-                                        <input type="number" class="form-control" name="belanja_pelumas_mesin">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-4 col-sm-12 col-12">
-                                <div class="mb-3">
-                                    <label for="belanja_suku_cadang" class="form-label">Belanja Suku Cadang</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">Rp.</span>
-                                        <input type="number" class="form-control" name="belanja_suku_cadang">
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
+
                             <div class="col-xl-12 col-sm-12 col-12">
                                 <div class="mb-3">
                                     <div class="form-label">Tanggal Belanja</div>
@@ -101,6 +79,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-xl-12 col-sm-12 col-12">
                                 <div class="mb-3">
                                     <label class="form-label">Keterangan</label>
@@ -108,31 +87,21 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Row end -->
 
-                        <!-- Form actions footer start -->
                         <div class="form-actions-footer">
                             <a class="btn btn-light" href="{{ route('belanja.index') }}">Batal</a>
                             <button type="submit" class="btn btn-success">Simpan</button>
                         </div>
-                        <!-- Form actions footer end -->
                     </form>
-
                 </div>
             </div>
-            <!-- Card end -->
-
         </div>
     </div>
-    <!-- Row end -->
 @endsection
 
 @section('script')
-    <!-- Bootstrap Select JS -->
     <script src="{{ asset('vendor/bs-select/bs-select.min.js') }}"></script>
     <script src="{{ asset('vendor/bs-select/bs-select-custom.js') }}"></script>
-
-    <!-- Date Range JS -->
     <script src="{{ asset('vendor/daterange/daterange.js') }}"></script>
     <script src="{{ asset('vendor/daterange/custom-daterange.js') }}"></script>
 @endsection

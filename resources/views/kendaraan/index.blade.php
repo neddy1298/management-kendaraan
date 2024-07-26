@@ -2,49 +2,41 @@
 
 @section('css')
     <!-- Data Tables -->
-    <link rel="stylesheet" href="{{ asset('vendor/datatables/dataTables.bs5.css') }}" />
-    <link rel="stylesheet" href="{{ asset('vendor/datatables/dataTables.bs5-custom.css') }}" />
+    <link rel="stylesheet" href="{{ asset('vendor/datatables/dataTables.bs5.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/datatables/dataTables.bs5-custom.css') }}">
 @endsection
 
 @section('content')
     <!-- Row start -->
     <div class="row">
         <div class="col-12">
-
             @php
-                $message =
-                    "Contoh message yang akan dikirim ke WA\n-1. lorem ipsum dolor sit amet consectetur adipiscing elit\n2. lorem ipsum dolor sit amet consectetur adipiscing elit\n3. lorem ipsum dolor sit amet consectetur adipiscing elit\n4. lorem ipsum dolor sit amet consectetur adipiscing elit\n5. lorem ipsum dolor sit amet consectetur adipiscing elit";
+                $message = "Contoh message yang akan dikirim ke WA\n-1. lorem ipsum dolor sit amet consectetur adipiscing elit\n2. lorem ipsum dolor sit amet consectetur adipiscing elit\n3. lorem ipsum dolor sit amet consectetur adipiscing elit\n4. lorem ipsum dolor sit amet consectetur adipiscing elit\n5. lorem ipsum dolor sit amet consectetur adipiscing elit";
             @endphp
             <!-- Card start -->
             <div class="card">
                 <div class="card-body">
                     <div class="custom-btn-group">
-                        <a href="{{ route('kendaraan.create') }}" class="btn btn-warning"><i class="bi bi-pencil-square"></i>
-                            Tambah Baru</a>
-                        <a href="{{ route('kendaraan.printAll') }}" class="btn btn-primary" target="_blank"><i
-                                class="bi bi-printer"></i>
-                            Cetak</a>
-                        <a href="{{ route('send-wa', $message) }}" class="btn btn-success" target="_blank"><i
-                                class="bi bi-whatsapp"></i>
-                            Kirim WA</a>
+                        <a href="{{ route('kendaraan.create') }}" class="btn btn-warning">
+                            <i class="bi bi-pencil-square"></i> Tambah Baru
+                        </a>
+                        <a href="{{ route('kendaraan.printAll') }}" class="btn btn-primary" target="_blank">
+                            <i class="bi bi-printer"></i> Cetak
+                        </a>
+                        <a href="{{ route('send-wa', ['message' => urlencode($message)]) }}" class="btn btn-success" target="_blank">
+                            <i class="bi bi-whatsapp"></i> Kirim WA
+                        </a>
                     </div>
                 </div>
             </div>
             <!-- Card end -->
         </div>
+
         <div class="col-sm-12 col-12">
             @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="bi bi-check-circle alert-icon"></i>
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+                @include('partials.alert', ['type' => 'success', 'message' => session('success')])
             @elseif (session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="bi bi-x-circle alert-icon"></i>
-                    {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+                @include('partials.alert', ['type' => 'danger', 'message' => session('error')])
             @endif
 
             <!-- Card start -->
@@ -68,10 +60,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $no = 1 @endphp
-                                @foreach ($kendaraans as $kendaraan)
+                                @foreach ($kendaraans as $index => $kendaraan)
                                     <tr>
-                                        <td>{{ $no++ }}</td>
+                                        <td>{{ $index + 1 }}</td>
                                         <td>{{ $kendaraan->nomor_registrasi }}</td>
                                         <td>{{ $kendaraan->merk_kendaraan }}</td>
                                         <td>{{ $kendaraan->jenis_kendaraan }}</td>
@@ -79,18 +70,13 @@
                                         <td>{{ $kendaraan->bbm_kendaraan }}</td>
                                         <td>Roda {{ $kendaraan->roda_kendaraan }}</td>
                                         <td>
-                                            <a href="{{ route('kendaraan.edit', $kendaraan->id) }}"
-                                                class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
-                                                data-bs-placement="top" title="Edit">
+                                            <a href="{{ route('kendaraan.edit', $kendaraan->id) }}" class="btn btn-warning btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            <form action="{{ route('kendaraan.delete', $kendaraan->id) }}" method="POST"
-                                                style="display: inline-block">
+                                            <form action="{{ route('kendaraan.delete', $kendaraan->id) }}" method="POST" style="display: inline-block">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn btn-danger btn-icon btn-sm"
-                                                    onclick="return confirm('Kamu yakin ingin menghapus data: {{ $kendaraan->nomor_registrasi }} ?')"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
+                                                <button class="btn btn-danger btn-icon btn-sm" onclick="return confirm('Kamu yakin ingin menghapus data: {{ $kendaraan->nomor_registrasi }} ?')" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>

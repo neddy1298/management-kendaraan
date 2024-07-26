@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,9 +18,6 @@ class Maintenance extends Model
         'belanja_bahan_bakar_minyak',
         'belanja_pelumas_mesin',
         'belanja_suku_cadang',
-        '_token',
-        'created_at',
-        'updated_at',
     ];
 
     public function kendaraan()
@@ -31,6 +27,11 @@ class Maintenance extends Model
 
     public function mtGroup()
     {
-        return $this->belongsTo(MtGroup::class, 'id', 'mt_group');
+        return $this->belongsTo(MtGroup::class, 'mt_group', 'id');
+    }
+
+    public function belanja()
+    {
+        return $this->hasMany(Belanja::class, 'nomor_registrasi', 'nomor_registrasi');
     }
 }

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <!-- Required meta tags -->
@@ -7,44 +7,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Meta -->
-    <meta name="description" content="Best Bootstrap Admin Dashboards">
-    <meta name="author" content="Bootstrap Gallery" />
-    <link rel="canonical" href="https://www.bootstrap.gallery/">
-    <meta property="og:url" content="https://www.bootstrap.gallery">
-    <meta property="og:title" content="Admin Templates - Dashboard Templates | Bootstrap Gallery">
-                <meta property="og:description" content="Marketplace for Bootstrap Admin Dashboards">
+    <meta name="description" content="Website untuk management kendaraan dinas perhubungan kota bogor">
+    <meta name="author" content="Dishub KKL" />
+    <meta property="og:title" content="Dinas Perhubungan | Management Kendaraan">
     <meta property="og:type" content="Website">
-    <meta property="og:site_name" content="Bootstrap Gallery">
+    <meta property="og:site_name" content="Management Kendaraan">
     <link rel="shortcut icon" href="{{ asset('images/logokbr.ico') }}">
 
     <!-- Title -->
-    <title>Management Kendaraan</title>
+    <title>@yield('title', 'Management Kendaraan')</title>
 
-
-    <!-- *************
-   ************ Common Css Files *************
-  ************ -->
-
-    <!-- Animated css -->
+    <!-- Common CSS Files -->
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
-
-    <!-- Bootstrap font icons css -->
     <link rel="stylesheet" href="{{ asset('fonts/bootstrap/bootstrap-icons.css') }}">
-
-    <!-- Main css -->
     <link rel="stylesheet" href="{{ asset('css/main.min.css') }}">
 
-
-    <!-- *************
-   ************ Vendor Css Files *************
-  ************ -->
-
-    <!-- Scrollbar CSS -->
+    <!-- Vendor CSS Files -->
     <link rel="stylesheet" href="{{ asset('vendor/overlay-scroll/OverlayScrollbars.min.css') }}">
 
     @yield('css')
-
-
 </head>
 
 <body>
@@ -69,16 +50,12 @@
         @include('layouts.sidebar')
         <!-- Sidebar wrapper end -->
 
-        <!-- *************
-                ************ Main container start *************
-            ************* -->
+        <!-- Main container start -->
         <div class="main-container">
 
             <!-- Page header starts -->
-
             <div class="page-header">
-
-                <div class="toggle-sidebar" id="toggle-sidebar"><i class="bi bi-list"></i></div>
+                <div class="toggle-sidebar" id="toggle-sidebar"><i class="bi bi-list" aria-label="Toggle Sidebar"></i></div>
 
                 <!-- Breadcrumb start -->
                 <ol class="breadcrumb d-md-flex d-none">
@@ -86,52 +63,51 @@
                         $pages = [
                             'Home' => ['route' => 'home', 'icon' => 'bi-house', 'text' => 'Home'],
                             'Belanja' => ['route' => 'belanja.index', 'icon' => 'bi-cart2', 'text' => 'Belanja'],
-                            'Kendaraan' => ['route' => 'kendaraan.index', 'icon' => 'bi bi-truck', 'text' => 'Kendaraan'],
-                            'Maintenance' => ['route' => 'maintenance.index', 'icon' => 'bi bi-gear', 'text' => 'Maintenance'],
-                            'User' => ['route' => 'profile.edit', 'icon' => 'bi bi-person-circle', 'text' => 'User']
+                            'Kendaraan' => ['route' => 'kendaraan.index', 'icon' => 'bi-truck', 'text' => 'Kendaraan'],
+                            'Maintenance' => ['route' => 'maintenance.index', 'icon' => 'bi-gear', 'text' => 'Maintenance'],
+                            'User' => ['route' => 'profile.edit', 'icon' => 'bi-person-circle', 'text' => 'User'],
                         ];
-                
+
                         $pages2 = [
                             'Master' => 'Master Data',
                             'Tambah' => 'Tambah Baru',
-                            'Edit' => 'Ubah Data'
+                            'Edit' => 'Ubah Data',
                         ];
-                
+
                         $pages3 = [
                             'create' => 'Tambah Baru',
-                            'edit' => 'Edit'
+                            'edit' => 'Edit',
                         ];
                     @endphp
-                
-                    @if(isset($pages[$page]))
+
+                    @if (isset($pages[$page]))
                         <li class="breadcrumb-item">
-                            <i class="bi {{ $pages[$page]['icon'] }}"></i>
-                            @if($pages[$page]['route'])
+                            <i class="bi {{ $pages[$page]['icon'] }}" aria-hidden="true"></i>
+                            @if ($pages[$page]['route'])
                                 <a href="{{ route($pages[$page]['route']) }}">{{ $pages[$page]['text'] }}</a>
                             @else
                                 {{ $pages[$page]['text'] }}
                             @endif
                         </li>
                     @endif
-                
-                    @if(isset($pages2[$page2]))
-                        <li class="breadcrumb-item">
-                            {{ $page2 }}
-                        </li>
+
+                    @if (isset($pages2[$page2]))
+                        <li class="breadcrumb-item">{{ $pages2[$page2] }}</li>
+                    @endif
+
+                    @if (isset($pages3[$page3]))
+                        <li class="breadcrumb-item">{{ $pages3[$page3] }}</li>
                     @endif
                 </ol>
-                
                 <!-- Breadcrumb end -->
             </div>
             <!-- Page header ends -->
 
             <!-- Content wrapper scroll start -->
             <div class="content-wrapper-scroll">
-                <!-- Content wrapper start -->
                 <div class="content-wrapper">
                     @yield('content')
                 </div>
-                <!-- Content wrapper end -->
 
                 <!-- App Footer start -->
                 <div class="app-footer">
@@ -141,33 +117,24 @@
             </div>
             <!-- Content wrapper scroll end -->
         </div>
-        <!-- *************
-                ************ Main container end *************
-            ************* -->
+        <!-- Main container end -->
 
     </div>
     <!-- Page wrapper end -->
 
-    <!-- *************
-   ************ Required JavaScript Files *************
-  ************* -->
-    <!-- Required jQuery first, then Bootstrap Bundle JS -->
+    <!-- Required JavaScript Files -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/modernizr.js') }}"></script>
     <script src="{{ asset('js/moment.js') }}"></script>
 
-    <!-- *************
-   ************ Vendor Js Files *************
-  ************* -->
-
-    <!-- Overlay Scroll JS -->
+    <!-- Vendor JS Files -->
     <script src="{{ asset('vendor/overlay-scroll/jquery.overlayScrollbars.min.js') }}"></script>
     <script src="{{ asset('vendor/overlay-scroll/custom-scrollbar.js') }}"></script>
 
     @yield('script')
 
-    <!-- Main Js Required -->
+    <!-- Main JS Required -->
     <script src="{{ asset('js/main.js') }}"></script>
 
 </body>
