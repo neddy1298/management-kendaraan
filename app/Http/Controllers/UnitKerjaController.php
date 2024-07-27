@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Maintenance;
 use App\Models\UnitKerja;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,8 @@ class UnitKerjaController extends Controller
      */
     public function index()
     {
-        //
+        $unitKerjas = UnitKerja::withCount('maintenances')->get();
+        return view('unitKerja.index', compact('unitKerjas'));
     }
 
     /**
@@ -61,5 +63,11 @@ class UnitKerjaController extends Controller
     public function destroy(UnitKerja $unitKerja)
     {
         //
+    }
+
+    public function getUnitKerjaDetails($id)
+    {
+        $unitKerja = Maintenance::where('unit_kerja', $id)->get();
+        return response()->json($unitKerja);
     }
 }

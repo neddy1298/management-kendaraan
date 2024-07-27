@@ -37,6 +37,12 @@
                         <span class="menu-text">Data Kendaraan</span>
                     </a>
                 </li>
+                <li class="{{ $page == 'Unit Kerja' ? 'active' : '' }}">
+                    <a href="{{ route('unitKerja.index') }}" class="{{ $page == 'Unit Kerja' ? 'current-page' : '' }}" aria-label="Data Unit Kerja">
+                        <i class="bi bi-person-badge"></i>
+                        <span class="menu-text">Data Unit Kerja</span>
+                    </a>
+                </li>
                 <li class="{{ $page == 'User' ? 'active' : '' }}">
                     <a href="{{ route('profile.edit') }}" class="{{ $page == 'User' ? 'current-page' : '' }}" aria-label="User">
                         <i class="bi bi-person-circle"></i>

@@ -27,7 +27,7 @@ class Maintenance extends Model
 
     public function unitKerja()
     {
-        return $this->belongsTo(UnitKerja::class, 'unit_kerja', 'id');
+        return $this->belongsTo(UnitKerja::class, 'unit_kerja');
     }
 
     public function belanja()

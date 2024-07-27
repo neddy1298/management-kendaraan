@@ -31,8 +31,8 @@ class KendaraanController extends Controller
      */
     public function create()
     {
-        $unit_kerjas = UnitKerja::all();
-        return view('kendaraan.create', compact('unit_kerjas'));
+        $unitKerjas = UnitKerja::all();
+        return view('kendaraan.create', compact('unitKerjas'));
     }
 
     /**
@@ -99,9 +99,9 @@ class KendaraanController extends Controller
             ->select('tbl_maintenance.nomor_registrasi', 'tbl_unit_kerja.id', 'tbl_unit_kerja.nama_unit_kerja')
             ->first();
     
-        $unit_kerjas = UnitKerja::all();
+        $unitKerjas = UnitKerja::all();
     
-        return view('kendaraan.edit', compact('kendaraan', 'unit_kerjas', 'maintenance'));
+        return view('kendaraan.edit', compact('kendaraan', 'unitKerjas', 'maintenance'));
     }
 
     /**
