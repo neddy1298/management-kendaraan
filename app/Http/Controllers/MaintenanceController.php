@@ -14,6 +14,24 @@ class MaintenanceController extends Controller
      */
     public function index()
     {
+        
+        $maintenances = Maintenance::all();
+
+        $belanjas = Belanja::all();
+        
+        $maintenances->each(function ($maintenance) use ($belanjas) {
+            $belanja = $belanjas->where('nomor_registrasi', $maintenance->nomor_registrasi)->first();
+            
+            if ($belanja) {
+            $maintenance->update([
+                'belanja_bahan_bakar_minyak' => $maintenance->belanja_bahan_bakar_minyak + ($belanja->belanja_bahan_bakar_minyak ?? 0),
+                'belanja_pelumas_mesin' => $maintenance->belanja_pelumas_mesin + ($belanja->belanja_pelumas_mesin ?? 0),
+                'belanja_suku_cadang' => $maintenance->belanja_suku_cadang + ($belanja->belanja_suku_cadang ?? 0),
+                'keterangan' => $maintenance->keterangan . ' ' . $belanja->keterangan,
+            ]);
+            }
+        });
+
         $maintenances = Maintenance::with(['unitKerja', 'kendaraan'])
             ->select('tbl_maintenance.*', 'tbl_kendaraan.berlaku_sampai', 'tbl_unit_kerja.nama_unit_kerja')
             ->join('tbl_unit_kerja', 'tbl_maintenance.unit_kerja', '=', 'tbl_unit_kerja.id')
@@ -23,6 +41,7 @@ class MaintenanceController extends Controller
                 $maintenance->berlaku_sampai = Carbon::createFromFormat('d/m/Y', $maintenance->berlaku_sampai)->format('Y-m-d');
                 return $maintenance;
             });
+        
 
         $expireDate = $maintenances->filter(function ($maintenance) {
             return Carbon::parse($maintenance->berlaku_sampai)->lt(Carbon::today());

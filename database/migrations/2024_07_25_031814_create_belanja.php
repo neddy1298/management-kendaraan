@@ -14,10 +14,6 @@ return new class extends Migration
         Schema::create('tbl_belanja', function (Blueprint $table) {
             $table->id();
             $table->string('nomor_registrasi', 10);
-            $table->foreign('nomor_registrasi')
-                ->references('nomor_registrasi')
-                ->on('tbl_kendaraan')
-                ->onUpdate('cascade');
             $table->integer('belanja_bahan_bakar_minyak')->nullable();
             $table->integer('belanja_pelumas_mesin')->nullable();
             $table->integer('belanja_suku_cadang')->nullable();
