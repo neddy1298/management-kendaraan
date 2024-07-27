@@ -34,13 +34,13 @@
                 <li class="{{ $page == 'Kendaraan' ? 'active' : '' }}">
                     <a href="{{ route('kendaraan.index') }}" class="{{ $page == 'Kendaraan' ? 'current-page' : '' }}" aria-label="Data Kendaraan">
                         <i class="bi bi-truck"></i>
-                        <span class="menu-text">Data Kendaraan</span>
+                        <span class="menu-text">Kendaraan</span>
                     </a>
                 </li>
                 <li class="{{ $page == 'Unit Kerja' ? 'active' : '' }}">
                     <a href="{{ route('unitKerja.index') }}" class="{{ $page == 'Unit Kerja' ? 'current-page' : '' }}" aria-label="Data Unit Kerja">
                         <i class="bi bi-person-badge"></i>
-                        <span class="menu-text">Data Unit Kerja</span>
+                        <span class="menu-text">Unit Kerja</span>
                     </a>
                 </li>
                 <li class="{{ $page == 'User' ? 'active' : '' }}">

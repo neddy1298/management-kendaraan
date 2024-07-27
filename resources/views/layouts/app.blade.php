@@ -65,11 +65,11 @@
                             'Belanja' => ['route' => 'belanja.index', 'icon' => 'bi-cart2', 'text' => 'Belanja'],
                             'Kendaraan' => ['route' => 'kendaraan.index', 'icon' => 'bi-truck', 'text' => 'Kendaraan'],
                             'Maintenance' => ['route' => 'maintenance.index', 'icon' => 'bi-gear', 'text' => 'Maintenance'],
+                            'Unit Kerja' => ['route' => 'unitKerja.index', 'icon' => 'bi-person-badge', 'text' => 'Unit Kerja'],
                             'User' => ['route' => 'profile.edit', 'icon' => 'bi-person-circle', 'text' => 'User'],
                         ];
 
                         $pages2 = [
-                            'Master' => 'Master Data',
                             'Tambah' => 'Tambah Baru',
                             'Edit' => 'Ubah Data',
                         ];

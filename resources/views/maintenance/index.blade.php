@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'Maintenance', 'page2' => 'Master', 'page3' => ''])
+@extends('layouts.app', ['page' => 'Maintenance', 'page2' => '', 'page3' => ''])
 
 @section('css')
     <!-- Data Tables -->
@@ -17,7 +17,7 @@
                     </div>
                     <div class="sale-details">
                         <h3 class="text-green">
-                            {{ number_format($maintenances->sum('belanja_bahan_bakar_minyak') + $maintenances->sum('belanja_pelumas_mesin') + $maintenances->sum('belanja_suku_cadang'), 0, ',', '.') }}.00
+                            {{ number_format($belanja_bulan_ini, 0, ',', '.') }}.00
                         </h3>
                         <p>Total Belanja Bulan {{ \Carbon\Carbon::now()->translatedFormat('F') }}</p>
                     </div>
@@ -39,11 +39,11 @@
             <div class="col-xxl-4 col-sm-6 col-12">
                 <div class="stats-tile">
                     <div class="sale-icon shade-blue">
-                        <i class="bi bi-truck"></i>
+                        <h4 class="text-white">Rp</h4>
                     </div>
                     <div class="sale-details">
-                        <h3 class="text-blue">{{ $maintenances->count() }}</h3>
-                        <p>Jumlah Kendaraan</p>
+                        <h3 class="text-blue">{{ number_format($belanja_tahun_ini, 0, ',', '.') }}.00</h3>
+                        <p>Total Belanja Tahun {{ \Carbon\Carbon::now()->translatedFormat('Y') }}</p>
                     </div>
                 </div>
             </div>
