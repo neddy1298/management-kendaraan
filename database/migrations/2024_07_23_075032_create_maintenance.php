@@ -17,7 +17,7 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->foreignId('mt_group')
-                ->constrained('tbl_mt_group')
+                ->constrained('tbl_unit_kerja')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->integer('belanja_bahan_bakar_minyak')->nullable();

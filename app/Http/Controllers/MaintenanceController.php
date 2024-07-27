@@ -14,9 +14,9 @@ class MaintenanceController extends Controller
      */
     public function index()
     {
-        $maintenances = Maintenance::with(['mtGroup', 'kendaraan'])
-            ->select('tbl_maintenance.*', 'tbl_kendaraan.berlaku_sampai', 'tbl_mt_group.nama_group')
-            ->join('tbl_mt_group', 'tbl_maintenance.mt_group', '=', 'tbl_mt_group.id')
+        $maintenances = Maintenance::with(['unitKerja', 'kendaraan'])
+            ->select('tbl_maintenance.*', 'tbl_kendaraan.berlaku_sampai', 'tbl_unit_kerja.nama_unit_kerja')
+            ->join('tbl_unit_kerja', 'tbl_maintenance.mt_group', '=', 'tbl_unit_kerja.id')
             ->join('tbl_kendaraan', 'tbl_maintenance.nomor_registrasi', '=', 'tbl_kendaraan.nomor_registrasi')
             ->get()
             ->map(function ($maintenance) {

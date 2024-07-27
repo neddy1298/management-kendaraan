@@ -25,9 +25,9 @@ class Maintenance extends Model
         return $this->belongsTo(Kendaraan::class, 'nomor_registrasi', 'nomor_registrasi');
     }
 
-    public function mtGroup()
+    public function unitKerja()
     {
-        return $this->belongsTo(MtGroup::class, 'mt_group', 'id');
+        return $this->belongsTo(UnitKerja::class, 'mt_group', 'id');
     }
 
     public function belanja()

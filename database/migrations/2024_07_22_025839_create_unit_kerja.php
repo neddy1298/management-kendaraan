@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_mt_group', function (Blueprint $table) {
+        Schema::create('tbl_unit_kerja', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_group')->unique();
+            $table->string('nama_unit_kerja')->unique();
             $table->string('bahan_bakar_minyak')->nullable();
             $table->string('pelumas_mesin')->nullable();
             $table->string('suku_cadang')->nullable();
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_mt_group');
+        Schema::dropIfExists('tbl_unit_kerja');
     }
 };

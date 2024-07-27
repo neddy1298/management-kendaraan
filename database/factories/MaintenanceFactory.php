@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Kendaraan;
-use App\Models\MtGroup;
+use App\Models\UnitKerja;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,11 +18,11 @@ class MaintenanceFactory extends Factory
      */
     public function definition(): array
     {
-        $mt_group = MtGroup::get()->pluck('id')->toArray();
+        $unit_kerja = UnitKerja::get()->pluck('id')->toArray();
 
         return [
             'nomor_registrasi' => Kendaraan::factory(),
-            'mt_group' =>  $this->faker->randomElement($mt_group),
+            'mt_group' =>  $this->faker->randomElement($unit_kerja),
         ];
     }
 }

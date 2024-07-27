@@ -92,7 +92,7 @@
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>{{ $maintenance->nomor_registrasi }}</td>
-                                        <td>{{ $maintenance->nama_group }}</td>
+                                        <td>{{ $maintenance->nama_unit_kerja }}</td>
                                         <td>Rp.
                                             {{ number_format($maintenance->belanja_bahan_bakar_minyak ?? 0, 0, ',', '.') }}
                                         </td>
@@ -120,7 +120,7 @@
                                                 data-tanggal-belanja="{{ \Carbon\Carbon::parse($maintenance->berlaku_sampai)->translatedFormat('F') }}"
                                                 data-keterangan="{{ $maintenance->keterangan }}"
                                                 data-kadaluarsa-pajak="{{ \Carbon\Carbon::parse($maintenance->berlaku_sampai)->translatedFormat('d F Y') }}"
-                                                data-unit-kerja="{{ $maintenance->nama_group }}">
+                                                data-unit-kerja="{{ $maintenance->nama_unit_kerja }}">
                                                 <i class="bi bi-search"></i>
                                             </button>
                                         </td>

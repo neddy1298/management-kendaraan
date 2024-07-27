@@ -129,9 +129,9 @@
                                 <div class="mb-3">
                                     <label for="mt_group" class="form-label">Unit Kerja</label>
                                     <select id="mt_group" name="mt_group" class="select-single form-control">
-                                        <option value="{{ $kendaraan->mt_group_id }}">{{ $kendaraan->nama_group }}</option>
-                                        @foreach ($mt_groups as $mt_group)
-                                            <option value="{{ $mt_group->id }}">{{ $mt_group->nama_group }}</option>
+                                        <option value="{{ $kendaraan->mt_group_id }}">{{ $kendaraan->nama_unit_kerja }}</option>
+                                        @foreach ($unit_kerjas as $unit_kerja)
+                                            <option value="{{ $unit_kerja->id }}">{{ $unit_kerja->nama_unit_kerja }}</option>
                                         @endforeach
                                     </select>
                                     @error('mt_group')

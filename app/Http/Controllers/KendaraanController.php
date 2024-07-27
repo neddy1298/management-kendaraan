@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kendaraan;
 use App\Models\Maintenance;
-use App\Models\MtGroup;
+use App\Models\UnitKerja;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -31,8 +31,8 @@ class KendaraanController extends Controller
      */
     public function create()
     {
-        $mt_groups = MtGroup::all();
-        return view('kendaraan.create', compact('mt_groups'));
+        $unit_kerjas = UnitKerja::all();
+        return view('kendaraan.create', compact('unit_kerjas'));
     }
 
     /**
@@ -95,13 +95,13 @@ class KendaraanController extends Controller
     {
         $kendaraan = Kendaraan::find($id);
         $maintenance = Maintenance::where('nomor_registrasi', $kendaraan->nomor_registrasi)
-            ->join('tbl_mt_group', 'tbl_maintenance.mt_group', '=', 'tbl_mt_group.id')
-            ->select('tbl_maintenance.nomor_registrasi', 'tbl_mt_group.id', 'tbl_mt_group.nama_group')
+            ->join('tbl_unit_kerja', 'tbl_maintenance.mt_group', '=', 'tbl_unit_kerja.id')
+            ->select('tbl_maintenance.nomor_registrasi', 'tbl_unit_kerja.id', 'tbl_unit_kerja.nama_unit_kerja')
             ->first();
     
-        $mt_groups = MtGroup::all();
+        $unit_kerjas = UnitKerja::all();
     
-        return view('kendaraan.edit', compact('kendaraan', 'mt_groups', 'maintenance'));
+        return view('kendaraan.edit', compact('kendaraan', 'unit_kerjas', 'maintenance'));
     }
 
     /**

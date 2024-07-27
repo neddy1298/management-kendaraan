@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MtGroup;
+use App\Models\UnitKerja;
 use Illuminate\Http\Request;
 
-class MtGroupController extends Controller
+class UnitKerjaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class MtGroupController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(MtGroup $mtGroup)
+    public function show(UnitKerja $unitKerja)
     {
         //
     }
@@ -42,7 +42,7 @@ class MtGroupController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(MtGroup $mtGroup)
+    public function edit(UnitKerja $unitKerja)
     {
         //
     }
@@ -50,7 +50,7 @@ class MtGroupController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, MtGroup $mtGroup)
+    public function update(Request $request, UnitKerja $unitKerja)
     {
         //
     }
@@ -58,7 +58,7 @@ class MtGroupController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(MtGroup $mtGroup)
+    public function destroy(UnitKerja $unitKerja)
     {
         //
     }

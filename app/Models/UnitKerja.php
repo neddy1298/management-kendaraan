@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MtGroup extends Model
+class UnitKerja extends Model
 {
     use HasFactory;
 
-    protected $table = 'tbl_mt_group';
+    protected $table = 'tbl_unit_kerja';
 
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'nama_group',
+        'nama_unit_kerja',
         'bahan_bakar_minyak',
         'pelumas_mesin',
         'suku_cadang',
