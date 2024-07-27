@@ -14,7 +14,7 @@ class Maintenance extends Model
 
     protected $fillable = [
         'nomor_registrasi',
-        'mt_group',
+        'unit_kerja',
         'belanja_bahan_bakar_minyak',
         'belanja_pelumas_mesin',
         'belanja_suku_cadang',
@@ -27,7 +27,7 @@ class Maintenance extends Model
 
     public function unitKerja()
     {
-        return $this->belongsTo(UnitKerja::class, 'mt_group', 'id');
+        return $this->belongsTo(UnitKerja::class, 'unit_kerja', 'id');
     }
 
     public function belanja()

@@ -22,7 +22,7 @@ class MaintenanceFactory extends Factory
 
         return [
             'nomor_registrasi' => Kendaraan::factory(),
-            'mt_group' =>  $this->faker->randomElement($unit_kerja),
+            'unit_kerja' =>  $this->faker->randomElement($unit_kerja),
         ];
     }
 }

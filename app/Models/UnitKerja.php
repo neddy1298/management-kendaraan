@@ -28,11 +28,11 @@ class UnitKerja extends Model
 
     public function maintenance()
     {
-        return $this->hasOne(Maintenance::class, 'mt_group', 'id');
+        return $this->hasOne(Maintenance::class, 'unit_kerja', 'id');
     }
 
     public function kendaraan()
     {
-        return $this->hasMany(Kendaraan::class, 'mt_group', 'id');
+        return $this->hasMany(Kendaraan::class, 'unit_kerja', 'id');
     }
 }

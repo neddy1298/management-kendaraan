@@ -16,7 +16,7 @@ return new class extends Migration
                 ->on('tbl_kendaraan')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreignId('mt_group')
+            $table->foreignId('unit_kerja')
                 ->constrained('tbl_unit_kerja')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
