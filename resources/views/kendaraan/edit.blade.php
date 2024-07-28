@@ -127,14 +127,14 @@
 
                             <div class="col-xl-12">
                                 <div class="mb-3">
-                                    <label for="mt_group" class="form-label">Unit Kerja</label>
-                                    <select id="mt_group" name="mt_group" class="select-single form-control">
-                                        <option value="{{ $kendaraan->mt_group_id }}">{{ $kendaraan->nama_group }}</option>
-                                        @foreach ($mt_groups as $mt_group)
-                                            <option value="{{ $mt_group->id }}">{{ $mt_group->nama_group }}</option>
+                                    <label for="unit_kerja" class="form-label">Unit Kerja</label>
+                                    <select id="unit_kerja" name="unit_kerja" class="select-single form-control">
+                                        <option value="{{ $kendaraan->unit_kerja_id }}">{{ $kendaraan->nama_unit_kerja }}</option>
+                                        @foreach ($unitKerjas as $unitKerja)
+                                            <option value="{{ $unitKerja->id }}">{{ $unitKerja->nama_unit_kerja }}</option>
                                         @endforeach
                                     </select>
-                                    @error('mt_group')
+                                    @error('unit_kerja')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>

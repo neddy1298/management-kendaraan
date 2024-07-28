@@ -1,8 +1,8 @@
-@extends('layouts.app', ['page' => 'Kendaraan', 'page2' => 'Tambah', 'page3' => ''])
+@extends('layouts.app', ['page' => 'Kendaraan', 'page2' => 'Edit', 'page3' => ''])
 
 @section('css')
-    <link rel="stylesheet" href="{{ secure_asset('vendor/daterange/daterange.css') }}">
-    <link rel="stylesheet" href="{{ secure_asset('vendor/bs-select/bs-select.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/daterange/daterange.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/bs-select/bs-select.css') }}">
 @endsection
 
 @section('content')
@@ -12,7 +12,7 @@
             <!-- Card start -->
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Tambah Kendaraan Baru</div>
+                    <div class="card-title">Edit Kendaraan</div>
                     <div class="card-options">
                         <span class="text-muted">Tanggal Hari ini: {{ now()->format('d F Y') }}</span>
                     </div>
@@ -30,14 +30,17 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('kendaraan.store') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('kendaraan.update', $kendaraan->id) }}" enctype="multipart/form-data">
                         @csrf
+                        @method('POST')
+
                         <div class="row">
                             <div class="col-xl-12">
                                 <div class="mb-3">
                                     <label for="nomor_registrasi" class="form-label">Nomor Registrasi <i>(plat nomor)</i></label>
-                                    <input type="text" class="form-control @error('nomor_registrasi') is-invalid @enderror"
-                                        id="nomor_registrasi" name="nomor_registrasi" value="{{ old('nomor_registrasi') }}">
+                                    <input type="text" id="nomor_registrasi" name="nomor_registrasi"
+                                        class="form-control @error('nomor_registrasi') is-invalid @enderror"
+                                        value="{{ old('nomor_registrasi', $kendaraan->nomor_registrasi) }}">
                                     @error('nomor_registrasi')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -47,8 +50,9 @@
                             <div class="col-xl-6">
                                 <div class="mb-3">
                                     <label for="merk_kendaraan" class="form-label">Merk Kendaraan</label>
-                                    <input type="text" class="form-control @error('merk_kendaraan') is-invalid @enderror"
-                                        id="merk_kendaraan" name="merk_kendaraan" value="{{ old('merk_kendaraan') }}">
+                                    <input type="text" id="merk_kendaraan" name="merk_kendaraan"
+                                        class="form-control @error('merk_kendaraan') is-invalid @enderror"
+                                        value="{{ old('merk_kendaraan', $kendaraan->merk_kendaraan) }}">
                                     @error('merk_kendaraan')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -58,8 +62,9 @@
                             <div class="col-xl-6">
                                 <div class="mb-3">
                                     <label for="cc_kendaraan" class="form-label">CC Kendaraan</label>
-                                    <input type="number" class="form-control @error('cc_kendaraan') is-invalid @enderror"
-                                        id="cc_kendaraan" name="cc_kendaraan" value="{{ old('cc_kendaraan') }}">
+                                    <input type="number" id="cc_kendaraan" name="cc_kendaraan"
+                                        class="form-control @error('cc_kendaraan') is-invalid @enderror"
+                                        value="{{ old('cc_kendaraan', $kendaraan->cc_kendaraan) }}">
                                     @error('cc_kendaraan')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -69,8 +74,8 @@
                             <div class="col-xl-6">
                                 <div class="mb-3">
                                     <label for="jenis_kendaraan" class="form-label">Jenis Kendaraan</label>
-                                    <select id="jenis_kendaraan" class="form-select" name="jenis_kendaraan">
-                                        <option hidden value="{{ old('jenis_kendaraan') }}">{{ old('jenis_kendaraan') }}</option>
+                                    <select id="jenis_kendaraan" name="jenis_kendaraan" class="form-select">
+                                        <option hidden value="{{ $kendaraan->jenis_kendaraan }}">{{ $kendaraan->jenis_kendaraan }}</option>
                                         <option value="Sepeda Motor">Sepeda Motor</option>
                                         <option value="Mobil Penumpang">Mobil Penumpang</option>
                                         <option value="Mobil Mikrobus">Mobil Mikrobus</option>
@@ -85,8 +90,8 @@
                             <div class="col-xl-6">
                                 <div class="mb-3">
                                     <label for="bbm_kendaraan" class="form-label">BBM Kendaraan</label>
-                                    <select id="bbm_kendaraan" class="form-select" name="bbm_kendaraan">
-                                        <option hidden value="{{ old('bbm_kendaraan') }}">{{ old('bbm_kendaraan') }}</option>
+                                    <select id="bbm_kendaraan" name="bbm_kendaraan" class="form-select">
+                                        <option hidden value="{{ $kendaraan->bbm_kendaraan }}">{{ $kendaraan->bbm_kendaraan }}</option>
                                         <option value="Bensin">Bensin</option>
                                         <option value="Solar">Solar</option>
                                     </select>
@@ -99,8 +104,9 @@
                             <div class="col-xl-6">
                                 <div class="mb-3">
                                     <label for="roda_kendaraan" class="form-label">Jumlah Roda</label>
-                                    <input type="number" class="form-control @error('roda_kendaraan') is-invalid @enderror"
-                                        id="roda_kendaraan" name="roda_kendaraan" value="{{ old('roda_kendaraan') }}">
+                                    <input type="number" id="roda_kendaraan" name="roda_kendaraan"
+                                        class="form-control @error('roda_kendaraan') is-invalid @enderror"
+                                        value="{{ old('roda_kendaraan', $kendaraan->roda_kendaraan) }}">
                                     @error('roda_kendaraan')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -112,8 +118,9 @@
                                     <label for="berlaku_sampai" class="form-label">Tanggal Kadaluarsa STNK</label>
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi bi-calendar4"></i></span>
-                                        <input type="text" id="berlaku_sampai" class="form-control datepicker"
-                                            name="berlaku_sampai" value="{{ old('berlaku_sampai') }}">
+                                        <input type="text" id="berlaku_sampai" name="berlaku_sampai"
+                                            class="form-control datepicker"
+                                            value="{{ old('berlaku_sampai', $kendaraan->berlaku_sampai) }}">
                                     </div>
                                 </div>
                             </div>
@@ -121,8 +128,8 @@
                             <div class="col-xl-12">
                                 <div class="mb-3">
                                     <label for="unit_kerja" class="form-label">Unit Kerja</label>
-                                    <select id="unit_kerja" class="select-single form-control" name="unit_kerja">
-                                        <option hidden value="{{ old('unit_kerja') }}">{{ old('unit_kerja') }}</option>
+                                    <select id="unit_kerja" name="unit_kerja" class="select-single form-control">
+                                        <option value="{{ $kendaraan->unit_kerja_id }}">{{ $kendaraan->nama_unit_kerja }}</option>
                                         @foreach ($unitKerjas as $unitKerja)
                                             <option value="{{ $unitKerja->id }}">{{ $unitKerja->nama_unit_kerja }}</option>
                                         @endforeach
@@ -134,12 +141,10 @@
                             </div>
                         </div>
 
-                        <!-- Form actions footer start -->
                         <div class="form-actions-footer">
                             <a class="btn btn-light" href="{{ route('kendaraan.index') }}">Batal</a>
                             <button type="submit" class="btn btn-success">Simpan</button>
                         </div>
-                        <!-- Form actions footer end -->
                     </form>
                 </div>
             </div>
@@ -150,11 +155,8 @@
 @endsection
 
 @section('script')
-    <!-- Bootstrap Select JS -->
-    <script src="{{ secure_asset('vendor/bs-select/bs-select.min.js') }}"></script>
-    <script src="{{ secure_asset('vendor/bs-select/bs-select-custom.js') }}"></script>
-
-    <!-- Date Range JS -->
-    <script src="{{ secure_asset('vendor/daterange/daterange.js') }}"></script>
-    <script src="{{ secure_asset('vendor/daterange/custom-daterange.js') }}"></script>
+    <script src="{{ asset('vendor/bs-select/bs-select.min.js') }}"></script>
+    <script src="{{ asset('vendor/bs-select/bs-select-custom.js') }}"></script>
+    <script src="{{ asset('vendor/daterange/daterange.js') }}"></script>
+    <script src="{{ asset('vendor/daterange/custom-daterange.js') }}"></script>
 @endsection

@@ -6,7 +6,8 @@ use App\Http\Controllers\{
     ProfileController,
     KendaraanController,
     MaintenanceController,
-    SmsController
+    SmsController,
+    UnitKerjaController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +44,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/store', [BelanjaController::class, 'store'])->name('belanja.store');
         Route::delete('/delete/{id}', [BelanjaController::class, 'destroy'])->name('belanja.delete');
     });
+
+    Route::prefix('unitKerja')->group(function () {
+        Route::get('', [UnitKerjaController::class, 'index'])->name('unitKerja.index');
+        Route::get('/create', [UnitKerjaController::class, 'create'])->name('unitKerja.create');
+        Route::post('/store', [UnitKerjaController::class, 'store'])->name('unitKerja.store');
+        Route::get('/edit/{id}', [UnitKerjaController::class, 'edit'])->name('unitKerja.edit');
+        Route::post('/update/{id}', [UnitKerjaController::class, 'update'])->name('unitKerja.update');
+        Route::delete('/delete/{id}', [UnitKerjaController::class, 'destroy'])->name('unitKerja.delete');
+
+        Route::get('/get-unitkerja-details/{id}', [UnitKerjaController::class, 'getUnitKerjaDetails'])->name('get.unitKerja.details');
+
+    });
+
 });
 
 require __DIR__.'/auth.php';

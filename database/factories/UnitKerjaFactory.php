@@ -2,27 +2,26 @@
 
 namespace Database\Factories;
 
-use App\Models\Kendaraan;
-use App\Models\MtGroup;
+use App\Models\UnitKerja;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class MtGroupFactory extends Factory
+class UnitKerjaFactory extends Factory
 {
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    protected $model = MtGroup::class;
+    protected $model = UnitKerja::class;
 
     public function definition(): array
     {
 
         return [
-            'nama_group' => $this->faker->unique()->word(),
+            'nama_unit_kerja' => $this->faker->unique()->word(),
             'bahan_bakar_minyak' => fake()->randomElement(['2', '3', '5', 'lainnya']),
             'pelumas_mesin' => fake()->randomElement(['1', '2', 'lainnya']),
             'suku_cadang' => $this->faker->optional()->word(),

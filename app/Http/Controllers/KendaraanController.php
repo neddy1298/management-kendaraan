@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kendaraan;
 use App\Models\Maintenance;
-use App\Models\MtGroup;
+use App\Models\UnitKerja;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -31,8 +31,8 @@ class KendaraanController extends Controller
      */
     public function create()
     {
-        $mt_groups = MtGroup::all();
-        return view('kendaraan.create', compact('mt_groups'));
+        $unitKerjas = UnitKerja::all();
+        return view('kendaraan.create', compact('unitKerjas'));
     }
 
     /**
@@ -51,7 +51,7 @@ class KendaraanController extends Controller
             'bbm_kendaraan' => 'required|string|max:255',
             'roda_kendaraan' => 'required|integer',
             'berlaku_sampai' => 'required|date_format:d/m/Y',
-            'mt_group' => 'required|integer',
+            'unit_kerja' => 'required|integer',
         ],[
             'required' => 'Kolom :attribute wajib diisi.',
             'integer' => 'Kolom :attribute harus berupa angka.',
@@ -64,7 +64,7 @@ class KendaraanController extends Controller
 
         $maintenanceData = [
             'nomor_registrasi' => $request->nomor_registrasi,
-            'mt_group' => $request->mt_group,
+            'unit_kerja' => $request->unit_kerja,
         ];
         Maintenance::create($maintenanceData);
 
@@ -95,13 +95,13 @@ class KendaraanController extends Controller
     {
         $kendaraan = Kendaraan::find($id);
         $maintenance = Maintenance::where('nomor_registrasi', $kendaraan->nomor_registrasi)
-            ->join('tbl_mt_group', 'tbl_maintenance.mt_group', '=', 'tbl_mt_group.id')
-            ->select('tbl_maintenance.nomor_registrasi', 'tbl_mt_group.id', 'tbl_mt_group.nama_group')
+            ->join('tbl_unit_kerja', 'tbl_maintenance.unit_kerja', '=', 'tbl_unit_kerja.id')
+            ->select('tbl_maintenance.nomor_registrasi', 'tbl_unit_kerja.id', 'tbl_unit_kerja.nama_unit_kerja')
             ->first();
     
-        $mt_groups = MtGroup::all();
+        $unitKerjas = UnitKerja::all();
     
-        return view('kendaraan.edit', compact('kendaraan', 'mt_groups', 'maintenance'));
+        return view('kendaraan.edit', compact('kendaraan', 'unitKerjas', 'maintenance'));
     }
 
     /**
