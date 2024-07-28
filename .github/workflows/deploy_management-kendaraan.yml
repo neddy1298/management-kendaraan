@@ -76,6 +76,3 @@ jobs:
           slot-name: 'Production'
           package: .
           
-      - name: Run app
-        run: php artisan serve
-          
