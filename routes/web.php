@@ -60,8 +60,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 });
 
-if (env('APP_ENV') === 'production') {
-    URL::forceScheme('https');
-}
+URL::forceScheme('https');
 
 require __DIR__.'/auth.php';
