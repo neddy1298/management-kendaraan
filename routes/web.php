@@ -10,6 +10,7 @@ use App\Http\Controllers\{
     UnitKerjaController
 };
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -58,5 +59,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
 });
+
+if (env('APP_ENV') === 'production') {
+    URL::forceScheme('https');
+}
 
 require __DIR__.'/auth.php';
