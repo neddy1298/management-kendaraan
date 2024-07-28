@@ -33,11 +33,7 @@ jobs:
       - name: Run composer install if composer.json exists
         if: steps.check_files.outputs.files_exists == 'true'
         run: composer validate --no-check-publish && composer install --prefer-dist --no-progress
-        
-
-      - name: Run app
-        run: php artisan serve
-        
+                
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
 
@@ -79,4 +75,7 @@ jobs:
           app-name: 'management-kendaraan'
           slot-name: 'Production'
           package: .
+          
+      - name: Run app
+        run: php artisan serve
           
