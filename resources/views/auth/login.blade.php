@@ -7,10 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Meta -->
-    <meta name="description" content="Best Bootstrap Admin Dashboards">
-    <meta name="author" content="Bootstrap Gallery" />
-    <link rel="canonical" href="https://www.bootstrap.gallery/">
-    <meta property="og:url" content="https://www.bootstrap.gallery">
+    <meta name="description" content="Website untuk management kendaraan Dinas Perhubungan Kota Bogor">
+    <meta name="author" content="Dishub KKL" />
+    <link rel="canonical" href="https://dishub.kotabogor.go.id/">
+    <meta property="og:url" content="https://dishub.kotabogor.go.id/">
     <meta property="og:title" content="Dishub | Management Kendaraan">
     <meta property="og:description" content="Website untuk management kendaraan Dinas Perhubungan Kota Bogor">
     <meta property="og:type" content="Website">
