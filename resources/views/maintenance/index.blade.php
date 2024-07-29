@@ -139,7 +139,7 @@
             <div class="modal-dialog modal-dialog-scrollable modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="scrollableLabel">Data Maintenance</h5>
+                        <h5 class="modal-title" id="scrollableLabel">Data Maintenance - </h5><span id="modalTanggalBelanja"></span>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -147,7 +147,6 @@
                             <div class="col-md-6">
                                 <p><strong>Nomor Registrasi:</strong> <span id="modalNomorRegistrasi"></span></p>
                                 <p><strong>Kadaluarsa Pajak:</strong> <span id="modalKadaluarsaPajak"></span></p>
-                                <p><strong>Belanja Bulan:</strong> <span id="modalTanggalBelanja"></span></p>
                                 <p><strong>Unit Kerja:</strong> <span id="modalUnitKerja"></span></p>
                                 <p><strong>Keterangan:</strong> <span id="modalKeterangan"></span></p>
                             </div>
