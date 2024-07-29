@@ -30,7 +30,7 @@
                         </div>
                         <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                             <div class="mb-3">
-                                <img src="{{ secure_asset('images/profile.png') }}" class="img-fluid" alt="Image">
+                                <img src="{{ secure_assete_asset('images/profile.png') }}" class="img-fluid" alt="Image">
                             </div>
                         </div>
                     </div>

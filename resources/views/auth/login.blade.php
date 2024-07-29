@@ -15,7 +15,7 @@
     <meta property="og:description" content="Website untuk management kendaraan Dinas Perhubungan Kota Bogor">
     <meta property="og:type" content="Website">
     <meta property="og:site_name" content="Management Kendaraan">
-    <link rel="shortcut icon" href="{{ asset('images/logokbr.ico') }}">
+    <link rel="shortcut icon" href="{{ secure_asset('images/logokbr.ico') }}">
 
     <!-- Title -->
     <title>Management Kendaraan</title>
