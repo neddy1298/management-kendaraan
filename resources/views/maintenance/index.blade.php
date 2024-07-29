@@ -19,7 +19,7 @@
                         <h3 class="text-green">
                             {{ number_format($belanja_bulan_ini, 0, ',', '.') }}.00
                         </h3>
-                        <p>Total Belanja Bulan {{ \Carbon\Carbon::now()->translatedFormat('F') }}</p>
+                        <p>Total Belanja Bulan {{ \Carbon\Carbon::now()->translatedFormat('F Y') }}</p>
                     </div>
                 </div>
             </div>
@@ -87,10 +87,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $no = 1 @endphp
-                                @foreach ($maintenances as $maintenance)
+                                @foreach ($maintenances as $index => $maintenance)
                                     <tr>
-                                        <td>{{ $no++ }}</td>
+                                        <td>{{ $index + 1 }}</td>
                                         <td>{{ $maintenance->nomor_registrasi }}</td>
                                         <td>{{ $maintenance->nama_unit_kerja }}</td>
                                         <td>Rp.
@@ -139,7 +138,7 @@
             <div class="modal-dialog modal-dialog-scrollable modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="scrollableLabel">Data Maintenance</h5>
+                        <h5 class="modal-title" id="scrollableLabel">Data Maintenance - </h5><span id="modalTanggalBelanja"></span>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -147,7 +146,6 @@
                             <div class="col-md-6">
                                 <p><strong>Nomor Registrasi:</strong> <span id="modalNomorRegistrasi"></span></p>
                                 <p><strong>Kadaluarsa Pajak:</strong> <span id="modalKadaluarsaPajak"></span></p>
-                                <p><strong>Belanja Bulan:</strong> <span id="modalTanggalBelanja"></span></p>
                                 <p><strong>Unit Kerja:</strong> <span id="modalUnitKerja"></span></p>
                                 <p><strong>Keterangan:</strong> <span id="modalKeterangan"></span></p>
                             </div>
