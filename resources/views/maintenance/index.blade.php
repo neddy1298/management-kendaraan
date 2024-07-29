@@ -19,7 +19,7 @@
                         <h3 class="text-green">
                             {{ number_format($belanja_bulan_ini, 0, ',', '.') }}.00
                         </h3>
-                        <p>Total Belanja Bulan {{ \Carbon\Carbon::now()->translatedFormat('F') }}</p>
+                        <p>Total Belanja Bulan {{ \Carbon\Carbon::now()->translatedFormat('F Y') }}</p>
                     </div>
                 </div>
             </div>
@@ -87,10 +87,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $no = 1 @endphp
-                                @foreach ($maintenances as $maintenance)
+                                @foreach ($maintenances as $index => $maintenance)
                                     <tr>
-                                        <td>{{ $no++ }}</td>
+                                        <td>{{ $index + 1 }}</td>
                                         <td>{{ $maintenance->nomor_registrasi }}</td>
                                         <td>{{ $maintenance->nama_unit_kerja }}</td>
                                         <td>Rp.
