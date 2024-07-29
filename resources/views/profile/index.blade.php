@@ -35,12 +35,35 @@
                         </div>
                     </div>
                     <!-- Row end -->
+
+                    <!-- Form start -->
+                    <form method="POST" action="{{ route('profile.update') }}">
+                        @csrf
+
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="name" class="form-label">Nama</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ old('name', auth()->user()->name) }}" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="email" class="form-label">Akun (Email)</label>
+                                <input type="email" class="form-control" id="email" name="email" value="{{ old('email', auth()->user()->email) }}" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password">
+                                <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah password</small>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- Form end -->
                 </div>
             </div>
             <!-- Card end -->
-
         </div>
-
     </div>
     <!-- Row end -->
 @endsection
