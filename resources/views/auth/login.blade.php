@@ -11,8 +11,8 @@
     <meta name="author" content="Bootstrap Gallery" />
     <link rel="canonical" href="https://www.bootstrap.gallery/">
     <meta property="og:url" content="https://www.bootstrap.gallery">
-    <meta property="og:title" content="Admin Templates - Dashboard Templates | Bootstrap Gallery">
-    <meta property="og:description" content="Marketplace for Bootstrap Admin Dashboards">
+    <meta property="og:title" content="Dishub | Management Kendaraan">
+    <meta property="og:description" content="Website untuk management kendaraan Dinas Perhubungan Kota Bogor">
     <meta property="og:type" content="Website">
     <meta property="og:site_name" content="Bootstrap Gallery">
     <link rel="shortcut icon" href="{{ asset('images/logokbr.ico') }}">
