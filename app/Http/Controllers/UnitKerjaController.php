@@ -33,7 +33,7 @@ class UnitKerjaController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'nama_unit_kerja' => 'required|string|max:255|unique',
+            'nama_unit_kerja' => 'required|string|max:255|unique:tbl_unit_kerja',
             'budget_bahan_bakar_minyak' => 'required|integer',
             'budget_pelumas_mesin' => 'required|integer',
             'budget_suku_cadang' => 'required|integer',
