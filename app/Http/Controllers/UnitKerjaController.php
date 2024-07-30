@@ -98,9 +98,16 @@ class UnitKerjaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(UnitKerja $unitKerja)
+    public function destroy($id)
     {
-        //
+        $unitkerja = unitKerja::find($id);
+
+        if ($unitkerja) {
+            $unitkerja->delete();
+            return redirect()->route('unitKerja.index')->with('success', 'Data berhasil dihapus.');
+        } else {
+            return redirect()->route('unitKerja.index')->with('error', 'Data tidak ditemukan.');
+        }
     }
 
     public function getUnitKerjaDetails($id)
