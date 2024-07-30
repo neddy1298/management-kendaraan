@@ -16,10 +16,6 @@ return new class extends Migration
                 ->on('tbl_kendaraan')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreignId('unit_kerja')
-                ->constrained('tbl_unit_kerja')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
             $table->integer('belanja_bahan_bakar_minyak')->nullable();
             $table->integer('belanja_pelumas_mesin')->nullable();
             $table->integer('belanja_suku_cadang')->nullable();

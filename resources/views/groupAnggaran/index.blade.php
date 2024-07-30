@@ -2,8 +2,8 @@
 
 @section('css')
     <!-- Data Tables -->
-    <link rel="stylesheet" href="{{ secure_asset('vendor/datatables/dataTables.bs5.css') }}">
-    <link rel="stylesheet" href="{{ secure_asset('vendor/datatables/dataTables.bs5-custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/datatables/dataTables.bs5.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/datatables/dataTables.bs5-custom.css') }}">
 @endsection
 
 @section('content')
@@ -59,37 +59,37 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($unitKerjas as $index => $unitKerja)
+                                @foreach ($groupAnggarans as $index => $groupAnggaran)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $unitKerja->nama_unit_kerja }}</td>
-                                        <td>Rp. {{ number_format($unitKerja->budget_bahan_bakar_minyak, 0, ',', '.') }}</td>
-                                        <td>Rp. {{ number_format($unitKerja->budget_pelumas_mesin, 0, ',', '.') }}</td>
-                                        <td>Rp. {{ number_format($unitKerja->budget_suku_cadang, 0, ',', '.') }}</td>
-                                        <td>Rp. {{ number_format($unitKerja->budget_total, 0, ',', '.') }}</td>
-                                        <td>{{ $unitKerja->kendaraans_count }}</td>
+                                        <td>{{ $groupAnggaran->nama_group }}</td>
+                                        <td>{{ $groupAnggaran->kode_rekening }}</td>
+                                        <td>Rp. {{ number_format($groupAnggaran->anggaran_bensin_pelumas, 0, ',', '.') }}</td>
+                                        <td>Rp. {{ number_format($groupAnggaran->anggaran_suku_cadang, 0, ',', '.') }}</td>
+                                        <td>Rp. {{ number_format($groupAnggaran->anggaran_bensin_pelumas + $groupAnggaran->anggaran_suku_cadang, 0, ',', '.') }}</td>
+                                        <td>{{ $groupAnggaran->kendaraans_count }}</td>
                                         <td>
                                             <button type="button" class="btn btn-primary btn-icon show-details"
                                                 data-bs-toggle="modal" data-bs-target="#scrollable"
-                                                data-unit-kerja-id="{{ $unitKerja->id }}"
-                                                data-nama-unit-kerja="{{ $unitKerja->nama_unit_kerja }}"
-                                                data-budget-bahan-bakar-minyak="{{ $unitKerja->budget_bahan_bakar_minyak }}"
-                                                data-budget-pelumas-mesin="{{ $unitKerja->budget_pelumas_mesin }}"
-                                                data-budget-suku-cadang="{{ $unitKerja->budget_suku_cadang }}"
-                                                data-jumlah-kendaraan="{{ $unitKerja->kendaraans_count }}">
+                                                data-unit-kerja-id="{{ $groupAnggaran->id }}"
+                                                data-nama-unit-kerja="{{ $groupAnggaran->nama_unit_kerja }}"
+                                                data-budget-bahan-bakar-minyak="{{ $groupAnggaran->budget_bahan_bakar_minyak }}"
+                                                data-budget-pelumas-mesin="{{ $groupAnggaran->budget_pelumas_mesin }}"
+                                                data-budget-suku-cadang="{{ $groupAnggaran->budget_suku_cadang }}"
+                                                data-jumlah-kendaraan="{{ $groupAnggaran->kendaraans_count }}">
                                                 <i class="bi bi-search"></i>
                                             </button>
-                                            <a href="{{ route('unitKerja.edit', $unitKerja->id) }}"
+                                            <a href="{{ route('unitKerja.edit', $groupAnggaran->id) }}"
                                                 class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
                                                 data-bs-placement="top" title="Edit">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            <form action="{{ route('unitKerja.delete', $unitKerja->id) }}" method="POST"
+                                            <form action="{{ route('unitKerja.delete', $groupAnggaran->id) }}" method="POST"
                                                 style="display: inline-block">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button class="btn btn-danger btn-icon btn-sm"
-                                                    onclick="return confirm('Kamu yakin ingin menghapus data: {{ $unitKerja->nomor_registrasi }} ?')"
+                                                    onclick="return confirm('Kamu yakin ingin menghapus data: {{ $groupAnggaran->nomor_registrasi }} ?')"
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
@@ -209,9 +209,9 @@
         });
     </script>
     <!-- Data Tables -->
-    <script src="{{ secure_asset('vendor/datatables/dataTables.min.js') }}"></script>
-    <script src="{{ secure_asset('vendor/datatables/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/dataTables.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/dataTables.bootstrap.min.js') }}"></script>
 
     <!-- Custom Data tables -->
-    <script src="{{ secure_asset('vendor/datatables/custom/custom-datatables.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/custom/custom-datatables.js') }}"></script>
 @endsection

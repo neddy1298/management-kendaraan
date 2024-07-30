@@ -64,7 +64,6 @@ class KendaraanController extends Controller
 
         $maintenanceData = [
             'nomor_registrasi' => $request->nomor_registrasi,
-            'unit_kerja' => $request->unit_kerja,
         ];
         Maintenance::create($maintenanceData);
 
@@ -76,16 +75,6 @@ class KendaraanController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function printAll()
-    {
-        return view('kendaraan.printAll');
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -93,15 +82,12 @@ class KendaraanController extends Controller
      */
     public function edit($id)
     {
-        $kendaraan = Kendaraan::find($id);
-        $maintenance = Maintenance::where('nomor_registrasi', $kendaraan->nomor_registrasi)
-            ->join('tbl_unit_kerja', 'tbl_maintenance.unit_kerja', '=', 'tbl_unit_kerja.id')
-            ->select('tbl_maintenance.nomor_registrasi', 'tbl_unit_kerja.id', 'tbl_unit_kerja.nama_unit_kerja')
-            ->first();
+        $kendaraan = Kendaraan::join('tbl_unit_kerja', 'tbl_kendaraan.unit_kerja', '=', 'tbl_unit_kerja.id')
+        ->select('tbl_kendaraan.*', 'tbl_unit_kerja.nama_unit_kerja')
+        ->find($id);
     
         $unitKerjas = UnitKerja::all();
-    
-        return view('kendaraan.edit', compact('kendaraan', 'unitKerjas', 'maintenance'));
+        return view('kendaraan.edit', compact('kendaraan', 'unitKerjas'));
     }
 
     /**
@@ -151,5 +137,18 @@ class KendaraanController extends Controller
         } else {
             return redirect()->route('kendaraan.index')->with('error', 'Data tidak ditemukan.');
         }
+    }
+
+    
+
+    /**
+     * Display the specified resource.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function printAll()
+    {
+        $datas = Kendaraan::all();
+        return view('kendaraan.printAll', compact('datas'));
     }
 }

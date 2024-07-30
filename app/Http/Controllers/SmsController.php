@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class SmsController extends Controller
 {
@@ -16,11 +17,17 @@ class SmsController extends Controller
     {
         // Using vonage API
         $url = env('VONAGE_URL');
-        $username = env('VONAGE_USERNAME');
-        $password = env('VONAGE_PASSWORD');
+        // $vonage_username = env('VONAGE_USERNAME');
+        // $vonage_password = env('VONAGE_PASSWORD');
         $cacertPath = storage_path('cacert.pem'); // Update this path to where you saved cacert.pem
-
-        $response = Http::withBasicAuth($username, $password)
+        $vonage_username = env('VONAGE_USERNAME') ?? '';
+        $vonage_password = env('VONAGE_PASSWORD') ?? '';
+        
+        if (empty($vonage_username) || empty($vonage_password)) {
+            Log::error('Vonage credentials are missing');
+            return ['error' => 'Vonage credentials are not configured'];
+        }
+        $response = Http::withBasicAuth($vonage_username, $vonage_password)
             ->withHeaders([
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json'

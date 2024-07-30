@@ -32,7 +32,7 @@
                         <div class="row">
                             <div class="col-xl-12 col-sm-12 col-12">
                                 <div class="mb-3">
-                                    <label class="form-label d-flex">Unit Kerja</label>
+                                    <label class="form-label d-flex">Nomor Registrasi</label>
                                     <select class="select-single js-states form-control @error('nomor_registrasi') is-invalid @enderror" 
                                         title="Masukkan Unit Kerja" 
                                         data-live-search="true" 

@@ -16,6 +16,7 @@ class Kendaraan extends Model
         'nomor_registrasi',
         'merk_kendaraan',
         'jenis_kendaraan',
+        'unit_kerja',
         'cc_kendaraan',
         'bbm_kendaraan',
         'roda_kendaraan',
@@ -25,6 +26,11 @@ class Kendaraan extends Model
     public function maintenance()
     {
         return $this->hasOne(Maintenance::class, 'nomor_registrasi', 'nomor_registrasi');
+    }
+
+    public function unitKerja()
+    {
+        return $this->belongsTo(UnitKerja::class, 'unit_kerja', 'id');
     }
 
     public function belanja()

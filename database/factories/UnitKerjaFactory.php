@@ -21,14 +21,10 @@ class UnitKerjaFactory extends Factory
     {
 
         return [
-            'nama_unit_kerja' => $this->faker->unique()->word(),
-            'bahan_bakar_minyak' => fake()->randomElement(['2', '3', '5', 'lainnya']),
-            'pelumas_mesin' => fake()->randomElement(['1', '2', 'lainnya']),
-            'suku_cadang' => $this->faker->optional()->word(),
-            
-            'budget_bahan_bakar_minyak' => fake()->numberBetween(100000, 10000000),
-            'budget_pelumas_mesin' => fake()->numberBetween(100000, 10000000),
-            'budget_suku_cadang' => fake()->numberBetween(100000, 10000000),
+            'nama_unit_kerja' => $this->faker->unique()->word(),            
+            'budget_bahan_bakar_minyak' => fake()->numerify('##000000'),
+            'budget_pelumas_mesin' => fake()->numerify('##000000'),
+            'budget_suku_cadang' => fake()->numerify('##000000'),
         ];
     }
 }

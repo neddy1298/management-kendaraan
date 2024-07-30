@@ -18,23 +18,9 @@ class MaintenanceController extends Controller
         $maintenances = Maintenance::all();
         $belanjas = Belanja::all();
 
-        $maintenances->each(function ($maintenance) use ($belanjas) {
-            $belanja = $belanjas->where('nomor_registrasi', $maintenance->nomor_registrasi)->first();
-
-            if ($belanja) {
-                $maintenance->update([
-                    'belanja_bahan_bakar_minyak' => $maintenance->belanja_bahan_bakar_minyak + ($belanja->belanja_bahan_bakar_minyak ?? 0),
-                    'belanja_pelumas_mesin' => $maintenance->belanja_pelumas_mesin + ($belanja->belanja_pelumas_mesin ?? 0),
-                    'belanja_suku_cadang' => $maintenance->belanja_suku_cadang + ($belanja->belanja_suku_cadang ?? 0),
-                    'keterangan' => trim($maintenance->keterangan . ' ' . ($belanja->keterangan ?? '')),
-                ]);
-            }
-        });
-
-        $maintenances = Maintenance::with(['unitKerja', 'kendaraan'])
-            ->select('tbl_maintenance.*', 'tbl_kendaraan.berlaku_sampai', 'tbl_unit_kerja.nama_unit_kerja')
-            ->join('tbl_unit_kerja', 'tbl_maintenance.unit_kerja', '=', 'tbl_unit_kerja.id')
-            ->join('tbl_kendaraan', 'tbl_maintenance.nomor_registrasi', '=', 'tbl_kendaraan.nomor_registrasi')
+        $maintenances = Maintenance::join('tbl_kendaraan', 'tbl_maintenance.nomor_registrasi', '=', 'tbl_kendaraan.nomor_registrasi')
+            ->join('tbl_unit_kerja', 'tbl_kendaraan.unit_kerja', '=', 'tbl_unit_kerja.id')
+            ->select('tbl_maintenance.*', 'tbl_kendaraan.berlaku_sampai', 'tbl_kendaraan.unit_kerja', 'tbl_unit_kerja.nama_unit_kerja')
             ->get()
             ->map(function ($maintenance) {
                 try {

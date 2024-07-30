@@ -18,11 +18,9 @@ class MaintenanceFactory extends Factory
      */
     public function definition(): array
     {
-        $unitKerja = UnitKerja::get()->pluck('id')->toArray();
-
+        
         return [
             'nomor_registrasi' => Kendaraan::factory(),
-            'unit_kerja' =>  $this->faker->randomElement($unitKerja),
         ];
     }
 }

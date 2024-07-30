@@ -15,19 +15,19 @@ class UnitKerja extends Model
 
     protected $fillable = [
         'nama_unit_kerja',
-        'bahan_bakar_minyak',
-        'pelumas_mesin',
-        'suku_cadang',
         'budget_bahan_bakar_minyak',
         'budget_pelumas_mesin',
         'budget_suku_cadang',
+        'budget_total',
         '_token',
         'created_at',
         'updated_at',
     ];
 
-    public function maintenances()
+    public function kendaraans()
     {
-        return $this->hasMany(Maintenance::class, 'unit_kerja');
+        return $this->hasMany(Kendaraan::class, 'unit_kerja');
     }
+
+    
 }
