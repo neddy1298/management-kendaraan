@@ -51,7 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('/delete/{id}', [BelanjaController::class, 'destroy'])->name('belanja.delete');
         });
 
-        Route::frefix('group')->group(function (){
+        Route::prefix('group')->group(function (){
             Route::get('', [GroupAnggaran::class, 'index'])->name('group.index');
             Route::get('/create', [GroupAnggaran::class, 'create'])->name('group.create');
             Route::post('/store', [GroupAnggaran::class, 'store'])->name('group.store');
