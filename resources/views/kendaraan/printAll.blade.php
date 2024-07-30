@@ -68,7 +68,7 @@
             </tbody>
         </table>
         <div class="footer">
-            <p>&copy; Data Permohonan KTP</p>
+            <p>&copy; Data Kendaraan Dishub Kota Bogor</p>
         </div>
     </div>
 </body>
