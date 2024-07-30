@@ -99,7 +99,7 @@
                                     <h4>Pelumas</h4>
                                     <p class="text-truncate">Pelumas Mesin</p>
                                 </div>
-                                <div class="transaction-amount text-blue">Rp {{ number_format($belanjas->sum('balanja_pelumas_mesin'), 0, ',', '.') }}</div>
+                                <div class="transaction-amount text-blue">Rp {{ number_format($belanjas->sum('belanja_pelumas_mesin'), 0, ',', '.') }}</div>
                             </div>
                             
                             <div class="transaction-block">
