@@ -18,6 +18,7 @@ class UnitKerja extends Model
         'budget_bahan_bakar_minyak',
         'budget_pelumas_mesin',
         'budget_suku_cadang',
+        'budget_total',
         '_token',
         'created_at',
         'updated_at',
