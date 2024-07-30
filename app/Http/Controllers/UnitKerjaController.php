@@ -13,8 +13,9 @@ class UnitKerjaController extends Controller
      */
     public function index()
     {
-        $unitKerjas = UnitKerja::withCount('maintenances')->get();
+        $unitKerjas = UnitKerja::withCount('kendaraans')->get();
 
+        // dd($unitKerjas);
         return view('unitKerja.index', compact('unitKerjas'));
     }
 

@@ -47,7 +47,7 @@
                             <div class="col-xl-6">
                                 <div class="mb-3">
                                     <label for="budget_bahan_bakar_minyak" class="form-label">Budget BBM</label>
-                                    <input type="text" class="form-control @error('budget_bahan_bakar_minyak') is-invalid @enderror"
+                                    <input type="number" class="form-control @error('budget_bahan_bakar_minyak') is-invalid @enderror"
                                         id="budget_bahan_bakar_minyak" name="budget_bahan_bakar_minyak" value="{{ old('budget_bahan_bakar_minyak') }}">
                                     @error('budget_bahan_bakar_minyak')
                                         <div class="invalid-feedback">{{ $message }}</div>

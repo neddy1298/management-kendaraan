@@ -53,6 +53,7 @@
                                     <th>Budget BBM</th>
                                     <th>Budget Pelumas</th>
                                     <th>Budget Suku Cadang</th>
+                                    <th>Budget Total</th>
                                     <th>Jumlah Kendaraan</th>
                                     <th>Action</th>
                                 </tr>
@@ -65,7 +66,8 @@
                                         <td>Rp. {{ number_format($unitKerja->budget_bahan_bakar_minyak, 0, ',', '.') }}</td>
                                         <td>Rp. {{ number_format($unitKerja->budget_pelumas_mesin, 0, ',', '.') }}</td>
                                         <td>Rp. {{ number_format($unitKerja->budget_suku_cadang, 0, ',', '.') }}</td>
-                                        <td>{{ $unitKerja->maintenances_count }}</td>
+                                        <td>Rp. {{ number_format($unitKerja->budget_total, 0, ',', '.') }}</td>
+                                        <td>{{ $unitKerja->kendaraans_count }}</td>
                                         <td>
                                             <button type="button" class="btn btn-primary btn-icon show-details"
                                                 data-bs-toggle="modal" data-bs-target="#scrollable"
@@ -74,7 +76,7 @@
                                                 data-budget-bahan-bakar-minyak="{{ $unitKerja->budget_bahan_bakar_minyak }}"
                                                 data-budget-pelumas-mesin="{{ $unitKerja->budget_pelumas_mesin }}"
                                                 data-budget-suku-cadang="{{ $unitKerja->budget_suku_cadang }}"
-                                                data-jumlah-kendaraan="{{ $unitKerja->maintenances_count }}">
+                                                data-jumlah-kendaraan="{{ $unitKerja->kendaraans_count }}">
                                                 <i class="bi bi-search"></i>
                                             </button>
                                             <a href="{{ route('unitKerja.edit', $unitKerja->id) }}"

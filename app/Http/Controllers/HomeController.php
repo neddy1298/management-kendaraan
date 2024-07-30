@@ -25,10 +25,9 @@ class HomeController extends Controller
             'belanja_pelumas_mesin',
             'belanja_suku_cadang',
         );
-        $maintenances = Maintenance::with(['unitKerja', 'kendaraan'])
-            ->select('tbl_maintenance.*', 'tbl_kendaraan.berlaku_sampai', 'tbl_unit_kerja.nama_unit_kerja')
-            ->join('tbl_unit_kerja', 'tbl_maintenance.unit_kerja', '=', 'tbl_unit_kerja.id')
-            ->join('tbl_kendaraan', 'tbl_maintenance.nomor_registrasi', '=', 'tbl_kendaraan.nomor_registrasi')
+        $maintenances = Kendaraan::select('tbl_maintenance.*', 'tbl_kendaraan.berlaku_sampai', 'tbl_unit_kerja.nama_unit_kerja')
+            ->join('tbl_maintenance', 'tbl_maintenance.nomor_registrasi', '=', 'tbl_kendaraan.nomor_registrasi')
+            ->join('tbl_unit_kerja', 'tbl_kendaraan.unit_kerja', '=', 'tbl_unit_kerja.id')
             ->get()
             ->map(function ($maintenance) {
                 try {

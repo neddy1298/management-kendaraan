@@ -129,7 +129,7 @@
                                 <div class="mb-3">
                                     <label for="unit_kerja" class="form-label">Unit Kerja</label>
                                     <select id="unit_kerja" name="unit_kerja" class="select-single form-control">
-                                        <option value="{{ $kendaraan->unit_kerja_id }}">{{ $kendaraan->nama_unit_kerja }}</option>
+                                        <option value="{{ $kendaraan->unit_kerja }}">{{ $kendaraan->nama_unit_kerja }}</option>
                                         @foreach ($unitKerjas as $unitKerja)
                                             <option value="{{ $unitKerja->id }}">{{ $unitKerja->nama_unit_kerja }}</option>
                                         @endforeach

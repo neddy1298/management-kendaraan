@@ -50,7 +50,7 @@
                             <div class="col-xl-6">
                                 <div class="mb-3">
                                     <label for="budget_bahan_bakar_minyak" class="form-label">Budget BBM</label>
-                                    <input type="text" id="budget_bahan_bakar_minyak" name="budget_bahan_bakar_minyak"
+                                    <input type="number" id="budget_bahan_bakar_minyak" name="budget_bahan_bakar_minyak"
                                         class="form-control @error('budget_bahan_bakar_minyak') is-invalid @enderror"
                                         value="{{ old('budget_bahan_bakar_minyak', $unitKerja->budget_bahan_bakar_minyak) }}">
                                     @error('budget_bahan_bakar_minyak')

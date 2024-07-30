@@ -24,8 +24,10 @@ class UnitKerja extends Model
         'updated_at',
     ];
 
-    public function maintenances()
+    public function kendaraans()
     {
-        return $this->hasMany(Maintenance::class, 'unit_kerja');
+        return $this->hasMany(Kendaraan::class, 'unit_kerja');
     }
+
+    
 }

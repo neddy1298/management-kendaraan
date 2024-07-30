@@ -45,31 +45,24 @@
 
     <div class="container">
         <div class="header">
-            <h1>Data Permohonan KTP</h1>
+            <h1>Data Kendaraan</h1>
         </div>
         <table class="data-table">
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>NIK</th>
-                    <th>NKK</th>
-                    <th>Nama</th>
-                    <th>Jenis Permohonan</th>
-                    <th>Tanggal Permohonan</th>
-                    <th>Keterangan</th>
+                    <th>Nomor Registrasi</th>
+                    <th>Merk Kendaraan</th>
+                    <th>CC Kendaraan</th>
                 </tr>
             </thead>
             <tbody>
-                @php $no = 0 @endphp
-                @foreach ($datas as $data)
+                @foreach ($datas as $index => $data)
                     <tr>
-                        <td>{{ $no += 1 }} </td>
-                        <td>{{ $data->nik }}</td>
-                        <td>{{ $data->nkk }}</td>
-                        <td>{{ $data->nama }}</td>
-                        <td>{{ $data->jenis_permohonan }}</td>
-                        <td>{{ $data->created_at }}</td>
-                        <td>{{ $data->keterangan }}</td>
+                        <td>{{ $index + 1 }} </td>
+                        <td>{{ $data->nomor_registrasi }}</td>
+                        <td>{{ $data->merk_kendaraan }}</td>
+                        <td>{{ $data->cc_kendaraan }} CC</td>
                     </tr>
                 @endforeach
             </tbody>
