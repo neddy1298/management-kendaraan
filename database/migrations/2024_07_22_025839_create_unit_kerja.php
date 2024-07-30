@@ -13,11 +13,7 @@ return new class extends Migration
     {
         Schema::create('tbl_unit_kerja', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_unit_kerja')->unique();
-            $table->string('bahan_bakar_minyak')->nullable();
-            $table->string('pelumas_mesin')->nullable();
-            $table->string('suku_cadang')->nullable();
-            
+            $table->string('nama_unit_kerja')->unique();            
             $table->integer('budget_bahan_bakar_minyak')->nullable();
             $table->integer('budget_pelumas_mesin')->nullable();
             $table->integer('budget_suku_cadang')->nullable();

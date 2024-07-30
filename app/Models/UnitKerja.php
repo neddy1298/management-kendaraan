@@ -15,9 +15,6 @@ class UnitKerja extends Model
 
     protected $fillable = [
         'nama_unit_kerja',
-        'bahan_bakar_minyak',
-        'pelumas_mesin',
-        'suku_cadang',
         'budget_bahan_bakar_minyak',
         'budget_pelumas_mesin',
         'budget_suku_cadang',
