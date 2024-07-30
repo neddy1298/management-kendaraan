@@ -22,9 +22,9 @@ class UnitKerjaFactory extends Factory
 
         return [
             'nama_unit_kerja' => $this->faker->unique()->word(),            
-            'budget_bahan_bakar_minyak' => fake()->numberBetween(100000, 10000000),
-            'budget_pelumas_mesin' => fake()->numberBetween(100000, 10000000),
-            'budget_suku_cadang' => fake()->numberBetween(100000, 10000000),
+            'budget_bahan_bakar_minyak' => fake()->numerify('##000000'),
+            'budget_pelumas_mesin' => fake()->numerify('##000000'),
+            'budget_suku_cadang' => fake()->numerify('##000000'),
         ];
     }
 }
