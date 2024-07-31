@@ -74,7 +74,7 @@
 
     <div class="container">
         <div class="header">
-            <h1>Data Kendaraan</h1>
+            <h1>Data Belanja</h1>
         </div>
         <table class="data-table">
             <thead>
