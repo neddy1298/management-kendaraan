@@ -47,10 +47,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('', [BelanjaController::class, 'index'])->name('belanja.index');
             Route::get('/create', [BelanjaController::class, 'create'])->name('belanja.create');
             Route::post('/store', [BelanjaController::class, 'store'])->name('belanja.store');
+            Route::get('/print', [BelanjaController::class, 'printAll'])->name('belanja.printAll');
             Route::delete('/delete/{id}', [BelanjaController::class, 'destroy'])->name('belanja.delete');
         });
 
-        Route::frefix('group')->group(function (){
+        Route::prefix('group')->group(function (){
             Route::get('', [GroupAnggaran::class, 'index'])->name('group.index');
             Route::get('/create', [GroupAnggaran::class, 'create'])->name('group.create');
             Route::post('/store', [GroupAnggaran::class, 'store'])->name('group.store');

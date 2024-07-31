@@ -120,4 +120,20 @@ class BelanjaController extends Controller
 
         return redirect()->route('belanja.index')->with('error', 'Data tidak ditemukan.');
     }
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
+
+    public function printAll()
+    {
+        $datas = Belanja::all();
+        return view('belanja.printAll', compact('datas'));
+    }
 }
+
+
+    

@@ -52,11 +52,8 @@
                 <tr>
                     <th>No</th>
                     <th>Nomor Registrasi</th>
-                    <th>Merk Kendaraan</th>
-                    <th>Jenis Kendaraan</th>
-                    <th>CC Kendaraan</th>
-                    <th>BBM Kendaraan</th>
-                    <th>Roda Kendaraan</th>
+                    <th>Total Belanja</th>
+                    <th>Tanggal Belanja</th>
                 </tr>
             </thead>
             <tbody>
@@ -64,17 +61,14 @@
                     <tr>
                         <td>{{ $index + 1 }} </td>
                         <td>{{ $data->nomor_registrasi }}</td>
-                        <td>{{ $data->merk_kendaraan }}</td>
-                        <td>{{ $data->jenis_kendaraan }}</td>
-                        <td>{{ $data->cc_kendaraan }} CC</td>
-                        <td>{{ $data->bbm_kendaraan }}</td>
-                        <td>{{ $data->roda_kendaraan }}</td>
+                        <td>Rp. {{ number_format($data->belanja_bahan_bakar_minyak + $data->belanja_pelumas_mesin + $data->belanja_suku_cadang, 0, ',', '.') }}</td>
+                        <td>{{ $data->tanggal_belanja }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
         <div class="footer">
-            <p>&copy; Data Kendaraan Dishub Kota Bogor</p>
+            <p>&copy; Data Belanja Dishub Kota Bogor</p>
         </div>
     </div>
 </body>
