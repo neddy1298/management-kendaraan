@@ -7,37 +7,66 @@
     <title>Data Print</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-        }
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
 
-        .container {
-            width: 100%;
-            margin: auto;
-            padding: auto;
-        }
+    .container {
+        width: 80%;
+        margin: auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
 
-        .header,
-        .footer {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+    .header,
+    .footer {
+        text-align: center;
+        padding: 15px;
+        background-color: #3d6df2;
+        color: #fff;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
 
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
+    .header h1,
+    .footer p {
+        margin: 0;
+    }
 
-        .data-table th,
-        .data-table td {
-            border: 1px solid #000;
-            padding: 8px;
-            text-align: center;
-        }
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
 
-        .data-table th {
-            background-color: #f2f2f2;
-        }
+    .data-table th,
+    .data-table td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+    }
+
+    .data-table th {
+        background-color: #3d6df2;
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .data-table td {
+        background-color: #fff;
+    }
+
+    .data-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .data-table tr:hover {
+        background-color: #f1f1f1;
+    }
     </style>
 </head>
 
