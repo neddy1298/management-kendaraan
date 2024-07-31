@@ -10,7 +10,7 @@ use App\Http\Controllers\{
     SmsController,
     UnitKerjaController
 };
-
+use App\Models\GroupAnggaran;
 use Illuminate\Support\Facades\Route;
 
 
@@ -48,6 +48,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/create', [BelanjaController::class, 'create'])->name('belanja.create');
             Route::post('/store', [BelanjaController::class, 'store'])->name('belanja.store');
             Route::delete('/delete/{id}', [BelanjaController::class, 'destroy'])->name('belanja.delete');
+        });
+
+        Route::frefix('group')->group(function (){
+            Route::get('', [GroupAnggaran::class, 'index'])->name('group.index');
+            Route::get('/create', [GroupAnggaran::class, 'create'])->name('group.create');
+            Route::post('/store', [GroupAnggaran::class, 'store'])->name('group.store');
+            Route::delete('/delete/{id}', [GroupAnggaran::class, 'destroy'])->name('group.delete');
         });
 
         Route::prefix('unitKerja')->group(function () {

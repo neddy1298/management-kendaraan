@@ -63,9 +63,9 @@ class BelanjaController extends Controller
             $maintenance = Maintenance::where('nomor_registrasi', $validatedData['nomor_registrasi'])->first();
             if ($maintenance) {
                 $maintenance->update([
-                    'belanja_bahan_bakar_minyak' => $maintenance->belanja_bahan_bakar_minyak + ($belanja->belanja_bahan_bakar_minyak ?? 0),
-                    'belanja_pelumas_mesin' => $maintenance->belanja_pelumas_mesin + ($belanja->belanja_pelumas_mesin ?? 0),
-                    'belanja_suku_cadang' => $maintenance->belanja_suku_cadang + ($belanja->belanja_suku_cadang ?? 0),
+                    'belanja_bahan_bakar_minyak' => $maintenance->belanja_bahan_bakar_minyak + ($validatedData['belanja_bahan_bakar_minyak'] ?? 0),
+                    'belanja_pelumas_mesin' => $maintenance->belanja_pelumas_mesin + ($validatedData['belanja_pelumas_mesin'] ?? 0),
+                    'belanja_suku_cadang' => $maintenance->belanja_suku_cadang + ($validatedData['belanja_suku_cadang'] ?? 0),
                     'keterangan' => $maintenance->keterangan . ' ' . $belanja->keterangan,
                 ]);
             }
