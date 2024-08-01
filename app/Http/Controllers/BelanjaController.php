@@ -65,7 +65,6 @@ class BelanjaController extends Controller
             $belanjaMonth = Carbon::createFromFormat('Y-m-d', $validatedData['tanggal_belanja'])->format('m');
 
             if ($maintenanceMonth == $belanjaMonth) {
-                echo 'Maintenance belum lewat';
                 $maintenance->update([
                     'belanja_bahan_bakar_minyak' => $maintenance->belanja_bahan_bakar_minyak + ($validatedData['belanja_bahan_bakar_minyak'] ?? 0),
                     'belanja_pelumas_mesin' => $maintenance->belanja_pelumas_mesin + ($validatedData['belanja_pelumas_mesin'] ?? 0),
@@ -75,7 +74,6 @@ class BelanjaController extends Controller
                     'keterangan' => $maintenance->keterangan . ' ' . $validatedData['keterangan'],
                 ]);
             } else {
-                echo 'Maintenance sudah lewat';
                 $new_maintenance = Maintenance::create([
                     'kendaraan_id' => $maintenance->kendaraan_id,
                     'tanggal_maintenance' => now()->format('Y-m-d'),
