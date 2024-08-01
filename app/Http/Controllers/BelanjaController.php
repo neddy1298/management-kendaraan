@@ -17,7 +17,7 @@ class BelanjaController extends Controller
      */
     public function index()
     {
-        $belanjas = Belanja::orderBy('created_at', 'desc')->with('maintenance')->get();
+        $belanjas = Belanja::all();
         return view('belanja.index', compact('belanjas'));
     }
 
@@ -42,9 +42,8 @@ class BelanjaController extends Controller
      */
     public function store(Request $request)
     {
-
         $validatedData = $request->validate([
-            'maintenance_id' => 'required|string|max:255',
+            'nomor_registrasi' => 'required|string|max:255',
             'belanja_bahan_bakar_minyak' => 'required_without_all:belanja_pelumas_mesin,belanja_suku_cadang|nullable|integer',
             'belanja_pelumas_mesin' => 'required_without_all:belanja_bahan_bakar_minyak,belanja_suku_cadang|nullable|integer',
             'belanja_suku_cadang' => 'required_without_all:belanja_bahan_bakar_minyak,belanja_pelumas_mesin|nullable|integer',
@@ -106,7 +105,7 @@ class BelanjaController extends Controller
      */
     public function show(Belanja $belanja)
     {
-        return view('belanja.show', compact('belanja'));
+        return view('belanja.show', compact('belanjas'));
     }
 
     /**
@@ -121,10 +120,10 @@ class BelanjaController extends Controller
 
         if ($belanja) {
             try {
-                $maintenance_id = $belanja->maintenance_id;
+                $nomor_registrasi = $belanja->nomor_registrasi;
                 $belanja->delete();
 
-                $maintenance = Maintenance::where('maintenance_id', $maintenance_id)->first();
+                $maintenance = Maintenance::where('nomor_registrasi', $nomor_registrasi)->first();
                 if ($maintenance) {
                     $maintenance->update([
                         'belanja_bahan_bakar_minyak' => $maintenance->belanja_bahan_bakar_minyak - ($belanja->belanja_bahan_bakar_minyak ?? 0),
@@ -156,3 +155,6 @@ class BelanjaController extends Controller
         return view('belanja.printAll', compact('datas'));
     }
 }
+
+
+    

@@ -65,6 +65,7 @@ class MasterAnggaranController extends Controller
         return view('masterAnggaran.edit', compact('masterAnggaran'));
     }
 
+
     /**
      * Update the specified resource in storage.
      */
