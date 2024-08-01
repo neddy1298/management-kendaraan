@@ -74,7 +74,7 @@ class MasterAnggaranController extends Controller
         $masterAnggaran->update($request->all());
 
         return redirect()->route('masterAnggaran.index')
-            ->with('success', 'Anggaran Berhasil dibuat.');
+            ->with('success', 'Anggaran Berhasil diubah.');
     }
 
     /**

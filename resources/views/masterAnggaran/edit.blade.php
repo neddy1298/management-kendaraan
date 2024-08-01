@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'Home', 'page2' => 'Tambah', 'page3' => ''])
+@extends('layouts.app', ['page' => 'Anggaran', 'page2' => 'Pertahun', 'page3' => 'Edit'])
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('vendor/daterange/daterange.css') }}">
@@ -30,7 +30,7 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('masterAnggaran.update', $masterAnggaran->id ?? 1) }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('masterAnggaran.update', $masterAnggaran->id) }}" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-xl-12">
