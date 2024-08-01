@@ -53,11 +53,12 @@ class MasterAnggaranController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function edit($id)
     {
-        $masterAnggaran = MasterAnggaran::all()->first();
+        $masterAnggaran = MasterAnggaran::find($id);
         return view('masterAnggaran.edit', compact('masterAnggaran'));
     }
+
 
     /**
      * Update the specified resource in storage.

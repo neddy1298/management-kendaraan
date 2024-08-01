@@ -61,7 +61,7 @@ class GroupAnggaranController extends Controller
      */
     public function edit($id)
     {
-        $groupAnggaran = GroupAnggaran::find($id)->with('masterAnggaran')->first();
+        $groupAnggaran = GroupAnggaran::with('masterAnggaran')->find($id);
 
         $masterAnggarans = MasterAnggaran::all();
         return view('groupAnggaran.edit', compact('groupAnggaran', 'masterAnggarans'));

@@ -28,7 +28,7 @@ class BelanjaController extends Controller
      */
     public function create()
     {
-        $kendaraans = Kendaraan::select('nomor_registrasi', 'merk_kendaraan', 'jenis_kendaraan')->get();
+        $kendaraans = Kendaraan::all();
         return view('belanja.create', compact('kendaraans'));
     }
 
@@ -84,7 +84,7 @@ class BelanjaController extends Controller
      */
     public function show(Belanja $belanja)
     {
-        return view('belanja.show', compact('belanja'));
+        return view('belanja.show', compact('belanjas'));
     }
 
     /**
