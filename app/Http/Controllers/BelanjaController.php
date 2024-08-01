@@ -28,8 +28,8 @@ class BelanjaController extends Controller
      */
     public function create()
     {
-        $kendaraans = Kendaraan::all();
-        return view('belanja.create', compact('kendaraans'));
+        $maintenances = Maintenance::with('kendaraan')->get();
+        return view('belanja.create', compact('maintenances'));
     }
 
     /**

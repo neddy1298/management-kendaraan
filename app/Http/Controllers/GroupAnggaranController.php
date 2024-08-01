@@ -13,7 +13,7 @@ class GroupAnggaranController extends Controller
      */
     public function index()
     {
-        $groupAnggarans = GroupAnggaran::all();
+        $groupAnggarans = GroupAnggaran::orderBy('created_at', 'desc')->get();
         return view('groupAnggaran.index', compact('groupAnggarans'));
     }
 
@@ -22,7 +22,7 @@ class GroupAnggaranController extends Controller
      */
     public function create()
     {
-        $masterAnggarans = MasterAnggaran::all();
+        $masterAnggarans = MasterAnggaran::orderBy('created_at', 'desc')->get();
         return view('groupAnggaran.create', compact('masterAnggarans'));
     }
 

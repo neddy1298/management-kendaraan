@@ -30,7 +30,7 @@
                     </div>
                     <div class="sale-details">
                         <h3 class="text-red">
-                            {{ $expireDate->count() }}/{{ $maintenances->count() }}
+                            {{ $isExpire->count() }}/{{ $maintenances->count() }}
                         </h3>
                         <p>Kadaluarsa Pajak</p>
                     </div>
