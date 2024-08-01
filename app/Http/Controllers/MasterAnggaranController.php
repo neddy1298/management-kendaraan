@@ -12,7 +12,7 @@ class MasterAnggaranController extends Controller
      */
     public function index()
     {
-        $masterAnggarans = MasterAnggaran::all();
+        $masterAnggarans = MasterAnggaran::orderBy('created_at', 'desc')->get();
         return view('masterAnggaran.index', compact('masterAnggarans'));
     }
 
@@ -36,7 +36,7 @@ class MasterAnggaranController extends Controller
             'anggaran' => 'required',
         ]);
 
-        MasterAnggaran::create($request->all());
+        MasterAnggaran::create($request->orderBy('created_at', 'desc')->get());
 
         return redirect()->route('masterAnggaran.index')
             ->with('success', 'Anggaran Berhasil dibuat.');

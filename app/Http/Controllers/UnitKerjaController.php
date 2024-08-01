@@ -25,7 +25,7 @@ class UnitKerjaController extends Controller
      */
     public function create()
     {
-        $groupAnggarans = GroupAnggaran::all();
+        $groupAnggarans = GroupAnggaran::orderBy('created_at', 'desc')->get();
         return view('unitKerja.create', compact('groupAnggarans'));
     }
 
@@ -69,7 +69,7 @@ class UnitKerjaController extends Controller
     public function edit($id)
     {
         $unitKerja = UnitKerja::find($id)->with('groupAnggaran')->first();
-        $groupAnggarans = GroupAnggaran::all();
+        $groupAnggarans = GroupAnggaran::orderBy('created_at', 'desc')->get();
         return view('unitKerja.edit', compact('unitKerja', 'groupAnggarans'));
     }
 

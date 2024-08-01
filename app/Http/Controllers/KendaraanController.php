@@ -30,7 +30,7 @@ class KendaraanController extends Controller
      */
     public function create()
     {
-        $unitKerjas = UnitKerja::all();
+        $unitKerjas = UnitKerja::orderBy('created_at', 'desc')->get();
         return view('kendaraan.create', compact('unitKerjas'));
     }
 
@@ -83,7 +83,7 @@ class KendaraanController extends Controller
     public function edit($id)
     {
         $kendaraan = Kendaraan::find($id)->with('unitKerja')->first();
-        $unitKerjas = UnitKerja::all();
+        $unitKerjas = UnitKerja::orderBy('created_at', 'desc')->get();
         return view('kendaraan.edit', compact('kendaraan', 'unitKerjas'));
     }
 
@@ -146,7 +146,7 @@ class KendaraanController extends Controller
      */
     public function printAll()
     {
-        $datas = Kendaraan::all();
+        $datas = Kendaraan::orderBy('created_at', 'desc')->get();
         return view('kendaraan.printAll', compact('datas'));
     }
 }

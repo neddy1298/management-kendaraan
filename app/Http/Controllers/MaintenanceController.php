@@ -15,12 +15,12 @@ class MaintenanceController extends Controller
      */
     public function index()
     {
-        // $maintenances = Maintenance::all();
-        $belanjas = Belanja::all();
+        $belanjas = Belanja::orderBy('created_at', 'desc')->get();
 
         $maintenances = Maintenance::join('kendaraans', 'maintenances.kendaraan_id', '=', 'kendaraans.id')
             ->join('unit_kerjas', 'kendaraans.unit_kerja_id', '=', 'unit_kerjas.id')
             ->select('maintenances.*', 'kendaraans.berlaku_sampai', 'kendaraans.nomor_registrasi', 'unit_kerjas.nama_unit_kerja')
+            ->orderBy('maintenances.created_at', 'desc')
             ->get();
 
         $isExpire = $maintenances->filter(function ($maintenance) {

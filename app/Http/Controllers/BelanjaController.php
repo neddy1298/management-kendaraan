@@ -17,7 +17,7 @@ class BelanjaController extends Controller
      */
     public function index()
     {
-        $belanjas = Belanja::all();
+        $belanjas = Belanja::orderBy('created_at', 'desc')->get();
         return view('belanja.index', compact('belanjas'));
     }
 
@@ -40,6 +40,7 @@ class BelanjaController extends Controller
      */
     public function store(Request $request)
     {
+
         $validatedData = $request->validate([
             'nomor_registrasi' => 'required|string|max:255',
             'belanja_bahan_bakar_minyak' => 'required_without_all:belanja_pelumas_mesin,belanja_suku_cadang|nullable|integer',
@@ -60,7 +61,7 @@ class BelanjaController extends Controller
         try {
             $belanja = Belanja::create($validatedData);
 
-            $maintenance = Maintenance::where('nomor_registrasi', $validatedData['nomor_registrasi'])->first();
+            $maintenance = Maintenance::find($validatedData['nomor_registrasi']);
             if ($maintenance) {
                 $maintenance->update([
                     'belanja_bahan_bakar_minyak' => $maintenance->belanja_bahan_bakar_minyak + ($validatedData['belanja_bahan_bakar_minyak'] ?? 0),
@@ -134,6 +135,3 @@ class BelanjaController extends Controller
         return view('belanja.printAll', compact('datas'));
     }
 }
-
-
-    
