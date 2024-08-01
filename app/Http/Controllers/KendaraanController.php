@@ -51,7 +51,7 @@ class KendaraanController extends Controller
             'roda_kendaraan' => 'required|integer',
             'berlaku_sampai' => 'required|date_format:d/m/Y',
             'unit_kerja_id' => 'required|integer',
-        ],[
+        ], [
             'required' => 'Kolom :attribute wajib diisi.',
             'integer' => 'Kolom :attribute harus berupa angka.',
             'date_format' => 'Kolom :attribute tidak sesuai format d/m/Y.',
@@ -62,10 +62,14 @@ class KendaraanController extends Controller
 
         $kendaraan = Kendaraan::create($validatedData);
 
-        $maintenanceData = [
-            'kendaraan_id' => $kendaraan->id,
-        ];
-        Maintenance::create($maintenanceData);
+        if ($kendaraan->wasRecentlyCreated) {
+            if ($kendaraan->maintenance->isEmpty()) {
+                Maintenance::create([
+                    'kendaraan_id' => $kendaraan->id,
+                    'tanggal_maintenance' => Carbon::now()->format('Y-m-d'),
+                ]);
+            }
+        }
 
         if ($kendaraan->wasRecentlyCreated) {
             return redirect()->route('kendaraan.index')->with('success', 'Data berhasil disimpan.');
@@ -112,7 +116,7 @@ class KendaraanController extends Controller
         ]);
 
         $validatedData['berlaku_sampai'] = Carbon::createFromFormat('d/m/Y', $validatedData['berlaku_sampai'])->format('Y-m-d');
-        
+
         $kendaraan = Kendaraan::find($id);
         $kendaraan->update($validatedData);
 
@@ -137,7 +141,7 @@ class KendaraanController extends Controller
         }
     }
 
-    
+
 
     /**
      * Display the specified resource.

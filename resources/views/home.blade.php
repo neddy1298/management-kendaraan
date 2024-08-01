@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="col-xxl-4 col-sm-6 col-12">
-            <a href="{{ route('anggaran.edit') }}">
+            <a href="{{ route('masterAnggaran.index') }}">
                 <div class="stats-tile">
                     <div class="sale-icon shade-blue">
                         <h4 class="text-white">Rp</h4>

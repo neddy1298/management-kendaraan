@@ -20,6 +20,7 @@ class MaintenanceFactory extends Factory
         
         return [
             'kendaraan_id' => Kendaraan::factory(),
+            'tanggal_maintenance' => $this->faker->date(),
         ];
     }
 }

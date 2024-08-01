@@ -29,14 +29,20 @@ class MasterAnggaranController extends Controller
      */
     public function store(Request $request)
     {
-        
-        $request->validate([
-            'kode_rekening' => 'required',
-            'nama_rekening' => 'required',
-            'anggaran' => 'required',
-        ]);
 
-        MasterAnggaran::create($request->orderBy('created_at', 'desc')->get());
+        $masterAnggaran = $request->validate(
+            [
+                'kode_rekening' => 'required|string|max:255',
+                'nama_rekening' => 'required|string|max:255',
+                'anggaran' => 'required|integer',
+            ],
+            [
+                'required' => 'Kolom :attribute wajib diisi.',
+                'integer' => 'Kolom :attribute harus berupa angka.',
+            ]
+        );
+
+        MasterAnggaran::create($masterAnggaran);
 
         return redirect()->route('masterAnggaran.index')
             ->with('success', 'Anggaran Berhasil dibuat.');
@@ -53,9 +59,9 @@ class MasterAnggaranController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function edit($id)
     {
-        $masterAnggaran = MasterAnggaran::all()->first();
+        $masterAnggaran = MasterAnggaran::find($id);
         return view('masterAnggaran.edit', compact('masterAnggaran'));
     }
 

@@ -83,6 +83,7 @@
                                     <th>Belanja Pelumas</th>
                                     <th>Belanja Suku Cadang</th>
                                     <th>Kadaluarsa Pajak</th>
+                                    <th>Bulan</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -107,6 +108,9 @@
                                                 class="badge {{ strtotime($maintenance->berlaku_sampai) < time() ? 'shade-red' : 'shade-green' }} min-90">
                                                 {{ \Carbon\Carbon::parse($maintenance->berlaku_sampai)->translatedFormat('d F Y') }}
                                             </span>
+                                        </td>
+                                        <td>
+                                            {{ \Carbon\Carbon::parse($maintenance->tanggal_maintenance)->translatedFormat('F') }}
                                         </td>
                                         <td>
                                             <button type="button" class="btn btn-primary btn-icon show-details"
@@ -138,7 +142,8 @@
             <div class="modal-dialog modal-dialog-scrollable modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="scrollableLabel">Data Maintenance - </h5><span id="modalTanggalBelanja"></span>
+                        <h5 class="modal-title" id="scrollableLabel">Data Maintenance - </h5><span
+                            id="modalTanggalBelanja"></span>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -194,7 +199,8 @@
             detailButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const nomorRegistrasi = this.getAttribute('data-nomor-registrasi');
-                    const bahanBakarMinyak = parseInt(this.getAttribute('data-bahan-bakar-minyak') || 0);
+                    const bahanBakarMinyak = parseInt(this.getAttribute(
+                        'data-bahan-bakar-minyak') || 0);
                     const pelumasMesin = parseInt(this.getAttribute('data-pelumas-mesin') || 0);
                     const sukuCadang = parseInt(this.getAttribute('data-suku-cadang') || 0);
                     const totalBelanja = parseInt(this.getAttribute('data-total-belanja') || 0);
@@ -204,10 +210,14 @@
                     const unitKerja = this.getAttribute('data-unit-kerja');
 
                     document.getElementById('modalNomorRegistrasi').textContent = nomorRegistrasi;
-                    document.getElementById('modalBahanBakarMinyak').textContent = bahanBakarMinyak.toLocaleString('id-ID');
-                    document.getElementById('modalPelumasMesin').textContent = pelumasMesin.toLocaleString('id-ID');
-                    document.getElementById('modalSukuCadang').textContent = sukuCadang.toLocaleString('id-ID');
-                    document.getElementById('modalTotalBelanja').textContent = totalBelanja.toLocaleString('id-ID');
+                    document.getElementById('modalBahanBakarMinyak').textContent = bahanBakarMinyak
+                        .toLocaleString('id-ID');
+                    document.getElementById('modalPelumasMesin').textContent = pelumasMesin
+                        .toLocaleString('id-ID');
+                    document.getElementById('modalSukuCadang').textContent = sukuCadang
+                        .toLocaleString('id-ID');
+                    document.getElementById('modalTotalBelanja').textContent = totalBelanja
+                        .toLocaleString('id-ID');
                     document.getElementById('modalTanggalBelanja').textContent = tanggalBelanja;
                     document.getElementById('modalKadaluarsaPajak').textContent = kadaluarsaPajak;
                     document.getElementById('modalKeterangan').textContent = keterangan;
@@ -220,8 +230,10 @@
                         success: function(data) {
                             // Sort data by tanggal_belanja in descending order
                             data.sort((a, b) => {
-                                const dateA = a.tanggal_belanja.split('-').reverse().join('-');
-                                const dateB = b.tanggal_belanja.split('-').reverse().join('-');
+                                const dateA = a.tanggal_belanja.split('-')
+                                    .reverse().join('-');
+                                const dateB = b.tanggal_belanja.split('-')
+                                    .reverse().join('-');
                                 return new Date(dateB) - new Date(dateA);
                             });
 

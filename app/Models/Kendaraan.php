@@ -29,7 +29,7 @@ class Kendaraan extends Model
 
     public function maintenance()
     {
-        return $this->hasOne(Maintenance::class);
+        return $this->hasMany(Maintenance::class);
     }
 
     protected $appends = ['isExpire'];
