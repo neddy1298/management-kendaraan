@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\GroupAnggaran;
 use App\Models\Kendaraan;
 use App\Models\Maintenance;
+use App\Models\MasterAnggaran;
 use App\Models\UnitKerja;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -16,11 +18,13 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'admin',
             'email' => 'admin@gmail.com',
-            'role' => 'admin',
+            'password' => bcrypt('admin'),
         ]);
 
-        // $path = storage_path('app/public/tbl_kendaraan.sql');
+        // $path = storage_path('app/public/kendaraans.sql');
         // DB::unprepared(file_get_contents($path));
+        MasterAnggaran::factory()->count(2)->create();
+        GroupAnggaran::factory()->count(10)->create();
         UnitKerja::factory()->count(10)->create();
         Kendaraan::factory()
         ->count(100)

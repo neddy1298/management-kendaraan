@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -8,33 +9,27 @@ class Kendaraan extends Model
 {
     use HasFactory;
 
-    protected $table = 'tbl_kendaraan';
-
-    protected $primaryKey = 'id';
+    protected $table = 'kendaraans';
 
     protected $fillable = [
+        'unit_kerja_id',
         'nomor_registrasi',
         'merk_kendaraan',
         'jenis_kendaraan',
-        'unit_kerja',
         'cc_kendaraan',
         'bbm_kendaraan',
         'roda_kendaraan',
         'berlaku_sampai',
     ];
 
-    public function maintenance()
-    {
-        return $this->hasOne(Maintenance::class, 'nomor_registrasi', 'nomor_registrasi');
-    }
-
     public function unitKerja()
     {
-        return $this->belongsTo(UnitKerja::class, 'unit_kerja', 'id');
+        return $this->belongsTo(UnitKerja::class);
     }
 
-    public function belanja()
+    public function maintenance()
     {
-        return $this->hasMany(Belanja::class, 'nomor_registrasi', 'nomor_registrasi');
+        return $this->hasOne(Maintenance::class);
     }
+
 }

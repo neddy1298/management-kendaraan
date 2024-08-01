@@ -17,10 +17,9 @@ class KendaraanController extends Controller
      */
     public function index()
     {
-        $kendaraans = Kendaraan::all()->map(function ($kendaraan) {
-            $kendaraan->berlaku_sampai = Carbon::createFromFormat('d/m/Y', $kendaraan->berlaku_sampai)->format('Y/m/d');
-            return $kendaraan;
-        });
+        $kendaraans = Kendaraan::join('unit_kerjas', 'kendaraans.unit_kerja_id', '=', 'unit_kerjas.id')
+            ->select('kendaraans.*', 'unit_kerjas.nama_unit_kerja')
+            ->get();
         return view('kendaraan.index', compact('kendaraans'));
     }
 
@@ -44,7 +43,7 @@ class KendaraanController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'nomor_registrasi' => 'required|string|max:255|unique:tbl_kendaraan',
+            'nomor_registrasi' => 'required|string|max:255|unique:kendaraans',
             'merk_kendaraan' => 'required|string|max:255',
             'jenis_kendaraan' => 'required|string|max:255',
             'cc_kendaraan' => 'required|integer',
@@ -82,8 +81,8 @@ class KendaraanController extends Controller
      */
     public function edit($id)
     {
-        $kendaraan = Kendaraan::join('tbl_unit_kerja', 'tbl_kendaraan.unit_kerja', '=', 'tbl_unit_kerja.id')
-        ->select('tbl_kendaraan.*', 'tbl_unit_kerja.nama_unit_kerja')
+        $kendaraan = Kendaraan::join('unit_kerjas', 'kendaraans.unit_kerja_id', '=', 'unit_kerjas.id')
+        ->select('kendaraans.*', 'unit_kerjas.nama_unit_kerja')
         ->find($id);
     
         $unitKerjas = UnitKerja::all();

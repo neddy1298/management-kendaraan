@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Kendaraan;
-use App\Models\UnitKerja;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +19,7 @@ class MaintenanceFactory extends Factory
     {
         
         return [
-            'nomor_registrasi' => Kendaraan::factory(),
+            'kendaraan_id' => Kendaraan::factory(),
         ];
     }
 }

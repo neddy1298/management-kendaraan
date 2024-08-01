@@ -11,14 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_group_anggaran', function (Blueprint $table) {
+        Schema::create('group_anggarans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_master_anggaran')->constrained('tbl_master_anggaran');
+            $table->foreignId('master_anggaran_id')
+                ->constrained('master_anggarans')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->string('kode_rekening');
             $table->string('nama_group');
-            $table->bigInteger('anggaran_bensin_pelumas');
-            $table->bigInteger('anggaran_suku_cadang');
-            $table->string('keterangan');
+            $table->bigInteger('anggaran_bahan_bakar_minyak')->nullable();
+            $table->bigInteger('anggaran_pelumas_mesin')->nullable();
+            $table->bigInteger('anggaran_suku_cadang')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_group_anggaran');
+        Schema::dropIfExists('group_anggarans');
     }
 };

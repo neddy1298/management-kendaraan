@@ -18,9 +18,9 @@ class MaintenanceController extends Controller
         $maintenances = Maintenance::all();
         $belanjas = Belanja::all();
 
-        $maintenances = Maintenance::join('tbl_kendaraan', 'tbl_maintenance.nomor_registrasi', '=', 'tbl_kendaraan.nomor_registrasi')
-            ->join('tbl_unit_kerja', 'tbl_kendaraan.unit_kerja', '=', 'tbl_unit_kerja.id')
-            ->select('tbl_maintenance.*', 'tbl_kendaraan.berlaku_sampai', 'tbl_kendaraan.unit_kerja', 'tbl_unit_kerja.nama_unit_kerja')
+        $maintenances = Maintenance::join('kendaraans', 'maintenances.kendaraan_id', '=', 'kendaraans.id')
+            ->join('unit_kerjas', 'kendaraans.unit_kerja_id', '=', 'unit_kerjas.id')
+            ->select('maintenances.*', 'kendaraans.berlaku_sampai', 'kendaraans.nomor_registrasi', 'unit_kerjas.nama_unit_kerja')
             ->get()
             ->map(function ($maintenance) {
                 try {

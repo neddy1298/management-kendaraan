@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\GroupAnggaran;
 use App\Models\UnitKerja;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,8 +21,11 @@ class UnitKerjaFactory extends Factory
     public function definition(): array
     {
 
+        $groupAnggaran = GroupAnggaran::get()->pluck('id')->toArray();
+
         return [
-            'nama_unit_kerja' => $this->faker->unique()->word(),            
+            'nama_unit_kerja' => $this->faker->unique()->word(),
+            'group_anggaran_id' => $this->faker->randomElement($groupAnggaran),
             'budget_bahan_bakar_minyak' => fake()->numerify('##000000'),
             'budget_pelumas_mesin' => fake()->numerify('##000000'),
             'budget_suku_cadang' => fake()->numerify('##000000'),

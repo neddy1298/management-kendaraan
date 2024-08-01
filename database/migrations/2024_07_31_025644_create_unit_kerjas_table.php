@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\UnitKerja;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_unit_kerja', function (Blueprint $table) {
+        Schema::create('unit_kerjas', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_unit_kerja')->unique();            
+            $table->string('nama_unit_kerja')->unique();
+            $table->foreignId('group_anggaran_id')
+                ->constrained('group_anggarans')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->bigInteger('budget_bahan_bakar_minyak')->nullable();
             $table->bigInteger('budget_pelumas_mesin')->nullable();
             $table->bigInteger('budget_suku_cadang')->nullable();
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_unit_kerja');
+        Schema::dropIfExists('unit_kerjas');
     }
 };
