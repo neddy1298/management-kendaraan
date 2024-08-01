@@ -28,8 +28,9 @@ jobs:
           files: 'composer.json'
 
       - name: Run composer update
-        run: composer update
+        run: composer install
 
+        
       - name: Run composer optimize
         run: php artisan optimize
 
