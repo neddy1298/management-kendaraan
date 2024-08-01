@@ -15,7 +15,6 @@ class HomeController extends Controller
 
         $master_anggaran = MasterAnggaran::all()->first();
         $kendaraans = Kendaraan::all();
-        // dd($kendaraans->expireDate());
         $kendaraan = Kendaraan::get()->count();
         $belanja_bulanan = Belanja::whereMonth('tanggal_belanja', date('m'))->sum(
             'belanja_bahan_bakar_minyak',
@@ -33,14 +32,14 @@ class HomeController extends Controller
             ->get()
             ->map(function ($maintenance) {
                 try {
-                    $maintenance->berlaku_sampai = Carbon::createFromFormat('d/m/Y', $maintenance->berlaku_sampai)->format('Y-m-d');
+                    $maintenance->berlaku_sampai = Carbon::createFromFormat('Y-m-d', $maintenance->berlaku_sampai)->format('Y-m-d');
                 } catch (\Exception $e) {
                     $maintenance->berlaku_sampai = null;
                 }
                 return $maintenance;
             });
 
-        $expireDate = $maintenances->filter(function ($maintenance) {
+        $isExpire = $maintenances->filter(function ($maintenance) {
             return $maintenance->berlaku_sampai && Carbon::parse($maintenance->berlaku_sampai)->lt(Carbon::today());
         });
 
@@ -49,6 +48,6 @@ class HomeController extends Controller
         $belanjas = Belanja::whereBetween('tanggal_belanja', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->get();
         
         // dd($belanjas);
-        return view('home', compact('kendaraan', 'belanjas', 'master_anggaran', 'expireDate', 'belanja_bulanan','belanja_tahunan', 'belanja_mingguans'));
+        return view('home', compact('kendaraan', 'belanjas', 'master_anggaran', 'isExpire', 'belanja_bulanan','belanja_tahunan', 'belanja_mingguans'));
     }
 }
