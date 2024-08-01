@@ -17,10 +17,9 @@ class KendaraanController extends Controller
      */
     public function index()
     {
-        $kendaraans = Kendaraan::all()->map(function ($kendaraan) {
-            $kendaraan->berlaku_sampai = Carbon::createFromFormat('d/m/Y', $kendaraan->berlaku_sampai)->format('Y/m/d');
-            return $kendaraan;
-        });
+        $kendaraans = Kendaraan::join('unit_kerjas', 'kendaraans.unit_kerja_id', '=', 'unit_kerjas.id')
+            ->select('kendaraans.*', 'unit_kerjas.nama_unit_kerja')
+            ->get();
         return view('kendaraan.index', compact('kendaraans'));
     }
 
@@ -31,7 +30,7 @@ class KendaraanController extends Controller
      */
     public function create()
     {
-        $unitKerjas = UnitKerja::all();
+        $unitKerjas = UnitKerja::orderBy('created_at', 'desc')->get();
         return view('kendaraan.create', compact('unitKerjas'));
     }
 
@@ -44,45 +43,39 @@ class KendaraanController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'nomor_registrasi' => 'required|string|max:255|unique:tbl_kendaraan',
+            'nomor_registrasi' => 'required|string|max:255|unique:kendaraans',
             'merk_kendaraan' => 'required|string|max:255',
             'jenis_kendaraan' => 'required|string|max:255',
             'cc_kendaraan' => 'required|integer',
             'bbm_kendaraan' => 'required|string|max:255',
             'roda_kendaraan' => 'required|integer',
             'berlaku_sampai' => 'required|date_format:d/m/Y',
-            'unit_kerja' => 'required|integer',
-        ],[
+            'unit_kerja_id' => 'required|integer',
+        ], [
             'required' => 'Kolom :attribute wajib diisi.',
             'integer' => 'Kolom :attribute harus berupa angka.',
             'date_format' => 'Kolom :attribute tidak sesuai format d/m/Y.',
             'unique' => 'Nomor registrasi sudah digunakan.',
         ]);
 
-        $validatedData['berlaku_sampai'] = Carbon::createFromFormat('d/m/Y', $validatedData['berlaku_sampai'])->format('d/m/Y');
+        $validatedData['berlaku_sampai'] = Carbon::createFromFormat('d/m/Y', $validatedData['berlaku_sampai'])->format('Y-m-d');
+
         $kendaraan = Kendaraan::create($validatedData);
 
-        $maintenanceData = [
-            'nomor_registrasi' => $request->nomor_registrasi,
-            'unit_kerja' => $request->unit_kerja,
-        ];
-        Maintenance::create($maintenanceData);
+        if ($kendaraan->wasRecentlyCreated) {
+            if ($kendaraan->maintenance->isEmpty()) {
+                Maintenance::create([
+                    'kendaraan_id' => $kendaraan->id,
+                    'tanggal_maintenance' => Carbon::now()->format('Y-m-d'),
+                ]);
+            }
+        }
 
         if ($kendaraan->wasRecentlyCreated) {
             return redirect()->route('kendaraan.index')->with('success', 'Data berhasil disimpan.');
         } else {
             return redirect()->route('kendaraan.index')->with('error', 'Terjadi kesalahan saat menyimpan data.');
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function printAll()
-    {
-        return view('kendaraan.printAll');
     }
 
     /**
@@ -93,15 +86,9 @@ class KendaraanController extends Controller
      */
     public function edit($id)
     {
-        $kendaraan = Kendaraan::find($id);
-        $maintenance = Maintenance::where('nomor_registrasi', $kendaraan->nomor_registrasi)
-            ->join('tbl_unit_kerja', 'tbl_maintenance.unit_kerja', '=', 'tbl_unit_kerja.id')
-            ->select('tbl_maintenance.nomor_registrasi', 'tbl_unit_kerja.id', 'tbl_unit_kerja.nama_unit_kerja')
-            ->first();
-    
-        $unitKerjas = UnitKerja::all();
-    
-        return view('kendaraan.edit', compact('kendaraan', 'unitKerjas', 'maintenance'));
+        $kendaraan = Kendaraan::find($id)->with('unitKerja')->first();
+        $unitKerjas = UnitKerja::orderBy('created_at', 'desc')->get();
+        return view('kendaraan.edit', compact('kendaraan', 'unitKerjas'));
     }
 
     /**
@@ -121,14 +108,15 @@ class KendaraanController extends Controller
             'bbm_kendaraan' => 'required|string|max:255',
             'roda_kendaraan' => 'required|integer',
             'berlaku_sampai' => 'required|date_format:d/m/Y',
+            'unit_kerja_id' => 'required|integer',
         ], [
             'required' => 'Kolom :attribute wajib diisi.',
             'integer' => 'Kolom :attribute harus berupa angka.',
             'date_format' => 'Kolom :attribute tidak sesuai format d/m/Y.',
         ]);
 
-        $validatedData['berlaku_sampai'] = Carbon::createFromFormat('d/m/Y', $validatedData['berlaku_sampai'])->format('d/m/Y');
-        
+        $validatedData['berlaku_sampai'] = Carbon::createFromFormat('d/m/Y', $validatedData['berlaku_sampai'])->format('Y-m-d');
+
         $kendaraan = Kendaraan::find($id);
         $kendaraan->update($validatedData);
 
@@ -151,5 +139,18 @@ class KendaraanController extends Controller
         } else {
             return redirect()->route('kendaraan.index')->with('error', 'Data tidak ditemukan.');
         }
+    }
+
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function printAll()
+    {
+        $datas = Kendaraan::orderBy('created_at', 'desc')->get();
+        return view('kendaraan.printAll', compact('datas'));
     }
 }

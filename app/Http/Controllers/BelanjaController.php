@@ -28,8 +28,10 @@ class BelanjaController extends Controller
      */
     public function create()
     {
-        $kendaraans = Kendaraan::select('nomor_registrasi', 'merk_kendaraan', 'jenis_kendaraan')->get();
-        return view('belanja.create', compact('kendaraans'));
+        $maintenances = Maintenance::with('kendaraan')
+            ->get()
+            ->unique('kendaraan_id');
+        return view('belanja.create', compact('maintenances'));
     }
 
     /**
@@ -58,17 +60,34 @@ class BelanjaController extends Controller
         $validatedData['tanggal_belanja'] = Carbon::createFromFormat('d/m/Y', $validatedData['tanggal_belanja'])->format('Y-m-d');
 
         try {
-            $belanja = Belanja::create($validatedData);
+            $maintenance = Maintenance::find($validatedData['maintenance_id']);
+            $maintenanceMonth = Carbon::createFromFormat('Y-m-d', $maintenance->tanggal_maintenance)->format('m');
+            $belanjaMonth = Carbon::createFromFormat('Y-m-d', $validatedData['tanggal_belanja'])->format('m');
 
-            $maintenance = Maintenance::where('nomor_registrasi', $validatedData['nomor_registrasi'])->first();
-            if ($maintenance) {
+            if ($maintenanceMonth == $belanjaMonth) {
                 $maintenance->update([
-                    'belanja_bahan_bakar_minyak' => $maintenance->belanja_bahan_bakar_minyak + ($belanja->belanja_bahan_bakar_minyak ?? 0),
-                    'belanja_pelumas_mesin' => $maintenance->belanja_pelumas_mesin + ($belanja->belanja_pelumas_mesin ?? 0),
-                    'belanja_suku_cadang' => $maintenance->belanja_suku_cadang + ($belanja->belanja_suku_cadang ?? 0),
-                    'keterangan' => $maintenance->keterangan . ' ' . $belanja->keterangan,
+                    'belanja_bahan_bakar_minyak' => $maintenance->belanja_bahan_bakar_minyak + ($validatedData['belanja_bahan_bakar_minyak'] ?? 0),
+                    'belanja_pelumas_mesin' => $maintenance->belanja_pelumas_mesin + ($validatedData['belanja_pelumas_mesin'] ?? 0),
+                    'belanja_suku_cadang' => $maintenance->belanja_suku_cadang + ($validatedData['belanja_suku_cadang'] ?? 0),
+                    'tanggal_maintenance' => $validatedData['tanggal_belanja'],
+                    'updated_at' => Carbon::now(),
+                    'keterangan' => $maintenance->keterangan . ' ' . $validatedData['keterangan'],
                 ]);
+            } else {
+                $new_maintenance = Maintenance::create([
+                    'kendaraan_id' => $maintenance->kendaraan_id,
+                    'tanggal_maintenance' => now()->format('Y-m-d'),
+                    'belanja_bahan_bakar_minyak' => $validatedData['belanja_bahan_bakar_minyak'] ?? 0,
+                    'belanja_pelumas_mesin' => $validatedData['belanja_pelumas_mesin'] ?? 0,
+                    'belanja_suku_cadang' => $validatedData['belanja_suku_cadang'] ?? 0,
+                    'tanggal_maintenance' => $validatedData['tanggal_belanja'],
+                    'keterangan' => $validatedData['keterangan'],
+                ]);
+
+                $validatedData['maintenance_id'] = $new_maintenance->id;
             }
+
+            Belanja::create($validatedData);
 
             return redirect()->route('belanja.index')->with('success', 'Data berhasil disimpan.');
         } catch (\Exception $e) {
@@ -84,7 +103,7 @@ class BelanjaController extends Controller
      */
     public function show(Belanja $belanja)
     {
-        return view('belanja.show', compact('belanja'));
+        return view('belanja.show', compact('belanjas'));
     }
 
     /**
@@ -120,4 +139,20 @@ class BelanjaController extends Controller
 
         return redirect()->route('belanja.index')->with('error', 'Data tidak ditemukan.');
     }
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
+
+    public function printAll()
+    {
+        $datas = Belanja::all();
+        return view('belanja.printAll', compact('datas'));
+    }
 }
+
+
+    

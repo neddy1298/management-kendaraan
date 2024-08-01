@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_anggaran', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('id_master_anggaran')->constrained('tbl_master_anggaran');
-            $table->string('kode_rekening', 50)->unique();
-            $table->string('nama_rekening', 100);
-            $table->bigInteger('anggaran');
+        Schema::create('notifications', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('type');
+            $table->morphs('notifiable');
+            $table->text('data');
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_anggaran');
+        Schema::dropIfExists('notifications');
     }
 };

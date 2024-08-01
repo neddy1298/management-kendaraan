@@ -11,13 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_belanja', function (Blueprint $table) {
+        Schema::create('belanjas', function (Blueprint $table) {
             $table->id();
-            $table->string('nomor_registrasi', 10);
+            $table->foreignId('maintenance_id')
+                ->constrained('maintenances')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->integer('belanja_bahan_bakar_minyak')->nullable();
             $table->integer('belanja_pelumas_mesin')->nullable();
             $table->integer('belanja_suku_cadang')->nullable();
-            $table->string('tanggal_belanja');
+            $table->integer('total_belanja')->virtualAs('IFNULL(belanja_bahan_bakar_minyak, 0) + IFNULL(belanja_pelumas_mesin, 0) + IFNULL(belanja_suku_cadang, 0)');
+            $table->date('tanggal_belanja');
             $table->string('keterangan'); 
             $table->timestamps();
         });
@@ -30,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_belanja');
+        Schema::dropIfExists('belanjas');
     }
 };

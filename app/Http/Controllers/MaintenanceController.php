@@ -15,37 +15,15 @@ class MaintenanceController extends Controller
      */
     public function index()
     {
-        $maintenances = Maintenance::all();
-        $belanjas = Belanja::all();
+        $belanjas = Belanja::orderBy('created_at', 'desc')->get();
 
-        $maintenances->each(function ($maintenance) use ($belanjas) {
-            $belanja = $belanjas->where('nomor_registrasi', $maintenance->nomor_registrasi)->first();
+        $maintenances = Maintenance::join('kendaraans', 'maintenances.kendaraan_id', '=', 'kendaraans.id')
+            ->join('unit_kerjas', 'kendaraans.unit_kerja_id', '=', 'unit_kerjas.id')
+            ->select('maintenances.*', 'kendaraans.berlaku_sampai', 'kendaraans.nomor_registrasi', 'unit_kerjas.nama_unit_kerja')
+            ->orderBy('maintenances.created_at', 'desc')
+            ->get();
 
-            if ($belanja) {
-                $maintenance->update([
-                    'belanja_bahan_bakar_minyak' => $maintenance->belanja_bahan_bakar_minyak + ($belanja->belanja_bahan_bakar_minyak ?? 0),
-                    'belanja_pelumas_mesin' => $maintenance->belanja_pelumas_mesin + ($belanja->belanja_pelumas_mesin ?? 0),
-                    'belanja_suku_cadang' => $maintenance->belanja_suku_cadang + ($belanja->belanja_suku_cadang ?? 0),
-                    'keterangan' => trim($maintenance->keterangan . ' ' . ($belanja->keterangan ?? '')),
-                ]);
-            }
-        });
-
-        $maintenances = Maintenance::with(['unitKerja', 'kendaraan'])
-            ->select('tbl_maintenance.*', 'tbl_kendaraan.berlaku_sampai', 'tbl_unit_kerja.nama_unit_kerja')
-            ->join('tbl_unit_kerja', 'tbl_maintenance.unit_kerja', '=', 'tbl_unit_kerja.id')
-            ->join('tbl_kendaraan', 'tbl_maintenance.nomor_registrasi', '=', 'tbl_kendaraan.nomor_registrasi')
-            ->get()
-            ->map(function ($maintenance) {
-                try {
-                    $maintenance->berlaku_sampai = Carbon::createFromFormat('d/m/Y', $maintenance->berlaku_sampai)->format('Y-m-d');
-                } catch (\Exception $e) {
-                    $maintenance->berlaku_sampai = null;
-                }
-                return $maintenance;
-            });
-
-        $expireDate = $maintenances->filter(function ($maintenance) {
+        $isExpire = $maintenances->filter(function ($maintenance) {
             return $maintenance->berlaku_sampai && Carbon::parse($maintenance->berlaku_sampai)->lt(Carbon::today());
         });
 
@@ -68,7 +46,7 @@ class MaintenanceController extends Controller
             $filteredTahunIni->sum('belanja_pelumas_mesin') +
             $filteredTahunIni->sum('belanja_suku_cadang');
 
-        return view('maintenance.index', compact('maintenances', 'expireDate', 'belanja_bulan_ini', 'belanja_tahun_ini'));
+        return view('maintenance.index', compact('maintenances', 'isExpire', 'belanja_bulan_ini', 'belanja_tahun_ini'));
     }
 
     /**

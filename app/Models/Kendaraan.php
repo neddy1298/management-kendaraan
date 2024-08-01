@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -8,11 +9,10 @@ class Kendaraan extends Model
 {
     use HasFactory;
 
-    protected $table = 'tbl_kendaraan';
-
-    protected $primaryKey = 'id';
+    protected $table = 'kendaraans';
 
     protected $fillable = [
+        'unit_kerja_id',
         'nomor_registrasi',
         'merk_kendaraan',
         'jenis_kendaraan',
@@ -22,13 +22,25 @@ class Kendaraan extends Model
         'berlaku_sampai',
     ];
 
-    public function maintenance()
+    public function unitKerja()
     {
-        return $this->hasOne(Maintenance::class, 'nomor_registrasi', 'nomor_registrasi');
+        return $this->belongsTo(UnitKerja::class);
     }
 
-    public function belanja()
+    public function maintenance()
     {
-        return $this->hasMany(Belanja::class, 'nomor_registrasi', 'nomor_registrasi');
+        return $this->hasMany(Maintenance::class);
     }
+
+    protected $appends = ['isExpire'];
+
+    public function getIsExpireAttribute()
+    {
+        if ($this->berlaku_sampai->isPast()) {
+            return 'kadaluarsa';
+        } else {
+            return 'aktif';
+        }
+    }
+
 }

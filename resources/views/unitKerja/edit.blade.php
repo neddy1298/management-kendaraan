@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'Kendaraan', 'page2' => 'Edit', 'page3' => ''])
+@extends('layouts.app', ['page' => 'Master', 'page2' => 'Unit Kerja', 'page3' => 'Edit'])
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('vendor/daterange/daterange.css') }}">
@@ -12,7 +12,7 @@
             <!-- Card start -->
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Edit Kendaraan</div>
+                    <div class="card-title">Edit Unit Kerja</div>
                     <div class="card-options">
                         <span class="text-muted">Tanggal Hari ini: {{ now()->format('d F Y') }}</span>
                     </div>
@@ -30,111 +30,72 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('kendaraan.update', $kendaraan->id) }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('unitKerja.update', $unitKerja->id) }}"
+                        enctype="multipart/form-data">
                         @csrf
                         @method('POST')
 
                         <div class="row">
-                            <div class="col-xl-12">
-                                <div class="mb-3">
-                                    <label for="nomor_registrasi" class="form-label">Nomor Registrasi <i>(plat nomor)</i></label>
-                                    <input type="text" id="nomor_registrasi" name="nomor_registrasi"
-                                        class="form-control @error('nomor_registrasi') is-invalid @enderror"
-                                        value="{{ old('nomor_registrasi', $kendaraan->nomor_registrasi) }}">
-                                    @error('nomor_registrasi')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-xl-6">
-                                <div class="mb-3">
-                                    <label for="merk_kendaraan" class="form-label">Merk Kendaraan</label>
-                                    <input type="text" id="merk_kendaraan" name="merk_kendaraan"
-                                        class="form-control @error('merk_kendaraan') is-invalid @enderror"
-                                        value="{{ old('merk_kendaraan', $kendaraan->merk_kendaraan) }}">
-                                    @error('merk_kendaraan')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-xl-6">
-                                <div class="mb-3">
-                                    <label for="cc_kendaraan" class="form-label">CC Kendaraan</label>
-                                    <input type="number" id="cc_kendaraan" name="cc_kendaraan"
-                                        class="form-control @error('cc_kendaraan') is-invalid @enderror"
-                                        value="{{ old('cc_kendaraan', $kendaraan->cc_kendaraan) }}">
-                                    @error('cc_kendaraan')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-xl-6">
-                                <div class="mb-3">
-                                    <label for="jenis_kendaraan" class="form-label">Jenis Kendaraan</label>
-                                    <select id="jenis_kendaraan" name="jenis_kendaraan" class="form-select">
-                                        <option hidden value="{{ $kendaraan->jenis_kendaraan }}">{{ $kendaraan->jenis_kendaraan }}</option>
-                                        <option value="Sepeda Motor">Sepeda Motor</option>
-                                        <option value="Mobil Penumpang">Mobil Penumpang</option>
-                                        <option value="Mobil Mikrobus">Mobil Mikrobus</option>
-                                        <option value="Mobil Barang">Mobil Barang</option>
-                                    </select>
-                                    @error('jenis_kendaraan')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-xl-6">
-                                <div class="mb-3">
-                                    <label for="bbm_kendaraan" class="form-label">BBM Kendaraan</label>
-                                    <select id="bbm_kendaraan" name="bbm_kendaraan" class="form-select">
-                                        <option hidden value="{{ $kendaraan->bbm_kendaraan }}">{{ $kendaraan->bbm_kendaraan }}</option>
-                                        <option value="Bensin">Bensin</option>
-                                        <option value="Solar">Solar</option>
-                                    </select>
-                                    @error('bbm_kendaraan')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-xl-6">
-                                <div class="mb-3">
-                                    <label for="roda_kendaraan" class="form-label">Jumlah Roda</label>
-                                    <input type="number" id="roda_kendaraan" name="roda_kendaraan"
-                                        class="form-control @error('roda_kendaraan') is-invalid @enderror"
-                                        value="{{ old('roda_kendaraan', $kendaraan->roda_kendaraan) }}">
-                                    @error('roda_kendaraan')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-xl-6">
-                                <div class="mb-3">
-                                    <label for="berlaku_sampai" class="form-label">Tanggal Kadaluarsa STNK</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-calendar4"></i></span>
-                                        <input type="text" id="berlaku_sampai" name="berlaku_sampai"
-                                            class="form-control datepicker"
-                                            value="{{ old('berlaku_sampai', $kendaraan->berlaku_sampai) }}">
-                                    </div>
-                                </div>
-                            </div>
 
                             <div class="col-xl-12">
                                 <div class="mb-3">
-                                    <label for="unit_kerja" class="form-label">Unit Kerja</label>
-                                    <select id="unit_kerja" name="unit_kerja" class="select-single form-control">
-                                        <option value="{{ $kendaraan->unit_kerja_id }}">{{ $kendaraan->nama_unit_kerja }}</option>
-                                        @foreach ($unitKerjas as $unitKerja)
-                                            <option value="{{ $unitKerja->id }}">{{ $unitKerja->nama_unit_kerja }}</option>
+                                    <label for="group_anggaran_id" class="form-label">Group Anggaran</label>
+                                    <select id="group_anggaran_id" class="form-select" name="group_anggaran_id">
+                                        <option hidden value="{{ $unitKerja->group_anggaran_id }}">
+                                            {{ $unitKerja->groupAnggaran->nama_group }} - {{ $unitKerja->groupAnggaran->kode_rekening }}</option>
+                                        @foreach ($groupAnggarans as $groupAnggaran)
+                                            <option value="{{ $groupAnggaran->id }}">{{ $groupAnggaran->nama_group }} -
+                                                {{ $groupAnggaran->kode_rekening }}</option>
                                         @endforeach
                                     </select>
-                                    @error('unit_kerja')
+                                    @error('group_anggaran_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-12">
+                                <div class="mb-3">
+                                    <label for="nama_unit_kerja" class="form-label">Nama Unit Kerja</label>
+                                    <input type="text" id="nama_unit_kerja" name="nama_unit_kerja"
+                                        class="form-control @error('nama_unit_kerja') is-invalid @enderror"
+                                        value="{{ old('nama_unit_kerja', $unitKerja->nama_unit_kerja) }}">
+                                    @error('nama_unit_kerja')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="budget_bahan_bakar_minyak" class="form-label">Budget BBM</label>
+                                    <input type="number" id="budget_bahan_bakar_minyak" name="budget_bahan_bakar_minyak"
+                                        class="form-control @error('budget_bahan_bakar_minyak') is-invalid @enderror"
+                                        value="{{ old('budget_bahan_bakar_minyak', $unitKerja->budget_bahan_bakar_minyak) }}">
+                                    @error('budget_bahan_bakar_minyak')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="budget_pelumas_mesin" class="form-label">Budget Pelumas</label>
+                                    <input type="number" id="budget_pelumas_mesin" name="budget_pelumas_mesin"
+                                        class="form-control @error('budget_pelumas_mesin') is-invalid @enderror"
+                                        value="{{ old('budget_pelumas_mesin', $unitKerja->budget_pelumas_mesin) }}">
+                                    @error('budget_pelumas_mesin')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="budget_suku_cadang" class="form-label">Budget Suku Cadang</label>
+                                    <input type="number" id="budget_suku_cadang" name="budget_suku_cadang"
+                                        class="form-control @error('budget_suku_cadang') is-invalid @enderror"
+                                        value="{{ old('budget_suku_cadang', $unitKerja->budget_suku_cadang) }}">
+                                    @error('budget_suku_cadang')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -142,7 +103,7 @@
                         </div>
 
                         <div class="form-actions-footer">
-                            <a class="btn btn-light" href="{{ route('kendaraan.index') }}">Batal</a>
+                            <a class="btn btn-light" href="{{ route('unitKerja.index') }}">Batal</a>
                             <button type="submit" class="btn btn-success">Simpan</button>
                         </div>
                     </form>

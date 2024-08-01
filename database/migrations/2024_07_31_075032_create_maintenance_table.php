@@ -8,21 +8,17 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('tbl_maintenance', function (Blueprint $table) {
+        Schema::create('maintenances', function (Blueprint $table) {
             $table->id();
-            $table->string('nomor_registrasi', 10);
-            $table->foreign('nomor_registrasi')
-                ->references('nomor_registrasi')
-                ->on('tbl_kendaraan')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-            $table->foreignId('unit_kerja')
-                ->constrained('tbl_unit_kerja')
+            $table->foreignId('kendaraan_id')
+                ->constrained('kendaraans')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->integer('belanja_bahan_bakar_minyak')->nullable();
             $table->integer('belanja_pelumas_mesin')->nullable();
             $table->integer('belanja_suku_cadang')->nullable();
+            $table->integer('total_maintenance')->virtualAs('IFNULL(belanja_bahan_bakar_minyak, 0) + IFNULL(belanja_pelumas_mesin, 0) + IFNULL(belanja_suku_cadang, 0)');
+            $table->date('tanggal_maintenance');
             $table->string('_token')->nullable();
             $table->text('keterangan')->nullable();
             $table->timestamps();
@@ -31,6 +27,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('tbl_maintenance');
+        Schema::dropIfExists('maintenances');
     }
 };

@@ -11,20 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_kendaraan', function (Blueprint $table) {
+        Schema::create('kendaraans', function (Blueprint $table) {
             $table->id();
             $table->string('nomor_registrasi', 10)->unique();
             $table->string('merk_kendaraan', 100);
             $table->string('jenis_kendaraan', 20);
+            $table->foreignId('unit_kerja_id')
+                ->constrained('unit_kerjas')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->integer('cc_kendaraan');
             $table->string('bbm_kendaraan', 20);
             $table->string('roda_kendaraan', 20);
-            $table->string('berlaku_sampai');
+            $table->date('berlaku_sampai');
             $table->string('_token')->nullable();
             $table->timestamps();
         });
-
-
     }
 
     /**
@@ -32,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_kendaraan');
+        Schema::dropIfExists('kendaraans');
     }
 };

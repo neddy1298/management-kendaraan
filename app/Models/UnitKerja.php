@@ -9,25 +9,29 @@ class UnitKerja extends Model
 {
     use HasFactory;
 
-    protected $table = 'tbl_unit_kerja';
-
-    protected $primaryKey = 'id';
+    protected $table = 'unit_kerjas';
 
     protected $fillable = [
         'nama_unit_kerja',
-        'bahan_bakar_minyak',
-        'pelumas_mesin',
-        'suku_cadang',
+        'group_anggaran_id',
         'budget_bahan_bakar_minyak',
         'budget_pelumas_mesin',
         'budget_suku_cadang',
-        '_token',
-        'created_at',
-        'updated_at',
     ];
 
-    public function maintenances()
+    public function kendaraans()
     {
-        return $this->hasMany(Maintenance::class, 'unit_kerja');
+        return $this->hasMany(Kendaraan::class);
     }
+
+    public function groupAnggaran()
+    {
+        return $this->belongsTo(GroupAnggaran::class);
+    }
+
+    public function totalBudget()
+    {
+        return $this->budget_bahan_bakar_minyak + $this->budget_pelumas_mesin + $this->budget_suku_cadang;
+    }
+    
 }

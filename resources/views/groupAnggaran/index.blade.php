@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'Master', 'page2' => 'Kendaraan', 'page3' => ''])
+@extends('layouts.app', ['page' => 'Anggaran', 'page2' => 'Group', 'page3' => ''])
 
 @section('css')
     <!-- Data Tables -->
@@ -11,20 +11,15 @@
     <div class="row">
         <div class="col-12">
             @php
-                $message = "Contoh message yang akan dikirim ke WA\n-1. lorem ipsum dolor sit amet consectetur adipiscing elit\n2. lorem ipsum dolor sit amet consectetur adipiscing elit\n3. lorem ipsum dolor sit amet consectetur adipiscing elit\n4. lorem ipsum dolor sit amet consectetur adipiscing elit\n5. lorem ipsum dolor sit amet consectetur adipiscing elit";
+                $message =
+                    "Contoh message yang akan dikirim ke WA\n-1. lorem ipsum dolor sit amet consectetur adipiscing elit\n2. lorem ipsum dolor sit amet consectetur adipiscing elit\n3. lorem ipsum dolor sit amet consectetur adipiscing elit\n4. lorem ipsum dolor sit amet consectetur adipiscing elit\n5. lorem ipsum dolor sit amet consectetur adipiscing elit";
             @endphp
             <!-- Card start -->
             <div class="card">
                 <div class="card-body">
                     <div class="custom-btn-group">
-                        <a href="{{ route('kendaraan.create') }}" class="btn btn-warning">
+                        <a href="{{ route('groupAnggaran.create') }}" class="btn btn-warning">
                             <i class="bi bi-pencil-square"></i> Tambah Baru
-                        </a>
-                        <a href="{{ route('kendaraan.printAll') }}" class="btn btn-primary" target="_blank">
-                            <i class="bi bi-printer"></i> Cetak
-                        </a>
-                        <a href="{{ route('send-wa', ['message' => urlencode($message)]) }}" class="btn btn-success" target="_blank">
-                            <i class="bi bi-whatsapp"></i> Kirim WA
                         </a>
                     </div>
                 </div>
@@ -38,11 +33,10 @@
             @elseif (session('error'))
                 @include('partials.alert', ['type' => 'danger', 'message' => session('error')])
             @endif
-
             <!-- Card start -->
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Data Kendaraan</div>
+                    <div class="card-title">Anggaran Pertahun</div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -50,33 +44,39 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nomor Registrasi</th>
-                                    <th>Merk Kendaraan</th>
-                                    <th>Jenis Kendaraan</th>
-                                    <th>CC Kendaraan</th>
-                                    <th>BBM Kendaraan</th>
-                                    <th>Roda Kendaraan</th>
+                                    <th>Kode Rekening</th>
+                                    <th>Nama Rekening</th>
+                                    <th>BBM</th>
+                                    <th>Pelumas</th>
+                                    <th>Suku Cadang</th>
+                                    <th>Total</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($kendaraans as $index => $kendaraan)
+                                @foreach ($groupAnggarans as $index => $groupAnggaran)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $kendaraan->nomor_registrasi }}</td>
-                                        <td>{{ $kendaraan->merk_kendaraan }}</td>
-                                        <td>{{ $kendaraan->jenis_kendaraan }}</td>
-                                        <td>{{ $kendaraan->cc_kendaraan }} CC</td>
-                                        <td>{{ $kendaraan->bbm_kendaraan }}</td>
-                                        <td>Roda {{ $kendaraan->roda_kendaraan }}</td>
+                                        <td>{{ $groupAnggaran->kode_rekening }}</td>
+                                        <td>{{ $groupAnggaran->nama_group }}</td>
+                                        <td>Rp {{ number_format($groupAnggaran->anggaran_bahan_bakar_minyak, 0, ',', '.') }}</td>
+                                        <td>Rp {{ number_format($groupAnggaran->anggaran_pelumas_mesin, 0, ',', '.') }}</td>
+                                        <td>Rp {{ number_format($groupAnggaran->anggaran_suku_cadang, 0, ',', '.') }}</td>
+                                        <td>Rp {{ number_format($groupAnggaran->total_anggaran, 0, ',', '.') }}</td>
+                                        
                                         <td>
-                                            <a href="{{ route('kendaraan.edit', $kendaraan->id) }}" class="btn btn-warning btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                                            <a href="{{ route('groupAnggaran.edit', $groupAnggaran->id) }}"
+                                                class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
+                                                data-bs-placement="top" title="Edit">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            <form action="{{ route('kendaraan.delete', $kendaraan->id) }}" method="POST" style="display: inline-block">
+                                            <form action="{{ route('groupAnggaran.delete', $groupAnggaran->id) }}" method="POST"
+                                                style="display: inline-block">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn btn-danger btn-icon btn-sm" onclick="return confirm('Kamu yakin ingin menghapus data: {{ $kendaraan->nomor_registrasi }} ?')" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
+                                                <button class="btn btn-danger btn-icon btn-sm"
+                                                    onclick="return confirm('Kamu yakin ingin menghapus data: {{ $groupAnggaran->nama_group }} ?')"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>

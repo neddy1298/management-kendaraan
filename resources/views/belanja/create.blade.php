@@ -32,19 +32,19 @@
                         <div class="row">
                             <div class="col-xl-12 col-sm-12 col-12">
                                 <div class="mb-3">
-                                    <label class="form-label d-flex">Unit Kerja</label>
-                                    <select class="select-single js-states form-control @error('nomor_registrasi') is-invalid @enderror" 
+                                    <label class="form-label d-flex">Nomor Registrasi</label>
+                                    <select class="select-single js-states form-control @error('maintenance_id') is-invalid @enderror" 
                                         title="Masukkan Unit Kerja" 
                                         data-live-search="true" 
-                                        name="nomor_registrasi">
+                                        name="maintenance_id">
                                         <option value="" hidden></option>
-                                        @foreach ($kendaraans as $kendaraan)
-                                            <option value="{{ $kendaraan->nomor_registrasi }}">
-                                                {{ $kendaraan->nomor_registrasi }} - {{ $kendaraan->merk_kendaraan }}
+                                        @foreach ($maintenances as $maintenance)
+                                            <option value="{{ $maintenance->id }}">
+                                                {{ $maintenance->kendaraan->nomor_registrasi }} - {{ $maintenance->kendaraan->merk_kendaraan }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('nomor_registrasi')
+                                    @error('maintenance_id')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>
