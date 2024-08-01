@@ -14,6 +14,8 @@ class HomeController extends Controller
     {
 
         $master_anggaran = MasterAnggaran::all()->first();
+        $kendaraans = Kendaraan::all();
+        // dd($kendaraans->expireDate());
         $kendaraan = Kendaraan::get()->count();
         $belanja_bulanan = Belanja::whereMonth('tanggal_belanja', date('m'))->sum(
             'belanja_bahan_bakar_minyak',

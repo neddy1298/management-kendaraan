@@ -32,4 +32,15 @@ class Kendaraan extends Model
         return $this->hasOne(Maintenance::class);
     }
 
+    protected $appends = ['isExpire'];
+
+    public function getIsExpireAttribute()
+    {
+        if ($this->berlaku_sampai->isPast()) {
+            return 'kadaluarsa';
+        } else {
+            return 'aktif';
+        }
+    }
+
 }
