@@ -68,7 +68,7 @@
                                 <a href="{{ route('masterAnggaran.index') }}" class="{{ $page2 == 'Pertahun' ? 'current-page' : '' }}">Pertahun</a>
                             </li>
                             <li>
-                                <a href="{{ route('groupAnggaran.index') }}" class="{{ $page2 == 'Anggota' ? 'current-page' : '' }}">Group</a>
+                                <a href="{{ route('groupAnggaran.index') }}" class="{{ $page2 == 'Group' ? 'current-page' : '' }}">Group</a>
                             </li>
                         </ul>
                     </div>

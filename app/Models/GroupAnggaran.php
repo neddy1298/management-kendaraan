@@ -30,8 +30,10 @@ class GroupAnggaran extends Model
         return $this->hasMany(UnitKerja::class);
     }
 
-    public function totalAnggaran()
+    protected $appends = ['total_anggaran'];
+
+    public function getTotalAnggaranAttribute()
     {
         return $this->anggaran_bahan_bakar_minyak + $this->anggaran_pelumas_mesin + $this->anggaran_suku_cadang;
-    }
+    } 
 }

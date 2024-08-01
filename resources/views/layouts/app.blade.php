@@ -72,7 +72,7 @@
 
                         $pages2 = [
                             'Pertahun' => 'Pertahun',
-                            'Anggota' => 'Anggota',
+                            'Group' => 'Group',
                             'Tambah' => 'Tambah Baru',
                             'Edit' => 'Ubah Data',
                         ];
