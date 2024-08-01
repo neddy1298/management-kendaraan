@@ -63,20 +63,24 @@
                         $pages = [
                             'Home' => ['route' => 'home', 'icon' => 'bi-house', 'text' => 'Home'],
                             'Belanja' => ['route' => 'belanja.index', 'icon' => 'bi-cart2', 'text' => 'Belanja'],
-                            'Kendaraan' => ['route' => 'kendaraan.index', 'icon' => 'bi-truck', 'text' => 'Kendaraan'],
                             'Maintenance' => ['route' => 'maintenance.index', 'icon' => 'bi-gear', 'text' => 'Maintenance'],
-                            'Unit Kerja' => ['route' => 'unitKerja.index', 'icon' => 'bi-person-badge', 'text' => 'Unit Kerja'],
+                            'Master' => ['route' => null, 'icon' => 'bi-truck', 'text' => 'Master'],
+                            'Anggaran' => ['route' => null, 'icon' => 'bi-cash-stack', 'text' => 'Anggaran'],
                             'User' => ['route' => 'profile.edit', 'icon' => 'bi-person-circle', 'text' => 'User'],
                         ];
 
                         $pages2 = [
-                            'Tambah' => 'Tambah Baru',
-                            'Edit' => 'Ubah Data',
+                            'Unit Kerja' => ['route' => 'unitKerja.index', 'text' => 'Unit Kerja'],
+                            'Kendaraan' => ['route' => 'kendaraan.index', 'text' => 'Kendaraan'],
+                            'Pertahun' => ['route' => 'masterAnggaran.index', 'text' => 'Pertahun'],
+                            'Group' => ['route' => 'groupAnggaran.index', 'text' => 'Group'],
+                            'Tambah' => ['route' => null, 'text' => 'Tambah'],
+                            'Edit' => ['route' => null, 'text' => 'Edit'],
                         ];
 
                         $pages3 = [
-                            'create' => 'Tambah Baru',
-                            'edit' => 'Edit',
+                            'Tambah' => 'Tambah Baru',
+                            'Edit' => 'Edit',
                         ];
                     @endphp
 
@@ -90,9 +94,16 @@
                             @endif
                         </li>
                     @endif
+                    
 
                     @if (isset($pages2[$page2]))
-                        <li class="breadcrumb-item">{{ $pages2[$page2] }}</li>
+                        <li class="breadcrumb-item">
+                            @if ($pages2[$page2]['route'])
+                                <a href="{{ route($pages2[$page2]['route']) }}">{{ $pages2[$page2]['text'] }}</a>
+                            @else
+                                {{ $pages2[$page2]['text'] }}
+                            @endif
+                        </li>
                     @endif
 
                     @if (isset($pages3[$page3]))

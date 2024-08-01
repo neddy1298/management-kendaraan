@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'Kendaraan', 'page2' => 'Tambah', 'page3' => ''])
+@extends('layouts.app', ['page' => 'Master', 'page2' => 'Kendaraan', 'page3' => 'Tambah'])
 
 @section('css')
     <link rel="stylesheet" href="{{ secure_asset('vendor/daterange/daterange.css') }}">
@@ -120,14 +120,14 @@
 
                             <div class="col-xl-12">
                                 <div class="mb-3">
-                                    <label for="unit_kerja" class="form-label">Unit Kerja</label>
-                                    <select id="unit_kerja" class="select-single form-control" name="unit_kerja">
-                                        <option hidden value="{{ old('unit_kerja') }}">{{ old('unit_kerja') }}</option>
+                                    <label for="unit_kerja_id" class="form-label">Unit Kerja</label>
+                                    <select id="unit_kerja_id" class="select-single form-control" name="unit_kerja_id">
+                                        <option hidden value="{{ old('unit_kerja_id') }}">{{ old('unit_kerja_id') }}</option>
                                         @foreach ($unitKerjas as $unitKerja)
                                             <option value="{{ $unitKerja->id }}">{{ $unitKerja->nama_unit_kerja }}</option>
                                         @endforeach
                                     </select>
-                                    @error('unit_kerja')
+                                    @error('unit_kerja_id')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>

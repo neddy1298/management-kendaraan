@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="col-xxl-4 col-sm-6 col-12">
-            <a href="{{ route('anggaran.edit') }}">
+            <a href="{{ route('masterAnggaran.index') }}">
                 <div class="stats-tile">
                     <div class="sale-icon shade-blue">
                         <h4 class="text-white">Rp</h4>
@@ -39,7 +39,7 @@
                         <i class="bi bi-clock-history"></i>
                     </div>
                     <div class="sale-details">
-                        <h3 class="text-red">{{ $expireDate->count() }}/{{ $kendaraan }}</h3>
+                        <h3 class="text-red">{{ $isExpire->count() }}/{{ $kendaraan }}</h3>
                         <p>Kadaluarsa Pajak</p>
                     </div>
                 </div>
@@ -132,7 +132,7 @@
                             </div>
                             <div class="task-info">
                                 <h5 class="task-title">Pajak Aktif</h5>
-                                <p class="amount-spend">{{ $kendaraan - $expireDate->count() }}</p>
+                                <p class="amount-spend">{{ $kendaraan - $isExpire->count() }}</p>
                             </div>
                         </li>
                         <li class="task-list-item">
@@ -141,7 +141,7 @@
                             </div>
                             <div class="task-danger">
                                 <h5 class="task-title">Pajak Kadaluarsa</h5>
-                                <p class="amount-spend">{{ $expireDate->count() }}</p>
+                                <p class="amount-spend">{{ $isExpire->count() }}</p>
                             </div>
                         </li>
                     </ul>
@@ -231,7 +231,7 @@
                     }
                 }
             },
-            series: [{{ $kendaraan-$expireDate->count() }}, {{ $expireDate->count() }}],
+            series: [{{ $kendaraan-$isExpire->count() }}, {{ $isExpire->count() }}],
             labels: ['Aktif', 'Kadaluarsa'],
             colors: ['#26ba4f', '#f87957'],
         }

@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'Kendaraan', 'page2' => 'Edit', 'page3' => ''])
+@extends('layouts.app', ['page' => 'Master', 'page2' => 'Kendaraan', 'page3' => 'Edit'])
 
 @section('css')
     <link rel="stylesheet" href="{{ secure_asset('vendor/daterange/daterange.css') }}">

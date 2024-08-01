@@ -3,32 +3,37 @@
 use App\Http\Controllers\{
     AnggaranController,
     BelanjaController,
+    GroupAnggaranController,
     HomeController,
     ProfileController,
     KendaraanController,
     MaintenanceController,
+    MasterAnggaranController,
     SmsController,
     UnitKerjaController
 };
 use App\Models\GroupAnggaran;
+use App\Models\MasterAnggaran;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    
+    Route::prefix('masterAnggaran')->group(function () {
+        Route::get('', [MasterAnggaranController::class, 'index'])->name('masterAnggaran.index');
+        Route::get('/create', [MasterAnggaranController::class, 'create'])->name('masterAnggaran.create');
+        Route::post('/store', [MasterAnggaranController::class, 'store'])->name('masterAnggaran.store');
+        Route::get('/edit/{id}', [MasterAnggaranController::class, 'edit'])->name('masterAnggaran.edit');
+        Route::post('/update/{id}', [MasterAnggaranController::class, 'update'])->name('masterAnggaran.update');
+        Route::delete('/delete/{id}', [MasterAnggaranController::class, 'destroy'])->name('masterAnggaran.delete');
+    });
+
     Route::middleware(['check.master.anggaran'])->group(function () {
-        Route::get('/anggaran', [AnggaranController::class, 'create'])->name('anggaran.create');
-        Route::post('/anggaran', [AnggaranController::class, 'store'])->name('anggaran.store');
         Route::get('', [HomeController::class, 'index'])->name('home');
 
         Route::get('/send-sms', [SmsController::class, 'sendSms'])->name('send-sms');
         Route::get('/send-wa/{message}', [SmsController::class, 'sendWhatsapp'])->name('send-wa');
-
-        Route::prefix('anggaran')->group(function () {
-            Route::get('/edit', [AnggaranController::class, 'edit'])->name('anggaran.edit');
-            Route::post('/update/{id}', [AnggaranController::class, 'update'])->name('anggaran.update');
-        });
-
         Route::prefix('kendaraan')->group(function () {
             Route::get('', [KendaraanController::class, 'index'])->name('kendaraan.index');
             Route::get('/create', [KendaraanController::class, 'create'])->name('kendaraan.create');
@@ -48,6 +53,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('', [BelanjaController::class, 'index'])->name('belanja.index');
             Route::get('/create', [BelanjaController::class, 'create'])->name('belanja.create');
             Route::post('/store', [BelanjaController::class, 'store'])->name('belanja.store');
+            Route::get('/print', [BelanjaController::class, 'printAll'])->name('belanja.printAll');
             Route::delete('/delete/{id}', [BelanjaController::class, 'destroy'])->name('belanja.delete');
         });
 
@@ -67,6 +73,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('/delete/{id}', [UnitKerjaController::class, 'destroy'])->name('unitKerja.delete');
 
             Route::get('/get-unitkerja-details/{id}', [UnitKerjaController::class, 'getUnitKerjaDetails'])->name('get.unitKerja.details');
+        });
+        Route::prefix('groupAnggaran')->group(function () {
+            Route::get('', [GroupAnggaranController::class, 'index'])->name('groupAnggaran.index');
+            Route::get('/create', [GroupAnggaranController::class, 'create'])->name('groupAnggaran.create');
+            Route::post('/store', [GroupAnggaranController::class, 'store'])->name('groupAnggaran.store');
+            Route::get('/edit/{id}', [GroupAnggaranController::class, 'edit'])->name('groupAnggaran.edit');
+            Route::post('/update/{id}', [GroupAnggaranController::class, 'update'])->name('groupAnggaran.update');
+            Route::delete('/delete/{id}', [GroupAnggaranController::class, 'destroy'])->name('groupAnggaran.delete');
         });
     
         Route::prefix('profile')->group(function () {

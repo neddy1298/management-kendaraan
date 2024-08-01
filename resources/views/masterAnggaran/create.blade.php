@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'Home', 'page2' => 'Tambah', 'page3' => ''])
+@extends('layouts.app', ['page' => 'Anggaran', 'page2' => 'Pertahun', 'page3' => 'Tambah'])
 
 @section('css')
     <link rel="stylesheet" href="{{ secure_asset('vendor/daterange/daterange.css') }}">
@@ -12,7 +12,7 @@
             <!-- Card start -->
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Ubah Pagu Anggaran</div>
+                    <div class="card-title">Jumlah Anggaran Pertahun</div>
                     <div class="card-options">
                         <span class="text-muted">Tanggal Hari ini: {{ now()->format('d F Y') }}</span>
                     </div>
@@ -30,14 +30,14 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('anggaran.update', $anggaran->id ?? 1) }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('masterAnggaran.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-xl-12">
                                 <div class="mb-3">
                                     <label for="kode_rekening" class="form-label">Kode Rekening</label>
                                     <input type="text" class="form-control @error('kode_rekening') is-invalid @enderror"
-                                        id="kode_rekening" name="kode_rekening" value="{{ $anggaran->kode_rekening ?? "" }}">
+                                        id="kode_rekening" name="kode_rekening" value="{{ old('kode_rekening') }}">
                                     @error('kode_rekening')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -49,7 +49,7 @@
                                 <div class="mb-3">
                                     <label for="nama_rekening" class="form-label">Nama Rekening</label>
                                     <input type="text" class="form-control @error('nama_rekening') is-invalid @enderror"
-                                        id="nama_rekening" name="nama_rekening" value="{{ $anggaran->nama_rekening ?? "" }}">
+                                        id="nama_rekening" name="nama_rekening" value="{{ old('nama_rekening') }}">
                                     @error('nama_rekening')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -57,9 +57,9 @@
                             </div>
                             <div class="col-xl-12">
                                 <div class="mb-3">
-                                    <label for="anggaran" class="form-label">Total Anggaran</label>
+                                    <label for="anggaran" class="form-label">Anggaran</label>
                                     <input type="number" class="form-control @error('anggaran') is-invalid @enderror"
-                                        id="anggaran" name="anggaran" value="{{ $anggaran->anggaran }}">
+                                        id="anggaran" name="anggaran" value="{{ old('anggaran') }}">
                                     @error('anggaran')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -69,7 +69,7 @@
 
                         <!-- Form actions footer start -->
                         <div class="form-actions-footer">
-                            <a class="btn btn-light" href="{{ route('home') }}">Batal</a>
+                            <a class="btn btn-light" href="{{ route('masterAnggaran.index') }}">Batal</a>
                             <button type="submit" class="btn btn-success">Simpan</button>
                         </div>
                         <!-- Form actions footer end -->

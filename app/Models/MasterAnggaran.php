@@ -9,16 +9,16 @@ class MasterAnggaran extends Model
 {
     use HasFactory;
 
-    protected $table = 'tbl_master_anggaran';
+    protected $table = 'master_anggarans';
 
     protected $fillable = [
         'kode_rekening',
         'nama_rekening',
-        'anggaran'
+        'anggaran',
     ];
 
-    public function anggaran()
+    public function groupAnggaran()
     {
-        return $this->hasMany(Anggaran::class, 'id_master_anggaran');
+        return $this->hasMany(GroupAnggaran::class);
     }
 }

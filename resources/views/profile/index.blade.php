@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'User', 'page2' => 'Detail', 'page3' => ''])
+@extends('layouts.app', ['page' => 'User', 'page2' => '', 'page3' => ''])
 
 @section('content')
     <!-- Row start -->
@@ -46,6 +46,9 @@
                                             password</small>
                                     </div>
                                     <div class="col-12 mb-3">
+                                        <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()"> <label for="showPassword">Show Password</label>
+                                    </div>
+                                    <div class="col-12 mb-3">
                                         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                                     </div>
                                 </div>
@@ -60,4 +63,15 @@
         </div>
     </div>
     <!-- Row end -->
+
+    <script>
+        function togglePasswordVisibility() {
+            var passwordField = document.getElementById("password");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+            } else {
+                passwordField.type = "password";
+            }
+        }
+    </script>
 @endsection

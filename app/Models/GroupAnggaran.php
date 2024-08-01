@@ -9,21 +9,31 @@ class GroupAnggaran extends Model
 {
     use HasFactory;
 
-    protected $table = 'tbl_group_anggaran';
-
-    protected $primaryKey = 'id';
+    protected $table = 'group_anggarans';
 
     protected $fillable = [
-        'id_master_anggaran',
+        'master_anggaran_id',
         'kode_rekening',
         'nama_group',
-        'anggaran_bensin_pelumas',
+        'anggaran_bahan_bakar_minyak',
+        'anggaran_pelumas_mesin',
         'anggaran_suku_cadang',
-        'keterangan',
     ];
 
     public function masterAnggaran()
     {
-        return $this->belongsTo(MasterAnggaran::class, 'id_master_anggaran', 'id');
+        return $this->belongsTo(MasterAnggaran::class);
     }
+
+    public function unitKerja()
+    {
+        return $this->hasMany(UnitKerja::class);
+    }
+
+    protected $appends = ['total_anggaran'];
+
+    public function getTotalAnggaranAttribute()
+    {
+        return $this->anggaran_bahan_bakar_minyak + $this->anggaran_pelumas_mesin + $this->anggaran_suku_cadang;
+    } 
 }
