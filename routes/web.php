@@ -3,14 +3,17 @@
 use App\Http\Controllers\{
     AnggaranController,
     BelanjaController,
+    GroupAnggaranController,
     HomeController,
     ProfileController,
     KendaraanController,
     MaintenanceController,
+    MasterAnggaranController,
     SmsController,
     UnitKerjaController
 };
 use App\Models\GroupAnggaran;
+use App\Models\MasterAnggaran;
 use Illuminate\Support\Facades\Route;
 
 
@@ -67,6 +70,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('/delete/{id}', [UnitKerjaController::class, 'destroy'])->name('unitKerja.delete');
 
             Route::get('/get-unitkerja-details/{id}', [UnitKerjaController::class, 'getUnitKerjaDetails'])->name('get.unitKerja.details');
+        });
+
+        Route::prefix('masterAnggaran')->group(function () {
+            Route::get('', [MasterAnggaranController::class, 'index'])->name('masterAnggaran.index');
+            Route::get('/create', [MasterAnggaranController::class, 'create'])->name('masterAnggaran.create');
+            Route::post('/store', [MasterAnggaranController::class, 'store'])->name('masterAnggaran.store');
+            Route::get('/edit/{id}', [MasterAnggaranController::class, 'edit'])->name('masterAnggaran.edit');
+            Route::post('/update/{id}', [MasterAnggaranController::class, 'update'])->name('masterAnggaran.update');
+            Route::delete('/delete/{id}', [MasterAnggaranController::class, 'destroy'])->name('masterAnggaran.delete');
+        });
+
+        Route::prefix('groupAnggaran')->group(function () {
+            Route::get('', [GroupAnggaranController::class, 'index'])->name('groupAnggaran.index');
+            Route::get('/create', [GroupAnggaranController::class, 'create'])->name('groupAnggaran.create');
+            Route::post('/store', [GroupAnggaranController::class, 'store'])->name('groupAnggaran.store');
+            Route::get('/edit/{id}', [GroupAnggaranController::class, 'edit'])->name('groupAnggaran.edit');
+            Route::post('/update/{id}', [GroupAnggaranController::class, 'update'])->name('groupAnggaran.update');
+            Route::delete('/delete/{id}', [GroupAnggaranController::class, 'destroy'])->name('groupAnggaran.delete');
         });
     
         Route::prefix('profile')->group(function () {

@@ -18,12 +18,8 @@
             <div class="card">
                 <div class="card-body">
                     <div class="custom-btn-group">
-                        <a href="{{ route('unitKerja.create') }}" class="btn btn-warning">
+                        <a href="{{ route('masterAnggaran.create') }}" class="btn btn-warning">
                             <i class="bi bi-pencil-square"></i> Tambah Baru
-                        </a>
-                        <a href="{{ route('send-wa', ['message' => urlencode($message)]) }}" class="btn btn-success"
-                            target="_blank">
-                            <i class="bi bi-whatsapp"></i> Kirim WA
                         </a>
                     </div>
                 </div>
@@ -37,11 +33,10 @@
             @elseif (session('error'))
                 @include('partials.alert', ['type' => 'danger', 'message' => session('error')])
             @endif
-
             <!-- Card start -->
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Data Kendaraan</div>
+                    <div class="card-title">Anggaran Pertahun</div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -49,47 +44,31 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama Unit Kerja</th>
-                                    <th>Budget BBM</th>
-                                    <th>Budget Pelumas</th>
-                                    <th>Budget Suku Cadang</th>
-                                    <th>Budget Total</th>
-                                    <th>Jumlah Kendaraan</th>
+                                    <th>Kode Rekening</th>
+                                    <th>Nama Rekening</th>
+                                    <th>Anggaran</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($groupAnggarans as $index => $groupAnggaran)
+                                @foreach ($masterAnggarans as $index => $masterAnggaran)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $groupAnggaran->nama_group }}</td>
-                                        <td>{{ $groupAnggaran->kode_rekening }}</td>
-                                        <td>Rp. {{ number_format($groupAnggaran->anggaran_bensin_pelumas, 0, ',', '.') }}</td>
-                                        <td>Rp. {{ number_format($groupAnggaran->anggaran_suku_cadang, 0, ',', '.') }}</td>
-                                        <td>Rp. {{ number_format($groupAnggaran->anggaran_bensin_pelumas + $groupAnggaran->anggaran_suku_cadang, 0, ',', '.') }}</td>
-                                        <td>{{ $groupAnggaran->kendaraans_count }}</td>
+                                        <td>{{ $masterAnggaran->kode_rekening }}</td>
+                                        <td>{{ $masterAnggaran->nama_rekening }}</td>
+                                        <td>Rp. {{ number_format($masterAnggaran->anggaran, 0, ',', '.') }}</td>
                                         <td>
-                                            <button type="button" class="btn btn-primary btn-icon show-details"
-                                                data-bs-toggle="modal" data-bs-target="#scrollable"
-                                                data-unit-kerja-id="{{ $groupAnggaran->id }}"
-                                                data-nama-unit-kerja="{{ $groupAnggaran->nama_unit_kerja }}"
-                                                data-budget-bahan-bakar-minyak="{{ $groupAnggaran->budget_bahan_bakar_minyak }}"
-                                                data-budget-pelumas-mesin="{{ $groupAnggaran->budget_pelumas_mesin }}"
-                                                data-budget-suku-cadang="{{ $groupAnggaran->budget_suku_cadang }}"
-                                                data-jumlah-kendaraan="{{ $groupAnggaran->kendaraans_count }}">
-                                                <i class="bi bi-search"></i>
-                                            </button>
-                                            <a href="{{ route('unitKerja.edit', $groupAnggaran->id) }}"
+                                            <a href="{{ route('masterAnggaran.edit', $masterAnggaran->id) }}"
                                                 class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
                                                 data-bs-placement="top" title="Edit">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            <form action="{{ route('unitKerja.delete', $groupAnggaran->id) }}" method="POST"
+                                            <form action="{{ route('masterAnggaran.delete', $masterAnggaran->id) }}" method="POST"
                                                 style="display: inline-block">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button class="btn btn-danger btn-icon btn-sm"
-                                                    onclick="return confirm('Kamu yakin ingin menghapus data: {{ $groupAnggaran->nomor_registrasi }} ?')"
+                                                    onclick="return confirm('Kamu yakin ingin menghapus data: {{ $masterAnggaran->nomor_registrasi }} ?')"
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
                                                     <i class="bi bi-trash"></i>
                                                 </button>

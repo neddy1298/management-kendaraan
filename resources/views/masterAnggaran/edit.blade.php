@@ -30,14 +30,14 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('anggaran.update', $anggaran->id ?? 1) }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('masterAnggaran.update', $masterAnggaran->id ?? 1) }}" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-xl-12">
                                 <div class="mb-3">
                                     <label for="kode_rekening" class="form-label">Kode Rekening</label>
                                     <input type="text" class="form-control @error('kode_rekening') is-invalid @enderror"
-                                        id="kode_rekening" name="kode_rekening" value="{{ $anggaran->kode_rekening ?? "" }}">
+                                        id="kode_rekening" name="kode_rekening" value="{{ $masterAnggaran->kode_rekening ?? "" }}">
                                     @error('kode_rekening')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -49,7 +49,7 @@
                                 <div class="mb-3">
                                     <label for="nama_rekening" class="form-label">Nama Rekening</label>
                                     <input type="text" class="form-control @error('nama_rekening') is-invalid @enderror"
-                                        id="nama_rekening" name="nama_rekening" value="{{ $anggaran->nama_rekening ?? "" }}">
+                                        id="nama_rekening" name="nama_rekening" value="{{ $masterAnggaran->nama_rekening ?? "" }}">
                                     @error('nama_rekening')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -57,9 +57,9 @@
                             </div>
                             <div class="col-xl-12">
                                 <div class="mb-3">
-                                    <label for="anggaran" class="form-label">Total Anggaran</label>
+                                    <label for="anggaran" class="form-label">Anggaran</label>
                                     <input type="number" class="form-control @error('anggaran') is-invalid @enderror"
-                                        id="anggaran" name="anggaran" value="{{ $anggaran->anggaran }}">
+                                        id="anggaran" name="anggaran" value="{{ $masterAnggaran->anggaran }}">
                                     @error('anggaran')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

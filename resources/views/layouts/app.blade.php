@@ -66,10 +66,13 @@
                             'Kendaraan' => ['route' => 'kendaraan.index', 'icon' => 'bi-truck', 'text' => 'Kendaraan'],
                             'Maintenance' => ['route' => 'maintenance.index', 'icon' => 'bi-gear', 'text' => 'Maintenance'],
                             'Unit Kerja' => ['route' => 'unitKerja.index', 'icon' => 'bi-person-badge', 'text' => 'Unit Kerja'],
+                            'Anggaran' => ['route' => null, 'icon' => 'bi-cash-stack', 'text' => 'Anggaran'],
                             'User' => ['route' => 'profile.edit', 'icon' => 'bi-person-circle', 'text' => 'User'],
                         ];
 
                         $pages2 = [
+                            'Pertahun' => 'Pertahun',
+                            'Anggota' => 'Anggota',
                             'Tambah' => 'Tambah Baru',
                             'Edit' => 'Ubah Data',
                         ];
