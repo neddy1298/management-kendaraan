@@ -2,8 +2,8 @@
 
 @section('css')
     <!-- Data Tables -->
-    <link rel="stylesheet" href="{{ asset('vendor/datatables/dataTables.bs5.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/datatables/dataTables.bs5-custom.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('vendor/datatables/dataTables.bs5.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('vendor/datatables/dataTables.bs5-custom.css') }}">
 @endsection
 
 @section('content')
@@ -188,9 +188,9 @@
         });
     </script>
     <!-- Data Tables -->
-    <script src="{{ asset('vendor/datatables/dataTables.min.js') }}"></script>
-    <script src="{{ asset('vendor/datatables/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ secure_asset('vendor/datatables/dataTables.min.js') }}"></script>
+    <script src="{{ secure_asset('vendor/datatables/dataTables.bootstrap.min.js') }}"></script>
 
     <!-- Custom Data tables -->
-    <script src="{{ asset('vendor/datatables/custom/custom-datatables.js') }}"></script>
+    <script src="{{ secure_asset('vendor/datatables/custom/custom-datatables.js') }}"></script>
 @endsection
