@@ -69,7 +69,7 @@
 
                         <!-- Form actions footer start -->
                         <div class="form-actions-footer">
-                            <a class="btn btn-light" href="{{ route('home') }}">Batal</a>
+                            <a class="btn btn-light" href="{{ route('masterAnggaran.index') }}">Batal</a>
                             <button type="submit" class="btn btn-success">Simpan</button>
                         </div>
                         <!-- Form actions footer end -->

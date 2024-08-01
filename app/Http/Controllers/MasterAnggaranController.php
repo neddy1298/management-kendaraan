@@ -29,7 +29,17 @@ class MasterAnggaranController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $request->validate([
+            'kode_rekening' => 'required',
+            'nama_rekening' => 'required',
+            'anggaran' => 'required',
+        ]);
+
+        MasterAnggaran::create($request->all());
+
+        return redirect()->route('masterAnggaran.index')
+            ->with('success', 'Anggaran Berhasil dibuat.');
     }
 
     /**
@@ -43,17 +53,28 @@ class MasterAnggaranController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit()
     {
-        //
+        $masterAnggaran = MasterAnggaran::all()->first();
+        return view('masterAnggaran.edit', compact('masterAnggaran'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'kode_rekening' => 'required',
+            'nama_rekening' => 'required',
+            'anggaran' => 'required',
+        ]);
+
+        $masterAnggaran = MasterAnggaran::find($id);
+        $masterAnggaran->update($request->all());
+
+        return redirect()->route('masterAnggaran.index')
+            ->with('success', 'Anggaran Berhasil dibuat.');
     }
 
     /**
@@ -61,6 +82,13 @@ class MasterAnggaranController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $masterAnggaran = MasterAnggaran::find($id);
+
+        if ($masterAnggaran) {
+            $masterAnggaran->delete();
+            return redirect()->route('masterAnggaran.index')->with('success', 'Data berhasil dihapus.');
+        } else {
+            return redirect()->route('masterAnggaran.index')->with('error', 'Data tidak ditemukan.');
+        }
     }
 }

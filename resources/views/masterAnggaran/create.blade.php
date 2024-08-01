@@ -12,7 +12,7 @@
             <!-- Card start -->
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Ubah Pagu Anggaran</div>
+                    <div class="card-title">Jumlah Anggaran Pertahun</div>
                     <div class="card-options">
                         <span class="text-muted">Tanggal Hari ini: {{ now()->format('d F Y') }}</span>
                     </div>
@@ -30,7 +30,7 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('masterAnggaran.update', $masterAnggaran->id ?? 1) }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('masterAnggaran.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-xl-12">
@@ -69,7 +69,7 @@
 
                         <!-- Form actions footer start -->
                         <div class="form-actions-footer">
-                            <a class="btn btn-light" href="{{ route('home') }}">Batal</a>
+                            <a class="btn btn-light" href="{{ route('masterAnggaran.index') }}">Batal</a>
                             <button type="submit" class="btn btn-success">Simpan</button>
                         </div>
                         <!-- Form actions footer end -->
