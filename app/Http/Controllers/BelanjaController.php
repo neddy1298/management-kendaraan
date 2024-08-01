@@ -17,7 +17,7 @@ class BelanjaController extends Controller
      */
     public function index()
     {
-        $belanjas = Belanja::orderBy('created_at', 'desc')->get();
+        $belanjas = Belanja::orderBy('created_at', 'desc')->with('maintenance')->get();
         return view('belanja.index', compact('belanjas'));
     }
 
@@ -28,8 +28,8 @@ class BelanjaController extends Controller
      */
     public function create()
     {
-        $kendaraans = Kendaraan::select('nomor_registrasi', 'merk_kendaraan', 'jenis_kendaraan')->get();
-        return view('belanja.create', compact('kendaraans'));
+        $maintenances = Maintenance::with('kendaraan')->get();
+        return view('belanja.create', compact('maintenances'));
     }
 
     /**
@@ -42,7 +42,7 @@ class BelanjaController extends Controller
     {
 
         $validatedData = $request->validate([
-            'nomor_registrasi' => 'required|string|max:255',
+            'maintenance_id' => 'required|string|max:255',
             'belanja_bahan_bakar_minyak' => 'required_without_all:belanja_pelumas_mesin,belanja_suku_cadang|nullable|integer',
             'belanja_pelumas_mesin' => 'required_without_all:belanja_bahan_bakar_minyak,belanja_suku_cadang|nullable|integer',
             'belanja_suku_cadang' => 'required_without_all:belanja_bahan_bakar_minyak,belanja_pelumas_mesin|nullable|integer',
@@ -61,7 +61,7 @@ class BelanjaController extends Controller
         try {
             $belanja = Belanja::create($validatedData);
 
-            $maintenance = Maintenance::find($validatedData['nomor_registrasi']);
+            $maintenance = Maintenance::find($validatedData['maintenance_id']);
             if ($maintenance) {
                 $maintenance->update([
                     'belanja_bahan_bakar_minyak' => $maintenance->belanja_bahan_bakar_minyak + ($validatedData['belanja_bahan_bakar_minyak'] ?? 0),
@@ -100,10 +100,10 @@ class BelanjaController extends Controller
 
         if ($belanja) {
             try {
-                $nomor_registrasi = $belanja->nomor_registrasi;
+                $maintenance_id = $belanja->maintenance_id;
                 $belanja->delete();
 
-                $maintenance = Maintenance::where('nomor_registrasi', $nomor_registrasi)->first();
+                $maintenance = Maintenance::where('maintenance_id', $maintenance_id)->first();
                 if ($maintenance) {
                     $maintenance->update([
                         'belanja_bahan_bakar_minyak' => $maintenance->belanja_bahan_bakar_minyak - ($belanja->belanja_bahan_bakar_minyak ?? 0),
