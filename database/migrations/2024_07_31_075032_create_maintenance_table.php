@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('belanja_bahan_bakar_minyak')->nullable();
             $table->integer('belanja_pelumas_mesin')->nullable();
             $table->integer('belanja_suku_cadang')->nullable();
-            $table->integer('total_belanja')->virtualAs('IFNULL(belanja_bahan_bakar_minyak, 0) + IFNULL(belanja_pelumas_mesin, 0) + IFNULL(belanja_suku_cadang, 0)');
+            $table->integer('total_maintenance')->virtualAs('IFNULL(belanja_bahan_bakar_minyak, 0) + IFNULL(belanja_pelumas_mesin, 0) + IFNULL(belanja_suku_cadang, 0)');
             $table->string('_token')->nullable();
             $table->text('keterangan')->nullable();
             $table->timestamps();

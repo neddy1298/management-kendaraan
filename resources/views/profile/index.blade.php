@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'User', 'page2' => 'Detail', 'page3' => ''])
+@extends('layouts.app', ['page' => 'User', 'page2' => '', 'page3' => ''])
 
 @section('content')
     <!-- Row start -->

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GroupAnggaran;
 use App\Models\Maintenance;
 use App\Models\UnitKerja;
 use Illuminate\Http\Request;
@@ -24,8 +25,8 @@ class UnitKerjaController extends Controller
      */
     public function create()
     {
-        $unitKerjas = UnitKerja::all();
-        return view('unitKerja.create', compact('unitKerjas'));
+        $groupAnggarans = GroupAnggaran::all();
+        return view('unitKerja.create', compact('groupAnggarans'));
     }
 
     /**
@@ -34,11 +35,11 @@ class UnitKerjaController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'nama_unit_kerja' => 'required|string|max:255|unique:unit_kerjas',
+            'nama_unit_kerja' => 'required|string|max:255',
+            'group_anggaran_id' => 'required|integer',
             'budget_bahan_bakar_minyak' => 'required|integer',
             'budget_pelumas_mesin' => 'required|integer',
             'budget_suku_cadang' => 'required|integer',
-
         ], [
             'required' => 'Kolom :attribute wajib diisi.',
             'integer' => 'Kolom :attribute harus berupa angka.',
@@ -65,11 +66,11 @@ class UnitKerjaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id) 
+    public function edit($id)
     {
-        $unitKerja = unitKerja::find($id);
-
-        return view('unitKerja.edit', compact('unitKerja'));
+        $unitKerja = UnitKerja::find($id)->with('groupAnggaran')->first();
+        $groupAnggarans = GroupAnggaran::all();
+        return view('unitKerja.edit', compact('unitKerja', 'groupAnggarans'));
     }
 
     /**

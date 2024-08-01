@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'Unit Kerja', 'page2' => 'Edit', 'page3' => ''])
+@extends('layouts.app', ['page' => 'Master', 'page2' => 'Unit Kerja', 'page3' => 'Edit'])
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('vendor/daterange/daterange.css') }}">
@@ -30,11 +30,29 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('unitKerja.update', $unitKerja->id) }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('unitKerja.update', $unitKerja->id) }}"
+                        enctype="multipart/form-data">
                         @csrf
                         @method('POST')
 
                         <div class="row">
+
+                            <div class="col-xl-12">
+                                <div class="mb-3">
+                                    <label for="group_anggaran_id" class="form-label">Group Anggaran</label>
+                                    <select id="group_anggaran_id" class="form-select" name="group_anggaran_id">
+                                        <option hidden value="{{ $unitKerja->group_anggaran_id }}">
+                                            {{ $unitKerja->groupAnggaran->nama_group }} - {{ $unitKerja->groupAnggaran->kode_rekening }}</option>
+                                        @foreach ($groupAnggarans as $groupAnggaran)
+                                            <option value="{{ $groupAnggaran->id }}">{{ $groupAnggaran->nama_group }} -
+                                                {{ $groupAnggaran->kode_rekening }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('group_anggaran_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                             <div class="col-xl-12">
                                 <div class="mb-3">
                                     <label for="nama_unit_kerja" class="form-label">Nama Unit Kerja</label>
@@ -47,7 +65,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-xl-6">
+                            <div class="col-xl-4">
                                 <div class="mb-3">
                                     <label for="budget_bahan_bakar_minyak" class="form-label">Budget BBM</label>
                                     <input type="number" id="budget_bahan_bakar_minyak" name="budget_bahan_bakar_minyak"
@@ -59,7 +77,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-xl-6">
+                            <div class="col-xl-4">
                                 <div class="mb-3">
                                     <label for="budget_pelumas_mesin" class="form-label">Budget Pelumas</label>
                                     <input type="number" id="budget_pelumas_mesin" name="budget_pelumas_mesin"
@@ -71,26 +89,13 @@
                                 </div>
                             </div>
 
-                            <div class="col-xl-6">
+                            <div class="col-xl-4">
                                 <div class="mb-3">
                                     <label for="budget_suku_cadang" class="form-label">Budget Suku Cadang</label>
                                     <input type="number" id="budget_suku_cadang" name="budget_suku_cadang"
                                         class="form-control @error('budget_suku_cadang') is-invalid @enderror"
                                         value="{{ old('budget_suku_cadang', $unitKerja->budget_suku_cadang) }}">
                                     @error('budget_suku_cadang')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-
-                            <div class="col-xl-6">
-                                <div class="mb-3">
-                                    <label for="budget_total" class="form-label">Total Budget</label>
-                                    <input type="number" id="budget_total" name="budget_total"
-                                        class="form-control @error('budget_total') is-invalid @enderror"
-                                        value="{{ old('budget_total', $unitKerja->budget_total) }}">
-                                    @error('budget_total')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>

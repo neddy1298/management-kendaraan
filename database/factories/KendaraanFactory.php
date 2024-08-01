@@ -25,7 +25,8 @@ class KendaraanFactory extends Factory
             'cc_kendaraan' => fake()->numberBetween(100, 10000),
             'bbm_kendaraan' => fake()->randomElement(['Bensin', 'Diesel', 'Listrik']),
             'roda_kendaraan' => fake()->randomElement(['2', '4', '6', '8', '10']),
-            'berlaku_sampai' => fake()->dateTimeBetween('-1 year', '+1 year')->format('d/m/y'),
+            'berlaku_sampai' => $this->faker->dateTimeBetween('-1 year', '+1 year')->format('Y-m-d'),
+
         ];
     }
 }
