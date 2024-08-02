@@ -74,6 +74,7 @@ class BelanjaController extends Controller
                     'keterangan' => $maintenance->keterangan . ' ' . $validatedData['keterangan'],
                 ]);
             } elseif ($otherMaintenances->count() > 0) {
+                $found = false;
                 foreach ($otherMaintenances as $otherMaintenance) {
                     $otherMaintenanceMonth = Carbon::createFromFormat('Y-m-d', $otherMaintenance->tanggal_maintenance)->format('Y-m');
                     if ($otherMaintenanceMonth == $belanjaMonth) {
@@ -83,7 +84,18 @@ class BelanjaController extends Controller
                             'keterangan' => $otherMaintenance->keterangan . ' ' . $validatedData['keterangan'],
                         ]);
                         $validatedData['maintenance_id'] = $otherMaintenance->id;
-                    }
+                        $found = true;
+                        break;
+                    } 
+                }
+                if (!$found) {
+                    $new_maintenance = Maintenance::create([
+                        'kendaraan_id' => $maintenance->kendaraan_id,
+                        'tanggal_maintenance' => $validatedData['tanggal_belanja'],
+                        'keterangan' => $validatedData['keterangan'],
+                    ]);
+            
+                    $validatedData['maintenance_id'] = $new_maintenance->id;
                 }
             } else {
                 $new_maintenance = Maintenance::create([
@@ -91,7 +103,7 @@ class BelanjaController extends Controller
                     'tanggal_maintenance' => $validatedData['tanggal_belanja'],
                     'keterangan' => $validatedData['keterangan'],
                 ]);
-
+            
                 $validatedData['maintenance_id'] = $new_maintenance->id;
             }
             // dd($maintenance_before,$maintenance, $new_maintenance);
