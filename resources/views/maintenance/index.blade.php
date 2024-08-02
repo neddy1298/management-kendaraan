@@ -53,13 +53,16 @@
             <div class="card">
                 <div class="card-body">
                     <div class="custom-btn-group">
-                        @php
-                            $message =
-                                "Contoh message yang akan dikirim ke WA\n1. lorem ipsum dolor sit amet consectetur adipiscing elit\n2. lorem ipsum dolor sit amet consectetur adipiscing elit\n3. lorem ipsum dolor sit amet consectetur adipiscing elit\n4. lorem ipsum dolor sit amet consectetur adipiscing elit\n5. lorem ipsum dolor sit amet consectetur adipiscing elit";
-                        @endphp
-                        <a href="{{ route('send-wa', $message) }}" class="btn btn-success" target="_blank"><i
-                                class="bi bi-whatsapp"></i>
-                            Kirim WA</a>
+                        <form action="{{ route('maintenance.index') }}" method="GET" class="mb-3">
+                            <select name="month" onchange="this.form.submit()" class="form-select">
+                                <option value="all" {{ $selectedMonth == 'all' ? 'selected' : '' }}>Semua</option>
+                                @foreach ($months as $month)
+                                    <option value="{{ $month }}" {{ $selectedMonth == $month ? 'selected' : '' }}>
+                                        {{ Carbon\Carbon::parse($month)->format('F Y') }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -138,7 +141,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="scrollableLabel">Data Maintenance - <span
-                            id="modalTanggalBelanja"></span></h5>
+                                id="modalTanggalBelanja"></span></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
