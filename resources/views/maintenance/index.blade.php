@@ -53,7 +53,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="custom-btn-group">
-                        <form action="{{ route('maintenance.index') }}" method="GET" class="mb-3">
+                        <form action="{{ route('maintenance.index') }}" method="GET">
                             <select name="month" onchange="this.form.submit()" class="form-select">
                                 <option value="all" {{ $selectedMonth == 'all' ? 'selected' : '' }}>Semua</option>
                                 @foreach ($months as $month)
