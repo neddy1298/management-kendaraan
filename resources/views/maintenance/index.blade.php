@@ -50,14 +50,14 @@
                 </div>
             </div>
         </div>
-        <div class="col-12">
-            <!-- Card start -->
+        <!-- Card start -->
+
+        <div class="col-sm-12 col-12">
             <div class="card">
                 <div class="card-body">
-
                     <form action="{{ route('maintenance.index') }}" method="GET"
-                    class="row row-cols-lg-auto g-3 align-items-center">
-                                            <div class="col-12">
+                        class="row row-cols-lg-auto g-3 align-items-center">
+                        <div class="col-12">
                             <label class="visually-hidden">Username</label>
                             <div class="input-group">
                                 {{-- <div class="input-group-text">
@@ -90,8 +90,7 @@
                         </div>
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary">Filter</button>
-                            <a class="btn btn-dark btn-icon btn-sm"
-                                href="{{ route('maintenance.index') }}"
+                            <a class="btn btn-dark btn-icon btn-sm" href="{{ route('maintenance.index') }}"
                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Reset">
                                 <i class="bi bi-arrow-counterclockwise"></i>
                             </a>
@@ -99,8 +98,8 @@
                     </form>
                 </div>
             </div>
-            <!-- Card end -->
         </div>
+        <!-- Card end -->
         <div class="col-sm-12 col-12">
             <!-- Card start -->
             <div class="card">

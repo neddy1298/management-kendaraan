@@ -175,7 +175,7 @@
                                 @foreach ($belanja_mingguans as $index => $belanja_mingguan)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $belanja_mingguan->nomor_registrasi }}</td>
+                                        <td>{{ $belanja_mingguan->maintenance->kendaraan->nomor_registrasi }}</td>
                                         <td>Rp.
                                             {{ number_format($belanja_mingguan->belanja_bahan_bakar_minyak + $belanja_mingguan->belanja_pelumas_mesin + $belanja_mingguan->belanja_suku_cadang, 0, ',', '.') }}
                                         </td>

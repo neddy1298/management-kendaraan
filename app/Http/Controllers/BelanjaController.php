@@ -15,11 +15,37 @@ class BelanjaController extends Controller
      *
      * @return \Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $belanjas = Belanja::all();
-        return view('belanja.index', compact('belanjas'));
+        $dateRange = $request->input('date-range');
+
+        $query = Belanja::with(['maintenance.kendaraan', 'maintenance.kendaraan.unitKerja']);
+
+        if ($dateRange) {
+            $dates = explode(' - ', $dateRange);
+            $startDate = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->startOfDay();
+            $endDate = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->endOfDay();
+
+            $query->whereBetween('tanggal_belanja', [$startDate, $endDate]);
+        }
+
+        $belanjas = $query->orderBy('tanggal_belanja', 'desc')->get();
+
+        $belanja_periode = $belanjas->sum('belanja_bahan_bakar_minyak')
+            + $belanjas->sum('belanja_pelumas_mesin')
+            + $belanjas->sum('belanja_suku_cadang');
+
+        $belanja_tahun_ini = Belanja::whereYear('tanggal_belanja', Carbon::now()->year)
+            ->selectRaw('SUM(belanja_bahan_bakar_minyak + belanja_pelumas_mesin + belanja_suku_cadang) as total')
+            ->value('total');
+
+        $isExpire = $belanjas->filter(function ($belanja) {
+            return $belanja->maintenance->kendaraan->berlaku_sampai < Carbon::now();
+        })->count();
+
+        return view('belanja.index', compact('belanjas', 'isExpire', 'belanja_periode', 'belanja_tahun_ini', 'dateRange'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -66,7 +92,7 @@ class BelanjaController extends Controller
             $otherMaintenances = Maintenance::where('kendaraan_id', $maintenance->kendaraan_id)
                 ->where('id', '!=', $maintenance->id)
                 ->get();
-            
+
             if ($maintenanceMonth == $belanjaMonth) {
                 $maintenance->update([
                     'tanggal_maintenance' => $validatedData['tanggal_belanja'],
@@ -86,7 +112,7 @@ class BelanjaController extends Controller
                         $validatedData['maintenance_id'] = $otherMaintenance->id;
                         $found = true;
                         break;
-                    } 
+                    }
                 }
                 if (!$found) {
                     $new_maintenance = Maintenance::create([
@@ -94,7 +120,7 @@ class BelanjaController extends Controller
                         'tanggal_maintenance' => $validatedData['tanggal_belanja'],
                         'keterangan' => $validatedData['keterangan'],
                     ]);
-            
+
                     $validatedData['maintenance_id'] = $new_maintenance->id;
                 }
             } else {
@@ -103,7 +129,7 @@ class BelanjaController extends Controller
                     'tanggal_maintenance' => $validatedData['tanggal_belanja'],
                     'keterangan' => $validatedData['keterangan'],
                 ]);
-            
+
                 $validatedData['maintenance_id'] = $new_maintenance->id;
             }
             // dd($maintenance_before,$maintenance, $new_maintenance);
@@ -149,7 +175,7 @@ class BelanjaController extends Controller
 
     public function printAll()
     {
-        $datas = Belanja::all();
+        $datas = Belanja::with('maintenance.kendaraan')->get();
         return view('belanja.printAll', compact('datas'));
     }
 }

@@ -81,6 +81,9 @@
                 <tr>
                     <th>No</th>
                     <th>Nomor Registrasi</th>
+                    <th>Belanja BBM</th>
+                    <th>Belanja Pelumas</th>
+                    <th>Belanja Suku Cadang</th>
                     <th>Total Belanja</th>
                     <th>Tanggal Belanja</th>
                 </tr>
@@ -89,9 +92,12 @@
                 @foreach ($datas as $index => $data)
                     <tr>
                         <td>{{ $index + 1 }} </td>
-                        <td>{{ $data->nomor_registrasi }}</td>
-                        <td>Rp. {{ number_format($data->belanja_bahan_bakar_minyak + $data->belanja_pelumas_mesin + $data->belanja_suku_cadang, 0, ',', '.') }}</td>
-                        <td>{{ $data->tanggal_belanja }}</td>
+                        <td>{{ $data->maintenance->kendaraan->nomor_registrasi }}</td>
+                        <td>Rp. {{ number_format($data->belanja_bahan_bakar_minyak, 0, ',', '.') }}</td>
+                        <td>Rp. {{ number_format($data->belanja_pelumas_mesin, 0, ',', '.') }}</td>
+                        <td>Rp. {{ number_format($data->belanja_suku_cadang, 0, ',', '.') }}</td>
+                        <td>Rp. {{ number_format($data->totalBelanja(), 0, ',', '.') }}</td>
+                        <td>{{ date('d/m/Y', strtotime($data->tanggal_belanja)) }}</td>
                     </tr>
                 @endforeach
             </tbody>

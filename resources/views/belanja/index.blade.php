@@ -4,14 +4,44 @@
     <!-- Data Tables -->
     <link rel="stylesheet" href="{{ asset('vendor/datatables/dataTables.bs5.css') }}" />
     <link rel="stylesheet" href="{{ asset('vendor/datatables/dataTables.bs5-custom.css') }}" />
+
+
+    <!-- Date Range CSS -->
+    <link rel="stylesheet" href="{{ asset('vendor/daterange/daterange.css') }}">
 @endsection
 
 @section('content')
     <div class="row">
+        <div class="row">
+            <div class="col-xxl-4 col-sm-6 col-12">
+                <div class="stats-tile">
+                    <div class="sale-icon shade-green">
+                        <h4 class="text-white">Rp</h4>
+                    </div>
+                    <div class="sale-details">
+                        <h3 class="text-green">
+                            {{ number_format($belanja_periode, 0, ',', '.') }}.00
+                        </h3>
+                        <p>Total Belanja 
+                            @if(isset($dateRange))
+                                {{ \Carbon\Carbon::createFromFormat('d/m/Y', trim(explode(' - ', $dateRange)[0]))->format('d M Y') }} 
+                                - 
+                                {{ \Carbon\Carbon::createFromFormat('d/m/Y', trim(explode(' - ', $dateRange)[1]))->format('d M Y') }}
+                            @else
+                                Semua Periode
+                            @endif
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Card start -->
+
+
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="custom-btn-group">
+                    <div class="custom-btn-group col-6">
                         <a href="{{ route('belanja.create') }}" class="btn btn-warning">
                             <i class="bi bi-pencil-square"></i> Tambah Baru
                         </a>
@@ -19,12 +49,39 @@
                             <i class="bi bi-printer"></i> Cetak
                         </a>
                         @php
-                            $message = "Contoh message yang akan dikirim ke WA\n-1. lorem ipsum dolor sit amet consectetur adipiscing elit\n2. lorem ipsum dolor sit amet consectetur adipiscing elit\n3. lorem ipsum dolor sit amet consectetur adipiscing elit\n4. lorem ipsum dolor sit amet consectetur adipiscing elit\n5. lorem ipsum dolor sit amet consectetur adipiscing elit";
+                            $message =
+                                "Contoh message yang akan dikirim ke WA\n-1. lorem ipsum dolor sit amet consectetur adipiscing elit\n2. lorem ipsum dolor sit amet consectetur adipiscing elit\n3. lorem ipsum dolor sit amet consectetur adipiscing elit\n4. lorem ipsum dolor sit amet consectetur adipiscing elit\n5. lorem ipsum dolor sit amet consectetur adipiscing elit";
                         @endphp
                         <a href="{{ route('send-wa', ['message' => $message]) }}" class="btn btn-success" target="_blank">
                             <i class="bi bi-whatsapp"></i> Kirim WA
                         </a>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="m-0">
+                    </div>
+                    <form action="{{ route('belanja.index') }}" method="GET"
+                        class="row row-cols-lg-auto g-3 align-items-center">
+                        <div class="col-12">
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-calendar2"></i>
+                                </span>
+                                <input type="text" class="form-control datepicker-range" name="date-range">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                            <a class="btn btn-dark btn-icon btn-sm" href="{{ route('belanja.index') }}"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Reset">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -58,7 +115,9 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $belanja->maintenance->kendaraan->nomor_registrasi }}</td>
-                                        <td>Rp. {{ number_format($belanja->belanja_bahan_bakar_minyak + $belanja->belanja_pelumas_mesin + $belanja->belanja_suku_cadang, 0, ',', '.') }}</td>
+                                        <td>Rp.
+                                            {{ number_format($belanja->belanja_bahan_bakar_minyak + $belanja->belanja_pelumas_mesin + $belanja->belanja_suku_cadang, 0, ',', '.') }}
+                                        </td>
                                         <td>
                                             {{ \Carbon\Carbon::parse($belanja->tanggal_belanja)->translatedFormat('d F Y') }}
                                         </td>
@@ -127,14 +186,23 @@
             document.querySelectorAll('.show-details').forEach(button => {
                 button.addEventListener('click', function() {
                     const modal = document.getElementById('detailModal');
-                    modal.querySelector('#modalNomorRegistrasi').textContent = this.getAttribute('data-nomor-registrasi');
-                    modal.querySelector('#modalTanggalBelanja').textContent = this.getAttribute('data-tanggal-belanja');
-                    modal.querySelector('#modalBahanBakarMinyak').textContent = parseInt(this.getAttribute('data-bahan-bakar-minyak') || 0).toLocaleString('id-ID');
-                    modal.querySelector('#modalPelumasMesin').textContent = parseInt(this.getAttribute('data-pelumas-mesin') || 0).toLocaleString('id-ID');
-                    modal.querySelector('#modalSukuCadang').textContent = parseInt(this.getAttribute('data-suku-cadang') || 0).toLocaleString('id-ID');
-                    modal.querySelector('#modalTotalBelanja').textContent = parseInt(this.getAttribute('data-total-belanja') || 0).toLocaleString('id-ID');
-                    modal.querySelector('#modalKeterangan').textContent = this.getAttribute('data-keterangan');
-                    document.getElementById('modalDeleteBelanja').action = "{{ route('belanja.delete', 'id') }}".replace('id', this.getAttribute('data-id'));
+                    modal.querySelector('#modalNomorRegistrasi').textContent = this.getAttribute(
+                        'data-nomor-registrasi');
+                    modal.querySelector('#modalTanggalBelanja').textContent = this.getAttribute(
+                        'data-tanggal-belanja');
+                    modal.querySelector('#modalBahanBakarMinyak').textContent = parseInt(this
+                        .getAttribute('data-bahan-bakar-minyak') || 0).toLocaleString('id-ID');
+                    modal.querySelector('#modalPelumasMesin').textContent = parseInt(this
+                        .getAttribute('data-pelumas-mesin') || 0).toLocaleString('id-ID');
+                    modal.querySelector('#modalSukuCadang').textContent = parseInt(this
+                        .getAttribute('data-suku-cadang') || 0).toLocaleString('id-ID');
+                    modal.querySelector('#modalTotalBelanja').textContent = parseInt(this
+                        .getAttribute('data-total-belanja') || 0).toLocaleString('id-ID');
+                    modal.querySelector('#modalKeterangan').textContent = this.getAttribute(
+                        'data-keterangan');
+                    document.getElementById('modalDeleteBelanja').action =
+                        "{{ route('belanja.delete', 'id') }}".replace('id', this.getAttribute(
+                            'data-id'));
                 });
             });
         });
@@ -144,4 +212,9 @@
     <script src="{{ asset('vendor/datatables/dataTables.min.js') }}"></script>
     <script src="{{ asset('vendor/datatables/dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('vendor/datatables/custom/custom-datatables.js') }}"></script>
+
+
+    <!-- Date Range JS -->
+    <script src="{{ asset('vendor/daterange/daterange.js') }}"></script>
+    <script src="{{ asset('vendor/daterange/custom-daterange.js') }}"></script>
 @endsection

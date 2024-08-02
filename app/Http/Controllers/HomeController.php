@@ -44,7 +44,7 @@ class HomeController extends Controller
             return $maintenance->berlaku_sampai && Carbon::parse($maintenance->berlaku_sampai)->lt(Carbon::today());
         });
 
-        $belanja_mingguans = Belanja::whereBetween('tanggal_belanja', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->orderBy('created_at', 'desc')->get();
+        $belanja_mingguans = Belanja::whereBetween('tanggal_belanja', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->with('maintenance.kendaraan')->orderBy('created_at', 'desc')->get();
 
         $belanjas = Belanja::whereBetween('tanggal_belanja', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->orderBy('created_at', 'desc')
             ->get();

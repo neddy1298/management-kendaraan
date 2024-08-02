@@ -17,9 +17,7 @@ class KendaraanController extends Controller
      */
     public function index()
     {
-        $kendaraans = Kendaraan::join('unit_kerjas', 'kendaraans.unit_kerja_id', '=', 'unit_kerjas.id')
-            ->select('kendaraans.*', 'unit_kerjas.nama_unit_kerja')
-            ->get();
+        $kendaraans = Kendaraan::with('unitKerja')->get();
         return view('kendaraan.index', compact('kendaraans'));
     }
 
