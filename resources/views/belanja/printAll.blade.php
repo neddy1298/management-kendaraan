@@ -86,6 +86,7 @@
                     <th>Belanja Suku Cadang</th>
                     <th>Total Belanja</th>
                     <th>Tanggal Belanja</th>
+                    <th>Keterangan</th>
                 </tr>
             </thead>
             <tbody>
@@ -98,6 +99,7 @@
                         <td>Rp. {{ number_format($data->belanja_suku_cadang, 0, ',', '.') }}</td>
                         <td>Rp. {{ number_format($data->totalBelanja(), 0, ',', '.') }}</td>
                         <td>{{ date('d/m/Y', strtotime($data->tanggal_belanja)) }}</td>
+                        <td>{{ $data->keterangan }}</td>
                     </tr>
                 @endforeach
             </tbody>
