@@ -19,11 +19,7 @@
                         <h3 class="text-green">
                             {{ number_format($belanja_bulan_ini, 0, ',', '.') }}.00
                         </h3>
-                        @if ($selectedMonth == 'all')
-                            <p>Total Semua Belanja</p>
-                        @else
-                            <p>Total Belanja Bulan {{ \Carbon\Carbon::parse($selectedMonth)->translatedFormat('F Y') }}</p>
-                        @endif
+                        <p>Total Belanja {{ $months[$selectedMonth] }}</p>
                     </div>
                 </div>
             </div>
@@ -47,7 +43,9 @@
                     </div>
                     <div class="sale-details">
                         <h3 class="text-blue">{{ number_format($belanja_tahun_ini, 0, ',', '.') }}.00</h3>
-                        <p>Total Belanja Tahun {{ \Carbon\Carbon::now()->translatedFormat('Y') }}</p>
+                        {{-- <p>Total Belanja Tahun {{ \Carbon\Carbon::now()->translatedFormat('Y') }}</p> --}}
+                        <p>Total Belanja Tahun {{ $selectedYear }}</p>
+
                     </div>
                 </div>
             </div>
@@ -56,18 +54,49 @@
             <!-- Card start -->
             <div class="card">
                 <div class="card-body">
-                    <div class="custom-btn-group">
-                        <form action="{{ route('maintenance.index') }}" method="GET">
-                            <select name="month" onchange="this.form.submit()" class="form-select">
-                                <option value="all" {{ $selectedMonth == 'all' ? 'selected' : '' }}>Semua</option>
-                                @foreach ($months as $month)
-                                    <option value="{{ $month }}" {{ $selectedMonth == $month ? 'selected' : '' }}>
-                                        {{ Carbon\Carbon::parse($month)->format('F Y') }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </form>
-                    </div>
+
+                    <form action="{{ route('maintenance.index') }}" method="GET"
+                    class="row row-cols-lg-auto g-3 align-items-center">
+                                            <div class="col-12">
+                            <label class="visually-hidden">Username</label>
+                            <div class="input-group">
+                                {{-- <div class="input-group-text">
+                                    <i class="bi bi-person"></i>
+                                </div> --}}
+                                <select name="year" class="form-select">
+                                    @foreach ($years as $year)
+                                        <option value="{{ $year }}" {{ $selectedYear == $year ? 'selected' : '' }}>
+                                            {{ $year }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="visually-hidden">Password</label>
+                            <div class="input-group">
+                                {{-- <div class="input-group-text">
+                                    <i class="bi bi-eye-slash"></i>
+                                </div> --}}
+                                <select name="month" class="form-select">
+                                    @foreach ($months as $key => $month)
+                                        <option value="{{ $key }}"
+                                            {{ $selectedMonth == $key ? 'selected' : '' }}>
+                                            {{ $month }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                            <a class="btn btn-dark btn-icon btn-sm"
+                                href="{{ route('maintenance.index') }}"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Reset">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </a>
+                        </div>
+                    </form>
                 </div>
             </div>
             <!-- Card end -->
