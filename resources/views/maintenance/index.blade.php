@@ -19,7 +19,11 @@
                         <h3 class="text-green">
                             {{ number_format($belanja_bulan_ini, 0, ',', '.') }}.00
                         </h3>
-                        <p>Total Belanja Bulan {{ \Carbon\Carbon::now()->translatedFormat('F Y') }}</p>
+                        @if ($selectedMonth == 'all')
+                            <p>Total Semua Belanja</p>
+                        @else
+                            <p>Total Belanja Bulan {{ \Carbon\Carbon::parse($selectedMonth)->translatedFormat('F Y') }}</p>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -107,7 +111,7 @@
                                             </span>
                                         </td>
                                         <td>
-                                            {{ \Carbon\Carbon::parse($maintenance->tanggal_maintenance)->translatedFormat('F') }}
+                                            {{ \Carbon\Carbon::parse($maintenance->tanggal_maintenance)->translatedFormat('F Y') }}
                                         </td>
                                         <td>
                                             <button type="button" class="btn btn-primary btn-icon show-details"
