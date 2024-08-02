@@ -30,7 +30,7 @@
                     </div>
                     <div class="sale-details">
                         <h3 class="text-red">
-                            {{ $isExpire->count() }}/{{ $maintenances->count() }}
+                            {{ $isExpire }}/{{ $maintenances->count() }}
                         </h3>
                         <p>Kadaluarsa Pajak</p>
                     </div>
@@ -79,9 +79,7 @@
                                     <th>No</th>
                                     <th>Nomor Registrasi</th>
                                     <th>Unit Kerja</th>
-                                    <th>Belanja BBM</th>
-                                    <th>Belanja Pelumas</th>
-                                    <th>Belanja Suku Cadang</th>
+                                    <th>Total Belanja</th>
                                     <th>Kadaluarsa Pajak</th>
                                     <th>Bulan</th>
                                     <th>Action</th>
@@ -91,14 +89,10 @@
                                 @foreach ($maintenances as $index => $maintenance)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $maintenance->nomor_registrasi }}</td>
-                                        <td>{{ $maintenance->nama_unit_kerja }}</td>
+                                        <td>{{ $maintenance->kendaraan->nomor_registrasi }}</td>
+                                        <td>{{ $maintenance->kendaraan->unitKerja->nama_unit_kerja }}</td>
                                         <td>Rp.
-                                            {{ number_format($maintenance->belanja_bahan_bakar_minyak ?? 0, 0, ',', '.') }}
-                                        </td>
-                                        <td>Rp. {{ number_format($maintenance->belanja_pelumas_mesin ?? 0, 0, ',', '.') }}
-                                        </td>
-                                        <td>Rp. {{ number_format($maintenance->belanja_suku_cadang ?? 0, 0, ',', '.') }}
+                                            {{ number_format($maintenance->totalSemuaBelanja() ?? 0, 0, ',', '.') }}
                                         </td>
                                         <td>
                                             <span hidden>
@@ -116,15 +110,15 @@
                                             <button type="button" class="btn btn-primary btn-icon show-details"
                                                 data-bs-toggle="modal" data-bs-target="#scrollable"
                                                 data-id="{{ $maintenance->id }}"
-                                                data-nomor-registrasi="{{ $maintenance->nomor_registrasi }}"
-                                                data-bahan-bakar-minyak="{{ $maintenance->belanja_bahan_bakar_minyak }}"
-                                                data-pelumas-mesin="{{ $maintenance->belanja_pelumas_mesin }}"
-                                                data-suku-cadang="{{ $maintenance->belanja_suku_cadang }}"
-                                                data-total-belanja="{{ $maintenance->belanja_bahan_bakar_minyak + $maintenance->belanja_pelumas_mesin + $maintenance->belanja_suku_cadang }}"
+                                                data-nomor-registrasi="{{ $maintenance->kendaraan->nomor_registrasi }}"
+                                                data-bahan-bakar-minyak="{{ $maintenance->totalBelanjaBahanBakarMinyak() }}"
+                                                data-pelumas-mesin="{{ $maintenance->totalBelanjaPelumasMesin() }}"
+                                                data-suku-cadang="{{ $maintenance->totalBelanjaSukuCadang() }}"
+                                                data-total-belanja="{{ $maintenance->totalSemuaBelanja() }}"
                                                 data-tanggal-belanja="{{ \Carbon\Carbon::parse($maintenance->tanggal_maintenance)->translatedFormat('F') }}"
                                                 data-keterangan="{{ $maintenance->keterangan }}"
                                                 data-kadaluarsa-pajak="{{ \Carbon\Carbon::parse($maintenance->berlaku_sampai)->translatedFormat('d F Y') }}"
-                                                data-unit-kerja="{{ $maintenance->nama_unit_kerja }}">
+                                                data-unit-kerja="{{ $maintenance->kendaraan->unitKerja->nama_unit_kerja }}">
                                                 <i class="bi bi-search"></i>
                                             </button>
                                         </td>

@@ -61,31 +61,40 @@ class BelanjaController extends Controller
 
         try {
             $maintenance = Maintenance::find($validatedData['maintenance_id']);
-            $maintenanceMonth = Carbon::createFromFormat('Y-m-d', $maintenance->tanggal_maintenance)->format('m');
-            $belanjaMonth = Carbon::createFromFormat('Y-m-d', $validatedData['tanggal_belanja'])->format('m');
-
+            $maintenanceMonth = Carbon::createFromFormat('Y-m-d', $maintenance->tanggal_maintenance)->format('Y-m');
+            $belanjaMonth = Carbon::createFromFormat('Y-m-d', $validatedData['tanggal_belanja'])->format('Y-m');
+            $otherMaintenances = Maintenance::where('kendaraan_id', $maintenance->kendaraan_id)
+                ->where('id', '!=', $maintenance->id)
+                ->get();
+            
             if ($maintenanceMonth == $belanjaMonth) {
                 $maintenance->update([
-                    'belanja_bahan_bakar_minyak' => $maintenance->belanja_bahan_bakar_minyak + ($validatedData['belanja_bahan_bakar_minyak'] ?? 0),
-                    'belanja_pelumas_mesin' => $maintenance->belanja_pelumas_mesin + ($validatedData['belanja_pelumas_mesin'] ?? 0),
-                    'belanja_suku_cadang' => $maintenance->belanja_suku_cadang + ($validatedData['belanja_suku_cadang'] ?? 0),
                     'tanggal_maintenance' => $validatedData['tanggal_belanja'],
                     'updated_at' => Carbon::now(),
                     'keterangan' => $maintenance->keterangan . ' ' . $validatedData['keterangan'],
                 ]);
+            } elseif ($otherMaintenances->count() > 0) {
+                foreach ($otherMaintenances as $otherMaintenance) {
+                    $otherMaintenanceMonth = Carbon::createFromFormat('Y-m-d', $otherMaintenance->tanggal_maintenance)->format('Y-m');
+                    if ($otherMaintenanceMonth == $belanjaMonth) {
+                        $otherMaintenance->update([
+                            'tanggal_maintenance' => $validatedData['tanggal_belanja'],
+                            'updated_at' => Carbon::now(),
+                            'keterangan' => $otherMaintenance->keterangan . ' ' . $validatedData['keterangan'],
+                        ]);
+                        $validatedData['maintenance_id'] = $otherMaintenance->id;
+                    }
+                }
             } else {
                 $new_maintenance = Maintenance::create([
                     'kendaraan_id' => $maintenance->kendaraan_id,
-                    'tanggal_maintenance' => now()->format('Y-m-d'),
-                    'belanja_bahan_bakar_minyak' => $validatedData['belanja_bahan_bakar_minyak'] ?? 0,
-                    'belanja_pelumas_mesin' => $validatedData['belanja_pelumas_mesin'] ?? 0,
-                    'belanja_suku_cadang' => $validatedData['belanja_suku_cadang'] ?? 0,
                     'tanggal_maintenance' => $validatedData['tanggal_belanja'],
                     'keterangan' => $validatedData['keterangan'],
                 ]);
 
                 $validatedData['maintenance_id'] = $new_maintenance->id;
             }
+            // dd($maintenance_before,$maintenance, $new_maintenance);
 
             Belanja::create($validatedData);
 
@@ -115,29 +124,8 @@ class BelanjaController extends Controller
     public function destroy($id)
     {
         $belanja = Belanja::find($id);
-
-        if ($belanja) {
-            try {
-                $maintenance_id = $belanja->maintenance_id;
-                $belanja->delete();
-
-                $maintenance = Maintenance::find($maintenance_id);
-                if ($maintenance) {
-                    $maintenance->update([
-                        'belanja_bahan_bakar_minyak' => $maintenance->belanja_bahan_bakar_minyak - ($belanja->belanja_bahan_bakar_minyak ?? 0),
-                        'belanja_pelumas_mesin' => $maintenance->belanja_pelumas_mesin - ($belanja->belanja_pelumas_mesin ?? 0),
-                        'belanja_suku_cadang' => $maintenance->belanja_suku_cadang - ($belanja->belanja_suku_cadang ?? 0),
-                        'keterangan' => preg_replace('/\b' . preg_quote($belanja->keterangan, '/') . '\b/', '', $maintenance->keterangan),
-                    ]);
-                }
-
-                return redirect()->route('belanja.index')->with('success', 'Data berhasil dihapus.');
-            } catch (\Exception $e) {
-                return redirect()->route('belanja.index')->with('error', 'Terjadi kesalahan saat menghapus data.');
-            }
-        }
-
-        return redirect()->route('belanja.index')->with('error', 'Data tidak ditemukan.');
+        $belanja->delete();
+        return redirect()->route('belanja.index')->with('success', 'Data berhasil dihapus.');
     }
 
 
@@ -153,6 +141,3 @@ class BelanjaController extends Controller
         return view('belanja.printAll', compact('datas'));
     }
 }
-
-
-    
