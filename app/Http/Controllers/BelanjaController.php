@@ -43,7 +43,7 @@ class BelanjaController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'nomor_registrasi' => 'required|string|max:255',
+            'maintenance_id' => 'required|integer',
             'belanja_bahan_bakar_minyak' => 'required_without_all:belanja_pelumas_mesin,belanja_suku_cadang|nullable|integer',
             'belanja_pelumas_mesin' => 'required_without_all:belanja_bahan_bakar_minyak,belanja_suku_cadang|nullable|integer',
             'belanja_suku_cadang' => 'required_without_all:belanja_bahan_bakar_minyak,belanja_pelumas_mesin|nullable|integer',
@@ -118,10 +118,10 @@ class BelanjaController extends Controller
 
         if ($belanja) {
             try {
-                $nomor_registrasi = $belanja->nomor_registrasi;
+                $maintenance_id = $belanja->maintenance_id;
                 $belanja->delete();
 
-                $maintenance = Maintenance::where('nomor_registrasi', $nomor_registrasi)->first();
+                $maintenance = Maintenance::find($maintenance_id);
                 if ($maintenance) {
                     $maintenance->update([
                         'belanja_bahan_bakar_minyak' => $maintenance->belanja_bahan_bakar_minyak - ($belanja->belanja_bahan_bakar_minyak ?? 0),

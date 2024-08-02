@@ -50,9 +50,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nama Unit Kerja</th>
-                                    <th>Budget BBM</th>
-                                    <th>Budget Pelumas</th>
-                                    <th>Budget Suku Cadang</th>
+                                    <th>Nama Group</th>
                                     <th>Budget Total</th>
                                     <th>Jumlah Kendaraan</th>
                                     <th>Action</th>
@@ -63,10 +61,8 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $unitKerja->nama_unit_kerja }}</td>
-                                        <td>Rp. {{ number_format($unitKerja->budget_bahan_bakar_minyak, 0, ',', '.') }}</td>
-                                        <td>Rp. {{ number_format($unitKerja->budget_pelumas_mesin, 0, ',', '.') }}</td>
-                                        <td>Rp. {{ number_format($unitKerja->budget_suku_cadang, 0, ',', '.') }}</td>
-                                        <td>Rp. {{ number_format($unitKerja->budget_total, 0, ',', '.') }}</td>
+                                        <td>{{ $unitKerja->groupAnggaran->nama_group }}</td>
+                                        <td>Rp. {{ number_format($unitKerja->groupAnggaran->anggaran_total, 0, ',', '.') }}</td>
                                         <td>{{ $unitKerja->kendaraans_count }}</td>
                                         <td>
                                             <button type="button" class="btn btn-primary btn-icon show-details"

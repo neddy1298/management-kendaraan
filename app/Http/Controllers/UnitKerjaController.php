@@ -14,7 +14,7 @@ class UnitKerjaController extends Controller
      */
     public function index()
     {
-        $unitKerjas = UnitKerja::withCount('kendaraans')->get();
+        $unitKerjas = UnitKerja::withCount('kendaraans')->with('groupAnggaran')->get();
 
         // dd($unitKerjas);
         return view('unitKerja.index', compact('unitKerjas'));
@@ -37,9 +37,6 @@ class UnitKerjaController extends Controller
         $validatedData = $request->validate([
             'nama_unit_kerja' => 'required|string|max:255',
             'group_anggaran_id' => 'required|integer',
-            'budget_bahan_bakar_minyak' => 'required|integer',
-            'budget_pelumas_mesin' => 'required|integer',
-            'budget_suku_cadang' => 'required|integer',
         ], [
             'required' => 'Kolom :attribute wajib diisi.',
             'integer' => 'Kolom :attribute harus berupa angka.',
@@ -80,9 +77,6 @@ class UnitKerjaController extends Controller
     {
         $validatedData = $request->validate([
             'nama_unit_kerja' => 'required|string|max:255',
-            'budget_bahan_bakar_minyak' => 'required|integer',
-            'budget_pelumas_mesin' => 'required|integer',
-            'budget_suku_cadang' => 'required|integer',
 
         ], [
             'required' => 'Kolom :attribute wajib diisi.',
@@ -113,7 +107,7 @@ class UnitKerjaController extends Controller
 
     public function getUnitKerjaDetails($id)
     {
-        $unitKerjas = Maintenance::where('unit_kerja', $id)->get();
+        $unitKerjas = Maintenance::find($id);
         return response()->json($unitKerjas);
     }
 }

@@ -50,20 +50,16 @@ class MaintenanceController extends Controller
     }
 
     /**
-     * Get belanja details for a specific nomor_registrasi.
+     * Get belanja details for a specific maintenance_id.
      *
-     * @param  string  $nomor_registrasi
+     * @param  string  $maintenance_id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBelanjaDetails($nomor_registrasi)
+    public function getBelanjaDetails($maintenance_id)
     {
-        $belanjas = Belanja::where('nomor_registrasi', $nomor_registrasi)->get()->map(function ($belanja) {
-            if (!is_null($belanja->tanggal_belanja)) {
-                $belanja->tanggal_belanja = Carbon::parse($belanja->tanggal_belanja)->format('d/m/Y');
-            }
-            return $belanja;
-        });
+        $belanjas = Belanja::where('maintenance_id', $maintenance_id)->get();
 
+        // dd($maintenance_id);
         return response()->json($belanjas);
     }
 }

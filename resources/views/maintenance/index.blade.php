@@ -115,12 +115,13 @@
                                         <td>
                                             <button type="button" class="btn btn-primary btn-icon show-details"
                                                 data-bs-toggle="modal" data-bs-target="#scrollable"
+                                                data-id="{{ $maintenance->id }}"
                                                 data-nomor-registrasi="{{ $maintenance->nomor_registrasi }}"
                                                 data-bahan-bakar-minyak="{{ $maintenance->belanja_bahan_bakar_minyak }}"
                                                 data-pelumas-mesin="{{ $maintenance->belanja_pelumas_mesin }}"
                                                 data-suku-cadang="{{ $maintenance->belanja_suku_cadang }}"
                                                 data-total-belanja="{{ $maintenance->belanja_bahan_bakar_minyak + $maintenance->belanja_pelumas_mesin + $maintenance->belanja_suku_cadang }}"
-                                                data-tanggal-belanja="{{ \Carbon\Carbon::parse($maintenance->berlaku_sampai)->translatedFormat('F') }}"
+                                                data-tanggal-belanja="{{ \Carbon\Carbon::parse($maintenance->tanggal_maintenance)->translatedFormat('F') }}"
                                                 data-keterangan="{{ $maintenance->keterangan }}"
                                                 data-kadaluarsa-pajak="{{ \Carbon\Carbon::parse($maintenance->berlaku_sampai)->translatedFormat('d F Y') }}"
                                                 data-unit-kerja="{{ $maintenance->nama_unit_kerja }}">
@@ -142,8 +143,8 @@
             <div class="modal-dialog modal-dialog-scrollable modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="scrollableLabel">Data Maintenance - </h5><span
-                            id="modalTanggalBelanja"></span>
+                        <h5 class="modal-title" id="scrollableLabel">Data Maintenance - <span
+                            id="modalTanggalBelanja"></span></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -198,6 +199,7 @@
 
             detailButtons.forEach(button => {
                 button.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
                     const nomorRegistrasi = this.getAttribute('data-nomor-registrasi');
                     const bahanBakarMinyak = parseInt(this.getAttribute(
                         'data-bahan-bakar-minyak') || 0);
@@ -225,7 +227,7 @@
 
                     // Fetch detailed belanja data
                     $.ajax({
-                        url: `maintenance/get-belanja-details/${nomorRegistrasi}`,
+                        url: `maintenance/get-belanja-details/${id}`,
                         method: 'GET',
                         success: function(data) {
                             // Sort data by tanggal_belanja in descending order

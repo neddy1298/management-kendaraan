@@ -45,7 +45,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::prefix('maintenance')->group(function () {
             Route::get('', [MaintenanceController::class, 'index'])->name('maintenance.index');
-            Route::get('/get-belanja-details/{nomor_registrasi}', [MaintenanceController::class, 'getBelanjaDetails'])->name('get.belanja.details');
+            Route::get('/get-belanja-details/{id}', [MaintenanceController::class, 'getBelanjaDetails'])->name('get.belanja.details');
         });
 
         Route::prefix('belanja')->group(function () {

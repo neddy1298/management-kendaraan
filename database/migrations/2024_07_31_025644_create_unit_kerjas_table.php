@@ -18,10 +18,6 @@ return new class extends Migration
                 ->constrained('group_anggarans')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->bigInteger('budget_bahan_bakar_minyak')->nullable();
-            $table->bigInteger('budget_pelumas_mesin')->nullable();
-            $table->bigInteger('budget_suku_cadang')->nullable();
-            $table->bigInteger('budget_total')->virtualAs('IFNULL(budget_bahan_bakar_minyak, 0) + IFNULL(budget_pelumas_mesin, 0) + IFNULL(budget_suku_cadang, 0)');
             $table->string('_token')->nullable();
             $table->timestamps();
         });

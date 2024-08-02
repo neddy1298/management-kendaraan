@@ -14,9 +14,6 @@ class UnitKerja extends Model
     protected $fillable = [
         'nama_unit_kerja',
         'group_anggaran_id',
-        'budget_bahan_bakar_minyak',
-        'budget_pelumas_mesin',
-        'budget_suku_cadang',
     ];
 
     public function kendaraans()
@@ -28,10 +25,4 @@ class UnitKerja extends Model
     {
         return $this->belongsTo(GroupAnggaran::class);
     }
-
-    public function totalBudget()
-    {
-        return $this->budget_bahan_bakar_minyak + $this->budget_pelumas_mesin + $this->budget_suku_cadang;
-    }
-    
 }
