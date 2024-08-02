@@ -83,15 +83,17 @@
                     <th>Nomor Registrasi</th>
                     <th>Total Belanja</th>
                     <th>Tanggal Belanja</th>
+                    <th>Keterangan</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($datas as $index => $data)
                     <tr>
                         <td>{{ $index + 1 }} </td>
-                        <td>{{ $data->nomor_registrasi }}</td>
+                        <td>{{ $data->maintenance->kendaraan->nomor_registrasi }}</td>
                         <td>Rp. {{ number_format($data->belanja_bahan_bakar_minyak + $data->belanja_pelumas_mesin + $data->belanja_suku_cadang, 0, ',', '.') }}</td>
                         <td>{{ $data->tanggal_belanja }}</td>
+                        <td>{{ $data->keterangan }}</td>
                     </tr>
                 @endforeach
             </tbody>
