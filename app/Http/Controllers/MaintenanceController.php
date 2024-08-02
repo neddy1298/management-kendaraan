@@ -16,26 +16,30 @@ class MaintenanceController extends Controller
      */
     public function index(Request $request)
     {
+        $selectedYear = $request->input('year', Carbon::now()->format('Y'));
         $selectedMonth = $request->input('month', 'all');
 
         $query = Maintenance::with(['kendaraan', 'kendaraan.unitKerja', 'belanja']);
 
         $belanja_tahun_ini = 0;
-        
+
         foreach ($query->get() as $maintenance) {
             $belanja_tahun_ini += $maintenance->belanja()
-            ->whereYear('tanggal_belanja', Carbon::now()->year)
-            ->sum('belanja_bahan_bakar_minyak')
-            + $maintenance->belanja()
-            ->whereYear('tanggal_belanja', Carbon::now()->year)
-            ->sum('belanja_pelumas_mesin')
-            + $maintenance->belanja()
-            ->whereYear('tanggal_belanja', Carbon::now()->year)
-            ->sum('belanja_suku_cadang');
+                ->whereYear('tanggal_belanja', $selectedYear)
+                ->sum('belanja_bahan_bakar_minyak')
+                + $maintenance->belanja()
+                ->whereYear('tanggal_belanja', $selectedYear)
+                ->sum('belanja_pelumas_mesin')
+                + $maintenance->belanja()
+                ->whereYear('tanggal_belanja', $selectedYear)
+                ->sum('belanja_suku_cadang');
         }
+
         if ($selectedMonth !== 'all') {
-            $query->whereYear('tanggal_maintenance', substr($selectedMonth, 0, 4))
-                ->whereMonth('tanggal_maintenance', substr($selectedMonth, 5, 2));
+            $query->whereYear('tanggal_maintenance', $selectedYear)
+                ->whereMonth('tanggal_maintenance', $selectedMonth);
+        } else {
+            $query->whereYear('tanggal_maintenance', $selectedYear);
         }
 
         $maintenances = $query->orderBy('tanggal_maintenance', 'desc')->get();
@@ -51,24 +55,36 @@ class MaintenanceController extends Controller
             $isExpire += $maintenance->kendaraan->berlaku_sampai < Carbon::now() ? 1 : 0;
         }
 
-        $months = $this->getAvailableMonths();
+        $years = $this->getAvailableYears();
+        $months = [
+            'all' => 'Semua Bulan',
+            '01' => 'Januari',
+            '02' => 'Februari',
+            '03' => 'Maret',
+            '04' => 'April',
+            '05' => 'Mei',
+            '06' => 'Juni',
+            '07' => 'Juli',
+            '08' => 'Agustus',
+            '09' => 'September',
+            '10' => 'Oktober',
+            '11' => 'November',
+            '12' => 'Desember',
+        ];
 
-        return view('maintenance.index', compact('maintenances', 'isExpire', 'belanja_bulan_ini', 'belanja_tahun_ini', 'months', 'selectedMonth'));
+        return view('maintenance.index', compact('maintenances', 'isExpire', 'belanja_bulan_ini', 'belanja_tahun_ini', 'years', 'months', 'selectedYear', 'selectedMonth'));
     }
 
-    private function getAvailableMonths()
+    private function getAvailableYears()
     {
-        $months = Maintenance::select('tanggal_maintenance')
+        $years = Maintenance::selectRaw('YEAR(tanggal_maintenance) as year')
             ->distinct()
-            ->orderBy('tanggal_maintenance', 'desc')
-            ->get()
-            ->map(function ($item) {
-                return Carbon::parse($item->tanggal_maintenance)->format('Y-m');
-            })
-            ->unique();
+            ->orderBy('year', 'desc')
+            ->pluck('year');
 
-        return $months;
+        return $years;
     }
+
 
     /**
      * Get belanja details for a specific maintenance_id.
