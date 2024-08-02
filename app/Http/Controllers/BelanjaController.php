@@ -86,7 +86,7 @@ class BelanjaController extends Controller
         $validatedData['tanggal_belanja'] = Carbon::createFromFormat('d/m/Y', $validatedData['tanggal_belanja'])->format('Y-m-d');
 
         try {
-            $maintenance = Maintenance::find($validatedData['maintenance_id']);
+            $maintenance = Maintenance::findOrFail($validatedData['maintenance_id']);
             $maintenanceMonth = Carbon::createFromFormat('Y-m-d', $maintenance->tanggal_maintenance)->format('Y-m');
             $belanjaMonth = Carbon::createFromFormat('Y-m-d', $validatedData['tanggal_belanja'])->format('Y-m');
             $otherMaintenances = Maintenance::where('kendaraan_id', $maintenance->kendaraan_id)
@@ -161,7 +161,7 @@ class BelanjaController extends Controller
      */
     public function destroy($id)
     {
-        $belanja = Belanja::find($id);
+        $belanja = Belanja::findOrFail($id);
         $belanja->delete();
         return redirect()->route('belanja.index')->with('success', 'Data berhasil dihapus.');
     }

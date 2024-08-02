@@ -84,7 +84,7 @@ class KendaraanController extends Controller
      */
     public function edit($id)
     {
-        $kendaraan = Kendaraan::find($id)->with('unitKerja')->first();
+        $kendaraan = Kendaraan::findOrFail($id)->with('unitKerja')->first();
         $unitKerjas = UnitKerja::orderBy('created_at', 'desc')->get();
         return view('kendaraan.edit', compact('kendaraan', 'unitKerjas'));
     }
@@ -115,7 +115,7 @@ class KendaraanController extends Controller
 
         $validatedData['berlaku_sampai'] = Carbon::createFromFormat('d/m/Y', $validatedData['berlaku_sampai'])->format('Y-m-d');
 
-        $kendaraan = Kendaraan::find($id);
+        $kendaraan = Kendaraan::findOrFail($id);
         $kendaraan->update($validatedData);
 
         return redirect()->route('kendaraan.index')->with('success', 'Data berhasil diperbarui.');
@@ -129,7 +129,7 @@ class KendaraanController extends Controller
      */
     public function destroy($id)
     {
-        $kendaraan = Kendaraan::find($id);
+        $kendaraan = Kendaraan::findOrFail($id);
 
         if ($kendaraan) {
             $kendaraan->delete();

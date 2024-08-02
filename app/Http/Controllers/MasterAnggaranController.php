@@ -61,7 +61,7 @@ class MasterAnggaranController extends Controller
      */
     public function edit($id)
     {
-        $masterAnggaran = MasterAnggaran::find($id);
+        $masterAnggaran = MasterAnggaran::findOrFail($id);
         return view('masterAnggaran.edit', compact('masterAnggaran'));
     }
 
@@ -77,7 +77,7 @@ class MasterAnggaranController extends Controller
             'anggaran' => 'required',
         ]);
 
-        $masterAnggaran = MasterAnggaran::find($id);
+        $masterAnggaran = MasterAnggaran::findOrFail($id);
         $masterAnggaran->update($request->all());
 
         return redirect()->route('masterAnggaran.index')
@@ -89,7 +89,7 @@ class MasterAnggaranController extends Controller
      */
     public function destroy(string $id)
     {
-        $masterAnggaran = MasterAnggaran::find($id);
+        $masterAnggaran = MasterAnggaran::findOrFail($id);
 
         if ($masterAnggaran) {
             $masterAnggaran->delete();

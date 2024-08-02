@@ -65,7 +65,7 @@ class UnitKerjaController extends Controller
      */
     public function edit($id)
     {
-        $unitKerja = UnitKerja::find($id)->with('groupAnggaran')->first();
+        $unitKerja = UnitKerja::findOrFail($id)->with('groupAnggaran')->first();
         $groupAnggarans = GroupAnggaran::orderBy('created_at', 'desc')->get();
         return view('unitKerja.edit', compact('unitKerja', 'groupAnggarans'));
     }
@@ -84,7 +84,7 @@ class UnitKerjaController extends Controller
         ]);
 
 
-        $unitKerjas = UnitKerja::find($id);
+        $unitKerjas = UnitKerja::findOrFail($id);
         $unitKerjas->update($validatedData);
 
         return redirect()->route('unitKerja.index')->with('success', 'Data berhasil diperbarui.');
@@ -95,7 +95,7 @@ class UnitKerjaController extends Controller
      */
     public function destroy($id)
     {
-        $unitkerja = unitKerja::find($id);
+        $unitkerja = unitKerja::findOrFail($id);
 
         if ($unitkerja) {
             $unitkerja->delete();
@@ -107,7 +107,7 @@ class UnitKerjaController extends Controller
 
     public function getUnitKerjaDetails($id)
     {
-        $unitKerjas = Maintenance::find($id);
+        $unitKerjas = Maintenance::findOrFail($id);
         return response()->json($unitKerjas);
     }
 }
