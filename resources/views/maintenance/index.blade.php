@@ -89,8 +89,12 @@
                             </div>
                         </div>
                         <div class="col-12">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                            <a href="{{ route('maintenance.index') }}" class="btn btn-primary">Reset</a>
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                            <a class="btn btn-dark btn-icon btn-sm"
+                                href="{{ route('maintenance.index') }}"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Reset">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </a>
                         </div>
                     </form>
                 </div>
