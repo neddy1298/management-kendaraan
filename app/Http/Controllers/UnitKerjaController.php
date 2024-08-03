@@ -107,7 +107,7 @@ class UnitKerjaController extends Controller
 
     public function getUnitKerjaDetails($id)
     {
-        $unitKerjas = Maintenance::findOrFail($id);
+        $unitKerjas = UnitKerja::with('kendaraans')->findOrFail($id);
         return response()->json($unitKerjas);
     }
 }

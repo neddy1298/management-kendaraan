@@ -62,16 +62,16 @@
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $unitKerja->nama_unit_kerja }}</td>
                                         <td>{{ $unitKerja->groupAnggaran->nama_group }}</td>
-                                        <td>Rp. {{ number_format($unitKerja->groupAnggaran->anggaran_total, 0, ',', '.') }}</td>
+                                        <td>Rp. {{ number_format($unitKerja->groupAnggaran->anggaran_total, 0, ',', '.') }}
+                                        </td>
                                         <td>{{ $unitKerja->kendaraans_count }}</td>
                                         <td>
                                             <button type="button" class="btn btn-primary btn-icon show-details"
                                                 data-bs-toggle="modal" data-bs-target="#scrollable"
                                                 data-unit-kerja-id="{{ $unitKerja->id }}"
                                                 data-nama-unit-kerja="{{ $unitKerja->nama_unit_kerja }}"
-                                                data-budget-bahan-bakar-minyak="{{ $unitKerja->budget_bahan_bakar_minyak }}"
-                                                data-budget-pelumas-mesin="{{ $unitKerja->budget_pelumas_mesin }}"
-                                                data-budget-suku-cadang="{{ $unitKerja->budget_suku_cadang }}"
+                                                data-anggaran-total="{{ $unitKerja->groupAnggaran->anggaran_total }}"
+                                                data-nama-group="{{ $unitKerja->groupAnggaran->nama_group }}"
                                                 data-jumlah-kendaraan="{{ $unitKerja->kendaraans_count }}">
                                                 <i class="bi bi-search"></i>
                                             </button>
@@ -113,10 +113,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <p><strong>Nama Unit Kerja:</strong> <span id="modalNamaUnitKerja"></span></p>
-                                <p><strong>Tanggal:</strong> {{ now()->format('d/m/Y') }}</p>
-                                <p><strong>Budget BBM:</strong> Rp <span id="modalBudgetBBM"></span></p>
-                                <p><strong>Budget Pelumas:</strong> Rp <span id="modalBudgetPelumas"></span></p>
-                                <p><strong>Budget Suku Cadang:</strong> Rp <span id="modalBudgetSukuCadang"></span></p>
+                                <p><strong>Nama Group:</strong> <span id="modalNamaGroup"></span></p>
+                                <p><strong>Anggaran Total:</strong> Rp <span id="modalAnggaranTotal"></span></p>
                                 <p><strong>Jumlah Kendaraan:</strong> <span id="modalJumlahKendaraan"></span></p>
                             </div>
                             <div class="col-md-12 mt-5">
@@ -125,10 +123,12 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nomor Registrasi</th>
-                                            <th>Total Belanja BBM</th>
-                                            <th>Total Belanja Pelumas</th>
-                                            <th>Total Belanja Suku Cadang</th>
-                                            <th>Keterangan</th>
+                                            <th>Merk</th>
+                                            <th>Jenis</th>
+                                            <th>BBM</th>
+                                            <th>Roda</th>
+                                            <th>CC</th>
+                                            <th>Pajak</th>
                                         </tr>
                                     </thead>
                                     <tbody id="modalTableBody">
@@ -159,38 +159,41 @@
                 button.addEventListener('click', function() {
                     const id = this.getAttribute('data-unit-kerja-id');
                     const namaUnitKerja = this.getAttribute('data-nama-unit-kerja');
-                    const budgetBahanBakarMinyak = parseInt(this.getAttribute(
-                        'data-budget-bahan-bakar-minyak') || 0).toLocaleString('id-ID');
-                    const budgetPelumasMesin = parseInt(this.getAttribute('data-budget-pelumas-mesin') || 0).toLocaleString('id-ID');
-                    const budgetSukuCadang = parseInt(this.getAttribute('data-budget-suku-cadang') || 0).toLocaleString('id-ID');
-                    const jumlahKendaraan = parseInt(this.getAttribute('data-jumlah-kendaraan') || 0);
+                    const namaGroup = this.getAttribute('data-nama-group');
+                    const anggaranTotal = parseInt(this.getAttribute(
+                        'data-anggaran-total') || 0).toLocaleString('id-ID');
+                    const jumlahKendaraan = parseInt(this.getAttribute('data-jumlah-kendaraan') ||
+                        0);
 
                     document.getElementById('modalNamaUnitKerja').textContent = namaUnitKerja;
-                    document.getElementById('modalBudgetBBM').textContent = budgetBahanBakarMinyak;
-                    document.getElementById('modalBudgetPelumas').textContent = budgetPelumasMesin;
+                    document.getElementById('modalNamaGroup').textContent = namaGroup;
+                    document.getElementById('modalAnggaranTotal').textContent =
+                        anggaranTotal;
                     document.getElementById('modalJumlahKendaraan').textContent = jumlahKendaraan;
-                    document.getElementById('modalBudgetSukuCadang').textContent = budgetSukuCadang;
 
-                    // Fetch detailed belanja data
+                    // Fetch kendaraan data
                     $.ajax({
                         url: `unitKerja/get-unitkerja-details/${id}`,
                         method: 'GET',
                         success: function(data) {
-
                             const tableBody = document.getElementById('modalTableBody');
                             tableBody.innerHTML = ''; // Clear existing content
                             let no = 1;
-                            data.forEach(item => {
+
+                            // Iterate over kendaraans
+                            data.kendaraans.forEach(item => {
                                 const row = `
-                                <tr>
-                                    <td>${no++}</td>
-                                    <td>${(item.nomor_registrasi)}</td>
-                                    <td>Rp. ${(item.belanja_bahan_bakar_minyak || 0).toLocaleString('id-ID')}</td>
-                                    <td>Rp. ${(item.belanja_pelumas_mesin || 0).toLocaleString('id-ID')}</td>
-                                    <td>Rp. ${(item.belanja_suku_cadang || 0).toLocaleString('id-ID')}</td>
-                                    <td>${item.keterangan || '-'}</td>
-                                </tr>
-                            `;
+                                    <tr>
+                                        <td>${no++}</td>
+                                        <td>${item.nomor_registrasi}</td>
+                                        <td>${(item.merk_kendaraan || '-')}</td>
+                                        <td>${(item.jenis_kendaraan || '-')}</td>
+                                        <td>${(item.bbm_kendaraan || '-')}</td>
+                                        <td>${(item.roda_kendaraan || '-')}</td>
+                                        <td>${(item.cc_kendaraan || 0).toLocaleString('id-ID')} CC</td>
+                                        <td>${(item.isExpire)}</td>
+                                    </tr>
+                                `;
                                 tableBody.innerHTML += row;
                             });
                         },
@@ -204,6 +207,7 @@
             });
         });
     </script>
+
     <!-- Data Tables -->
     <script src="{{ asset('vendor/datatables/dataTables.min.js') }}"></script>
     <script src="{{ asset('vendor/datatables/dataTables.bootstrap.min.js') }}"></script>
