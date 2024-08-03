@@ -57,8 +57,6 @@
     <div class="col-sm-12 col-12">
         <div class="card">
             <div class="card-body">
-                <div class="m-0">
-                </div>
                 <form action="{{ route('belanja.index') }}" method="GET"
                     class="row row-cols-lg-auto g-3 align-items-center">
                     <div class="col-12">
