@@ -1,6 +1,6 @@
 on:
     push:
-        branches: main
+        branches: deploy
 jobs:
     deploy:
         name: Deploy
@@ -21,7 +21,7 @@ jobs:
 
             - name: Migrate DB
               run: |
-                php artisan migrate --force --seed
+                php artisan migrate --seed
               env:
                 APP_ENV: production
                 DB_CONNECTION: mysql
