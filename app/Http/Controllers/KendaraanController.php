@@ -70,9 +70,9 @@ class KendaraanController extends Controller
         }
 
         if ($kendaraan->wasRecentlyCreated) {
-            return redirect()->route('kendaraan.index')->with('success', 'Data berhasil disimpan.');
+            return to_route('kendaraan.index')->with('success', 'Data berhasil disimpan.');
         } else {
-            return redirect()->route('kendaraan.index')->with('error', 'Terjadi kesalahan saat menyimpan data.');
+            return to_route('kendaraan.index')->with('error', 'Terjadi kesalahan saat menyimpan data.');
         }
     }
 
@@ -118,7 +118,7 @@ class KendaraanController extends Controller
         $kendaraan = Kendaraan::findOrFail($id);
         $kendaraan->update($validatedData);
 
-        return redirect()->route('kendaraan.index')->with('success', 'Data berhasil diperbarui.');
+        return to_route('kendaraan.index')->with('success', 'Data berhasil diperbarui.');
     }
 
     /**
@@ -133,9 +133,9 @@ class KendaraanController extends Controller
 
         if ($kendaraan) {
             $kendaraan->delete();
-            return redirect()->route('kendaraan.index')->with('success', 'Data berhasil dihapus.');
+            return to_route('kendaraan.index')->with('success', 'Data berhasil dihapus.');
         } else {
-            return redirect()->route('kendaraan.index')->with('error', 'Data tidak ditemukan.');
+            return to_route('kendaraan.index')->with('error', 'Data tidak ditemukan.');
         }
     }
 

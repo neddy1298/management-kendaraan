@@ -44,7 +44,7 @@ class MasterAnggaranController extends Controller
 
         MasterAnggaran::create($masterAnggaran);
 
-        return redirect()->route('masterAnggaran.index')
+        return to_route('masterAnggaran.index')
             ->with('success', 'Anggaran Berhasil dibuat.');
     }
 
@@ -80,7 +80,7 @@ class MasterAnggaranController extends Controller
         $masterAnggaran = MasterAnggaran::findOrFail($id);
         $masterAnggaran->update($request->all());
 
-        return redirect()->route('masterAnggaran.index')
+        return to_route('masterAnggaran.index')
             ->with('success', 'Anggaran Berhasil diubah.');
     }
 
@@ -93,9 +93,9 @@ class MasterAnggaranController extends Controller
 
         if ($masterAnggaran) {
             $masterAnggaran->delete();
-            return redirect()->route('masterAnggaran.index')->with('success', 'Data berhasil dihapus.');
+            return to_route('masterAnggaran.index')->with('success', 'Data berhasil dihapus.');
         } else {
-            return redirect()->route('masterAnggaran.index')->with('error', 'Data tidak ditemukan.');
+            return to_route('masterAnggaran.index')->with('error', 'Data tidak ditemukan.');
         }
     }
 }

@@ -98,10 +98,10 @@ class BelanjaController extends Controller
             $this->createSukuCadangs($validatedData, $belanja);
 
             DB::commit();
-            return redirect()->route('belanja.index')->with('success', 'Data berhasil disimpan.');
+            return to_route('belanja.index')->with('success', 'Data berhasil disimpan.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('belanja.index')->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
+            return to_route('belanja.index')->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
         }
     }
 
@@ -185,7 +185,7 @@ class BelanjaController extends Controller
     {
         $belanja = Belanja::findOrFail($id);
         $belanja->delete();
-        return redirect()->route('belanja.index')->with('success', 'Data berhasil dihapus.');
+        return to_route('belanja.index')->with('success', 'Data berhasil dihapus.');
     }
 
 

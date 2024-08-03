@@ -46,9 +46,9 @@ class UnitKerjaController extends Controller
 
 
         if ($unitKerjas->wasRecentlyCreated) {
-            return redirect()->route('unitKerja.index')->with('success', 'Data berhasil disimpan.');
+            return to_route('unitKerja.index')->with('success', 'Data berhasil disimpan.');
         } else {
-            return redirect()->route('unitKerja.index')->with('error', 'Terjadi kesalahan saat menyimpan data.');
+            return to_route('unitKerja.index')->with('error', 'Terjadi kesalahan saat menyimpan data.');
         }
     }
 
@@ -87,7 +87,7 @@ class UnitKerjaController extends Controller
         $unitKerjas = UnitKerja::findOrFail($id);
         $unitKerjas->update($validatedData);
 
-        return redirect()->route('unitKerja.index')->with('success', 'Data berhasil diperbarui.');
+        return to_route('unitKerja.index')->with('success', 'Data berhasil diperbarui.');
     }
 
     /**
@@ -99,9 +99,9 @@ class UnitKerjaController extends Controller
 
         if ($unitkerja) {
             $unitkerja->delete();
-            return redirect()->route('unitKerja.index')->with('success', 'Data berhasil dihapus.');
+            return to_route('unitKerja.index')->with('success', 'Data berhasil dihapus.');
         } else {
-            return redirect()->route('unitKerja.index')->with('error', 'Data tidak ditemukan.');
+            return to_route('unitKerja.index')->with('error', 'Data tidak ditemukan.');
         }
     }
 

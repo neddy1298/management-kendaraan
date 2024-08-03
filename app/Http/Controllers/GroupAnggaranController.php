@@ -45,7 +45,7 @@ class GroupAnggaranController extends Controller
 
         GroupAnggaran::create($groupAnggaran);
 
-        return redirect()->route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil ditambahkan.');
+        return to_route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil ditambahkan.');
     }
 
     /**
@@ -86,7 +86,7 @@ class GroupAnggaranController extends Controller
 
         GroupAnggaran::findOrFail($id)->update($groupAnggaran);
 
-        return redirect()->route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil diubah.');
+        return to_route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil diubah.');
     }
 
     /**
@@ -96,6 +96,6 @@ class GroupAnggaranController extends Controller
     {
         GroupAnggaran::findOrFail($id)->delete();
 
-        return redirect()->route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil dihapus.');
+        return to_route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil dihapus.');
     }
 }
