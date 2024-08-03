@@ -1,7 +1,5 @@
 # Management Kendaraan
 
-Deskripsi singkat tentang proyek Anda.
-
 ## Prasyarat
 
 Sebelum Anda memulai, pastikan sistem Anda memenuhi persyaratan berikut:
@@ -54,6 +52,12 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek:
    php artisan migrate
 
    php artisan db:seed
+   ```
+
+7. (optional) Jika tidak ingin menjalankan `php artisan optimize` setiap kali mengubah `web.php` jalankan
+
+   ```
+   php artisan optimize:clear
    ```
 
 8. Jalankan server lokal
