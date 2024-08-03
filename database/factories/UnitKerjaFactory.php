@@ -26,9 +26,6 @@ class UnitKerjaFactory extends Factory
         return [
             'nama_unit_kerja' => $this->faker->unique()->word(),
             'group_anggaran_id' => $this->faker->randomElement($groupAnggaran),
-            'budget_bahan_bakar_minyak' => fake()->numerify('##000000'),
-            'budget_pelumas_mesin' => fake()->numerify('##000000'),
-            'budget_suku_cadang' => fake()->numerify('##000000'),
         ];
     }
 }

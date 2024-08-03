@@ -64,42 +64,6 @@
                                     @enderror
                                 </div>
                             </div>
-
-                            <div class="col-xl-4">
-                                <div class="mb-3">
-                                    <label for="budget_bahan_bakar_minyak" class="form-label">Budget BBM</label>
-                                    <input type="number" id="budget_bahan_bakar_minyak" name="budget_bahan_bakar_minyak"
-                                        class="form-control @error('budget_bahan_bakar_minyak') is-invalid @enderror"
-                                        value="{{ old('budget_bahan_bakar_minyak', $unitKerja->budget_bahan_bakar_minyak) }}">
-                                    @error('budget_bahan_bakar_minyak')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-xl-4">
-                                <div class="mb-3">
-                                    <label for="budget_pelumas_mesin" class="form-label">Budget Pelumas</label>
-                                    <input type="number" id="budget_pelumas_mesin" name="budget_pelumas_mesin"
-                                        class="form-control @error('budget_pelumas_mesin') is-invalid @enderror"
-                                        value="{{ old('budget_pelumas_mesin', $unitKerja->budget_pelumas_mesin) }}">
-                                    @error('budget_pelumas_mesin')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-xl-4">
-                                <div class="mb-3">
-                                    <label for="budget_suku_cadang" class="form-label">Budget Suku Cadang</label>
-                                    <input type="number" id="budget_suku_cadang" name="budget_suku_cadang"
-                                        class="form-control @error('budget_suku_cadang') is-invalid @enderror"
-                                        value="{{ old('budget_suku_cadang', $unitKerja->budget_suku_cadang) }}">
-                                    @error('budget_suku_cadang')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
                         </div>
 
                         <div class="form-actions-footer">

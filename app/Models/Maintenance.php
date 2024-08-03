@@ -13,9 +13,6 @@ class Maintenance extends Model
 
     protected $fillable = [
         'kendaraan_id',
-        'belanja_bahan_bakar_minyak',
-        'belanja_pelumas_mesin',
-        'belanja_suku_cadang',
         'tanggal_maintenance',
         'keterangan',
     ];
@@ -37,9 +34,18 @@ class Maintenance extends Model
         });
     }
 
-    public function totalMaintenance()
+    public function totalBelanjaBahanBakarMinyak()
     {
-        return $this->belanja_bahan_bakar_minyak + $this->belanja_pelumas_mesin + $this->belanja_suku_cadang;
+        return $this->belanja->sum('belanja_bahan_bakar_minyak');
     }
 
+    public function totalBelanjaPelumasMesin()
+    {
+        return $this->belanja->sum('belanja_pelumas_mesin');
+    }
+
+    public function totalBelanjaSukuCadang()
+    {
+        return $this->belanja->sum('belanja_suku_cadang');
+    }
 }

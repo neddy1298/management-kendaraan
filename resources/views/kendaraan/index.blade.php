@@ -51,6 +51,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nomor Registrasi</th>
+                                    <th>Unit Kerja</th>
                                     <th>Merk Kendaraan</th>
                                     <th>Jenis Kendaraan</th>
                                     <th>CC Kendaraan</th>
@@ -64,6 +65,7 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $kendaraan->nomor_registrasi }}</td>
+                                        <td>{{ $kendaraan->unitKerja->nama_unit_kerja }}</td>
                                         <td>{{ $kendaraan->merk_kendaraan }}</td>
                                         <td>{{ $kendaraan->jenis_kendaraan }}</td>
                                         <td>{{ $kendaraan->cc_kendaraan }} CC</td>

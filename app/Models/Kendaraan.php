@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Kendaraan extends Model
 {
@@ -20,6 +21,11 @@ class Kendaraan extends Model
         'bbm_kendaraan',
         'roda_kendaraan',
         'berlaku_sampai',
+    ];
+    protected $dates = ['berlaku_sampai'];
+
+    protected $casts = [
+        'berlaku_sampai' => 'datetime',
     ];
 
     public function unitKerja()
@@ -42,5 +48,4 @@ class Kendaraan extends Model
             return 'aktif';
         }
     }
-
 }

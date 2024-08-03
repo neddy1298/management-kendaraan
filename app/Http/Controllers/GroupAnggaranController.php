@@ -61,7 +61,7 @@ class GroupAnggaranController extends Controller
      */
     public function edit($id)
     {
-        $groupAnggaran = GroupAnggaran::with('masterAnggaran')->find($id);
+        $groupAnggaran = GroupAnggaran::with('masterAnggaran')->findOrFail($id);
 
         $masterAnggarans = MasterAnggaran::all();
         return view('groupAnggaran.edit', compact('groupAnggaran', 'masterAnggarans'));
@@ -84,7 +84,7 @@ class GroupAnggaranController extends Controller
             'integer' => 'Kolom :attribute harus berupa angka.',
         ]);
 
-        GroupAnggaran::find($id)->update($groupAnggaran);
+        GroupAnggaran::findOrFail($id)->update($groupAnggaran);
 
         return redirect()->route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil diubah.');
     }
@@ -94,7 +94,7 @@ class GroupAnggaranController extends Controller
      */
     public function destroy($id)
     {
-        GroupAnggaran::find($id)->delete();
+        GroupAnggaran::findOrFail($id)->delete();
 
         return redirect()->route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil dihapus.');
     }

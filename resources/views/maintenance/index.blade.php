@@ -19,7 +19,7 @@
                         <h3 class="text-green">
                             {{ number_format($belanja_bulan_ini, 0, ',', '.') }}.00
                         </h3>
-                        <p>Total Belanja Bulan {{ \Carbon\Carbon::now()->translatedFormat('F Y') }}</p>
+                        <p>Total Belanja {{ $months[$selectedMonth] }}</p>
                     </div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                     </div>
                     <div class="sale-details">
                         <h3 class="text-red">
-                            {{ $isExpire->count() }}/{{ $maintenances->count() }}
+                            {{ $isExpire }}/{{ $maintenances->count() }}
                         </h3>
                         <p>Kadaluarsa Pajak</p>
                     </div>
@@ -43,28 +43,83 @@
                     </div>
                     <div class="sale-details">
                         <h3 class="text-blue">{{ number_format($belanja_tahun_ini, 0, ',', '.') }}.00</h3>
-                        <p>Total Belanja Tahun {{ \Carbon\Carbon::now()->translatedFormat('Y') }}</p>
+                        {{-- <p>Total Belanja Tahun {{ \Carbon\Carbon::now()->translatedFormat('Y') }}</p> --}}
+                        <p>Total Belanja Tahun {{ $selectedYear }}</p>
+
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Card start -->
+
         <div class="col-12">
-            <!-- Card start -->
             <div class="card">
                 <div class="card-body">
-                    <div class="custom-btn-group">
+                    <div class="custom-btn-group col-6">
+                        <a href="{{ route('belanja.printAll') }}" class="btn btn-primary" target="_blank">
+                            <i class="bi bi-printer"></i> Cetak
+                        </a>
                         @php
                             $message =
-                                "Contoh message yang akan dikirim ke WA\n1. lorem ipsum dolor sit amet consectetur adipiscing elit\n2. lorem ipsum dolor sit amet consectetur adipiscing elit\n3. lorem ipsum dolor sit amet consectetur adipiscing elit\n4. lorem ipsum dolor sit amet consectetur adipiscing elit\n5. lorem ipsum dolor sit amet consectetur adipiscing elit";
+                                "Contoh message yang akan dikirim ke WA\n-1. lorem ipsum dolor sit amet consectetur adipiscing elit\n2. lorem ipsum dolor sit amet consectetur adipiscing elit\n3. lorem ipsum dolor sit amet consectetur adipiscing elit\n4. lorem ipsum dolor sit amet consectetur adipiscing elit\n5. lorem ipsum dolor sit amet consectetur adipiscing elit";
                         @endphp
-                        <a href="{{ route('send-wa', $message) }}" class="btn btn-success" target="_blank"><i
-                                class="bi bi-whatsapp"></i>
-                            Kirim WA</a>
+                        <a href="{{ route('send-wa', ['message' => $message]) }}" class="btn btn-success" target="_blank">
+                            <i class="bi bi-whatsapp"></i> Kirim WA
+                        </a>
                     </div>
                 </div>
             </div>
-            <!-- Card end -->
         </div>
+
+        <div class="col-sm-12 col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form action="{{ route('maintenance.index') }}" method="GET"
+                        class="row row-cols-lg-auto g-3 align-items-center">
+                        <div class="col-12">
+                            <label class="visually-hidden">Username</label>
+                            <div class="input-group">
+                                {{-- <div class="input-group-text">
+                                    <i class="bi bi-person"></i>
+                                </div> --}}
+                                <select name="year" class="form-select">
+                                    @foreach ($years as $year)
+                                        <option value="{{ $year }}"
+                                            {{ $selectedYear == $year ? 'selected' : '' }}>
+                                            {{ $year }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="visually-hidden">Password</label>
+                            <div class="input-group">
+                                {{-- <div class="input-group-text">
+                                    <i class="bi bi-eye-slash"></i>
+                                </div> --}}
+                                <select name="month" class="form-select">
+                                    @foreach ($months as $key => $month)
+                                        <option value="{{ $key }}"
+                                            {{ $selectedMonth == $key ? 'selected' : '' }}>
+                                            {{ $month }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                            <a class="btn btn-dark btn-icon btn-sm" href="{{ route('maintenance.index') }}"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Reset">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Card end -->
         <div class="col-sm-12 col-12">
             <!-- Card start -->
             <div class="card">
@@ -79,9 +134,7 @@
                                     <th>No</th>
                                     <th>Nomor Registrasi</th>
                                     <th>Unit Kerja</th>
-                                    <th>Belanja BBM</th>
-                                    <th>Belanja Pelumas</th>
-                                    <th>Belanja Suku Cadang</th>
+                                    <th>Total Belanja</th>
                                     <th>Kadaluarsa Pajak</th>
                                     <th>Bulan</th>
                                     <th>Action</th>
@@ -91,14 +144,10 @@
                                 @foreach ($maintenances as $index => $maintenance)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $maintenance->nomor_registrasi }}</td>
-                                        <td>{{ $maintenance->nama_unit_kerja }}</td>
+                                        <td>{{ $maintenance->kendaraan->nomor_registrasi }}</td>
+                                        <td>{{ $maintenance->kendaraan->unitKerja->nama_unit_kerja }}</td>
                                         <td>Rp.
-                                            {{ number_format($maintenance->belanja_bahan_bakar_minyak ?? 0, 0, ',', '.') }}
-                                        </td>
-                                        <td>Rp. {{ number_format($maintenance->belanja_pelumas_mesin ?? 0, 0, ',', '.') }}
-                                        </td>
-                                        <td>Rp. {{ number_format($maintenance->belanja_suku_cadang ?? 0, 0, ',', '.') }}
+                                            {{ number_format($maintenance->totalSemuaBelanja() ?? 0, 0, ',', '.') }}
                                         </td>
                                         <td>
                                             <span hidden>
@@ -110,20 +159,21 @@
                                             </span>
                                         </td>
                                         <td>
-                                            {{ \Carbon\Carbon::parse($maintenance->tanggal_maintenance)->translatedFormat('F') }}
+                                            {{ \Carbon\Carbon::parse($maintenance->tanggal_maintenance)->translatedFormat('F Y') }}
                                         </td>
                                         <td>
                                             <button type="button" class="btn btn-primary btn-icon show-details"
                                                 data-bs-toggle="modal" data-bs-target="#scrollable"
-                                                data-nomor-registrasi="{{ $maintenance->nomor_registrasi }}"
-                                                data-bahan-bakar-minyak="{{ $maintenance->belanja_bahan_bakar_minyak }}"
-                                                data-pelumas-mesin="{{ $maintenance->belanja_pelumas_mesin }}"
-                                                data-suku-cadang="{{ $maintenance->belanja_suku_cadang }}"
-                                                data-total-belanja="{{ $maintenance->belanja_bahan_bakar_minyak + $maintenance->belanja_pelumas_mesin + $maintenance->belanja_suku_cadang }}"
-                                                data-tanggal-belanja="{{ \Carbon\Carbon::parse($maintenance->berlaku_sampai)->translatedFormat('F') }}"
+                                                data-id="{{ $maintenance->id }}"
+                                                data-nomor-registrasi="{{ $maintenance->kendaraan->nomor_registrasi }}"
+                                                data-bahan-bakar-minyak="{{ $maintenance->totalBelanjaBahanBakarMinyak() }}"
+                                                data-pelumas-mesin="{{ $maintenance->totalBelanjaPelumasMesin() }}"
+                                                data-suku-cadang="{{ $maintenance->totalBelanjaSukuCadang() }}"
+                                                data-total-belanja="{{ $maintenance->totalSemuaBelanja() }}"
+                                                data-tanggal-belanja="{{ \Carbon\Carbon::parse($maintenance->tanggal_maintenance)->translatedFormat('F') }}"
                                                 data-keterangan="{{ $maintenance->keterangan }}"
                                                 data-kadaluarsa-pajak="{{ \Carbon\Carbon::parse($maintenance->berlaku_sampai)->translatedFormat('d F Y') }}"
-                                                data-unit-kerja="{{ $maintenance->nama_unit_kerja }}">
+                                                data-unit-kerja="{{ $maintenance->kendaraan->unitKerja->nama_unit_kerja }}">
                                                 <i class="bi bi-search"></i>
                                             </button>
                                         </td>
@@ -142,8 +192,8 @@
             <div class="modal-dialog modal-dialog-scrollable modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="scrollableLabel">Data Maintenance - </h5><span
-                            id="modalTanggalBelanja"></span>
+                        <h5 class="modal-title" id="scrollableLabel">Data Maintenance - <span
+                                id="modalTanggalBelanja"></span></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -198,6 +248,7 @@
 
             detailButtons.forEach(button => {
                 button.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
                     const nomorRegistrasi = this.getAttribute('data-nomor-registrasi');
                     const bahanBakarMinyak = parseInt(this.getAttribute(
                         'data-bahan-bakar-minyak') || 0);
@@ -225,7 +276,7 @@
 
                     // Fetch detailed belanja data
                     $.ajax({
-                        url: `maintenance/get-belanja-details/${nomorRegistrasi}`,
+                        url: `maintenance/get-belanja-details/${id}`,
                         method: 'GET',
                         success: function(data) {
                             // Sort data by tanggal_belanja in descending order

@@ -29,7 +29,4 @@ class Belanja extends Model
     {
         return $this->belanja_bahan_bakar_minyak + $this->belanja_pelumas_mesin + $this->belanja_suku_cadang;
     }
-
-    
-
 }
