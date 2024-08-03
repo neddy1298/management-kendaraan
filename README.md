@@ -18,6 +18,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek:
 1. Kloning repositori
    ```
    git clone https://github.com/neddy1298/management-kendaraan
+   
    cd management-kendaraan
    ```
 
@@ -37,19 +38,22 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek:
    ```
 
 5. Konfigurasi database
-   Buat database di MySQL/phpmyadmin lalu buka file `.env` dan sesuaikan pengaturan database:
+
+   buka file `.env` dan sesuaikan pengaturan database:
    ```
    DB_CONNECTION=mysql
    DB_HOST=127.0.0.1
    DB_PORT=3306
-   DB_DATABASE=nama_database
+   DB_DATABASE=db_management_kendaraan
    DB_USERNAME=root
    DB_PASSWORD=
    ```
 
 6. Jalankan migrasi database dengan dummy data
    ```
-   php artisan migrate:fresh --seed
+   php artisan migrate
+
+   php artisan db:seed
    ```
 
 8. Jalankan server lokal
