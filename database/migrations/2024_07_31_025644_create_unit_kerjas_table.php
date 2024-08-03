@@ -18,7 +18,6 @@ return new class extends Migration
                 ->constrained('group_anggarans')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->string('_token')->nullable();
             $table->timestamps();
         });
     }

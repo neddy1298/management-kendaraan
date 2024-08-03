@@ -15,7 +15,6 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->date('tanggal_maintenance');
-            $table->string('_token')->nullable();
             $table->text('keterangan')->nullable();
             $table->timestamps();
         });

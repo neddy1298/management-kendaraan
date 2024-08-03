@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('bbm_kendaraan', 20);
             $table->string('roda_kendaraan', 20);
             $table->date('berlaku_sampai');
-            $table->string('_token')->nullable();
             $table->timestamps();
         });
     }
