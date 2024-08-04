@@ -6,6 +6,8 @@ use App\Models\Belanja;
 use App\Models\Maintenance;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class MaintenanceController extends Controller
 {
@@ -99,4 +101,50 @@ class MaintenanceController extends Controller
         // dd($maintenance_id);
         return response()->json($belanjas);
     }
+
+
+    public function exportToExcel()
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $maintenances = Maintenance::all();
+
+        // header
+        $sheet->setCellValue('A1', 'No')
+            ->setCellValue('B1', 'Nomor Registrasi')
+            ->setCellValue('C1', 'Unit Kerja')
+            ->setCellValue('D1', 'Total Belanja')
+            ->setCellValue('E1', 'Kadaluarsa Pajak')
+            ->setCellValue('F1', 'Bulan');
+
+        // data
+        $row = 2;
+        foreach ($maintenances as $index => $maintenance) {
+            $sheet->setCellValue('A' . $row, $index + 1)
+                ->setCellValue('B' . $row, $maintenance->kendaraan->nomor_registrasi)
+                ->setCellValue('C' . $row, $maintenance->kendaraan->unitKerja->nama_unit_kerja)
+                ->setCellValue('D' . $row, $this->Rupiah($maintenance->totalSemuaBelanja()))
+                ->setCellValue('E' . $row, \Carbon\Carbon::parse($maintenance->berlaku_sampai)->translatedFormat('d F Y'))
+                ->setCellValue('F' . $row, \Carbon\Carbon::parse($maintenance->tanggal_maintenance)->translatedFormat('F Y'));
+            $row++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $fileName = 'Data Kendaraan ' . date('d-m-Y') . '.xlsx';
+
+        // Mengatur headers untuk unduhan file
+        //header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $fileName . '"');
+        //header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+        exit();
+    }
+
+    private function Rupiah($amount)
+    {
+        return 'Rp ' . number_format($amount, 0, ',', '.');
+    }
+
 }
