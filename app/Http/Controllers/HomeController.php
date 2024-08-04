@@ -18,7 +18,7 @@ class HomeController extends Controller
         $belanja_tahunan = Belanja::whereYear('tanggal_belanja', date('Y'))->sum('belanja_bahan_bakar_minyak', 'belanja_pelumas_mesin', 'belanja_suku_cadang');
         $maintenances = Maintenance::with('kendaraan.unitKerja')->orderBy('created_at', 'desc')->get()->map(function ($maintenance) {
             try {
-                $maintenance->berlaku_sampai = Carbon::createFromFormat('Y-m-d', $maintenance->berlaku_sampai)->format('Y-m-d');
+                $maintenance->berlaku_sampai = $maintenance->berlaku_sampai;
             } catch (\Exception $e) {
                 $maintenance->berlaku_sampai = null;
             }
