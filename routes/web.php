@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    
+
     Route::prefix('masterAnggaran')->group(function () {
         Route::get('', [MasterAnggaranController::class, 'index'])->name('masterAnggaran.index');
         Route::get('/create', [MasterAnggaranController::class, 'create'])->name('masterAnggaran.create');
@@ -32,7 +32,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('', [HomeController::class, 'index'])->name('home');
 
         Route::get('/send-sms', [SmsController::class, 'sendSms'])->name('send-sms');
-        Route::get('/send-wa/{message}', [SmsController::class, 'sendWhatsapp'])->name('send-wa');
+        Route::get('/send-wa', [SmsController::class, 'sendWhatsapp'])->name('send-wa');
         Route::prefix('kendaraan')->group(function () {
             Route::get('', [KendaraanController::class, 'index'])->name('kendaraan.index');
             Route::get('/create', [KendaraanController::class, 'create'])->name('kendaraan.create');
@@ -57,7 +57,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('/delete/{id}', [BelanjaController::class, 'destroy'])->name('belanja.delete');
         });
 
-        Route::prefix('group')->group(function (){
+        Route::prefix('group')->group(function () {
             Route::get('', [GroupAnggaran::class, 'index'])->name('group.index');
             Route::get('/create', [GroupAnggaran::class, 'create'])->name('group.create');
             Route::post('/store', [GroupAnggaran::class, 'store'])->name('group.store');
@@ -82,14 +82,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/update/{id}', [GroupAnggaranController::class, 'update'])->name('groupAnggaran.update');
             Route::delete('/delete/{id}', [GroupAnggaranController::class, 'destroy'])->name('groupAnggaran.delete');
         });
-    
+
         Route::prefix('profile')->group(function () {
             Route::get('', [ProfileController::class, 'edit'])->name('profile.edit');
             Route::post('', [ProfileController::class, 'update'])->name('profile.update');
             Route::delete('', [ProfileController::class, 'destroy'])->name('profile.destroy');
         });
     });
-
 });
 
 require __DIR__ . '/auth.php';
