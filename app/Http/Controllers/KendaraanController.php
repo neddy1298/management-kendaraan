@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kendaraan;
+use App\Models\LaporanBulanan;
+use App\Models\LaporanTahunan;
 use App\Models\Maintenance;
 use App\Models\UnitKerja;
 use Carbon\Carbon;
@@ -61,11 +63,32 @@ class KendaraanController extends Controller
         $kendaraan = Kendaraan::create($validatedData);
 
         if ($kendaraan->wasRecentlyCreated) {
-            if ($kendaraan->maintenance->isEmpty()) {
-                Maintenance::create([
-                    'kendaraan_id' => $kendaraan->id,
-                    'tanggal_maintenance' => Carbon::now()->format('Y-m-d'),
-                ]);
+            $laporanBulanan = LaporanBulanan::where('bulan', '=', Carbon::now()->format('m'))->get();
+            $laporanTahunan = LaporanTahunan::where('tahun', Carbon::now()->year)->first();
+            if ($laporanBulanan->isEmpty()) {
+                for ($i = 1; $i <= 12; $i++) {
+                    $laporan = LaporanBulanan::create([
+                        'laporan_tahunan_id' => $laporanTahunan->id,
+                        'bulan' => $i,
+                        'tahun' => Carbon::now()->format('Y'),
+                    ]);
+
+                    $laporan->maintenance()->create([
+                        'kendaraan_id' => $kendaraan->id,
+                        'laporan_bulanan_id' => $laporan->id,
+                        'tanggal_maintenance' => Carbon::now()->format('Y-m-d'),
+                    ]);
+                }
+            } else {
+                $laporan = $laporanBulanan->where('bulan', Carbon::now()->format('m'))->first();
+                if ($laporan) {
+                    $laporanId = $laporan->id;
+                    $laporan->maintenance()->create([
+                        'kendaraan_id' => $kendaraan->id,
+                        'laporan_bulanan_id' => $laporanId,
+                        'tanggal_maintenance' => Carbon::now()->format('Y-m-d'),
+                    ]);
+                }
             }
         }
 

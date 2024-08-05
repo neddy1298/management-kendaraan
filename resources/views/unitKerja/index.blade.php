@@ -61,8 +61,20 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $unitKerja->nama_unit_kerja }}</td>
-                                        <td>{{ $unitKerja->groupAnggaran->nama_group }}</td>
-                                        <td>Rp. {{ number_format($unitKerja->groupAnggaran->anggaran_total, 0, ',', '.') }}
+                                        <td>
+                                            @if ($unitKerja->groupAnggarans->isNotEmpty())
+                                                {{ $unitKerja->groupAnggarans->pluck('nama_group')->implode(', ') }}
+                                            @else
+                                                N/A
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($unitKerja->groupAnggarans->isNotEmpty())
+                                                Rp.
+                                                {{ number_format($unitKerja->groupAnggarans->sum('anggaran_total'), 0, ',', '.') }}
+                                            @else
+                                                N/A
+                                            @endif
                                         </td>
                                         <td>{{ $unitKerja->kendaraans_count }}</td>
                                         <td>
@@ -70,8 +82,8 @@
                                                 data-bs-toggle="modal" data-bs-target="#scrollable"
                                                 data-unit-kerja-id="{{ $unitKerja->id }}"
                                                 data-nama-unit-kerja="{{ $unitKerja->nama_unit_kerja }}"
-                                                data-anggaran-total="{{ $unitKerja->groupAnggaran->anggaran_total }}"
-                                                data-nama-group="{{ $unitKerja->groupAnggaran->nama_group }}"
+                                                data-anggaran-total="{{ $unitKerja->groupAnggarans->sum('anggaran_total') }}"
+                                                data-nama-group="{{ $unitKerja->groupAnggarans->pluck('nama_group')->implode(', ') }}"
                                                 data-jumlah-kendaraan="{{ $unitKerja->kendaraans_count }}">
                                                 <i class="bi bi-search"></i>
                                             </button>
@@ -85,7 +97,7 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <button class="btn btn-danger btn-icon btn-sm"
-                                                    onclick="return confirm('Kamu yakin ingin menghapus data: {{ $unitKerja->nomor_registrasi }} ?')"
+                                                    onclick="return confirm('Kamu yakin ingin menghapus data: {{ $unitKerja->nama_unit_kerja }} ?')"
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
                                                     <i class="bi bi-trash"></i>
                                                 </button>

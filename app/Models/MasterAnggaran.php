@@ -12,10 +12,21 @@ class MasterAnggaran extends Model
     protected $table = 'master_anggarans';
 
     protected $fillable = [
+        'pagu_anggaran_id',
         'kode_rekening',
         'nama_rekening',
         'anggaran',
     ];
+
+    public function laporanTahunan()
+    {
+        return $this->hasMany(LaporanTahunan::class);
+    }
+
+    public function paguAnggaran()
+    {
+        return $this->belongsTo(PaguAnggaran::class);
+    }
 
     public function groupAnggaran()
     {

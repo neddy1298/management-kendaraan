@@ -21,11 +21,8 @@ class UnitKerjaFactory extends Factory
     public function definition(): array
     {
 
-        $groupAnggaran = GroupAnggaran::get()->pluck('id')->toArray();
-
         return [
             'nama_unit_kerja' => $this->faker->unique()->word(),
-            'group_anggaran_id' => $this->faker->randomElement($groupAnggaran),
         ];
     }
 }
