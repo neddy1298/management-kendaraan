@@ -65,15 +65,21 @@
                     <div class="sidebar-submenu">
                         <ul>
                             <li>
-                                <a href="{{ route('masterAnggaran.index') }}" class="{{ $page2 == 'Pertahun' ? 'current-page' : '' }}">Pertahun</a>
+                                <a href="{{ route('paguAnggaran.index') }}"
+                                    class="{{ $page2 == 'Pagu' ? 'current-page' : '' }}">Pagu</a>
                             </li>
                             <li>
-                                <a href="{{ route('groupAnggaran.index') }}" class="{{ $page2 == 'Group' ? 'current-page' : '' }}">Group</a>
+                                <a href="{{ route('masterAnggaran.index') }}"
+                                    class="{{ $page2 == 'Pertahun' ? 'current-page' : '' }}">Pertahun</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('groupAnggaran.index') }}"
+                                    class="{{ $page2 == 'Group' ? 'current-page' : '' }}">Group</a>
                             </li>
                         </ul>
                     </div>
                 </li>
-                
+
                 <li class="{{ $page == 'User' ? 'active' : '' }}">
                     <a href="{{ route('profile.edit') }}" class="{{ $page == 'User' ? 'current-page' : '' }}"
                         aria-label="User">

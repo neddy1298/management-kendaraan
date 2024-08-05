@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Belanja;
 use App\Models\Kendaraan;
+use App\Models\LaporanBulanan;
+use App\Models\LaporanTahunan;
 use App\Models\Maintenance;
 use App\Models\SukuCadang;
 use Illuminate\Http\Request;
@@ -98,6 +100,39 @@ class BelanjaController extends Controller
             $this->createSukuCadangs($validatedData, $belanja);
 
             DB::commit();
+
+            // Update laporan_bulanans
+            $bulan = Carbon::parse($validatedData['tanggal_belanja'])->month;
+            $laporanTahunan = LaporanTahunan::whereYear('tahun', Carbon::parse($validatedData['tanggal_belanja'])->year)->first();
+
+            $sukuCadangs = SukuCadang::where('belanja_id', $belanja->id)->get()->sum('total_harga');
+            $belanja->update(['belanja_suku_cadang' => $sukuCadangs]);
+            if ($laporanTahunan) {
+                $laporanBulanan = LaporanBulanan::where('bulan', $bulan)
+                    ->where('laporan_tahunan_id', $laporanTahunan->id)
+                    ->first();
+
+                if ($laporanBulanan) {
+                    $laporanBulanan->update([
+                        'realisasi_bahan_bakar_minyak' => $laporanBulanan->realisasi_bahan_bakar_minyak + ($validatedData['belanja_bahan_bakar_minyak'] ?? 0),
+                        'realisasi_pelumas_mesin' => $laporanBulanan->realisasi_pelumas_mesin + ($validatedData['belanja_pelumas_mesin'] ?? 0),
+                        'realisasi_suku_cadang' => $laporanBulanan->realisasi_suku_cadang + ($sukuCadangs ?? 0),
+                    ]);
+                } else {
+                    LaporanBulanan::create([
+                        'bulan' => $bulan,
+                        'laporan_tahunan_id' => $laporanTahunan->id,
+                        'realisasi_bahan_bakar_minyak' => $validatedData['belanja_bahan_bakar_minyak'] ?? 0,
+                        'realisasi_pelumas_mesin' => $validatedData['belanja_pelumas_mesin'] ?? 0,
+                        'realisasi_suku_cadang' => $sukuCadangs ?? 0,
+                    ]);
+                }
+            }
+
+
+
+            return redirect()->route('belanja.index')->with('success', 'Data berhasil disimpan.');
+
             return to_route('belanja.index')->with('success', 'Data berhasil disimpan.');
         } catch (\Exception $e) {
             DB::rollBack();

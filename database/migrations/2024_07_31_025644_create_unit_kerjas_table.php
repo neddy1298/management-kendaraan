@@ -14,10 +14,6 @@ return new class extends Migration
         Schema::create('unit_kerjas', function (Blueprint $table) {
             $table->id();
             $table->string('nama_unit_kerja')->unique();
-            $table->foreignId('group_anggaran_id')
-                ->constrained('group_anggarans')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
             $table->timestamps();
         });
     }

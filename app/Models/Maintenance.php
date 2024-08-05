@@ -13,6 +13,7 @@ class Maintenance extends Model
 
     protected $fillable = [
         'kendaraan_id',
+        'laporan_bulanan_id',
         'tanggal_maintenance',
         'keterangan',
     ];
@@ -25,6 +26,11 @@ class Maintenance extends Model
     public function belanja()
     {
         return $this->hasMany(Belanja::class);
+    }
+
+    public function laporanBulanan()
+    {
+        return $this->belongsTo(LaporanBulanan::class);
     }
 
     public function totalSemuaBelanja()

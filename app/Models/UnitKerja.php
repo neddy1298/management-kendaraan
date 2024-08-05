@@ -13,7 +13,6 @@ class UnitKerja extends Model
 
     protected $fillable = [
         'nama_unit_kerja',
-        'group_anggaran_id',
     ];
 
     public function kendaraans()
@@ -21,8 +20,8 @@ class UnitKerja extends Model
         return $this->hasMany(Kendaraan::class);
     }
 
-    public function groupAnggaran()
+    public function groupAnggarans()
     {
-        return $this->belongsTo(GroupAnggaran::class);
+        return $this->belongsToMany(GroupAnggaran::class, 'group_anggaran_unit_kerja');
     }
 }

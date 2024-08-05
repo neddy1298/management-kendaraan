@@ -146,5 +146,4 @@ class MaintenanceController extends Controller
     {
         return 'Rp ' . number_format($amount, 0, ',', '.');
     }
-
 }

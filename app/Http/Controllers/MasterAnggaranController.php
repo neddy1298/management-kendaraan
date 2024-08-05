@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LaporanBulanan;
+use App\Models\LaporanTahunan;
 use App\Models\MasterAnggaran;
+use App\Models\PaguAnggaran;
 use Illuminate\Http\Request;
 
 class MasterAnggaranController extends Controller
@@ -21,7 +24,8 @@ class MasterAnggaranController extends Controller
      */
     public function create()
     {
-        return view('masterAnggaran.create');
+        $paguAnggarans = PaguAnggaran::all();
+        return view('masterAnggaran.create', compact('paguAnggarans'));
     }
 
     /**
@@ -32,6 +36,7 @@ class MasterAnggaranController extends Controller
 
         $masterAnggaran = $request->validate(
             [
+                'pagu_anggaran_id' => 'required|integer',
                 'kode_rekening' => 'required|string|max:255',
                 'nama_rekening' => 'required|string|max:255',
                 'anggaran' => 'required|integer',
