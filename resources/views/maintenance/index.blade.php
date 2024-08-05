@@ -95,7 +95,7 @@
                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Reset">
                                 <i class="bi bi-arrow-counterclockwise"></i>
                             </a>
-                            <a href="{{ route('maintenance.export') }}" class="btn btn-success">
+                            <a href="{{ route('maintenance') }}" class="btn btn-success">
                                 <i class="bi bi-file-earmark-excel"></i> Export to Excel
                             </a>
                         </div>
