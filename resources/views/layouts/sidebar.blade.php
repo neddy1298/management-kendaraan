@@ -22,7 +22,7 @@
                 {{-- TODO --}}
                 <li class="{{ $page == 'Laporan' ? 'active' : '' }}">
                     <a href="#" class="{{ $page == 'Laporan' ? 'current-page' : '' }}" aria-label="Laporan">
-                        <i class="bi bi-cart2"></i>
+                        <i class="bi bi-bar-chart"></i>
                         <span class="menu-text">Laporan</span>
                     </a>
                 </li>

@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('admin'),
         ]);
 
+
         // $path = storage_path('app/public/kendaraans.sql');
         // DB::unprepared(file_get_contents($path));
         PaguAnggaran::factory()->count(1)->create();
