@@ -142,17 +142,17 @@ class MaintenanceController extends Controller
 
         // Bagian pertama dari tabel
         $header1 = [
-                'A4' => 'No',
-                'B4' => 'Kode Rekening',
-                'C4' => 'Uraian',
-                'D4' => 'Volume',
-                'E4' => 'Satuan',
-                'F4' => 'Volume',
-                'G4' => 'Satuan',
-                'H4' => 'Harga',
-                'I4' => 'Jumlah',
-                'J4' => 'Vol'
-            ];
+            'A4' => 'No',
+            'B4' => 'Kode Rekening',
+            'C4' => 'Uraian',
+            'D4' => 'Volume',
+            'E4' => 'Satuan',
+            'F4' => 'Volume',
+            'G4' => 'Satuan',
+            'H4' => 'Harga',
+            'I4' => 'Jumlah',
+            'J4' => 'Vol'
+        ];
 
         // Bagian bulanan dari tabel
         $months = [
@@ -220,7 +220,7 @@ class MaintenanceController extends Controller
                 ],
             ],
         ];
-        
+
         foreach ($maintenances as $index => $maintenance) {
             $currentRow = $row + $index;
 
