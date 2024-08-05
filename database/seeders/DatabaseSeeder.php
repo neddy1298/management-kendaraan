@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Belanja;
 use App\Models\GroupAnggaran;
 use App\Models\Kendaraan;
 use App\Models\LaporanBulanan;
@@ -29,13 +30,16 @@ class DatabaseSeeder extends Seeder
         // DB::unprepared(file_get_contents($path));
         PaguAnggaran::factory()->count(1)->create();
         LaporanTahunan::factory()->count(1)->create();
-        // LaporanBulanan::factory()->count(12)->create();
+        LaporanBulanan::factory()->count(12)->create();
         MasterAnggaran::factory()->count(1)->create();
         GroupAnggaran::factory()->count(10)->create();
-        // UnitKerja::factory()->count(10)->create();
-        // Kendaraan::factory()
-        //     ->count(100)
-        //     ->has(Maintenance::factory())
-        //     ->create();
+        UnitKerja::factory()->count(10)->create();
+        Kendaraan::factory()
+            ->count(100)
+            ->has(Maintenance::factory())
+            ->create();
+        Belanja::factory()
+            ->count(100)
+            ->create();
     }
 }

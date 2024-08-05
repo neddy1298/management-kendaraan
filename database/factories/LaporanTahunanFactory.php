@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Belanja;
+use App\Models\Maintenance;
 use App\Models\MasterAnggaran;
 use App\Models\PaguAnggaran;
 use Illuminate\Database\Eloquent\Factories\Factory;

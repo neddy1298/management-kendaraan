@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Belanja;
 use App\Models\LaporanTahunan;
+use App\Models\MasterAnggaran;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,7 +24,7 @@ class LaporanBulananFactory extends Factory
 
         return [
             'laporan_tahunan_id' => $this->faker->randomElement($laporanTahunans),
-            'bulan' => $this->faker->unique()->date('M'),
+            'bulan' => $this->faker->unique()->date('m'),
         ];
     }
 }

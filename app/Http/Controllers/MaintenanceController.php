@@ -26,7 +26,6 @@ class MaintenanceController extends Controller
         $selectedMonth = $request->input('month', 'all');
 
         $query = Maintenance::with(['kendaraan', 'kendaraan.unitKerja', 'belanja']);
-
         $belanja_tahun_ini = 0;
 
         foreach ($query->get() as $maintenance) {
@@ -48,7 +47,7 @@ class MaintenanceController extends Controller
             $query->whereYear('tanggal_maintenance', $selectedYear);
         }
 
-        $maintenances = $query->orderBy('tanggal_maintenance', 'desc')->get();
+        $maintenances = $query->orderBy('tanggal_maintenance', 'desc')->with('laporanBulanan', 'kendaraan')->get();
 
         $belanja_bulan_ini = 0;
         $isExpire = 0;
@@ -64,15 +63,15 @@ class MaintenanceController extends Controller
         $years = $this->getAvailableYears();
         $months = [
             'all' => 'Semua Bulan',
-            '01' => 'Januari',
-            '02' => 'Februari',
-            '03' => 'Maret',
-            '04' => 'April',
-            '05' => 'Mei',
-            '06' => 'Juni',
-            '07' => 'Juli',
-            '08' => 'Agustus',
-            '09' => 'September',
+            '1' => 'Januari',
+            '2' => 'Februari',
+            '3' => 'Maret',
+            '4' => 'April',
+            '5' => 'Mei',
+            '6' => 'Juni',
+            '7' => 'Juli',
+            '8' => 'Agustus',
+            '9' => 'September',
             '10' => 'Oktober',
             '11' => 'November',
             '12' => 'Desember',

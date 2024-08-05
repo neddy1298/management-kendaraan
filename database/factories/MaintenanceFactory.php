@@ -24,7 +24,7 @@ class MaintenanceFactory extends Factory
         return [
             'kendaraan_id' => Kendaraan::factory(),
             'laporan_bulanan_id' => $this->faker->randomElement($laporanBulanans),
-            'tanggal_maintenance' => now(),
+            'tanggal_maintenance' => $this->faker->dateTimeBetween('-1 year', '+1 year')->format('Y-m-d'),
         ];
     }
 }

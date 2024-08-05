@@ -56,8 +56,8 @@
                 <div class="card-body">
 
                     <form action="{{ route('maintenance.index') }}" method="GET"
-                    class="row row-cols-lg-auto g-3 align-items-center">
-                                            <div class="col-12">
+                        class="row row-cols-lg-auto g-3 align-items-center">
+                        <div class="col-12">
                             <label class="visually-hidden">Username</label>
                             <div class="input-group">
                                 {{-- <div class="input-group-text">
@@ -90,12 +90,11 @@
                         </div>
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary">Filter</button>
-                            <a class="btn btn-dark btn-icon btn-sm"
-                                href="{{ route('maintenance.index') }}"
+                            <a class="btn btn-dark btn-icon btn-sm" href="{{ route('maintenance.index') }}"
                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Reset">
                                 <i class="bi bi-arrow-counterclockwise"></i>
                             </a>
-                            <a href="{{ route('maintenance.export') }}" class="btn btn-success">
+                            <a href="{{ route('maintenance.export') }}" class="btn btn-success btn-icon">
                                 <i class="bi bi-file-earmark-excel"></i> Export to Excel
                             </a>
                         </div>
@@ -135,15 +134,15 @@
                                         </td>
                                         <td>
                                             <span hidden>
-                                                {{ date('Y/m/d', strtotime($maintenance->berlaku_sampai)) }}
+                                                {{ date('Y/m/d', strtotime($maintenance->kendaraan->berlaku_sampai)) }}
                                             </span>
                                             <span
-                                                class="badge {{ strtotime($maintenance->berlaku_sampai) < time() ? 'shade-red' : 'shade-green' }} min-90">
-                                                {{ \Carbon\Carbon::parse($maintenance->berlaku_sampai)->translatedFormat('d F Y') }}
+                                                class="badge {{ strtotime($maintenance->kendaraan->berlaku_sampai) < time() ? 'shade-red' : 'shade-green' }} min-90">
+                                                {{ \Carbon\Carbon::parse($maintenance->kendaraan->berlaku_sampai)->translatedFormat('d F Y') }}
                                             </span>
                                         </td>
                                         <td>
-                                            {{ \Carbon\Carbon::parse($maintenance->tanggal_maintenance)->translatedFormat('F Y') }}
+                                            {{ \Carbon\Carbon::parse($maintenance->tanggal_maintenance)->translatedFormat('F') }}
                                         </td>
                                         <td>
                                             <button type="button" class="btn btn-primary btn-icon show-details"
@@ -156,7 +155,7 @@
                                                 data-total-belanja="{{ $maintenance->totalSemuaBelanja() }}"
                                                 data-tanggal-belanja="{{ \Carbon\Carbon::parse($maintenance->tanggal_maintenance)->translatedFormat('F') }}"
                                                 data-keterangan="{{ $maintenance->keterangan }}"
-                                                data-kadaluarsa-pajak="{{ \Carbon\Carbon::parse($maintenance->berlaku_sampai)->translatedFormat('d F Y') }}"
+                                                data-kadaluarsa-pajak="{{ \Carbon\Carbon::parse($maintenance->kendaraan->berlaku_sampai)->translatedFormat('d F Y') }}"
                                                 data-unit-kerja="{{ $maintenance->kendaraan->unitKerja->nama_unit_kerja }}">
                                                 <i class="bi bi-search"></i>
                                             </button>
@@ -296,8 +295,8 @@
                         }
                     });
                 });
-            });           
-        });       
+            });
+        });
     </script>
     <!-- Data Tables -->
     <script src="{{ asset('vendor/datatables/dataTables.min.js') }}"></script>
