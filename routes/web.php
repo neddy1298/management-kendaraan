@@ -56,7 +56,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::prefix('maintenance')->group(function () {
                 Route::get('', [MaintenanceController::class, 'index'])->name('maintenance.index');
                 Route::get('/get-belanja-details/{id}', [MaintenanceController::class, 'getBelanjaDetails'])->name('get.belanja.details');
-                Route::get('export', [MaintenanceController::class, 'exportToExcel'])->name('maintenance.export');
+                Route::get('/export', [MaintenanceController::class, 'exportToExcel'])->name('maintenance.export');
             });
 
             Route::prefix('belanja')->group(function () {
