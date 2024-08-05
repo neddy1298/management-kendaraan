@@ -19,6 +19,13 @@
                         <span class="menu-text">Home</span>
                     </a>
                 </li>
+                {{-- TODO --}}
+                <li class="{{ $page == 'Laporan' ? 'active' : '' }}">
+                    <a href="#" class="{{ $page == 'Laporan' ? 'current-page' : '' }}" aria-label="Laporan">
+                        <i class="bi bi-cart2"></i>
+                        <span class="menu-text">Laporan</span>
+                    </a>
+                </li>
                 <li class="{{ $page == 'Belanja' ? 'active' : '' }}">
                     <a href="{{ route('belanja.index') }}" class="{{ $page == 'Belanja' ? 'current-page' : '' }}"
                         aria-label="Data Belanja">
