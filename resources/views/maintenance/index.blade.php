@@ -50,33 +50,14 @@
                 </div>
             </div>
         </div>
-        <!-- Card start -->
-
         <div class="col-12">
+            <!-- Card start -->
             <div class="card">
                 <div class="card-body">
-                    <div class="custom-btn-group col-6">
-                        <a href="{{ route('belanja.printAll') }}" class="btn btn-primary" target="_blank">
-                            <i class="bi bi-printer"></i> Cetak
-                        </a>
-                        @php
-                            $message =
-                                "Contoh message yang akan dikirim ke WA\n-1. lorem ipsum dolor sit amet consectetur adipiscing elit\n2. lorem ipsum dolor sit amet consectetur adipiscing elit\n3. lorem ipsum dolor sit amet consectetur adipiscing elit\n4. lorem ipsum dolor sit amet consectetur adipiscing elit\n5. lorem ipsum dolor sit amet consectetur adipiscing elit";
-                        @endphp
-                        <a href="{{ route('send-wa', ['message' => $message]) }}" class="btn btn-success" target="_blank">
-                            <i class="bi bi-whatsapp"></i> Kirim WA
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="col-sm-12 col-12">
-            <div class="card">
-                <div class="card-body">
                     <form action="{{ route('maintenance.index') }}" method="GET"
-                        class="row row-cols-lg-auto g-3 align-items-center">
-                        <div class="col-12">
+                    class="row row-cols-lg-auto g-3 align-items-center">
+                                            <div class="col-12">
                             <label class="visually-hidden">Username</label>
                             <div class="input-group">
                                 {{-- <div class="input-group-text">
@@ -84,8 +65,7 @@
                                 </div> --}}
                                 <select name="year" class="form-select">
                                     @foreach ($years as $year)
-                                        <option value="{{ $year }}"
-                                            {{ $selectedYear == $year ? 'selected' : '' }}>
+                                        <option value="{{ $year }}" {{ $selectedYear == $year ? 'selected' : '' }}>
                                             {{ $year }}</option>
                                     @endforeach
                                 </select>
@@ -110,16 +90,20 @@
                         </div>
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary">Filter</button>
-                            <a class="btn btn-dark btn-icon btn-sm" href="{{ route('maintenance.index') }}"
+                            <a class="btn btn-dark btn-icon btn-sm"
+                                href="{{ route('maintenance.index') }}"
                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Reset">
                                 <i class="bi bi-arrow-counterclockwise"></i>
+                            </a>
+                            <a href="{{ route('maintenance.export') }}" class="btn btn-success">
+                                <i class="bi bi-file-earmark-excel"></i> Export to Excel
                             </a>
                         </div>
                     </form>
                 </div>
             </div>
+            <!-- Card end -->
         </div>
-        <!-- Card end -->
         <div class="col-sm-12 col-12">
             <!-- Card start -->
             <div class="card">
@@ -312,8 +296,8 @@
                         }
                     });
                 });
-            });
-        });
+            });           
+        });       
     </script>
     <!-- Data Tables -->
     <script src="{{ secure_asset('vendor/datatables/dataTables.min.js') }}"></script>

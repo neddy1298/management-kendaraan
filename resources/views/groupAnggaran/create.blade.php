@@ -30,17 +30,18 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('groupAnggaran.store') }}"
-                        enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('groupAnggaran.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-xl-12">
                                 <div class="mb-3">
                                     <label for="master_anggaran_id" class="form-label">Master Anggaran</label>
                                     <select id="master_anggaran_id" class="form-select" name="master_anggaran_id">
-                                        <option hidden value="{{ old('master_anggaran_id') }}">{{ old('master_anggaran_id') }}</option>
+                                        <option hidden value="{{ old('master_anggaran_id') }}">
+                                            {{ old('master_anggaran_id') }}</option>
                                         @foreach ($masterAnggarans as $masterAnggaran)
-                                        <option value="{{ $masterAnggaran->id }}">{{ $masterAnggaran->nama_rekening }} - {{ $masterAnggaran->kode_rekening }}</option>
+                                            <option value="{{ $masterAnggaran->id }}">{{ $masterAnggaran->nama_rekening }} -
+                                                {{ $masterAnggaran->kode_rekening }}</option>
                                         @endforeach
                                     </select>
                                     @error('master_anggaran_id')
@@ -72,9 +73,12 @@
                             </div>
                             <div class="col-xl-4">
                                 <div class="mb-3">
-                                    <label for="anggaran_bahan_bakar_minyak" class="form-label">Anggaran BBM</label>
-                                    <input type="number" class="form-control @error('anggaran_bahan_bakar_minyak') is-invalid @enderror"
-                                        id="anggaran_bahan_bakar_minyak" name="anggaran_bahan_bakar_minyak" value="{{ old('anggaran_bahan_bakar_minyak') }}">
+                                    <label for="anggaran_bahan_bakar_minyak" class="form-label">Anggaran BBM
+                                        Perbulan</label>
+                                    <input type="number"
+                                        class="form-control @error('anggaran_bahan_bakar_minyak') is-invalid @enderror"
+                                        id="anggaran_bahan_bakar_minyak" name="anggaran_bahan_bakar_minyak"
+                                        value="{{ old('anggaran_bahan_bakar_minyak') }}">
                                     @error('anggaran_bahan_bakar_minyak')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -82,9 +86,11 @@
                             </div>
                             <div class="col-xl-4">
                                 <div class="mb-3">
-                                    <label for="anggaran_pelumas_mesin" class="form-label">Anggaran Pelumas</label>
-                                    <input type="number" class="form-control @error('anggaran_pelumas_mesin') is-invalid @enderror"
-                                        id="anggaran_pelumas_mesin" name="anggaran_pelumas_mesin" value="{{ old('anggaran_pelumas_mesin') }}">
+                                    <label for="anggaran_pelumas_mesin" class="form-label">Anggaran Pelumas Perbulan</label>
+                                    <input type="number"
+                                        class="form-control @error('anggaran_pelumas_mesin') is-invalid @enderror"
+                                        id="anggaran_pelumas_mesin" name="anggaran_pelumas_mesin"
+                                        value="{{ old('anggaran_pelumas_mesin') }}">
                                     @error('anggaran_pelumas_mesin')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -92,9 +98,12 @@
                             </div>
                             <div class="col-xl-4">
                                 <div class="mb-3">
-                                    <label for="anggaran_suku_cadang" class="form-label">Anggaran Suku Cadang</label>
-                                    <input type="number" class="form-control @error('anggaran_suku_cadang') is-invalid @enderror"
-                                        id="anggaran_suku_cadang" name="anggaran_suku_cadang" value="{{ old('anggaran_suku_cadang') }}">
+                                    <label for="anggaran_suku_cadang" class="form-label">Anggaran Suku Cadang
+                                        Perbulan</label>
+                                    <input type="number"
+                                        class="form-control @error('anggaran_suku_cadang') is-invalid @enderror"
+                                        id="anggaran_suku_cadang" name="anggaran_suku_cadang"
+                                        value="{{ old('anggaran_suku_cadang') }}">
                                     @error('anggaran_suku_cadang')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

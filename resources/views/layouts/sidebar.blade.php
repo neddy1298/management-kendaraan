@@ -19,6 +19,13 @@
                         <span class="menu-text">Home</span>
                     </a>
                 </li>
+                {{-- TODO --}}
+                <li class="{{ $page == 'Laporan' ? 'active' : '' }}">
+                    <a href="#" class="{{ $page == 'Laporan' ? 'current-page' : '' }}" aria-label="Laporan">
+                        <i class="bi bi-bar-chart"></i>
+                        <span class="menu-text">Laporan</span>
+                    </a>
+                </li>
                 <li class="{{ $page == 'Belanja' ? 'active' : '' }}">
                     <a href="{{ route('belanja.index') }}" class="{{ $page == 'Belanja' ? 'current-page' : '' }}"
                         aria-label="Data Belanja">
@@ -65,15 +72,21 @@
                     <div class="sidebar-submenu">
                         <ul>
                             <li>
-                                <a href="{{ route('masterAnggaran.index') }}" class="{{ $page2 == 'Pertahun' ? 'current-page' : '' }}">Pertahun</a>
+                                <a href="{{ route('paguAnggaran.index') }}"
+                                    class="{{ $page2 == 'Pagu' ? 'current-page' : '' }}">Pagu</a>
                             </li>
                             <li>
-                                <a href="{{ route('groupAnggaran.index') }}" class="{{ $page2 == 'Group' ? 'current-page' : '' }}">Group</a>
+                                <a href="{{ route('masterAnggaran.index') }}"
+                                    class="{{ $page2 == 'Pertahun' ? 'current-page' : '' }}">Pertahun</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('groupAnggaran.index') }}"
+                                    class="{{ $page2 == 'Group' ? 'current-page' : '' }}">Group</a>
                             </li>
                         </ul>
                     </div>
                 </li>
-                
+
                 <li class="{{ $page == 'User' ? 'active' : '' }}">
                     <a href="{{ route('profile.edit') }}" class="{{ $page == 'User' ? 'current-page' : '' }}"
                         aria-label="User">

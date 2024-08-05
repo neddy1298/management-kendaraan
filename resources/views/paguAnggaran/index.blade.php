@@ -1,9 +1,9 @@
-@extends('layouts.app', ['page' => 'Anggaran', 'page2' => 'Pertahun', 'page3' => ''])
+@extends('layouts.app', ['page' => 'Anggaran', 'page2' => 'Pagu', 'page3' => ''])
 
 @section('css')
     <!-- Data Tables -->
-    <link rel="stylesheet" href="{{ secure_asset('vendor/datatables/dataTables.bs5.css') }}">
-    <link rel="stylesheet" href="{{ secure_asset('vendor/datatables/dataTables.bs5-custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/datatables/dataTables.bs5.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/datatables/dataTables.bs5-custom.css') }}">
 @endsection
 
 @section('content')
@@ -18,7 +18,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="custom-btn-group">
-                        <a href="{{ route('masterAnggaran.create') }}" class="btn btn-warning">
+                        <a href="{{ route('paguAnggaran.create') }}" class="btn btn-warning">
                             <i class="bi bi-pencil-square"></i> Tambah Baru
                         </a>
                     </div>
@@ -47,28 +47,30 @@
                                     <th>Kode Rekening</th>
                                     <th>Nama Rekening</th>
                                     <th>Anggaran</th>
+                                    <th>Tahun</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($masterAnggarans as $index => $masterAnggaran)
+                                @foreach ($paguAnggarans as $index => $paguAnggaran)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $masterAnggaran->kode_rekening }}</td>
-                                        <td>{{ $masterAnggaran->nama_rekening }}</td>
-                                        <td>Rp. {{ number_format($masterAnggaran->anggaran, 0, ',', '.') }}</td>
+                                        <td>{{ $paguAnggaran->kode_rekening }}</td>
+                                        <td>{{ $paguAnggaran->nama_rekening }}</td>
+                                        <td>Rp. {{ number_format($paguAnggaran->anggaran, 0, ',', '.') }}</td>
+                                        <td>{{ $paguAnggaran->tahun }}</td>
                                         <td>
-                                            <a href="{{ route('masterAnggaran.edit', $masterAnggaran->id) }}"
+                                            <a href="{{ route('paguAnggaran.edit', $paguAnggaran->id) }}"
                                                 class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
                                                 data-bs-placement="top" title="Edit">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            <form action="{{ route('masterAnggaran.delete', $masterAnggaran->id) }}"
+                                            <form action="{{ route('paguAnggaran.delete', $paguAnggaran->id) }}"
                                                 method="POST" style="display: inline-block">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button class="btn btn-danger btn-icon btn-sm"
-                                                    onclick="return confirm('Kamu yakin ingin menghapus data: {{ $masterAnggaran->nomor_registrasi }} ?')"
+                                                    onclick="return confirm('Kamu yakin ingin menghapus data: {{ $paguAnggaran->nama_rekening }} ?')"
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
@@ -89,9 +91,9 @@
 
 @section('script')
     <!-- Data Tables -->
-    <script src="{{ secure_asset('vendor/datatables/dataTables.min.js') }}"></script>
-    <script src="{{ secure_asset('vendor/datatables/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/dataTables.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/dataTables.bootstrap.min.js') }}"></script>
 
     <!-- Custom Data tables -->
-    <script src="{{ secure_asset('vendor/datatables/custom/custom-datatables.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/custom/custom-datatables.js') }}"></script>
 @endsection

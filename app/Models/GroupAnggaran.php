@@ -20,14 +20,19 @@ class GroupAnggaran extends Model
         'anggaran_suku_cadang',
     ];
 
+    public function relatedGroupAnggarans()
+    {
+        return $this->belongsToMany(GroupAnggaran::class, 'group_anggaran_relations', 'group_anggaran_id', 'related_group_anggaran_id');
+    }
+
     public function masterAnggaran()
     {
         return $this->belongsTo(MasterAnggaran::class);
     }
 
-    public function unitKerja()
+    public function unitKerjas()
     {
-        return $this->hasMany(UnitKerja::class);
+        return $this->belongsToMany(UnitKerja::class, 'group_anggaran_unit_kerja');
     }
 
     protected $appends = ['total_anggaran'];
@@ -35,5 +40,5 @@ class GroupAnggaran extends Model
     public function getTotalAnggaranAttribute()
     {
         return $this->anggaran_bahan_bakar_minyak + $this->anggaran_pelumas_mesin + $this->anggaran_suku_cadang;
-    } 
+    }
 }

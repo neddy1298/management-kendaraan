@@ -10,8 +10,8 @@ class CheckMasterAnggaran
 {
     public function handle(Request $request, Closure $next)
     {
-        if (MasterAnggaran::count() == 0 && !$request->is('masterAnggaran/create') && !$request->is('masterAnggaran') && !$request->is('masterAnggaran/store')) {
-            return redirect()->route('masterAnggaran.index')->with('error', 'Silahkan buat Master Anggaran terlebih dahulu.');
+        if (MasterAnggaran::count() == 0 && !$request->is('masterAnggaran') && !$request->is('masterAnggaran/*')) {
+            return to_route('masterAnggaran.index')->with('error', 'Silahkan buat Master Anggaran terlebih dahulu.');
         }
         return $next($request);
     }

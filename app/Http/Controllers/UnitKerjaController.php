@@ -14,9 +14,8 @@ class UnitKerjaController extends Controller
      */
     public function index()
     {
-        $unitKerjas = UnitKerja::withCount('kendaraans')->with('groupAnggaran')->get();
+        $unitKerjas = UnitKerja::withCount('kendaraans')->with('groupAnggarans')->get();
 
-        // dd($unitKerjas);
         return view('unitKerja.index', compact('unitKerjas'));
     }
 
@@ -35,22 +34,29 @@ class UnitKerjaController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'nama_unit_kerja' => 'required|string|max:255',
-            'group_anggaran_id' => 'required|integer',
+            'nama_unit_kerja' => 'required|string|max:255|unique:unit_kerjas',
+            'group_anggaran_id' => 'required|array',
+            'group_anggaran_id.*' => 'exists:group_anggarans,id',
         ], [
             'required' => 'Kolom :attribute wajib diisi.',
-            'integer' => 'Kolom :attribute harus berupa angka.',
+            'unique' => 'Nama Unit Kerja sudah digunakan.',
+            'exists' => 'Group Anggaran yang dipilih tidak valid.',
         ]);
 
-        $unitKerjas = UnitKerja::create($validatedData);
+        $unitKerja = UnitKerja::create([
+            'nama_unit_kerja' => $validatedData['nama_unit_kerja'],
+        ]);
 
+        $unitKerja->groupAnggarans()->attach($validatedData['group_anggaran_id']);
 
-        if ($unitKerjas->wasRecentlyCreated) {
-            return redirect()->route('unitKerja.index')->with('success', 'Data berhasil disimpan.');
+        if ($unitKerja->wasRecentlyCreated) {
+            return to_route('unitKerja.index')->with('success', 'Data berhasil disimpan.');
         } else {
-            return redirect()->route('unitKerja.index')->with('error', 'Terjadi kesalahan saat menyimpan data.');
+            return to_route('unitKerja.index')->with('error', 'Terjadi kesalahan saat menyimpan data.');
         }
     }
+
+
 
     /**
      * Display the specified resource.
@@ -87,7 +93,7 @@ class UnitKerjaController extends Controller
         $unitKerjas = UnitKerja::findOrFail($id);
         $unitKerjas->update($validatedData);
 
-        return redirect()->route('unitKerja.index')->with('success', 'Data berhasil diperbarui.');
+        return to_route('unitKerja.index')->with('success', 'Data berhasil diperbarui.');
     }
 
     /**
@@ -99,9 +105,9 @@ class UnitKerjaController extends Controller
 
         if ($unitkerja) {
             $unitkerja->delete();
-            return redirect()->route('unitKerja.index')->with('success', 'Data berhasil dihapus.');
+            return to_route('unitKerja.index')->with('success', 'Data berhasil dihapus.');
         } else {
-            return redirect()->route('unitKerja.index')->with('error', 'Data tidak ditemukan.');
+            return to_route('unitKerja.index')->with('error', 'Data tidak ditemukan.');
         }
     }
 

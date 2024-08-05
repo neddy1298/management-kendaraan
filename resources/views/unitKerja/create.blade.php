@@ -33,16 +33,16 @@
                     <form method="POST" action="{{ route('unitKerja.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
-
                             <div class="col-xl-12">
                                 <div class="mb-3">
                                     <label for="group_anggaran_id" class="form-label">Group Anggaran</label>
-                                    <select id="group_anggaran_id" class="form-select" name="group_anggaran_id">
-                                        <option hidden value="{{ old('group_anggaran_id') }}">
-                                            {{ old('group_anggaran_id') }}</option>
+                                    <select id="group_anggaran_id" class="select-multiple js-states form-control"
+                                        multiple="multiple" name="group_anggaran_id[]">
                                         @foreach ($groupAnggarans as $groupAnggaran)
-                                            <option value="{{ $groupAnggaran->id }}">{{ $groupAnggaran->nama_group }} -
-                                                {{ $groupAnggaran->kode_rekening }}</option>
+                                            <option value="{{ $groupAnggaran->id }}"
+                                                {{ in_array($groupAnggaran->id, old('group_anggaran_id', [])) ? 'selected' : '' }}>
+                                                {{ $groupAnggaran->nama_group }} - {{ $groupAnggaran->kode_rekening }}
+                                            </option>
                                         @endforeach
                                     </select>
                                     @error('group_anggaran_id')

@@ -33,14 +33,14 @@
                             <div class="col-xl-12 col-sm-12 col-12">
                                 <div class="mb-3">
                                     <label class="form-label d-flex">Nomor Registrasi</label>
-                                    <select class="select-single js-states form-control @error('maintenance_id') is-invalid @enderror" 
-                                        title="Masukkan Unit Kerja" 
-                                        data-live-search="true" 
-                                        name="maintenance_id">
+                                    <select
+                                        class="select-single js-states form-control @error('maintenance_id') is-invalid @enderror"
+                                        title="Masukkan Unit Kerja" data-live-search="true" name="maintenance_id">
                                         <option value="" hidden></option>
                                         @foreach ($maintenances as $maintenance)
                                             <option value="{{ $maintenance->id }}">
-                                                {{ $maintenance->kendaraan->nomor_registrasi }} - {{ $maintenance->kendaraan->merk_kendaraan }}
+                                                {{ $maintenance->kendaraan->nomor_registrasi }} -
+                                                {{ $maintenance->kendaraan->merk_kendaraan }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -56,13 +56,15 @@
                                 <div class="form-section-title">Total Belanja</div>
                             </div>
 
-                            @foreach (['bahan_bakar_minyak' => 'BBM', 'pelumas_mesin' => 'Pelumas', 'suku_cadang' => 'Suku Cadang'] as $field => $label)
-                                <div class="col-xl-4 col-sm-12 col-12">
+                            @foreach (['bahan_bakar_minyak' => 'BBM', 'pelumas_mesin' => 'Pelumas'] as $field => $label)
+                                <div class="col-xl-6 col-sm-12 col-12">
                                     <div class="mb-3">
-                                        <label for="belanja_{{ $field }}" class="form-label">Belanja {{ $label }}</label>
+                                        <label for="belanja_{{ $field }}" class="form-label">Belanja
+                                            {{ $label }}</label>
                                         <div class="input-group">
                                             <span class="input-group-text">Rp.</span>
-                                            <input type="number" class="form-control" name="belanja_{{ $field }}" id="belanja_{{ $field }}">
+                                            <input type="number" class="form-control" name="belanja_{{ $field }}"
+                                                id="belanja_{{ $field }}">
                                         </div>
                                     </div>
                                 </div>
@@ -86,24 +88,39 @@
                                     <textarea class="form-control" rows="3" name="keterangan"></textarea>
                                 </div>
                             </div>
-                        </div>
 
+
+                            <div class="col-12">
+                                <div class="form-section-title">Suku Cadang</div>
+                            </div>
+
+                            <div id="sukuCadangContainer">
+                                <!-- Form suku cadang -->
+                            </div>
+                            <div class="col-12 mb-3 text-center">
+                                <button type="button" class="btn btn-primary remove-suku-cadang" id="tambahSukuCadang">
+                                    Tambah Suku Cadang
+                                </button>
+                            </div>
+                        </div>
                         <div class="form-actions-footer">
                             <a class="btn btn-light" href="{{ route('belanja.index') }}">Batal</a>
                             <button type="submit" class="btn btn-success">Simpan</button>
                         </div>
                     </form>
                 </div>
+
             </div>
         </div>
+    </div>
     </div>
 @endsection
 
 @section('script')
-    <!-- Bootstra{{ secure_asset JS -->
+    <!-- Bootstrap JS -->
     <script src="{{ secure_asset('vendor/bs-select/bs-select.min.js') }}"></script>
     <script src="{{ secure_asset('vendor/bs-select/bs-select-custom.js') }}"></script>
-{{ secure_asset
+
     <!-- Date Range JS -->
     <script src="{{ secure_asset('vendor/daterange/daterange.js') }}"></script>
     <script src="{{ secure_asset('vendor/daterange/custom-daterange.js') }}"></script>

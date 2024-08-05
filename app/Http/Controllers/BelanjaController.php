@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Belanja;
 use App\Models\Kendaraan;
+use App\Models\LaporanBulanan;
+use App\Models\LaporanTahunan;
 use App\Models\Maintenance;
+use App\Models\SukuCadang;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class BelanjaController extends Controller
 {
@@ -70,77 +74,130 @@ class BelanjaController extends Controller
     {
         $validatedData = $request->validate([
             'maintenance_id' => 'required|integer',
-            'belanja_bahan_bakar_minyak' => 'required_without_all:belanja_pelumas_mesin,belanja_suku_cadang|nullable|integer',
-            'belanja_pelumas_mesin' => 'required_without_all:belanja_bahan_bakar_minyak,belanja_suku_cadang|nullable|integer',
-            'belanja_suku_cadang' => 'required_without_all:belanja_bahan_bakar_minyak,belanja_pelumas_mesin|nullable|integer',
-            'tanggal_belanja' => 'required|string|date_format:d/m/Y',
+            'belanja_bahan_bakar_minyak' => 'nullable|integer',
+            'belanja_pelumas_mesin' => 'nullable|integer',
+            'tanggal_belanja' => 'required|date_format:d/m/Y',
             'keterangan' => 'required|string|max:255',
+            'nama_suku_cadang' => 'nullable|array',
+            'nama_suku_cadang.*' => 'nullable|string',
+            'jumlah_suku_cadang' => 'nullable|array',
+            'jumlah_suku_cadang.*' => 'nullable|integer|min:1',
+            'harga_suku_cadang' => 'nullable|array',
+            'harga_suku_cadang.*' => 'nullable|integer|min:0',
         ], [
             'required' => 'Kolom :attribute wajib diisi.',
             'integer' => 'Kolom :attribute harus berupa angka.',
-            'required_without_all' => 'Minimal salah satu kolom :attribute harus diisi.',
             'date_format' => 'Format tanggal harus :format.',
         ]);
 
-        // Convert date format from d/m/Y to Y-m-d for consistency
         $validatedData['tanggal_belanja'] = Carbon::createFromFormat('d/m/Y', $validatedData['tanggal_belanja'])->format('Y-m-d');
 
+        DB::beginTransaction();
+
         try {
-            $maintenance = Maintenance::findOrFail($validatedData['maintenance_id']);
-            $maintenanceMonth = Carbon::createFromFormat('Y-m-d', $maintenance->tanggal_maintenance)->format('Y-m');
-            $belanjaMonth = Carbon::createFromFormat('Y-m-d', $validatedData['tanggal_belanja'])->format('Y-m');
-            $otherMaintenances = Maintenance::where('kendaraan_id', $maintenance->kendaraan_id)
-                ->where('id', '!=', $maintenance->id)
-                ->get();
+            $maintenance = $this->getOrCreateMaintenance($validatedData);
+            $belanja = $this->createBelanja($validatedData, $maintenance);
+            $this->createSukuCadangs($validatedData, $belanja);
 
-            if ($maintenanceMonth == $belanjaMonth) {
-                $maintenance->update([
-                    'tanggal_maintenance' => $validatedData['tanggal_belanja'],
-                    'updated_at' => Carbon::now(),
-                    'keterangan' => $maintenance->keterangan . ' ' . $validatedData['keterangan'],
-                ]);
-            } elseif ($otherMaintenances->count() > 0) {
-                $found = false;
-                foreach ($otherMaintenances as $otherMaintenance) {
-                    $otherMaintenanceMonth = Carbon::createFromFormat('Y-m-d', $otherMaintenance->tanggal_maintenance)->format('Y-m');
-                    if ($otherMaintenanceMonth == $belanjaMonth) {
-                        $otherMaintenance->update([
-                            'tanggal_maintenance' => $validatedData['tanggal_belanja'],
-                            'updated_at' => Carbon::now(),
-                            'keterangan' => $otherMaintenance->keterangan . ' ' . $validatedData['keterangan'],
-                        ]);
-                        $validatedData['maintenance_id'] = $otherMaintenance->id;
-                        $found = true;
-                        break;
-                    }
-                }
-                if (!$found) {
-                    $new_maintenance = Maintenance::create([
-                        'kendaraan_id' => $maintenance->kendaraan_id,
-                        'tanggal_maintenance' => $validatedData['tanggal_belanja'],
-                        'keterangan' => $validatedData['keterangan'],
+            DB::commit();
+
+            // Update laporan_bulanans
+            $bulan = Carbon::parse($validatedData['tanggal_belanja'])->month;
+            $laporanTahunan = LaporanTahunan::whereYear('tahun', Carbon::parse($validatedData['tanggal_belanja'])->year)->first();
+
+            $sukuCadangs = SukuCadang::where('belanja_id', $belanja->id)->get()->sum('total_harga');
+            $belanja->update(['belanja_suku_cadang' => $sukuCadangs]);
+            if ($laporanTahunan) {
+                $laporanBulanan = LaporanBulanan::where('bulan', $bulan)
+                    ->where('laporan_tahunan_id', $laporanTahunan->id)
+                    ->first();
+
+                if ($laporanBulanan) {
+                    $laporanBulanan->update([
+                        'realisasi_bahan_bakar_minyak' => $laporanBulanan->realisasi_bahan_bakar_minyak + ($validatedData['belanja_bahan_bakar_minyak'] ?? 0),
+                        'realisasi_pelumas_mesin' => $laporanBulanan->realisasi_pelumas_mesin + ($validatedData['belanja_pelumas_mesin'] ?? 0),
+                        'realisasi_suku_cadang' => $laporanBulanan->realisasi_suku_cadang + ($sukuCadangs ?? 0),
                     ]);
-
-                    $validatedData['maintenance_id'] = $new_maintenance->id;
+                } else {
+                    LaporanBulanan::create([
+                        'bulan' => $bulan,
+                        'laporan_tahunan_id' => $laporanTahunan->id,
+                        'realisasi_bahan_bakar_minyak' => $validatedData['belanja_bahan_bakar_minyak'] ?? 0,
+                        'realisasi_pelumas_mesin' => $validatedData['belanja_pelumas_mesin'] ?? 0,
+                        'realisasi_suku_cadang' => $sukuCadangs ?? 0,
+                    ]);
                 }
-            } else {
-                $new_maintenance = Maintenance::create([
-                    'kendaraan_id' => $maintenance->kendaraan_id,
-                    'tanggal_maintenance' => $validatedData['tanggal_belanja'],
-                    'keterangan' => $validatedData['keterangan'],
-                ]);
-
-                $validatedData['maintenance_id'] = $new_maintenance->id;
             }
-            // dd($maintenance_before,$maintenance, $new_maintenance);
 
-            Belanja::create($validatedData);
+
 
             return redirect()->route('belanja.index')->with('success', 'Data berhasil disimpan.');
+
+            return to_route('belanja.index')->with('success', 'Data berhasil disimpan.');
         } catch (\Exception $e) {
-            return redirect()->route('belanja.index')->with('error', 'Terjadi kesalahan saat menyimpan data.');
+            DB::rollBack();
+            return to_route('belanja.index')->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
         }
     }
+
+    private function getOrCreateMaintenance($data)
+    {
+        $maintenance = Maintenance::findOrFail($data['maintenance_id']);
+        $belanjaMonth = Carbon::parse($data['tanggal_belanja'])->format('Y-m');
+
+        $existingMaintenance = Maintenance::where('kendaraan_id', $maintenance->kendaraan_id)
+            ->whereYear('tanggal_maintenance', Carbon::parse($data['tanggal_belanja'])->year)
+            ->whereMonth('tanggal_maintenance', Carbon::parse($data['tanggal_belanja'])->month)
+            ->first();
+
+        if ($existingMaintenance) {
+            $existingMaintenance->update([
+                'tanggal_maintenance' => $data['tanggal_belanja'],
+                'keterangan' => $existingMaintenance->keterangan . ' ' . $data['keterangan'],
+            ]);
+            return $existingMaintenance;
+        }
+
+        return Maintenance::create([
+            'kendaraan_id' => $maintenance->kendaraan_id,
+            'tanggal_maintenance' => $data['tanggal_belanja'],
+            'keterangan' => $data['keterangan'],
+        ]);
+    }
+
+    private function createBelanja($data, $maintenance)
+    {
+        return Belanja::create([
+            'maintenance_id' => $maintenance->id,
+            'belanja_bahan_bakar_minyak' => $data['belanja_bahan_bakar_minyak'] ?? 0,
+            'belanja_pelumas_mesin' => $data['belanja_pelumas_mesin'] ?? 0,
+            'tanggal_belanja' => $data['tanggal_belanja'],
+            'keterangan' => $data['keterangan'],
+        ]);
+    }
+
+    private function createSukuCadangs($data, $belanja)
+    {
+        if (!empty($data['nama_suku_cadang'])) {
+            $sukuCadangs = [];
+            foreach ($data['nama_suku_cadang'] as $key => $nama) {
+                if (!empty($nama) && isset($data['jumlah_suku_cadang'][$key]) && isset($data['harga_suku_cadang'][$key])) {
+                    $sukuCadangs[] = [
+                        'belanja_id' => $belanja->id,
+                        'nama_suku_cadang' => $nama,
+                        'jumlah' => $data['jumlah_suku_cadang'][$key],
+                        'harga_satuan' => $data['harga_suku_cadang'][$key],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+            }
+            if (!empty($sukuCadangs)) {
+                SukuCadang::insert($sukuCadangs);
+            }
+        }
+    }
+
 
     /**
      * Display the specified resource.
@@ -163,7 +220,7 @@ class BelanjaController extends Controller
     {
         $belanja = Belanja::findOrFail($id);
         $belanja->delete();
-        return redirect()->route('belanja.index')->with('success', 'Data berhasil dihapus.');
+        return to_route('belanja.index')->with('success', 'Data berhasil dihapus.');
     }
 
 

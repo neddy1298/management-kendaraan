@@ -35,9 +35,9 @@ class GroupAnggaranController extends Controller
             'nama_group' => 'required|string|max:255',
             'kode_rekening' => 'required|string|max:255',
             'master_anggaran_id' => 'required|integer',
-            'anggaran_bahan_bakar_minyak' => 'required|integer',
-            'anggaran_pelumas_mesin' => 'required|integer',
-            'anggaran_suku_cadang' => 'required|integer',
+            'anggaran_bahan_bakar_minyak' => 'nullable|integer',
+            'anggaran_pelumas_mesin' => 'nullable|integer',
+            'anggaran_suku_cadang' => 'nullable|integer',
         ], [
             'required' => 'Kolom :attribute wajib diisi.',
             'integer' => 'Kolom :attribute harus berupa angka.',
@@ -45,7 +45,7 @@ class GroupAnggaranController extends Controller
 
         GroupAnggaran::create($groupAnggaran);
 
-        return redirect()->route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil ditambahkan.');
+        return to_route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil ditambahkan.');
     }
 
     /**
@@ -76,9 +76,9 @@ class GroupAnggaranController extends Controller
             'nama_group' => 'required|string|max:255',
             'kode_rekening' => 'required|string|max:255',
             'master_anggaran_id' => 'required|integer',
-            'anggaran_bahan_bakar_minyak' => 'required|integer',
-            'anggaran_pelumas_mesin' => 'required|integer',
-            'anggaran_suku_cadang' => 'required|integer',
+            'anggaran_bahan_bakar_minyak' => 'nullable|integer',
+            'anggaran_pelumas_mesin' => 'nullable|integer',
+            'anggaran_suku_cadang' => 'nullable|integer',
         ], [
             'required' => 'Kolom :attribute wajib diisi.',
             'integer' => 'Kolom :attribute harus berupa angka.',
@@ -86,7 +86,7 @@ class GroupAnggaranController extends Controller
 
         GroupAnggaran::findOrFail($id)->update($groupAnggaran);
 
-        return redirect()->route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil diubah.');
+        return to_route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil diubah.');
     }
 
     /**
@@ -96,6 +96,6 @@ class GroupAnggaranController extends Controller
     {
         GroupAnggaran::findOrFail($id)->delete();
 
-        return redirect()->route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil dihapus.');
+        return to_route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil dihapus.');
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kendaraan;
+use App\Models\LaporanBulanan;
+use App\Models\LaporanTahunan;
 use App\Models\Maintenance;
 use App\Models\UnitKerja;
 use Carbon\Carbon;
@@ -61,18 +63,39 @@ class KendaraanController extends Controller
         $kendaraan = Kendaraan::create($validatedData);
 
         if ($kendaraan->wasRecentlyCreated) {
-            if ($kendaraan->maintenance->isEmpty()) {
-                Maintenance::create([
-                    'kendaraan_id' => $kendaraan->id,
-                    'tanggal_maintenance' => Carbon::now()->format('Y-m-d'),
-                ]);
+            $laporanBulanan = LaporanBulanan::where('bulan', '=', Carbon::now()->format('m'))->get();
+            $laporanTahunan = LaporanTahunan::where('tahun', Carbon::now()->year)->first();
+            if ($laporanBulanan->isEmpty()) {
+                for ($i = 1; $i <= 12; $i++) {
+                    $laporan = LaporanBulanan::create([
+                        'laporan_tahunan_id' => $laporanTahunan->id,
+                        'bulan' => $i,
+                        'tahun' => Carbon::now()->format('Y'),
+                    ]);
+
+                    $laporan->maintenance()->create([
+                        'kendaraan_id' => $kendaraan->id,
+                        'laporan_bulanan_id' => $laporan->id,
+                        'tanggal_maintenance' => Carbon::now()->format('Y-m-d'),
+                    ]);
+                }
+            } else {
+                $laporan = $laporanBulanan->where('bulan', Carbon::now()->format('m'))->first();
+                if ($laporan) {
+                    $laporanId = $laporan->id;
+                    $laporan->maintenance()->create([
+                        'kendaraan_id' => $kendaraan->id,
+                        'laporan_bulanan_id' => $laporanId,
+                        'tanggal_maintenance' => Carbon::now()->format('Y-m-d'),
+                    ]);
+                }
             }
         }
 
         if ($kendaraan->wasRecentlyCreated) {
-            return redirect()->route('kendaraan.index')->with('success', 'Data berhasil disimpan.');
+            return to_route('kendaraan.index')->with('success', 'Data berhasil disimpan.');
         } else {
-            return redirect()->route('kendaraan.index')->with('error', 'Terjadi kesalahan saat menyimpan data.');
+            return to_route('kendaraan.index')->with('error', 'Terjadi kesalahan saat menyimpan data.');
         }
     }
 
@@ -118,7 +141,7 @@ class KendaraanController extends Controller
         $kendaraan = Kendaraan::findOrFail($id);
         $kendaraan->update($validatedData);
 
-        return redirect()->route('kendaraan.index')->with('success', 'Data berhasil diperbarui.');
+        return to_route('kendaraan.index')->with('success', 'Data berhasil diperbarui.');
     }
 
     /**
@@ -133,9 +156,9 @@ class KendaraanController extends Controller
 
         if ($kendaraan) {
             $kendaraan->delete();
-            return redirect()->route('kendaraan.index')->with('success', 'Data berhasil dihapus.');
+            return to_route('kendaraan.index')->with('success', 'Data berhasil dihapus.');
         } else {
-            return redirect()->route('kendaraan.index')->with('error', 'Data tidak ditemukan.');
+            return to_route('kendaraan.index')->with('error', 'Data tidak ditemukan.');
         }
     }
 

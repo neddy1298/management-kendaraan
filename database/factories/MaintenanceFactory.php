@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Kendaraan;
+use App\Models\LaporanBulanan;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,9 +18,12 @@ class MaintenanceFactory extends Factory
      */
     public function definition(): array
     {
-        
+
+        $laporanBulanans = LaporanBulanan::get()->pluck('id')->toArray();
+
         return [
             'kendaraan_id' => Kendaraan::factory(),
+            'laporan_bulanan_id' => $this->faker->randomElement($laporanBulanans),
             'tanggal_maintenance' => now(),
         ];
     }

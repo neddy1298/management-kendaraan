@@ -14,6 +14,10 @@ return new class extends Migration
                 ->constrained('kendaraans')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+            $table->foreignId('laporan_bulanan_id')
+                ->constrained('laporan_bulanans')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->date('tanggal_maintenance');
             $table->text('keterangan')->nullable();
             $table->timestamps();
