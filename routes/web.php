@@ -7,6 +7,7 @@ use App\Http\Controllers\{
     HomeController,
     ProfileController,
     KendaraanController,
+    LaporanController,
     MaintenanceController,
     MasterAnggaranController,
     PaguAnggaranController,
@@ -51,6 +52,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::get('/edit/{id}', [KendaraanController::class, 'edit'])->name('kendaraan.edit');
                 Route::post('/update/{id}', [KendaraanController::class, 'update'])->name('kendaraan.update');
                 Route::delete('/delete/{id}', [KendaraanController::class, 'destroy'])->name('kendaraan.delete');
+            });
+
+            Route::prefix('laporan')->group(function () {
+                Route::get('', [LaporanController::class, 'index'])->name('laporan.index');
             });
 
             Route::prefix('maintenance')->group(function () {

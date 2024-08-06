@@ -55,15 +55,21 @@
 
             <!-- Page header starts -->
             <div class="page-header">
-                <div class="toggle-sidebar" id="toggle-sidebar"><i class="bi bi-list" aria-label="Toggle Sidebar"></i></div>
+                <div class="toggle-sidebar" id="toggle-sidebar"><i class="bi bi-list" aria-label="Toggle Sidebar"></i>
+                </div>
 
                 <!-- Breadcrumb start -->
                 <ol class="breadcrumb d-md-flex d-none">
                     @php
                         $pages = [
                             'Home' => ['route' => 'home', 'icon' => 'bi-house', 'text' => 'Home'],
+                            'Laporan' => ['route' => 'laporan.index', 'icon' => 'bi-bar-chart', 'text' => 'Laporan'],
                             'Belanja' => ['route' => 'belanja.index', 'icon' => 'bi-cart2', 'text' => 'Belanja'],
-                            'Maintenance' => ['route' => 'maintenance.index', 'icon' => 'bi-gear', 'text' => 'Maintenance'],
+                            'Maintenance' => [
+                                'route' => 'maintenance.index',
+                                'icon' => 'bi-gear',
+                                'text' => 'Maintenance',
+                            ],
                             'Master' => ['route' => null, 'icon' => 'bi-truck', 'text' => 'Master'],
                             'Anggaran' => ['route' => null, 'icon' => 'bi-cash-stack', 'text' => 'Anggaran'],
                             'User' => ['route' => 'profile.edit', 'icon' => 'bi-person-circle', 'text' => 'User'],
@@ -94,7 +100,7 @@
                             @endif
                         </li>
                     @endif
-                    
+
 
                     @if (isset($pages2[$page2]))
                         <li class="breadcrumb-item">

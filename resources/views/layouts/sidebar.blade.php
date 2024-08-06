@@ -21,7 +21,8 @@
                 </li>
                 {{-- TODO --}}
                 <li class="{{ $page == 'Laporan' ? 'active' : '' }}">
-                    <a href="#" class="{{ $page == 'Laporan' ? 'current-page' : '' }}" aria-label="Laporan">
+                    <a href="{{ route('laporan.index') }}" class="{{ $page == 'Laporan' ? 'current-page' : '' }}"
+                        aria-label="Laporan">
                         <i class="bi bi-bar-chart"></i>
                         <span class="menu-text">Laporan</span>
                     </a>
