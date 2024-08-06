@@ -58,7 +58,7 @@
                     <form action="{{ route('maintenance.index') }}" method="GET"
                         class="row row-cols-lg-auto g-3 align-items-center">
                         <div class="col-12">
-                            <label class="visually-hidden">Username</label>
+                            <label class="visually-hidden">Tahun</label>
                             <div class="input-group">
                                 {{-- <div class="input-group-text">
                                     <i class="bi bi-person"></i>
@@ -73,7 +73,7 @@
                         </div>
 
                         <div class="col-12">
-                            <label class="visually-hidden">Password</label>
+                            <label class="visually-hidden">Bulan</label>
                             <div class="input-group">
                                 {{-- <div class="input-group-text">
                                     <i class="bi bi-eye-slash"></i>

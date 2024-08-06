@@ -16,6 +16,11 @@ class LaporanTahunan extends Model
         'tahun',
     ];
 
+    public function paguAnggaran()
+    {
+        return $this->belongsTo(PaguAnggaran::class);
+    }
+
     public function masterAnggaran()
     {
         return $this->hasMany(MasterAnggaran::class);
