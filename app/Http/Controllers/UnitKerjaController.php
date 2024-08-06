@@ -71,7 +71,7 @@ class UnitKerjaController extends Controller
      */
     public function edit($id)
     {
-        $unitKerja = UnitKerja::findOrFail($id)->with('groupAnggaran')->first();
+        $unitKerja = UnitKerja::findOrFail($id);
         $groupAnggarans = GroupAnggaran::orderBy('created_at', 'desc')->get();
         return view('unitKerja.edit', compact('unitKerja', 'groupAnggarans'));
     }
@@ -82,16 +82,21 @@ class UnitKerjaController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'nama_unit_kerja' => 'required|string|max:255',
-
+            'nama_unit_kerja' => 'required|string|max:255|unique:unit_kerjas,nama_unit_kerja,' . $id,
+            'group_anggaran_id' => 'required|array',
+            'group_anggaran_id.*' => 'exists:group_anggarans,id',
         ], [
             'required' => 'Kolom :attribute wajib diisi.',
-            'integer' => 'Kolom :attribute harus berupa angka.',
+            'unique' => 'Nama Unit Kerja sudah digunakan.',
+            'exists' => 'Group Anggaran yang dipilih tidak valid.',
         ]);
 
+        $unitKerja = UnitKerja::findOrFail($id);
+        $unitKerja->update([
+            'nama_unit_kerja' => $validatedData['nama_unit_kerja'],
+        ]);
 
-        $unitKerjas = UnitKerja::findOrFail($id);
-        $unitKerjas->update($validatedData);
+        $unitKerja->groupAnggarans()->sync($validatedData['group_anggaran_id']);
 
         return to_route('unitKerja.index')->with('success', 'Data berhasil diperbarui.');
     }
