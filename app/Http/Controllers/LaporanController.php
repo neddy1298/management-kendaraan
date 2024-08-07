@@ -37,7 +37,7 @@ class LaporanController extends Controller
         return view('laporan.index', compact('paguAnggarans', 'months'));
     }
 
-    public function export(Request $request)
+    public function print(Request $request)
     {
         $tahun = $request->input('tahun');
         $bulanStart = $request->input('bulan_start');

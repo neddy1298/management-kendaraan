@@ -20,7 +20,7 @@
 
                         <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <!-- Form start -->
-                            <form method="GET" action="{{ route('laporan.export') }}">
+                            <form method="GET" action="{{ route('laporan.print') }}">
                                 @csrf
 
                                 <div class="row">
