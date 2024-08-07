@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('kode_rekening', 50);
             $table->string('nama_rekening', 100);
             $table->bigInteger('anggaran');
-            $table->integer('tahun')->unique();
+            $table->integer('tahun');
             $table->timestamps();
         });
     }

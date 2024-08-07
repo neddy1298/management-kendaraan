@@ -24,9 +24,9 @@ class DatabaseSeeder extends Seeder
 
         // $path = storage_path('app/public/kendaraans.sql');
         // DB::unprepared(file_get_contents($path));
-        PaguAnggaran::factory()->count(1)->create();
-        MasterAnggaran::factory()->count(5)->create();
-        GroupAnggaran::factory()->count(10)->create();
+        // PaguAnggaran::factory()->count(1)->create();
+        // MasterAnggaran::factory()->count(5)->create();
+        // GroupAnggaran::factory()->count(10)->create();
         // Kendaraan::factory()
         //     ->count(100)
         //     ->create();
