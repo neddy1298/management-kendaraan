@@ -68,7 +68,7 @@ class KendaraanController extends Controller
      */
     public function edit($id)
     {
-        $kendaraan = Kendaraan::findOrFail($id)->with('belanjas')->first();
+        $kendaraan = Kendaraan::with('belanjas')->findOrFail($id);
         $groupAnggarans = GroupAnggaran::orderBy('created_at', 'desc')->get();
         $selectedGroupAnggarans = $kendaraan->groupAnggarans->pluck('id')->toArray();
         return view('kendaraan.edit', compact('kendaraan', 'groupAnggarans', 'selectedGroupAnggarans'));
