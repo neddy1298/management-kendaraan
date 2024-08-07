@@ -28,10 +28,21 @@
                                         <label for="name" class="form-label">Tahun</label>
                                         <div class="input-group">
                                             <select name="tahun" class="form-select">
+                                                <option value="all">Semua Tahun</option>
                                                 @foreach ($paguAnggarans as $paguAnggaran)
-                                                    <option value="{{ $paguAnggaran->tahun }}">
-                                                        {{ $paguAnggaran->tahun }}
+                                                    @php
+                                                        $currentYear = date('Y');
+                                                        $selectedYear = $paguAnggaran->tahun;
+                                                    @endphp
+                                                    <option value="{{ $selectedYear }}"
+                                                        {{ $selectedYear == $currentYear ? 'selected' : '' }}>
+                                                        {{ $selectedYear }}
                                                     </option>
+                                                    @for ($i = $currentYear - 1; $i <= $currentYear + 1; $i++)
+                                                        @if ($i != $selectedYear)
+                                                            <option value="{{ $i }}">{{ $i }}</option>
+                                                        @endif
+                                                    @endfor
                                                 @endforeach
                                             </select>
                                         </div>
@@ -40,6 +51,7 @@
                                         <label for="name" class="form-label">Dari Bulan</label>
                                         <div class="input-group">
                                             <select name="bulan_start" class="form-select">
+                                                <option value="1" hidden>Januari</option>
                                                 @foreach ($months as $key => $month)
                                                     <option value="{{ $key }}">
                                                         {{ $month }}
@@ -52,6 +64,7 @@
                                         <label for="name" class="form-label">Sampai Bulan</label>
                                         <div class="input-group">
                                             <select name="bulan_end" class="form-select">
+                                                <option value="12" hidden>Desember</option>
                                                 @foreach ($months as $key => $month)
                                                     <option value="{{ $key }}">
                                                         {{ $month }}
@@ -75,15 +88,4 @@
         </div>
     </div>
     <!-- Row end -->
-
-    <script>
-        function togglePasswordVisibility() {
-            var passwordField = document.getElementById("password");
-            if (passwordField.type === "password") {
-                passwordField.type = "text";
-            } else {
-                passwordField.type = "password";
-            }
-        }
-    </script>
 @endsection
