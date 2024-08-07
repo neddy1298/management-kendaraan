@@ -28,22 +28,12 @@
                                         <label for="name" class="form-label">Tahun</label>
                                         <div class="input-group">
                                             <select name="tahun" class="form-select">
-                                                <option value="all">Semua Tahun</option>
-                                                @foreach ($paguAnggarans as $paguAnggaran)
-                                                    @php
-                                                        $currentYear = date('Y');
-                                                        $selectedYear = $paguAnggaran->tahun;
-                                                    @endphp
-                                                    <option value="{{ $selectedYear }}"
-                                                        {{ $selectedYear == $currentYear ? 'selected' : '' }}>
-                                                        {{ $selectedYear }}
+                                                <option value="{{ date('Y') }}" hidden>{{ date('Y') }}</option>
+                                                @for ($i = 2021; $i <= date('Y'); $i++)
+                                                    <option value="{{ $i }}">
+                                                        {{ $i }}
                                                     </option>
-                                                    @for ($i = $currentYear - 1; $i <= $currentYear + 1; $i++)
-                                                        @if ($i != $selectedYear)
-                                                            <option value="{{ $i }}">{{ $i }}</option>
-                                                        @endif
-                                                    @endfor
-                                                @endforeach
+                                                @endfor
                                             </select>
                                         </div>
                                     </div>

@@ -77,7 +77,7 @@
 
     <div class="container">
         <div class="header">
-            <h4>PEMERINTAHAN KOTA BOGOR<br>KARTU KENDALI KEGIATAN<br>TAHUN ANGGARAN {{ date('Y') }}</h4>
+            <h4>PEMERINTAHAN KOTA BOGOR<br>KARTU KENDALI KEGIATAN<br>TAHUN ANGGARAN {{ $tahun }}</h4>
             <table>
                 <tr>
                     <td>
