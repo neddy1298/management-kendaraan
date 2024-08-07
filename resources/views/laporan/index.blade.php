@@ -64,12 +64,9 @@
                                         </div>
                                     </div>
                                     <div class="col-12 mb-3">
-<<<<<<< HEAD
                                         <button type="submit" class="btn btn-success">Buat Laporan</button>
                                         <a href="{{ route('laporan.exportExcel') }}" class="btn btn-primary">Export to Excel</a>
-=======
                                         <button type="submit" class="btn btn-success">Lihat Laporan</button>
->>>>>>> 87c0f0e89d7a2d018563737606a210e20e4c7c6a
                                     </div>
                                 </div>
                             </form>
