@@ -68,7 +68,6 @@ class LaporanController extends Controller
                     $query->whereBetween('tanggal_belanja', [$startDate, $endDateMinusOneMonth]);
                 }], 'total_belanja');
         }])->get();
-
         return view('laporan.print', compact('paguAnggarans', 'startDate', 'endDate'));
     }
 }

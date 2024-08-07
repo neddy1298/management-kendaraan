@@ -88,7 +88,7 @@
             </thead>
             <tbody>
                 @foreach ($paguAnggarans as $index => $paguAnggaran)
-                    <tr>
+                    <tr style="background-color: #00b1fd">
                         <td style="text-align: center">{{ $index + 1 }} </td>
                         <td>{{ $paguAnggaran->kode_rekening }}</td>
                         <td>{{ $paguAnggaran->nama_rekening }}</td>
@@ -110,20 +110,51 @@
                             <td></td>
                             <td>{{ $masterAnggaran->kode_rekening }}</td>
                             <td>{{ $masterAnggaran->nama_rekening }}</td>
-                            <td style="text-align: right">Rp
-                                {{ number_format($masterAnggaran->anggaran, 0, ',', '.') }}1
+                            <td style="text-align: right">Rp {{ number_format($masterAnggaran->anggaran, 0, ',', '.') }}
                             </td>
                             <td></td>
-                            {{-- <td>{{ $masterAnggaran->groupAnggarans->belanjas->sum('total_belanja') }}</td> --}}
+                            <td style="text-align: right">Rp
+                                @php
+                                    $sumBelanjaBefore = 0;
+                                @endphp
+                                @foreach ($masterAnggaran->groupAnggarans as $groupAnggaran)
+                                    @php
+                                        $sumBelanjaBefore += $groupAnggaran->belanjas_before;
+                                    @endphp
+                                @endforeach
+                                {{ number_format($sumBelanjaBefore, 0, ',', '.') }}
+                            </td>
                             <td></td>
                             <td></td>
+                            <td style="text-align: right">Rp
+                                @php
+                                    $sumBelanjaCurrent = 0;
+                                @endphp
+                                @foreach ($masterAnggaran->groupAnggarans as $groupAnggaran)
+                                    @php
+                                        $sumBelanjaCurrent += $groupAnggaran->belanjas_current;
+                                    @endphp
+                                @endforeach
+                                {{ number_format($sumBelanjaCurrent, 0, ',', '.') }}
+                            </td>
                             <td></td>
                             <td></td>
+                            <td style="text-align: right">Rp
+                                @php
+                                    $sumBelanjaTotal = 0;
+                                @endphp
+                                @foreach ($masterAnggaran->groupAnggarans as $groupAnggaran)
+                                    @php
+                                        $sumBelanjaTotal +=
+                                            $groupAnggaran->belanjas_before + $groupAnggaran->belanjas_current;
+                                    @endphp
+                                @endforeach
+                                {{ number_format($sumBelanjaTotal, 0, ',', '.') }}
+                            </td>
                             <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td style="text-align: right">Rp
+                                {{ number_format($masterAnggaran->anggaran - $sumBelanjaTotal, 0, ',', '.') }}
+                            </td>
                         </tr>
                         @foreach ($masterAnggaran->groupAnggarans as $groupAnggaran)
                             <tr>
@@ -131,26 +162,22 @@
                                 <td></td>
                                 <td>{{ $groupAnggaran->nama_group }}</td>
                                 <td style="text-align: right">Rp
-                                    {{ number_format($groupAnggaran->anggaran_total, 0, ',', '.') }}
-                                </td>
+                                    {{ number_format($groupAnggaran->anggaran_total, 0, ',', '.') }}</td>
                                 <td></td>
-                                <td style="text-align: right">
-                                    Rp {{ number_format($groupAnggaran->belanjas_before ?? 0, 0, ',', '.') }}
-                                </td>
+                                <td style="text-align: right">Rp
+                                    {{ number_format($groupAnggaran->belanjas_before ?? 0, 0, ',', '.') }}</td>
                                 <td></td>
                                 <td></td>
-                                <td style="text-align: right">
-                                    Rp {{ number_format($groupAnggaran->belanjas_current ?? 0, 0, ',', '.') }}
-                                </td>
+                                <td style="text-align: right">Rp
+                                    {{ number_format($groupAnggaran->belanjas_current ?? 0, 0, ',', '.') }}</td>
                                 <td></td>
                                 <td></td>
-                                <td style="text-align: right">
-                                    Rp
-                                    {{ number_format($groupAnggaran->belanjas_before + $groupAnggaran->belanjas_current ?? 0, 0, ',', '.') }}
+                                <td style="text-align: right">Rp
+                                    {{ number_format(($groupAnggaran->belanjas_before ?? 0) + ($groupAnggaran->belanjas_current ?? 0), 0, ',', '.') }}
                                 </td>
                                 <td></td>
                                 <td style="text-align: right">Rp
-                                    {{ number_format($groupAnggaran->anggaran_total - ($groupAnggaran->belanjas_before + $groupAnggaran->belanjas_current), 0, ',', '.') }}
+                                    {{ number_format($groupAnggaran->anggaran_total - (($groupAnggaran->belanjas_before ?? 0) + ($groupAnggaran->belanjas_current ?? 0)), 0, ',', '.') }}
                                 </td>
                             </tr>
                         @endforeach
