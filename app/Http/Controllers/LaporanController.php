@@ -43,14 +43,14 @@ class LaporanController extends Controller
         $paguAnggarans = PaguAnggaran::get();
         return view('kendaraan.printAll', compact('paguAnggarans'));
     }
+    
+
 
     public function exportToExcel()
     {
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        $masteAnggarans = MasterAnggaran::all();
         $paguAnggarans = PaguAnggaran::all();
-        $groupAnggarans = GroupAnggaran::all();
 
         // Judul
         $titles = [
@@ -77,7 +77,7 @@ class LaporanController extends Controller
         $sheet->getStyle('A1:A3')->applyFromArray([
             'font' => [
                 'bold' => true,
-                'size' => 12,
+                'size' => 16,
             ],
             'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
@@ -116,7 +116,7 @@ class LaporanController extends Controller
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                 'startColor' => [
-                    'argb' => 'FF808080',
+                    'argb' => 'F9F6EE',
                 ],
             ],
         ];
@@ -136,28 +136,31 @@ class LaporanController extends Controller
             ],
         ];
         $sheet->getStyle('D17:N17' . ($row - 1))->applyFromArray($rupiahFormat);
-
+        
         // Looping isi tabel
         $row = 17;
-        $index = 1;
 
         // Heading 1
-        foreach ($paguAnggarans as $paguAnggaran) {
-            $sheet->setCellValue("A$row", $index);
+        foreach ($paguAnggarans as $index => $paguAnggaran) {
+            $sheet->setCellValue("A$row", $index + 1);
             $sheet->setCellValue("B$row", $paguAnggaran->kode_rekening);
+            $sheet->setCellValue("C$row", $paguAnggaran->nama_rekening);
+            $sheet->setCellValue("D$row", $paguAnggaran->anggaran);
             $sheet->getStyle("A$row:N$row")->applyFromArray($styleHeading1);
             $row++;
             $index++;
 
             // Heading 2
-            foreach ($masteAnggarans as $masteAnggaran) {
+            foreach ($paguAnggaran->masterAnggarans as $masterAnggaran) {
                 $row++;
-                $sheet->setCellValue("B$row", $masteAnggaran->kode_rekening);
+                $sheet->setCellValue("B$row", $masterAnggaran->kode_rekening);
+                $sheet->setCellValue("C$row", $masterAnggaran->nama_rekening);
+                $sheet->setCellValue("D$row", $masterAnggaran->anggaran);
                 $sheet->getStyle("B$row:N$row")->applyFromArray($styleHeading2);
                 $row++;
 
                 // Heading 3
-                foreach ($groupAnggarans as $groupAnggaran) {
+                foreach ($masterAnggaran->groupAnggarans as $groupAnggaran) {
                     $sheet->setCellValue("C$row", $groupAnggaran->nama_group);
                     $sheet->setCellValue("D$row", $groupAnggaran->total_anggaran);
                     $row++;
@@ -194,7 +197,7 @@ class LaporanController extends Controller
             ],
             'fill' => [
                 'fillType' => Fill::FILL_SOLID,
-                'startColor' => ['argb' => '4863A0'],
+                'startColor' => ['argb' => 'A0CFEC'],
             ],
             'borders' => [
                 'allBorders' => [
@@ -219,8 +222,16 @@ class LaporanController extends Controller
                 'vertical' => Alignment::VERTICAL_CENTER,
             ],
         ]);
-
         $sheet->getStyle('A12:N14')->applyFromArray($headerStyleArray);
+
+        // Border style
+        $sheet->getStyle('A15:N' . ($row - 1))->applyFromArray([
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                ],
+            ],
+        ]);
 
         // Nama file
         $writer = new Xlsx($spreadsheet);
