@@ -45,8 +45,6 @@
                                     @enderror
                                 </div>
                             </div>
-
-
                             <div class="col-xl-12">
                                 <div class="mb-3">
                                     <label for="nama_rekening" class="form-label">Nama Rekening</label>
@@ -64,6 +62,27 @@
                                     <input type="number" class="form-control @error('anggaran') is-invalid @enderror"
                                         id="anggaran" name="anggaran" value="{{ $paguAnggaran->anggaran }}">
                                     @error('anggaran')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-12">
+                                <div class="mb-3">
+                                    <label for="tahun" class="form-label">Tahun</label>
+                                    <select class="form-control @error('tahun') is-invalid @enderror" id="tahun"
+                                        name="tahun">
+                                        <option value="{{ $paguAnggaran->tahun }}">{{ $paguAnggaran->tahun }}
+                                        </option>
+                                        @php
+                                            $now = now()->year;
+                                        @endphp
+                                        @for ($i = $now - 1; $i <= $now + 2; $i++)
+                                            <option value="{{ $i }}"
+                                                {{ old('tahun', $now) == $i ? 'selected' : '' }}>{{ $i }}
+                                            </option>
+                                        @endfor
+                                    </select>
+                                    @error('tahun')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>

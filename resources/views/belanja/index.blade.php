@@ -107,7 +107,7 @@
                             @foreach ($belanjas as $index => $belanja)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ $belanja->maintenance->kendaraan->nomor_registrasi }}</td>
+                                    <td>{{ $belanja->kendaraan->nomor_registrasi }}</td>
                                     <td>Rp.
                                         {{ number_format($belanja->belanja_bahan_bakar_minyak + $belanja->belanja_pelumas_mesin + $belanja->belanja_suku_cadang, 0, ',', '.') }}
                                     </td>
@@ -118,7 +118,7 @@
                                     <td>
                                         <button type="button" class="btn btn-primary btn-icon show-details"
                                             data-bs-toggle="modal" data-bs-target="#detailModal"
-                                            data-nomor-registrasi="{{ $belanja->maintenance->kendaraan->nomor_registrasi }}"
+                                            data-nomor-registrasi="{{ $belanja->kendaraan->nomor_registrasi }}"
                                             data-bahan-bakar-minyak="{{ $belanja->belanja_bahan_bakar_minyak }}"
                                             data-pelumas-mesin="{{ $belanja->belanja_pelumas_mesin }}"
                                             data-suku-cadang="{{ $belanja->belanja_suku_cadang }}"

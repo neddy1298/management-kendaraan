@@ -55,23 +55,22 @@
 
             <!-- Page header starts -->
             <div class="page-header">
-                <div class="toggle-sidebar" id="toggle-sidebar"><i class="bi bi-list" aria-label="Toggle Sidebar"></i></div>
+                <div class="toggle-sidebar" id="toggle-sidebar"><i class="bi bi-list" aria-label="Toggle Sidebar"></i>
+                </div>
 
                 <!-- Breadcrumb start -->
                 <ol class="breadcrumb d-md-flex d-none">
                     @php
                         $pages = [
                             'Home' => ['route' => 'home', 'icon' => 'bi-house', 'text' => 'Home'],
+                            'Laporan' => ['route' => 'laporan.index', 'icon' => 'bi-bar-chart', 'text' => 'Laporan'],
                             'Belanja' => ['route' => 'belanja.index', 'icon' => 'bi-cart2', 'text' => 'Belanja'],
-                            'Maintenance' => ['route' => 'maintenance.index', 'icon' => 'bi-gear', 'text' => 'Maintenance'],
-                            'Master' => ['route' => null, 'icon' => 'bi-truck', 'text' => 'Master'],
+                            'Kendaraan' => ['route' => 'kendaraan.index', 'icon' => 'bi-truck', 'text' => 'Kendaraan'],
                             'Anggaran' => ['route' => null, 'icon' => 'bi-cash-stack', 'text' => 'Anggaran'],
                             'User' => ['route' => 'profile.edit', 'icon' => 'bi-person-circle', 'text' => 'User'],
                         ];
 
                         $pages2 = [
-                            'Unit Kerja' => ['route' => 'unitKerja.index', 'text' => 'Unit Kerja'],
-                            'Kendaraan' => ['route' => 'kendaraan.index', 'text' => 'Kendaraan'],
                             'Pertahun' => ['route' => 'masterAnggaran.index', 'text' => 'Pertahun'],
                             'Group' => ['route' => 'groupAnggaran.index', 'text' => 'Group'],
                             'Tambah' => ['route' => null, 'text' => 'Tambah'],
@@ -94,7 +93,7 @@
                             @endif
                         </li>
                     @endif
-                    
+
 
                     @if (isset($pages2[$page2]))
                         <li class="breadcrumb-item">

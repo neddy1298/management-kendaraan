@@ -32,75 +32,72 @@
                         <div class="row">
                             <div class="col-xl-12 col-sm-12 col-12">
                                 <div class="mb-3">
-                                    <label class="form-label d-flex">Nomor Registrasi</label>
-                                    <select
-                                        class="select-single js-states form-control @error('maintenance_id') is-invalid @enderror"
-                                        title="Masukkan Unit Kerja" data-live-search="true" name="maintenance_id">
-                                        <option value="" hidden></option>
-                                        @foreach ($maintenances as $maintenance)
-                                            <option value="{{ $maintenance->id }}">
-                                                {{ $maintenance->kendaraan->nomor_registrasi }} -
-                                                {{ $maintenance->kendaraan->merk_kendaraan }}
+                                    <label class="form-label">Group Anggaran</label>
+                                    <select class="form-select" id="group_anggaran_id" name="group_anggaran_id">
+                                        <option value="" hidden>Pilih Group Anggaran</option>
+                                        @foreach ($groupAnggarans as $groupAnggaran)
+                                            <option value="{{ $groupAnggaran->id }}">{{ $groupAnggaran->nama_group }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('maintenance_id')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
                                 </div>
                             </div>
-
+                            <div class="col-xl-12 col-sm-12 col-12 d-none" id="kendaraan_container">
+                                <div class="mb-3">
+                                    <label class="form-label">Kendaraan</label>
+                                    <select class="form-select" id="kendaraan_id" name="kendaraan_id">
+                                        <option value="">Pilih Kendaraan</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-12">
                                 <div class="form-section-title">Total Belanja</div>
                             </div>
-
-                            @foreach (['bahan_bakar_minyak' => 'BBM', 'pelumas_mesin' => 'Pelumas'] as $field => $label)
-                                <div class="col-xl-6 col-sm-12 col-12">
-                                    <div class="mb-3">
-                                        <label for="belanja_{{ $field }}" class="form-label">Belanja
-                                            {{ $label }}</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">Rp.</span>
-                                            <input type="number" class="form-control" name="belanja_{{ $field }}"
-                                                id="belanja_{{ $field }}">
-                                        </div>
-                                    </div>
+                            <div class="col-xl-12 col-sm-12 col-12">
+                                <div class="mb-3">
+                                    <label class="form-label">Jenis Belanja</label>
+                                    <select class="form-select" id="jenis_belanja" name="jenis_belanja">
+                                        <option value="">Pilih Jenis Belanja</option>
+                                        <option value="bbm">BBM</option>
+                                        <option value="pelumas">Pelumas</option>
+                                        <option value="suku_cadang">Suku Cadang</option>
+                                    </select>
                                 </div>
-                            @endforeach
+                            </div>
+                            <div id="form_bbm" class="col-xl-12 col-sm-12 col-12 d-none">
+                                <div class="mb-3">
+                                    <label class="form-label">Belanja BBM</label>
+                                    <input type="number" class="form-control" name="belanja_bahan_bakar_minyak">
+                                </div>
+                            </div>
+                            <div id="form_pelumas" class="col-xl-12 col-sm-12 col-12 d-none">
+                                <div class="mb-3">
+                                    <label class="form-label">Belanja Pelumas</label>
+                                    <input type="number" class="form-control" name="belanja_pelumas_mesin">
+                                </div>
+                            </div>
+                            <div id="form_suku_cadang" class="col-12 d-none">
+                                <div class="mb-3">
+                                    <label class="form-label">Suku Cadang</label>
+                                    <div id="sukuCadangContainer"></div>
+                                    <button type="button" class="btn btn-primary btn-sm" id="tambahSukuCadang">Tambah Suku
+                                        Cadang</button>
+                                </div>
+                            </div>
 
                             <div class="col-xl-12 col-sm-12 col-12">
                                 <div class="mb-3">
                                     <div class="form-label">Tanggal Belanja</div>
                                     <div class="input-group">
-                                        <span class="input-group-text">
-                                            <i class="bi bi-calendar4"></i>
-                                        </span>
                                         <input type="text" class="form-control datepicker" name="tanggal_belanja">
                                     </div>
                                 </div>
                             </div>
-
                             <div class="col-xl-12 col-sm-12 col-12">
                                 <div class="mb-3">
                                     <label class="form-label">Keterangan</label>
-                                    <textarea class="form-control" rows="3" name="keterangan"></textarea>
+                                    <textarea class="form-control" name="keterangan"></textarea>
                                 </div>
-                            </div>
-
-
-                            <div class="col-12">
-                                <div class="form-section-title">Suku Cadang</div>
-                            </div>
-
-                            <div id="sukuCadangContainer">
-                                <!-- Form suku cadang -->
-                            </div>
-                            <div class="col-12 mb-3 text-center">
-                                <button type="button" class="btn btn-primary remove-suku-cadang" id="tambahSukuCadang">
-                                    Tambah Suku Cadang
-                                </button>
                             </div>
                         </div>
                         <div class="form-actions-footer">
@@ -109,19 +106,114 @@
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
-    </div>
     </div>
 @endsection
 
 @section('script')
-    <!-- Bootstrap JS -->
-    <script src="{{ secure_asset('vendor/bs-select/bs-select.min.js') }}"></script>
-    <script src="{{ secure_asset('vendor/bs-select/bs-select-custom.js') }}"></script>
+    <script src="{{ asset('vendor/bs-select/bs-select.min.js') }}"></script>
+    <script src="{{ asset('vendor/bs-select/bs-select-custom.js') }}"></script>
+    <script src="{{ asset('vendor/daterange/daterange.js') }}"></script>
+    <script src="{{ asset('vendor/daterange/custom-daterange.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const kendaraanSelect = document.getElementById('kendaraan_id');
+            const groupAnggaranSelect = document.getElementById('group_anggaran_id');
+            const kendaraanContainer = document.getElementById('kendaraan_container');
 
-    <!-- Date Range JS -->
-    <script src="{{ secure_asset('vendor/daterange/daterange.js') }}"></script>
-    <script src="{{ secure_asset('vendor/daterange/custom-daterange.js') }}"></script>
+            groupAnggaranSelect.addEventListener('change', function() {
+                const groupAnggaranId = this.value;
+
+                // Clear existing options
+                kendaraanSelect.innerHTML = '';
+
+                if (groupAnggaranId) {
+                    kendaraanContainer.classList.remove('d-none');
+                    fetch(`/get-kendaraan/${groupAnggaranId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(kendaraan => {
+                                const option = document.createElement('option');
+                                option.value = kendaraan.id;
+                                option.textContent = kendaraan.nomor_registrasi + ' - ' +
+                                    kendaraan.merk_kendaraan;
+                                kendaraanSelect.appendChild(option);
+                            });
+                        })
+                        .catch(error => console.error('Error fetching kendaraan:', error));
+                } else {
+                    kendaraanContainer.classList.add('d-none');
+                }
+            });
+
+            // Trigger change event to populate initial options
+            groupAnggaranSelect.dispatchEvent(new Event('change'));
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const jenisBelanja = document.getElementById('jenis_belanja');
+            const formBBM = document.getElementById('form_bbm');
+            const formPelumas = document.getElementById('form_pelumas');
+            const formSukuCadang = document.getElementById('form_suku_cadang');
+            const container = document.getElementById('sukuCadangContainer');
+            const addButton = document.getElementById('tambahSukuCadang');
+
+            jenisBelanja.addEventListener('change', function() {
+                formBBM.classList.add('d-none');
+                formPelumas.classList.add('d-none');
+                formSukuCadang.classList.add('d-none');
+
+                if (this.value === 'bbm') {
+                    formBBM.classList.remove('d-none');
+                } else if (this.value === 'pelumas') {
+                    formPelumas.classList.remove('d-none');
+                } else if (this.value === 'suku_cadang') {
+                    formSukuCadang.classList.remove('d-none');
+                }
+            });
+
+            function createSukuCadangItem() {
+                const item = document.createElement('div');
+                item.className = 'row suku-cadang-item mb-3';
+                item.innerHTML = `
+                    <div class="col-xl-4 col-sm-12 col-12">
+                        <div class="mb-3">
+                            <label class="form-label">Nama Suku Cadang</label>
+                            <input type="text" class="form-control" name="nama_suku_cadang[]">
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-12 col-12">
+                        <div class="mb-3">
+                            <label class="form-label">Jumlah</label>
+                            <input type="number" class="form-control" name="jumlah_suku_cadang[]">
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-sm-12 col-12">
+                        <div class="mb-3">
+                            <label class="form-label">Harga Satuan</label>
+                            <input type="number" class="form-control" name="harga_suku_cadang[]">
+                        </div>
+                    </div>
+                    <div class="col-xl-1 col-sm-12 col-12 d-flex align-items-end">
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-danger btn-icon btn-sm remove-suku-cadang">Hapus</button>
+                        </div>
+                    </div>
+                `;
+                return item;
+            }
+
+            addButton.addEventListener('click', function() {
+                container.appendChild(createSukuCadangItem());
+            });
+
+            container.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-suku-cadang')) {
+                    e.target.closest('.suku-cadang-item').remove();
+                }
+            });
+        });
+    </script>
 @endsection

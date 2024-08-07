@@ -44,17 +44,7 @@ class PaguAnggaranController extends Controller
             'tahun.required' => 'Tahun wajib diisi',
         ]);
 
-        if ($paguAnggaran) {
-            $paguAnggaran = PaguAnggaran::create($paguAnggaran);
-
-            // Create laporan_tahunan
-            $laporanTahunan = [
-                'nama_laporan' => 'Laporan Tahunan' . date('Y'),
-                'tahun' => date('Y'),
-                'pagu_anggaran_id' => $paguAnggaran->id,
-            ];
-            $laporanTahunan = LaporanTahunan::create($laporanTahunan);
-        }
+        PaguAnggaran::create($paguAnggaran);
 
         return redirect()->route('paguAnggaran.index')
             ->with('success', 'Pagu Anggaran berhasil ditambahkan');
@@ -75,7 +65,23 @@ class PaguAnggaranController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'kode_rekening' => 'required',
+            'nama_rekening' => 'required',
+            'anggaran' => 'required',
+            'tahun' => 'required',
+        ], [
+            'kode_rekening.required' => 'Kode Rekening wajib diisi',
+            'nama_rekening.required' => 'Nama Rekening wajib diisi',
+            'anggaran.required' => 'Anggaran wajib diisi',
+            'tahun.required' => 'Tahun wajib diisi',
+        ]);
+
+        $paguAnggaran = PaguAnggaran::findOrFail($id);
+        $paguAnggaran->update($request->all());
+
+        return redirect()->route('paguAnggaran.index')
+            ->with('success', 'Pagu Anggaran berhasil diperbarui');
     }
 
     /**

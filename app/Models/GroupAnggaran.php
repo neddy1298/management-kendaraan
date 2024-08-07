@@ -20,19 +20,19 @@ class GroupAnggaran extends Model
         'anggaran_suku_cadang',
     ];
 
-    public function relatedGroupAnggarans()
+    public function kendaraans()
     {
-        return $this->belongsToMany(GroupAnggaran::class, 'group_anggaran_relations', 'group_anggaran_id', 'related_group_anggaran_id');
+        return $this->belongsToMany(Kendaraan::class, 'group_anggaran_kendaraan');
+    }
+
+    public function belanjas()
+    {
+        return $this->hasMany(Belanja::class);
     }
 
     public function masterAnggaran()
     {
         return $this->belongsTo(MasterAnggaran::class);
-    }
-
-    public function unitKerjas()
-    {
-        return $this->belongsToMany(UnitKerja::class, 'group_anggaran_unit_kerja');
     }
 
     protected $appends = ['total_anggaran'];

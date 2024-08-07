@@ -30,14 +30,16 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('kendaraan.update', $kendaraan->id) }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('kendaraan.update', $kendaraan->id) }}"
+                        enctype="multipart/form-data">
                         @csrf
                         @method('POST')
 
                         <div class="row">
                             <div class="col-xl-12">
                                 <div class="mb-3">
-                                    <label for="nomor_registrasi" class="form-label">Nomor Registrasi <i>(plat nomor)</i></label>
+                                    <label for="nomor_registrasi" class="form-label">Nomor Registrasi <i>(plat
+                                            nomor)</i></label>
                                     <input type="text" id="nomor_registrasi" name="nomor_registrasi"
                                         class="form-control @error('nomor_registrasi') is-invalid @enderror"
                                         value="{{ old('nomor_registrasi', $kendaraan->nomor_registrasi) }}">
@@ -75,7 +77,8 @@
                                 <div class="mb-3">
                                     <label for="jenis_kendaraan" class="form-label">Jenis Kendaraan</label>
                                     <select id="jenis_kendaraan" name="jenis_kendaraan" class="form-select">
-                                        <option hidden value="{{ $kendaraan->jenis_kendaraan }}">{{ $kendaraan->jenis_kendaraan }}</option>
+                                        <option hidden value="{{ $kendaraan->jenis_kendaraan }}">
+                                            {{ $kendaraan->jenis_kendaraan }}</option>
                                         <option value="Sepeda Motor">Sepeda Motor</option>
                                         <option value="Mobil Penumpang">Mobil Penumpang</option>
                                         <option value="Mobil Mikrobus">Mobil Mikrobus</option>
@@ -91,7 +94,8 @@
                                 <div class="mb-3">
                                     <label for="bbm_kendaraan" class="form-label">BBM Kendaraan</label>
                                     <select id="bbm_kendaraan" name="bbm_kendaraan" class="form-select">
-                                        <option hidden value="{{ $kendaraan->bbm_kendaraan }}">{{ $kendaraan->bbm_kendaraan }}</option>
+                                        <option hidden value="{{ $kendaraan->bbm_kendaraan }}">
+                                            {{ $kendaraan->bbm_kendaraan }}</option>
                                         <option value="Bensin">Bensin</option>
                                         <option value="Solar">Solar</option>
                                     </select>
@@ -120,23 +124,23 @@
                                         <span class="input-group-text"><i class="bi bi-calendar4"></i></span>
                                         <input type="text" id="berlaku_sampai" name="berlaku_sampai"
                                             class="form-control datepicker"
-                                            value="{{ old('berlaku_sampai', $kendaraan->berlaku_sampai) }}">
+                                            value="{{ old('berlaku_sampai', $kendaraan->berlaku_sampai ? $kendaraan->berlaku_sampai->format('d/m/Y') : '') }}">
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-xl-12">
                                 <div class="mb-3">
-                                    <label for="unit_kerja" class="form-label">Unit Kerja</label>
-                                    <select id="unit_kerja" name="unit_kerja" class="select-single form-control">
-                                        <option value="{{ $kendaraan->unit_kerja }}">{{ $kendaraan->nama_unit_kerja }}</option>
-                                        @foreach ($unitKerjas as $unitKerja)
-                                            <option value="{{ $unitKerja->id }}">{{ $unitKerja->nama_unit_kerja }}</option>
+                                    <label for="group_anggaran_id" class="form-label">Group Anggaran</label>
+                                    <select class="select-multiple js-states form-control" title="Select Group Anggaran"
+                                        multiple="multiple" name="groupAnggaran_id[]">
+                                        @foreach ($groupAnggarans as $groupAnggaran)
+                                            <option value="{{ $groupAnggaran->id }}"
+                                                {{ in_array($groupAnggaran->id, $selectedGroupAnggarans) ? 'selected' : '' }}>
+                                                {{ $groupAnggaran->kode_rekening }} - {{ $groupAnggaran->nama_group }}
+                                            </option>
                                         @endforeach
                                     </select>
-                                    @error('unit_kerja')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
                                 </div>
                             </div>
                         </div>
