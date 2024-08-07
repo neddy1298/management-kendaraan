@@ -28,6 +28,7 @@
                                         <label for="name" class="form-label">Tahun</label>
                                         <div class="input-group">
                                             <select name="tahun" class="form-select">
+                                                <option value="all">Semua Tahun</option>
                                                 @foreach ($paguAnggarans as $paguAnggaran)
                                                     <option value="{{ $paguAnggaran->tahun }}">
                                                         {{ $paguAnggaran->tahun }}
@@ -40,6 +41,7 @@
                                         <label for="name" class="form-label">Dari Bulan</label>
                                         <div class="input-group">
                                             <select name="bulan_start" class="form-select">
+                                                <option value="all">Semua Bulan</option>
                                                 @foreach ($months as $key => $month)
                                                     <option value="{{ $key }}">
                                                         {{ $month }}
@@ -52,6 +54,7 @@
                                         <label for="name" class="form-label">Sampai Bulan</label>
                                         <div class="input-group">
                                             <select name="bulan_end" class="form-select">
+                                                <option value="all">Semua Bulan</option>
                                                 @foreach ($months as $key => $month)
                                                     <option value="{{ $key }}">
                                                         {{ $month }}
@@ -75,15 +78,4 @@
         </div>
     </div>
     <!-- Row end -->
-
-    <script>
-        function togglePasswordVisibility() {
-            var passwordField = document.getElementById("password");
-            if (passwordField.type === "password") {
-                passwordField.type = "text";
-            } else {
-                passwordField.type = "password";
-            }
-        }
-    </script>
 @endsection

@@ -38,9 +38,24 @@ class LaporanController extends Controller
         return view('laporan.index', compact('paguAnggarans', 'months'));
     }
 
-    public function export()
+    public function export(Request $request)
     {
-        $paguAnggarans = PaguAnggaran::get();
-        return view('kendaraan.printAll', compact('paguAnggarans'));
+        $tahun = $request->input('tahun');
+        $bulanStart = $request->input('bulan_start');
+        $bulanEnd = $request->input('bulan_end');
+
+        $query = PaguAnggaran::query();
+
+        if ($tahun) {
+            $query->where('tahun', $tahun);
+        }
+
+        if ($bulanStart && $bulanEnd && $bulanStart !== 'all' && $bulanEnd !== 'all') {
+            $query->whereBetween(DB::raw('MONTH(created_at)'), [$bulanStart, $bulanEnd]);
+        }
+
+        $paguAnggarans = $query->get();
+        
+        return view('laporan.print', compact('paguAnggarans'));
     }
 }

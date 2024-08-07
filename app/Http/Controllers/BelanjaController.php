@@ -33,7 +33,6 @@ class BelanjaController extends Controller
 
         $belanjas = $query->orderBy('tanggal_belanja', 'desc')->get();
 
-
         $belanja_periode = $belanjas->sum('belanja_bahan_bakar_minyak')
             + $belanjas->sum('belanja_pelumas_mesin')
             + $belanjas->sum('belanja_suku_cadang');
