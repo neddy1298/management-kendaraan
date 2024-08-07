@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GroupAnggaran;
 use App\Models\Kendaraan;
-use App\Models\LaporanBulanan;
-use App\Models\LaporanTahunan;
-use App\Models\Maintenance;
-use App\Models\UnitKerja;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -19,7 +16,7 @@ class KendaraanController extends Controller
      */
     public function index()
     {
-        $kendaraans = Kendaraan::with('unitKerja')->get();
+        $kendaraans = Kendaraan::with('belanjas')->get();
         return view('kendaraan.index', compact('kendaraans'));
     }
 
@@ -30,8 +27,8 @@ class KendaraanController extends Controller
      */
     public function create()
     {
-        $unitKerjas = UnitKerja::orderBy('created_at', 'desc')->get();
-        return view('kendaraan.create', compact('unitKerjas'));
+        $groupAnggarans = GroupAnggaran::orderBy('created_at', 'desc')->get();
+        return view('kendaraan.create', compact('groupAnggarans'));
     }
 
     /**
@@ -50,53 +47,17 @@ class KendaraanController extends Controller
             'bbm_kendaraan' => 'required|string|max:255',
             'roda_kendaraan' => 'required|integer',
             'berlaku_sampai' => 'required|date_format:d/m/Y',
-            'unit_kerja_id' => 'required|integer',
-        ], [
-            'required' => 'Kolom :attribute wajib diisi.',
-            'integer' => 'Kolom :attribute harus berupa angka.',
-            'date_format' => 'Kolom :attribute tidak sesuai format d/m/Y.',
-            'unique' => 'Nomor registrasi sudah digunakan.',
+            'groupAnggaran_id' => 'required|integer',
+            'groupAnggaran_id' => 'required|array',
+            'groupAnggaran_id.*' => 'exists:group_anggarans,id',
         ]);
-
-        $validatedData['berlaku_sampai'] = Carbon::createFromFormat('d/m/Y', $validatedData['berlaku_sampai'])->format('Y-m-d');
 
         $kendaraan = Kendaraan::create($validatedData);
 
-        if ($kendaraan->wasRecentlyCreated) {
-            $laporanBulanan = LaporanBulanan::where('bulan', '=', Carbon::now()->format('m'))->get();
-            $laporanTahunan = LaporanTahunan::where('tahun', Carbon::now()->year)->first();
-            if ($laporanBulanan->isEmpty()) {
-                for ($i = 1; $i <= 12; $i++) {
-                    $laporan = LaporanBulanan::create([
-                        'laporan_tahunan_id' => $laporanTahunan->id,
-                        'bulan' => $i,
-                        'tahun' => Carbon::now()->format('Y'),
-                    ]);
+        // Attach group anggaran to kendaraan
+        $kendaraan->groupAnggarans()->attach($request->groupAnggaran_id);
 
-                    $laporan->maintenance()->create([
-                        'kendaraan_id' => $kendaraan->id,
-                        'laporan_bulanan_id' => $laporan->id,
-                        'tanggal_maintenance' => Carbon::now()->format('Y-m-d'),
-                    ]);
-                }
-            } else {
-                $laporan = $laporanBulanan->where('bulan', Carbon::now()->format('m'))->first();
-                if ($laporan) {
-                    $laporanId = $laporan->id;
-                    $laporan->maintenance()->create([
-                        'kendaraan_id' => $kendaraan->id,
-                        'laporan_bulanan_id' => $laporanId,
-                        'tanggal_maintenance' => Carbon::now()->format('Y-m-d'),
-                    ]);
-                }
-            }
-        }
-
-        if ($kendaraan->wasRecentlyCreated) {
-            return to_route('kendaraan.index')->with('success', 'Data berhasil disimpan.');
-        } else {
-            return to_route('kendaraan.index')->with('error', 'Terjadi kesalahan saat menyimpan data.');
-        }
+        return redirect()->route('kendaraan.index')->with('success', 'Kendaraan berhasil ditambahkan');
     }
 
     /**
@@ -107,9 +68,10 @@ class KendaraanController extends Controller
      */
     public function edit($id)
     {
-        $kendaraan = Kendaraan::findOrFail($id)->with('unitKerja')->first();
-        $unitKerjas = UnitKerja::orderBy('created_at', 'desc')->get();
-        return view('kendaraan.edit', compact('kendaraan', 'unitKerjas'));
+        $kendaraan = Kendaraan::findOrFail($id)->with('belanjas')->first();
+        $groupAnggarans = GroupAnggaran::orderBy('created_at', 'desc')->get();
+        $selectedGroupAnggarans = $kendaraan->groupAnggarans->pluck('id')->toArray();
+        return view('kendaraan.edit', compact('kendaraan', 'groupAnggarans', 'selectedGroupAnggarans'));
     }
 
     /**
@@ -129,7 +91,8 @@ class KendaraanController extends Controller
             'bbm_kendaraan' => 'required|string|max:255',
             'roda_kendaraan' => 'required|integer',
             'berlaku_sampai' => 'required|date_format:d/m/Y',
-            'unit_kerja_id' => 'required|integer',
+            'groupAnggaran_id' => 'required|array',
+            'groupAnggaran_id.*' => 'exists:group_anggarans,id',
         ], [
             'required' => 'Kolom :attribute wajib diisi.',
             'integer' => 'Kolom :attribute harus berupa angka.',
@@ -140,6 +103,7 @@ class KendaraanController extends Controller
 
         $kendaraan = Kendaraan::findOrFail($id);
         $kendaraan->update($validatedData);
+        $kendaraan->groupAnggarans()->sync($request->groupAnggaran_id);
 
         return to_route('kendaraan.index')->with('success', 'Data berhasil diperbarui.');
     }

@@ -20,32 +20,48 @@
 
                         <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <!-- Form start -->
-                            <form method="POST" action="{{ route('profile.update') }}">
+                            <form method="GET" action="{{ route('laporan.export') }}">
                                 @csrf
 
                                 <div class="row">
                                     <div class="col-12 mb-3">
-                                        <label for="name" class="form-label">Nama</label>
-                                        <input type="text" class="form-control" id="name" name="name"
-                                            value="{{ old('name', auth()->user()->name) }}" required>
+                                        <label for="name" class="form-label">Tahun</label>
+                                        <div class="input-group">
+                                            <select name="tahun" class="form-select">
+                                                @foreach ($paguAnggarans as $paguAnggaran)
+                                                    <option value="{{ $paguAnggaran->tahun }}">
+                                                        {{ $paguAnggaran->tahun }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class="col-12 mb-3">
-                                        <label for="email" class="form-label">Akun (Email)</label>
-                                        <input type="email" class="form-control" id="email" name="email"
-                                            value="{{ old('email', auth()->user()->email) }}" required>
+                                        <label for="name" class="form-label">Dari Bulan</label>
+                                        <div class="input-group">
+                                            <select name="bulan_start" class="form-select">
+                                                @foreach ($months as $key => $month)
+                                                    <option value="{{ $key }}">
+                                                        {{ $month }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class="col-12 mb-3">
-                                        <label for="password" class="form-label">Password</label>
-                                        <input type="password" class="form-control" id="password" name="password">
-                                        <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah
-                                            password</small>
+                                        <label for="name" class="form-label">Sampai Bulan</label>
+                                        <div class="input-group">
+                                            <select name="bulan_end" class="form-select">
+                                                @foreach ($months as $key => $month)
+                                                    <option value="{{ $key }}">
+                                                        {{ $month }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class="col-12 mb-3">
-                                        <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()">
-                                        <label for="showPassword">Show Password</label>
-                                    </div>
-                                    <div class="col-12 mb-3">
-                                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                        <button type="submit" class="btn btn-success">Buat Laporan</button>
                                     </div>
                                 </div>
                             </form>

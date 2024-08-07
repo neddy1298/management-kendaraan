@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'Master', 'page2' => 'Kendaraan', 'page3' => ''])
+@extends('layouts.app', ['page' => 'Kendaraan', 'page2' => '', 'page3' => ''])
 
 @section('css')
     <!-- Data Tables -->
@@ -11,7 +11,8 @@
     <div class="row">
         <div class="col-12">
             @php
-                $message = "Contoh message yang akan dikirim ke WA\n-1. lorem ipsum dolor sit amet consectetur adipiscing elit\n2. lorem ipsum dolor sit amet consectetur adipiscing elit\n3. lorem ipsum dolor sit amet consectetur adipiscing elit\n4. lorem ipsum dolor sit amet consectetur adipiscing elit\n5. lorem ipsum dolor sit amet consectetur adipiscing elit";
+                $message =
+                    "Contoh message yang akan dikirim ke WA\n-1. lorem ipsum dolor sit amet consectetur adipiscing elit\n2. lorem ipsum dolor sit amet consectetur adipiscing elit\n3. lorem ipsum dolor sit amet consectetur adipiscing elit\n4. lorem ipsum dolor sit amet consectetur adipiscing elit\n5. lorem ipsum dolor sit amet consectetur adipiscing elit";
             @endphp
             <!-- Card start -->
             <div class="card">
@@ -23,7 +24,8 @@
                         <a href="{{ route('kendaraan.printAll') }}" class="btn btn-primary" target="_blank">
                             <i class="bi bi-printer"></i> Cetak
                         </a>
-                        <a href="{{ route('send-wa', ['message' => urlencode($message)]) }}" class="btn btn-success" target="_blank">
+                        <a href="{{ route('send-wa', ['message' => urlencode($message)]) }}" class="btn btn-success"
+                            target="_blank">
                             <i class="bi bi-whatsapp"></i> Kirim WA
                         </a>
                     </div>
@@ -51,7 +53,6 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nomor Registrasi</th>
-                                    <th>Unit Kerja</th>
                                     <th>Merk Kendaraan</th>
                                     <th>Jenis Kendaraan</th>
                                     <th>CC Kendaraan</th>
@@ -65,20 +66,24 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $kendaraan->nomor_registrasi }}</td>
-                                        <td>{{ $kendaraan->unitKerja->nama_unit_kerja }}</td>
                                         <td>{{ $kendaraan->merk_kendaraan }}</td>
                                         <td>{{ $kendaraan->jenis_kendaraan }}</td>
                                         <td>{{ $kendaraan->cc_kendaraan }} CC</td>
                                         <td>{{ $kendaraan->bbm_kendaraan }}</td>
                                         <td>Roda {{ $kendaraan->roda_kendaraan }}</td>
                                         <td>
-                                            <a href="{{ route('kendaraan.edit', $kendaraan->id) }}" class="btn btn-warning btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                                            <a href="{{ route('kendaraan.edit', $kendaraan->id) }}"
+                                                class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
+                                                data-bs-placement="top" title="Edit">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            <form action="{{ route('kendaraan.delete', $kendaraan->id) }}" method="POST" style="display: inline-block">
+                                            <form action="{{ route('kendaraan.delete', $kendaraan->id) }}" method="POST"
+                                                style="display: inline-block">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn btn-danger btn-icon btn-sm" onclick="return confirm('Kamu yakin ingin menghapus data: {{ $kendaraan->nomor_registrasi }} ?')" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
+                                                <button class="btn btn-danger btn-icon btn-sm"
+                                                    onclick="return confirm('Kamu yakin ingin menghapus data: {{ $kendaraan->nomor_registrasi }} ?')"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>
