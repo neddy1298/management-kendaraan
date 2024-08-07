@@ -20,7 +20,7 @@
 
                         <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <!-- Form start -->
-                            <form method="GET" action="{{ route('laporan.export') }}">
+                            <form method="GET" action="{{ route('laporan.print') }}" target="_blank">
                                 @csrf
 
                                 <div class="row">
@@ -28,11 +28,12 @@
                                         <label for="name" class="form-label">Tahun</label>
                                         <div class="input-group">
                                             <select name="tahun" class="form-select">
-                                                @foreach ($paguAnggarans as $paguAnggaran)
-                                                    <option value="{{ $paguAnggaran->tahun }}">
-                                                        {{ $paguAnggaran->tahun }}
+                                                <option value="{{ date('Y') }}" hidden>{{ date('Y') }}</option>
+                                                @for ($i = 2021; $i <= date('Y'); $i++)
+                                                    <option value="{{ $i }}">
+                                                        {{ $i }}
                                                     </option>
-                                                @endforeach
+                                                @endfor
                                             </select>
                                         </div>
                                     </div>
@@ -40,6 +41,7 @@
                                         <label for="name" class="form-label">Dari Bulan</label>
                                         <div class="input-group">
                                             <select name="bulan_start" class="form-select">
+                                                <option value="1" hidden>Januari</option>
                                                 @foreach ($months as $key => $month)
                                                     <option value="{{ $key }}">
                                                         {{ $month }}
@@ -52,6 +54,7 @@
                                         <label for="name" class="form-label">Sampai Bulan</label>
                                         <div class="input-group">
                                             <select name="bulan_end" class="form-select">
+                                                <option value="12" hidden>Desember</option>
                                                 @foreach ($months as $key => $month)
                                                     <option value="{{ $key }}">
                                                         {{ $month }}
@@ -61,8 +64,12 @@
                                         </div>
                                     </div>
                                     <div class="col-12 mb-3">
+<<<<<<< HEAD
                                         <button type="submit" class="btn btn-success">Buat Laporan</button>
                                         <a href="{{ route('laporan.exportExcel') }}" class="btn btn-primary">Export to Excel</a>
+=======
+                                        <button type="submit" class="btn btn-success">Lihat Laporan</button>
+>>>>>>> 87c0f0e89d7a2d018563737606a210e20e4c7c6a
                                     </div>
                                 </div>
                             </form>
@@ -76,15 +83,4 @@
         </div>
     </div>
     <!-- Row end -->
-
-    <script>
-        function togglePasswordVisibility() {
-            var passwordField = document.getElementById("password");
-            if (passwordField.type === "password") {
-                passwordField.type = "text";
-            } else {
-                passwordField.type = "password";
-            }
-        }
-    </script>
 @endsection

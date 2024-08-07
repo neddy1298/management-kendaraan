@@ -50,7 +50,14 @@ class KendaraanController extends Controller
             'groupAnggaran_id' => 'required|integer',
             'groupAnggaran_id' => 'required|array',
             'groupAnggaran_id.*' => 'exists:group_anggarans,id',
+        ], [
+            'required' => 'Kolom :attribute wajib diisi.',
+            'integer' => 'Kolom :attribute harus berupa angka.',
+            'date_format' => 'Kolom :attribute tidak sesuai format d/m/Y.',
+            'unique' => 'Nomor registrasi sudah digunakan.',
         ]);
+
+        $validatedData['berlaku_sampai'] = Carbon::createFromFormat('d/m/Y', $validatedData['berlaku_sampai'])->format('Y-m-d');
 
         $kendaraan = Kendaraan::create($validatedData);
 
@@ -68,7 +75,7 @@ class KendaraanController extends Controller
      */
     public function edit($id)
     {
-        $kendaraan = Kendaraan::findOrFail($id)->with('belanjas')->first();
+        $kendaraan = Kendaraan::with('belanjas')->findOrFail($id);
         $groupAnggarans = GroupAnggaran::orderBy('created_at', 'desc')->get();
         $selectedGroupAnggarans = $kendaraan->groupAnggarans->pluck('id')->toArray();
         return view('kendaraan.edit', compact('kendaraan', 'groupAnggarans', 'selectedGroupAnggarans'));

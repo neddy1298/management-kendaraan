@@ -51,8 +51,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::prefix('laporan')->group(function () {
                 Route::get('', [LaporanController::class, 'index'])->name('laporan.index');
+<<<<<<< HEAD
                 Route::get('/export', [LaporanController::class, 'export'])->name('laporan.export');
                 Route::get('/export-excel', [LaporanController::class, 'exportToExcel'])->name('laporan.exportExcel');
+=======
+                Route::get('/print', [LaporanController::class, 'print'])->name('laporan.print');
+>>>>>>> 87c0f0e89d7a2d018563737606a210e20e4c7c6a
             });
 
             Route::prefix('belanja')->group(function () {
