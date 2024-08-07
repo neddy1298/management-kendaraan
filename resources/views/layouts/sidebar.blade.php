@@ -21,7 +21,8 @@
                 </li>
                 {{-- TODO --}}
                 <li class="{{ $page == 'Laporan' ? 'active' : '' }}">
-                    <a href="#" class="{{ $page == 'Laporan' ? 'current-page' : '' }}" aria-label="Laporan">
+                    <a href="{{ route('laporan.index') }}" class="{{ $page == 'Laporan' ? 'current-page' : '' }}"
+                        aria-label="Laporan">
                         <i class="bi bi-bar-chart"></i>
                         <span class="menu-text">Laporan</span>
                     </a>
@@ -33,36 +34,12 @@
                         <span class="menu-text">Data Belanja</span>
                     </a>
                 </li>
-                <li class="{{ $page == 'Maintenance' ? 'active' : '' }}">
-                    <a href="{{ route('maintenance.index') }}"
-                        class="{{ $page == 'Maintenance' ? 'current-page' : '' }}" aria-label="Maintenance">
-                        <i class="bi bi-gear"></i>
-                        <span class="menu-text">Maintenance</span>
-                    </a>
-                </li>
-                <li class="sidebar-dropdown {{ $page == 'Master' ? 'active' : '' }}">
-                    <a href="#">
+                <li class="{{ $page == 'Kendaraan' ? 'active' : '' }}">
+                    <a href="{{ route('kendaraan.index') }}" class="{{ $page == 'Kendaraan' ? 'current-page' : '' }}"
+                        aria-label="Data Kendaraan">
                         <i class="bi bi-truck"></i>
-                        <span class="menu-text">Data Master</span>
+                        <span class="menu-text">Kendaraan</span>
                     </a>
-                    <div class="sidebar-submenu">
-                        <ul>
-                            <li class="{{ $page2 == 'Kendaraan' ? 'active' : '' }}">
-                                <a href="{{ route('kendaraan.index') }}"
-                                    class="{{ $page2 == 'Kendaraan' ? 'current-page' : '' }}"
-                                    aria-label="Data Kendaraan">
-                                    <span class="menu-text">Kendaraan</span>
-                                </a>
-                            </li>
-                            <li class="{{ $page2 == 'Unit Kerja' ? 'active' : '' }}">
-                                <a href="{{ route('unitKerja.index') }}"
-                                    class="{{ $page2 == 'Unit Kerja' ? 'current-page' : '' }}"
-                                    aria-label="Data Unit Kerja">
-                                    <span class="menu-text">Unit Kerja</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
                 </li>
                 <li class="sidebar-dropdown {{ $page == 'Anggaran' ? 'active' : '' }}">
                     <a href="#">

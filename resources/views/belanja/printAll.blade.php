@@ -93,7 +93,7 @@
                 @foreach ($datas as $index => $data)
                     <tr>
                         <td>{{ $index + 1 }} </td>
-                        <td>{{ $data->maintenance->kendaraan->nomor_registrasi }}</td>
+                        <td>{{ $data->kendaraan->nomor_registrasi }}</td>
                         <td>Rp. {{ number_format($data->belanja_bahan_bakar_minyak, 0, ',', '.') }}</td>
                         <td>Rp. {{ number_format($data->belanja_pelumas_mesin, 0, ',', '.') }}</td>
                         <td>Rp. {{ number_format($data->belanja_suku_cadang, 0, ',', '.') }}</td>

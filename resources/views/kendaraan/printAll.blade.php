@@ -7,98 +7,170 @@
     <title>Data Print</title>
     <style>
         body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-    }
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
 
-    .container {
-        width: 80%;
-        margin: auto;
-        padding: 20px;
-        background-color: #fff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-    }
+        .container {
+            width: 95%;
+            margin: auto;
+            padding: 20px;
+        }
 
-    .header,
-    .footer {
-        text-align: center;
-        padding: 15px;
-        background-color: #3d6df2;
-        color: #fff;
-        border-radius: 8px;
-        margin-bottom: 20px;
-    }
+        .header,
+        .footer {
+            text-align: center;
+            padding: 15px;
+            color: #000000;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
 
-    .header h1,
-    .footer p {
-        margin: 0;
-    }
+        .header h1,
+        .footer p {
+            margin: 0;
+        }
 
-    .data-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-    }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
 
-    .data-table th,
-    .data-table td {
-        border: 1px solid #ddd;
-        padding: 12px;
-        text-align: left;
-    }
+        .data-table th,
+        .data-table td {
+            border: 1px solid #000000;
+            padding: 12px;
+            text-align: left;
+        }
 
-    .data-table th {
-        background-color: #3d6df2;
-        color: #fff;
-        font-weight: bold;
-    }
-
-    .data-table td {
-        background-color: #fff;
-    }
-
-    .data-table tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
-
-    .data-table tr:hover {
-        background-color: #f1f1f1;
-    }
+        .data-table th {
+            font-weight: bold;
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
 
     <div class="container">
-        <div class="header">
-            <h1>Data Kendaraan</h1>
+        <div style="text-align: center">
+            <h4>PEMERINTAHAN KOTA BOGOR</br>KARTU KENDALI KEGIATAN</br>TAHUN ANGGARAN {{ date('Y') }}</h4>
         </div>
         <table class="data-table">
             <thead>
                 <tr>
-                    <th>No</th>
-                    <th>Nomor Registrasi</th>
-                    <th>Merk Kendaraan</th>
-                    <th>Jenis Kendaraan</th>
-                    <th>CC Kendaraan</th>
-                    <th>BBM Kendaraan</th>
-                    <th>Roda Kendaraan</th>
+                    <th style="width: 10px" rowspan="3">No Urut</th>
+                    <th rowspan="3">Kode Rekening</th>
+                    <th rowspan="3">Nama Rekening</th>
+                    <th rowspan="2" colspan="2">Pagu Anggaran Kegiatan</th>
+                    <th colspan="8">Realisasi Kegiatan</th>
+                    <th rowspan="3" style="width: 100px">Sisa Pagu Anggaran (Rp)</th>
+                </tr>
+                <tr>
+                    <th colspan="2">S/D BULAN LALU</th>
+                    <th colspan="4">BULAN INI</th>
+                    <th colspan="2">S/D BULAN INI</th>
+                </tr>
+                <tr>
+                    <th>UP/GU/TU</th>
+                    <th>LS</th>
+                    <th>UP/GU/TU</th>
+                    <th>LS</th>
+                    <th>UP</th>
+                    <th>GU</th>
+                    <th>TU</th>
+                    <th>LS</th>
+                    <th>UP/GU/TU</th>
+                    <th>LS</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($datas as $index => $data)
+                @foreach ($paguAnggarans as $index => $paguAnggaran)
                     <tr>
-                        <td>{{ $index + 1 }} </td>
-                        <td>{{ $data->nomor_registrasi }}</td>
-                        <td>{{ $data->merk_kendaraan }}</td>
-                        <td>{{ $data->jenis_kendaraan }}</td>
-                        <td>{{ $data->cc_kendaraan }} CC</td>
-                        <td>{{ $data->bbm_kendaraan }}</td>
-                        <td>{{ $data->roda_kendaraan }}</td>
+                        <td style="text-align: center">{{ $index + 1 }} </td>
+                        <td>{{ $paguAnggaran->kode_rekening }}</td>
+                        <td>{{ $paguAnggaran->nama_rekening }}</td>
+                        <td style="text-align: right">Rp {{ number_format($paguAnggaran->anggaran, 0, ',', '.') }}
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
+                    @foreach ($paguAnggaran->masterAnggarans as $masterAnggaran)
+                        <tr style="background-color: #fdad00">
+                            <td></td>
+                            <td>{{ $masterAnggaran->kode_rekening }}</td>
+                            <td>{{ $masterAnggaran->nama_rekening }}</td>
+                            <td style="text-align: right">Rp
+                                {{ number_format($masterAnggaran->anggaran, 0, ',', '.') }}
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        @foreach ($masterAnggaran->groupAnggarans as $groupAnggaran)
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>{{ $groupAnggaran->nama_group }}</td>
+                                <td style="text-align: right">Rp
+                                    {{ number_format($groupAnggaran->anggaran_total, 0, ',', '.') }}
+                                </td>
+                                <td></td>
+                                <td style="text-align: right">Rp
+                                    <?php
+                                    $totalBelanja = 0;
+                                    
+                                    foreach ($groupAnggaran->kendaraans as $kendaraan) {
+                                        $totalBelanja += $kendaraan->belanjas->sum('total_belanja');
+                                    }
+                                    ?>
+                                    {{ number_format($totalBelanja, 0, ',', '.') }}
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        @endforeach
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    @endforeach
                 @endforeach
             </tbody>
         </table>

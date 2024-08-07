@@ -18,17 +18,12 @@ class MasterAnggaran extends Model
         'anggaran',
     ];
 
-    public function laporanTahunan()
-    {
-        return $this->hasMany(LaporanTahunan::class);
-    }
-
     public function paguAnggaran()
     {
         return $this->belongsTo(PaguAnggaran::class);
     }
 
-    public function groupAnggaran()
+    public function groupAnggarans()
     {
         return $this->hasMany(GroupAnggaran::class);
     }

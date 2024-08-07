@@ -33,7 +33,7 @@
             </a>
         </div>
         <div class="col-xxl-4 col-sm-6 col-12">
-            <a href="{{ route('maintenance.index') }}">
+            <a href="#">
                 <div class="stats-tile">
                     <div class="sale-icon shade-red">
                         <i class="bi bi-clock-history"></i>
@@ -155,7 +155,7 @@
     <!-- Row end -->
 
     <!-- Row start -->
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
@@ -178,7 +178,7 @@
                                 @foreach ($belanja_mingguans as $index => $belanja_mingguan)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $belanja_mingguan->maintenance->kendaraan->nomor_registrasi }}</td>
+                                        <td>{{ $belanja_mingguan->kendaraan->nomor_registrasi }}</td>
                                         <td>Rp.
                                             {{ number_format($belanja_mingguan->belanja_bahan_bakar_minyak + $belanja_mingguan->belanja_pelumas_mesin + $belanja_mingguan->belanja_suku_cadang, 0, ',', '.') }}
                                         </td>
@@ -193,7 +193,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- Row end -->
 @endsection
 

@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\LaporanBulanan;
-use App\Models\LaporanTahunan;
 use App\Models\MasterAnggaran;
 use App\Models\PaguAnggaran;
 use Illuminate\Http\Request;
@@ -51,14 +49,6 @@ class MasterAnggaranController extends Controller
 
         return to_route('masterAnggaran.index')
             ->with('success', 'Anggaran Berhasil dibuat.');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
     }
 
     /**
