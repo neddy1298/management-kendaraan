@@ -65,19 +65,12 @@
                             'Home' => ['route' => 'home', 'icon' => 'bi-house', 'text' => 'Home'],
                             'Laporan' => ['route' => 'laporan.index', 'icon' => 'bi-bar-chart', 'text' => 'Laporan'],
                             'Belanja' => ['route' => 'belanja.index', 'icon' => 'bi-cart2', 'text' => 'Belanja'],
-                            'Maintenance' => [
-                                'route' => 'maintenance.index',
-                                'icon' => 'bi-gear',
-                                'text' => 'Maintenance',
-                            ],
-                            'Master' => ['route' => null, 'icon' => 'bi-truck', 'text' => 'Master'],
+                            'Kendaraan' => ['route' => 'kendaraan.index', 'icon' => 'bi-truck', 'text' => 'Kendaraan'],
                             'Anggaran' => ['route' => null, 'icon' => 'bi-cash-stack', 'text' => 'Anggaran'],
                             'User' => ['route' => 'profile.edit', 'icon' => 'bi-person-circle', 'text' => 'User'],
                         ];
 
                         $pages2 = [
-                            'Unit Kerja' => ['route' => 'unitKerja.index', 'text' => 'Unit Kerja'],
-                            'Kendaraan' => ['route' => 'kendaraan.index', 'text' => 'Kendaraan'],
                             'Pertahun' => ['route' => 'masterAnggaran.index', 'text' => 'Pertahun'],
                             'Group' => ['route' => 'groupAnggaran.index', 'text' => 'Group'],
                             'Tambah' => ['route' => null, 'text' => 'Tambah'],

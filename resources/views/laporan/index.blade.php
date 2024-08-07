@@ -28,9 +28,9 @@
                                         <label for="name" class="form-label">Tahun</label>
                                         <div class="input-group">
                                             <select name="tahun" class="form-select">
-                                                @foreach ($laporanTahunans as $laporanTahunan)
-                                                    <option value="{{ $laporanTahunan->tahun }}">
-                                                        {{ $laporanTahunan->tahun }}
+                                                @foreach ($paguAnggarans as $paguAnggaran)
+                                                    <option value="{{ $paguAnggaran->tahun }}">
+                                                        {{ $paguAnggaran->tahun }}
                                                     </option>
                                                 @endforeach
                                             </select>

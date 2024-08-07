@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Maintenance;
+use App\Models\Kendaraan;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,15 +17,11 @@ class BelanjaFactory extends Factory
      */
     public function definition(): array
     {
-        // Ensure there is at least one Maintenance record
-        if (Maintenance::count() == 0) {
-            Maintenance::factory()->create();
-        }
 
-        $maintenanceIds = Maintenance::pluck('id')->toArray();
+        $kendaraanId = Kendaraan::pluck('id')->toArray();
 
         return [
-            'maintenance_id' => $this->faker->randomElement($maintenanceIds),
+            'kendaraan_id' => $this->faker->randomElement($kendaraanId),
             'belanja_bahan_bakar_minyak' => fake()->numerify('##0000'),
             'belanja_pelumas_mesin' => fake()->numerify('##0000'),
             'belanja_suku_cadang' => fake()->numerify('##0000'),

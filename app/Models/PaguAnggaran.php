@@ -18,7 +18,7 @@ class PaguAnggaran extends Model
         'tahun',
     ];
 
-    public function masterAnggaran()
+    public function masterAnggarans()
     {
         return $this->hasMany(MasterAnggaran::class);
     }

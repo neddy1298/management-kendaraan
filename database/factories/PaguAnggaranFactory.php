@@ -19,7 +19,7 @@ class PaguAnggaranFactory extends Factory
         return [
             'kode_rekening' => $this->faker->unique()->numerify('#.#.#.#'),
             'nama_rekening' => $this->faker->unique()->word(),
-            'anggaran' => $this->faker->numerify('##00000000'),
+            'anggaran' => $this->faker->numerify('##00000000000'),
             'tahun' => $this->faker->unique()->year(),
         ];
     }
