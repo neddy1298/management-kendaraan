@@ -20,7 +20,7 @@
 
                         <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <!-- Form start -->
-                            <form method="GET" action="{{ route('laporan.print') }}">
+                            <form method="GET" action="{{ route('laporan.print') }}" target="_blank">
                                 @csrf
 
                                 <div class="row">
@@ -64,7 +64,7 @@
                                         </div>
                                     </div>
                                     <div class="col-12 mb-3">
-                                        <button type="submit" class="btn btn-success">Buat Laporan</button>
+                                        <button type="submit" class="btn btn-success">Lihat Laporan</button>
                                     </div>
                                 </div>
                             </form>
