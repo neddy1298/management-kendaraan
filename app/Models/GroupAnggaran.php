@@ -25,6 +25,11 @@ class GroupAnggaran extends Model
         return $this->belongsToMany(Kendaraan::class, 'group_anggaran_kendaraan');
     }
 
+    public function belanjas()
+    {
+        return $this->hasMany(Belanja::class);
+    }
+
     public function masterAnggaran()
     {
         return $this->belongsTo(MasterAnggaran::class);
