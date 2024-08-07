@@ -16,7 +16,6 @@
         .container {
             width: 95%;
             margin: auto;
-            padding: 20px;
         }
 
         .header,
@@ -36,13 +35,13 @@
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
+            margin-bottom: 2px;
         }
 
         .data-table th,
         .data-table td {
             border: 1px solid #000000;
-            padding: 12px;
+            padding: 5px;
             text-align: left;
         }
 
@@ -67,7 +66,7 @@
                     <th rowspan="3">Nama Rekening</th>
                     <th rowspan="2" colspan="2">Pagu Anggaran Kegiatan</th>
                     <th colspan="8">Realisasi Kegiatan</th>
-                    <th rowspan="3" style="width: 100px">Sisa Pagu Anggaran (Rp)</th>
+                    <th rowspan="3" style="width: 150px">Sisa Pagu Anggaran (Rp)</th>
                 </tr>
                 <tr>
                     <th colspan="2">S/D BULAN LALU</th>
@@ -112,9 +111,10 @@
                             <td>{{ $masterAnggaran->kode_rekening }}</td>
                             <td>{{ $masterAnggaran->nama_rekening }}</td>
                             <td style="text-align: right">Rp
-                                {{ number_format($masterAnggaran->anggaran, 0, ',', '.') }}
+                                {{ number_format($masterAnggaran->anggaran, 0, ',', '.') }}1
                             </td>
                             <td></td>
+                            {{-- <td>{{ $masterAnggaran->groupAnggarans->belanjas->sum('total_belanja') }}</td> --}}
                             <td></td>
                             <td></td>
                             <td></td>
@@ -134,24 +134,24 @@
                                     {{ number_format($groupAnggaran->anggaran_total, 0, ',', '.') }}
                                 </td>
                                 <td></td>
-                                <td style="text-align: right">Rp
-                                    <?php
-                                    $totalBelanja = 0;
-                                    
-                                    foreach ($groupAnggaran->kendaraans as $kendaraan) {
-                                        $totalBelanja += $kendaraan->belanjas->sum('total_belanja');
-                                    }
-                                    ?>
-                                    {{ number_format($totalBelanja, 0, ',', '.') }}
+                                <td style="text-align: right">
+                                    Rp {{ number_format($groupAnggaran->belanjas_before ?? 0, 0, ',', '.') }}
                                 </td>
                                 <td></td>
                                 <td></td>
+                                <td style="text-align: right">
+                                    Rp {{ number_format($groupAnggaran->belanjas_current ?? 0, 0, ',', '.') }}
+                                </td>
                                 <td></td>
                                 <td></td>
+                                <td style="text-align: right">
+                                    Rp
+                                    {{ number_format($groupAnggaran->belanjas_before + $groupAnggaran->belanjas_current ?? 0, 0, ',', '.') }}
+                                </td>
                                 <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td style="text-align: right">Rp
+                                    {{ number_format($groupAnggaran->anggaran_total - ($groupAnggaran->belanjas_before + $groupAnggaran->belanjas_current), 0, ',', '.') }}
+                                </td>
                             </tr>
                         @endforeach
                         <tr>

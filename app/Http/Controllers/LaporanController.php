@@ -21,7 +21,6 @@ class LaporanController extends Controller
     {
         $paguAnggarans = PaguAnggaran::select('tahun')->get();
         $months = [
-            'all' => 'Semua Bulan',
             '1' => 'Januari',
             '2' => 'Februari',
             '3' => 'Maret',
@@ -46,16 +45,30 @@ class LaporanController extends Controller
 
         $query = PaguAnggaran::query();
 
-        if ($tahun) {
+        if ($tahun && $tahun !== 'all') {
             $query->where('tahun', $tahun);
         }
 
-        if ($bulanStart && $bulanEnd && $bulanStart !== 'all' && $bulanEnd !== 'all') {
-            $query->whereBetween(DB::raw('MONTH(created_at)'), [$bulanStart, $bulanEnd]);
+        if ($bulanStart > $bulanEnd) {
+            $temp = $bulanStart;
+            $bulanStart = $bulanEnd;
+            $bulanEnd = $temp;
         }
 
-        $paguAnggarans = $query->get();
-        
-        return view('laporan.print', compact('paguAnggarans'));
+        $startDate = Carbon::createFromDate($tahun !== 'all' ? $tahun : now()->year, $bulanStart, 1)->startOfMonth();
+        $endDate = Carbon::createFromDate($tahun !== 'all' ? $tahun : now()->year, $bulanEnd, 1)->endOfMonth();
+        $endDateMinusOneMonth = $endDate->copy()->subMonth()->endOfMonth();
+
+        $paguAnggarans = $query->with(['masterAnggarans.groupAnggarans' => function ($query) use ($startDate, $endDate, $endDateMinusOneMonth) {
+            $query->withSum(['belanjas as belanjas_current' => function ($query) use ($endDate) {
+                $query->whereMonth('tanggal_belanja', '=', $endDate->month)
+                    ->whereYear('tanggal_belanja', '=', $endDate->year);
+            }], 'total_belanja')
+                ->withSum(['belanjas as belanjas_before' => function ($query) use ($startDate, $endDateMinusOneMonth) {
+                    $query->whereBetween('tanggal_belanja', [$startDate, $endDateMinusOneMonth]);
+                }], 'total_belanja');
+        }])->get();
+
+        return view('laporan.print', compact('paguAnggarans', 'startDate', 'endDate'));
     }
 }
