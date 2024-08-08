@@ -365,7 +365,7 @@
         </table>
 
         <div class="footer">
-            <p>&copy; Data Kendaraan Dishub Kota Bogor</p>
+            <p>&copy; Laporan Keuangan Dishub Kota Bogor</p>
         </div>
     </div>
 </body>
