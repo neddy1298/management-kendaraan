@@ -67,10 +67,10 @@ class LaporanController extends Controller
                 ->withSum(['belanjas as belanjas_before' => function ($query) use ($startDate, $endDateMinusOneMonth) {
                     $query->whereBetween('tanggal_belanja', [$startDate, $endDateMinusOneMonth]);
                 }], 'total_belanja');
-        }])->get();
+        }])->orderBy('kode_rekening', 'asc')->get();
         return view('laporan.print', compact('paguAnggarans', 'tahun', 'startDate', 'endDate'));
     }
-    
+
 
 
     public function exportToExcel()
@@ -163,7 +163,7 @@ class LaporanController extends Controller
             ],
         ];
         $sheet->getStyle('D17:N17' . ($row - 1))->applyFromArray($rupiahFormat);
-        
+
         // Looping isi tabel
         $row = 17;
 

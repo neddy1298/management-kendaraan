@@ -6,6 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Print</title>
     <style>
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            .page-break-after {
+                page-break-after: always;
+            }
+
+            .no-print {
+                display: none;
+            }
+
+            .print-only {
+                display: block;
+            }
+
+            table {
+                page-break-inside: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tfoot {
+                display: table-footer-group;
+            }
+        }
+
         @page {
             size: landscape;
             margin: 1cm;
@@ -13,8 +49,6 @@
 
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
             background-color: #f4f4f4;
             -webkit-print-color-adjust: exact;
         }
@@ -24,30 +58,31 @@
             margin: auto;
         }
 
-        .header,
-        .footer {
+        .header {
             text-align: center;
-            padding: 10px;
             color: #000000;
-            border-radius: 8px;
-            margin-bottom: 5px;
         }
 
-        .header h1,
-        .footer p {
-            margin: 0;
+        .header h4 {
+            margin: 0 0 50px 0;
+            font-size: 16px;
         }
 
-        .header h6 {
-            margin: 0;
-            text-align: start;
-            font-weight: 100;
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+
+        .header-table td {
+            padding: 2px;
+            text-align: left;
+            font-size: 12px;
         }
 
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 10px;
             font-size: 10px;
         }
 
@@ -64,82 +99,70 @@
         }
 
         .pagu-anggaran {
-            background-color: #00b1fd;
+            background-color: #aae5ff;
         }
 
         .master-anggaran {
-            background-color: #fdad00;
+            background-color: #fbdd9d;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px;
+            color: #000000;
+            position: running(footer);
+        }
+
+        @page {
+            @bottom-center {
+                content: element(footer);
+            }
         }
     </style>
 </head>
 
 <body>
-
     <div class="container">
-        <div class="header">
+        <div class="header print-only">
             <h4>PEMERINTAHAN KOTA BOGOR<br>KARTU KENDALI KEGIATAN<br>TAHUN ANGGARAN {{ $tahun }}</h4>
-            <table>
+            <table class="header-table">
                 <tr>
-                    <td>
-                        <h6>Sub Unit</h6>
-                    </td>
-                    <td>
-                        <h6>&emsp;&emsp;: Test</h6>
-                    </td>
+                    <td style="width: 150px;">Sub Unit</td>
+                    <td>: DINAS PERHUBUNGAN KOTA BOGOR</td>
                 </tr>
                 <tr>
-                    <td>
-                        <h6>Nama Program</h6>
-                    </td>
-                    <td>
-                        <h6>&emsp;&emsp;: Test</h6>
-                    </td>
+                    <td>Nama Program</td>
+                    <td>: PROGRAM PENUNJANG URUSAN PEMERINTAHAN DAERAH KABUPATEN/KOTA</td>
                 </tr>
                 <tr>
-                    <td>
-                        <h6>Nama Kegiatan</h6>
-                    </td>
-                    <td>
-                        <h6>&emsp;&emsp;: Test</h6>
-                    </td>
+                    <td>Nama Kegiatan</td>
+                    <td>: Pemeliharaan Barang Milik Daerah Penunjang Urusan Pemerintahan Daerah</td>
                 </tr>
                 <tr>
-                    <td>
-                        <h6>Sub Kegiatan</h6>
-                    </td>
-                    <td>
-                        <h6>&emsp;&emsp;: Test</h6>
-                    </td>
+                    <td>Sub Kegiatan</td>
+                    <td>: Penyediaan Jasa Pemeliharaan, Biaya Pemeliharaan, Pajak, dan Perizinan Kendaraan Dinas
+                        Operasional atau Lapangan</td>
                 </tr>
                 <tr>
-                    <td>
-                        <h6>Sub Kegiatan</h6>
-                    </td>
-                    <td>
-                        <h6>&emsp;&emsp;: Test</h6>
-                    </td>
+                    <td>Nama PPTK</td>
+                    <td>: Firza Firani Rizal, S.Kom, M.Ak.</td>
                 </tr>
                 <tr>
-                    <td>
-                        <h6>Bulan</h6>
-                    </td>
-                    <td>
-                        <h6>&emsp;&emsp;: {{ $endDate->translatedformat('F Y') }}</h6>
-                    </td>
+                    <td>Bulan</td>
+                    <td>: {{ $endDate->translatedformat('F Y') }}</td>
                 </tr>
             </table>
         </div>
-        <div class="subheader">
-        </div>
+
         <table class="data-table">
             <thead>
                 <tr>
                     <th style="width: 5px" rowspan="3">No Urut</th>
                     <th style="width: 120px" rowspan="3">Kode Rekening</th>
-                    <th style="width: 250px" rowspan="3">Nama Rekening</th>
-                    <th rowspan="2" colspan="2">Pagu Anggaran Kegiatan</th>
+                    <th style="width: 200px" rowspan="3">Nama Rekening</th>
+                    <th style="width: 150px" rowspan="2" colspan="2">Pagu Anggaran Kegiatan</th>
                     <th colspan="8">Realisasi Kegiatan</th>
-                    <th style="width: 150px" rowspan="3">Sisa Pagu Anggaran (Rp)</th>
+                    <th style="width: 130px" rowspan="3">Sisa Pagu Anggaran (Rp)</th>
                 </tr>
                 <tr>
                     <th colspan="2">S/D BULAN LALU</th>
@@ -181,6 +204,12 @@
                         <td></td>
                         <td></td>
                     </tr>
+                    @php
+                        $sumMasterAnggaran = 0;
+                        $sumMasterBelanjaBefore = 0;
+                        $sumMasterBelanjaCurrent = 0;
+                        $sumMasterBelanjaTotal = 0;
+                    @endphp
                     @foreach ($paguAnggaran->masterAnggarans as $masterAnggaran)
                         <tr class="master-anggaran">
                             <td></td>
@@ -190,6 +219,10 @@
                                 @if ($masterAnggaran->anggaran != 0)
                                     Rp {{ number_format($masterAnggaran->anggaran, 0, ',', '.') }}
                                 @endif
+
+                                @php
+                                    $sumMasterAnggaran += $masterAnggaran->anggaran;
+                                @endphp
                             </td>
                             <td></td>
                             <td style="text-align: right">
@@ -201,6 +234,9 @@
                                         $sumBelanjaBefore += $groupAnggaran->belanjas_before;
                                     @endphp
                                 @endforeach
+                                @php
+                                    $sumMasterBelanjaBefore += $sumBelanjaBefore;
+                                @endphp
                                 @if ($sumBelanjaBefore != 0)
                                     Rp {{ number_format($sumBelanjaBefore, 0, ',', '.') }}
                                 @endif
@@ -216,6 +252,9 @@
                                         $sumBelanjaCurrent += $groupAnggaran->belanjas_current;
                                     @endphp
                                 @endforeach
+                                @php
+                                    $sumMasterBelanjaCurrent += $sumBelanjaCurrent;
+                                @endphp
                                 @if ($sumBelanjaCurrent != 0)
                                     Rp {{ number_format($sumBelanjaCurrent, 0, ',', '.') }}
                                 @endif
@@ -224,14 +263,11 @@
                             <td></td>
                             <td style="text-align: right">
                                 @php
-                                    $sumBelanjaTotal = 0;
+                                    $sumBelanjaTotal = $sumBelanjaBefore + $sumBelanjaCurrent;
                                 @endphp
-                                @foreach ($masterAnggaran->groupAnggarans as $groupAnggaran)
-                                    @php
-                                        $sumBelanjaTotal +=
-                                            $groupAnggaran->belanjas_before + $groupAnggaran->belanjas_current;
-                                    @endphp
-                                @endforeach
+                                @php
+                                    $sumMasterBelanjaTotal += $sumBelanjaTotal;
+                                @endphp
                                 @if ($sumBelanjaTotal != 0)
                                     Rp {{ number_format($sumBelanjaTotal, 0, ',', '.') }}
                                 @endif
@@ -286,26 +322,48 @@
                                 </td>
                             </tr>
                         @endforeach
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
                     @endforeach
+
+                    <tr style="background-color: #cdfaed">
+                        <td></td>
+                        <td></td>
+                        <td>Jumlah</td>
+                        <td style="text-align: right">
+                            @if ($sumMasterAnggaran != 0)
+                                Rp {{ number_format($sumMasterAnggaran ?? 0, 0, ',', '.') }}
+                            @endif
+                        <td></td>
+                        <td style="text-align: right">
+                            @if ($sumMasterBelanjaBefore != 0)
+                                Rp {{ number_format($sumMasterBelanjaBefore ?? 0, 0, ',', '.') }}
+                            @endif
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align: right">
+                            @if ($sumMasterBelanjaCurrent != 0)
+                                Rp {{ number_format($sumMasterBelanjaCurrent ?? 0, 0, ',', '.') }}
+                            @endif
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align: right">
+                            @if ($sumMasterBelanjaTotal != 0)
+                                Rp {{ number_format($sumMasterBelanjaTotal ?? 0, 0, ',', '.') }}
+                            @endif
+                        </td>
+                        <td></td>
+                        <td style="text-align: right">
+                            @if ($sumMasterAnggaran - $sumMasterBelanjaTotal != 0)
+                                Rp {{ number_format($sumMasterAnggaran - $sumMasterBelanjaTotal, 0, ',', '.') }}
+                            @endif
+                        </td>
+
+                    </tr>
                 @endforeach
             </tbody>
         </table>
+
         <div class="footer">
             <p>&copy; Data Kendaraan Dishub Kota Bogor</p>
         </div>
