@@ -99,11 +99,11 @@
         }
 
         .pagu-anggaran {
-            background-color: #00b1fd;
+            background-color: #aae5ff;
         }
 
         .master-anggaran {
-            background-color: #fdad00;
+            background-color: #fbdd9d;
         }
 
         .footer {
@@ -324,7 +324,7 @@
                         @endforeach
                     @endforeach
 
-                    <tr>
+                    <tr style="background-color: #cdfaed">
                         <td></td>
                         <td></td>
                         <td>Jumlah</td>
