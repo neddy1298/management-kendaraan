@@ -71,8 +71,6 @@ class LaporanController extends Controller
         return view('laporan.print', compact('paguAnggarans', 'tahun', 'startDate', 'endDate'));
     }
 
-
-
     public function exportToExcel()
     {
         $spreadsheet = new Spreadsheet();

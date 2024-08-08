@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\LaporanTahunan;
 use App\Models\PaguAnggaran;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
