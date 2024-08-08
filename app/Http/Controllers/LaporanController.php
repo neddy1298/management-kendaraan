@@ -173,23 +173,43 @@ class LaporanController extends Controller
             $sheet->setCellValue("D$row", $paguAnggaran->anggaran);
             $sheet->getStyle("A$row:N$row")->applyFromArray($styleHeading1);
             $row++;
-            $index++;
 
             // Heading 2
             foreach ($paguAnggaran->masterAnggarans as $masterAnggaran) {
-                $row++;
                 $sheet->setCellValue("B$row", $masterAnggaran->kode_rekening);
                 $sheet->setCellValue("C$row", $masterAnggaran->nama_rekening);
                 $sheet->setCellValue("D$row", $masterAnggaran->anggaran);
+
+                $sumBelanjaBefore = 0;
+                foreach ($masterAnggaran->groupAnggarans as $groupAnggaran) {
+                    $sumBelanjaBefore += $groupAnggaran->belanjas_before;
+                }
+                $sheet->setCellValue("F$row", $sumBelanjaBefore);
+
+                $sumBelanjaCurrent = 0;
+                foreach ($masterAnggaran->groupAnggarans as $groupAnggaran) {
+                    $sumBelanjaCurrent += $groupAnggaran->belanjas_current;
+                }
+                $sheet->setCellValue("I$row", $sumBelanjaCurrent);
+
+                $sumBelanjaTotal = $sumBelanjaBefore + $sumBelanjaCurrent;
+                $sheet->setCellValue("L$row", $sumBelanjaTotal);
+
+                $remainingAnggaran = $masterAnggaran->anggaran - $sumBelanjaTotal;
+                $sheet->setCellValue("N$row", $remainingAnggaran);
+
                 $sheet->getStyle("B$row:N$row")->applyFromArray($styleHeading2);
                 $row++;
 
                 // Heading 3
                 foreach ($masterAnggaran->groupAnggarans as $groupAnggaran) {
                     $sheet->setCellValue("C$row", $groupAnggaran->nama_group);
-                    $sheet->setCellValue("D$row", $groupAnggaran->total_anggaran);
+                    $sheet->setCellValue("D$row", $groupAnggaran->anggaran_total);
                     $row++;
                 }
+
+                // Add an empty row after each masterAnggaran
+                $row++;
             }
         }
 
