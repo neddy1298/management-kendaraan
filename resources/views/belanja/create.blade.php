@@ -112,10 +112,10 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset('vendor/bs-select/bs-select.min.js') }}"></script>
-    <script src="{{ asset('vendor/bs-select/bs-select-custom.js') }}"></script>
-    <script src="{{ asset('vendor/daterange/daterange.js') }}"></script>
-    <script src="{{ asset('vendor/daterange/custom-daterange.js') }}"></script>
+    <script src="{{ secure_asset('vendor/bs-select/bs-select.min.js') }}"></script>
+    <script src="{{ secure_asset('vendor/bs-select/bs-select-custom.js') }}"></script>
+    <script src="{{ secure_asset('vendor/daterange/daterange.js') }}"></script>
+    <script src="{{ secure_asset('vendor/daterange/custom-daterange.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const kendaraanSelect = document.getElementById('kendaraan_id');
