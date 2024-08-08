@@ -3,7 +3,6 @@
 @section('content')
     <!-- Row start -->
     <div class="row">
-
         <div class="col-xxl-4 col-sm-6 col-12">
             <div class="stats-tile">
                 <div class="sale-icon shade-yellow">

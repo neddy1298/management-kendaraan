@@ -52,6 +52,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::prefix('laporan')->group(function () {
                 Route::get('', [LaporanController::class, 'index'])->name('laporan.index');
+                Route::get('/export-excel', [LaporanController::class, 'exportToExcel'])->name('laporan.exportExcel');
                 Route::get('/print', [LaporanController::class, 'print'])->name('laporan.print');
             });
 
