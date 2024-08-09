@@ -10,6 +10,7 @@ use App\Http\Controllers\{
     MasterAnggaranController,
     PaguAnggaranController,
     SmsController,
+    StokSukuCadangController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +40,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/send-sms', [SmsController::class, 'sendSms'])->name('send-sms');
             Route::get('/send-wa', [SmsController::class, 'sendWhatsapp'])->name('send-wa');
+
             Route::prefix('kendaraan')->group(function () {
                 Route::get('', [KendaraanController::class, 'index'])->name('kendaraan.index');
                 Route::get('/create', [KendaraanController::class, 'create'])->name('kendaraan.create');
@@ -47,6 +49,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::get('/edit/{id}', [KendaraanController::class, 'edit'])->name('kendaraan.edit');
                 Route::post('/update/{id}', [KendaraanController::class, 'update'])->name('kendaraan.update');
                 Route::delete('/delete/{id}', [KendaraanController::class, 'destroy'])->name('kendaraan.delete');
+            });
+
+            Route::prefix('sukuCadang')->group(function () {
+                Route::get('', [StokSukuCadangController::class, 'index'])->name('sukuCadang.index');
+                Route::get('/create', [StokSukuCadangController::class, 'create'])->name('sukuCadang.create');
+                Route::post('/store', [StokSukuCadangController::class, 'store'])->name('sukuCadang.store');
+                Route::get('/edit/{id}', [StokSukuCadangController::class, 'edit'])->name('sukuCadang.edit');
+                Route::post('/update/{id}', [StokSukuCadangController::class, 'update'])->name('sukuCadang.update');
+                Route::delete('/delete/{id}', [StokSukuCadangController::class, 'destroy'])->name('sukuCadang.delete');
             });
 
             Route::prefix('laporan')->group(function () {
