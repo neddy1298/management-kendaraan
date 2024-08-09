@@ -210,7 +210,16 @@ class BelanjaController extends Controller
      */
     public function destroy($id)
     {
-        $belanja = Belanja::findOrFail($id);
+        $belanja = Belanja::with('sukuCadangs')->findOrFail($id);
+
+        $sukuCadangs = SukuCadang::where('belanja_id', $id)->get();
+        foreach ($sukuCadangs as $sukuCadang) {
+            $stokSukuCadang = StokSukuCadang::findOrFail($sukuCadang->stok_suku_cadang_id);
+            $stokSukuCadang->stok += $sukuCadang->jumlah;
+            $stokSukuCadang->save();
+            $sukuCadang->delete();
+        }
+
         $belanja->delete();
         return to_route('belanja.index')->with('success', 'Data berhasil dihapus.');
     }

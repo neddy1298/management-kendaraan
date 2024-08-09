@@ -47,6 +47,7 @@
                                     <th>Suku Cadang</th>
                                     <th>Stok</th>
                                     <th>Harga</th>
+                                    <th>Total</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -56,7 +57,10 @@
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $stokSukuCadang->nama_suku_cadang }}</td>
                                         <td>{{ $stokSukuCadang->stok }}</td>
-                                        <td>Rp. {{ number_format($stokSukuCadang->harga, 0, ',', '.') }}</td>
+                                        <td>Rp {{ number_format($stokSukuCadang->harga, 0, ',', '.') }}</td>
+                                        <td>Rp
+                                            {{ number_format($stokSukuCadang->stok * $stokSukuCadang->harga, 0, ',', '.') }}
+                                        </td>
 
                                         <td>
                                             <a href="{{ route('sukuCadang.edit', $stokSukuCadang->id) }}"
