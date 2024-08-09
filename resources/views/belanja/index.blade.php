@@ -49,40 +49,36 @@
             </div>
         </div>
         <div class="col-xxl-4 col-sm-6 col-12">
-            <a href="{{ route('masterAnggaran.index') }}">
-                <div class="stats-tile">
-                    <div class="sale-icon shade-blue">
-                        <h4 class="text-white">Rp</h4>
-                    </div>
-                    <div class="sale-details">
-                        <h3 class="text-blue">
-                            {{ number_format($belanja_pelumas_periode, 0, ',', '.') }}
-                        </h3>
-                        <p>Total Belanja Pelumas</p>
-                    </div>
+            <div class="stats-tile">
+                <div class="sale-icon shade-blue">
+                    <h4 class="text-white">Rp</h4>
                 </div>
-            </a>
+                <div class="sale-details">
+                    <h3 class="text-blue">
+                        {{ number_format($belanja_pelumas_periode, 0, ',', '.') }}
+                    </h3>
+                    <p>Total Belanja Pelumas</p>
+                </div>
+            </div>
         </div>
         <div class="col-xxl-4 col-sm-6 col-12">
-            <a href="{{ route('masterAnggaran.index') }}">
-                <div class="stats-tile">
-                    <div class="sale-icon shade-red">
-                        <h4 class="text-white">Rp</h4>
-                    </div>
-                    <div class="sale-details">
-                        <h3 class="text-danger">
-                            {{ number_format($belanja_suku_cadang_periode, 0, ',', '.') }}
-                        </h3>
-                        <p>Total Belanja Suku Cadang</p>
-                    </div>
+            <div class="stats-tile">
+                <div class="sale-icon shade-red">
+                    <h4 class="text-white">Rp</h4>
                 </div>
-            </a>
+                <div class="sale-details">
+                    <h3 class="text-danger">
+                        {{ number_format($belanja_suku_cadang_periode, 0, ',', '.') }}
+                    </h3>
+                    <p>Total Belanja Suku Cadang</p>
+                </div>
+            </div>
         </div>
         <div class="col-sm-12 col-12">
             <div class="card">
                 <div class="card-body">
                     <form action="{{ route('belanja.index') }}" method="GET" class="row align-items-center">
-                        <div class="col-sm-12 col-lg-4 col-xxl-4">
+                        <div class="col-sm-12 col-lg-3 col-xxl-3">
                             <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="bi bi-calendar2"></i>
@@ -97,7 +93,7 @@
                                 <i class="bi bi-arrow-counterclockwise"></i>
                             </a>
                         </div>
-                        <div class="col-sm-12 col-lg-5 col-xxl-5 custom-btn-group justify-content-end">
+                        <div class="col-sm-12 col-lg-6 col-xxl-6 custom-btn-group justify-content-end">
                             <a href="{{ route('belanja.create') }}" class="btn btn-warning">
                                 <i class="bi bi-pencil-square"></i> Tambah Baru
                             </a>
