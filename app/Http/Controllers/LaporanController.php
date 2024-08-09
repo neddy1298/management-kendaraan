@@ -67,15 +67,47 @@ class LaporanController extends Controller
                 ->withSum(['belanjas as belanjas_before' => function ($query) use ($startDate, $endDateMinusOneMonth) {
                     $query->whereBetween('tanggal_belanja', [$startDate, $endDateMinusOneMonth]);
                 }], 'total_belanja');
-        }])->orderBy('kode_rekening', 'asc')->get();
+        }])->get();
         return view('laporan.print', compact('paguAnggarans', 'tahun', 'startDate', 'endDate'));
     }
+    
 
-    public function exportToExcel()
+
+    public function exportToExcel(Request $request)
     {
+
+        $tahun = $request->input('tahun');
+        $bulanStart = $request->input('bulan_start');
+        $bulanEnd = $request->input('bulan_end');
+
+        $query = PaguAnggaran::query();
+
+        if ($tahun && $tahun !== 'all') {
+            $query->where('tahun', $tahun);
+        }
+
+        if ($bulanStart > $bulanEnd) {
+            $temp = $bulanStart;
+            $bulanStart = $bulanEnd;
+            $bulanEnd = $temp;
+        }
+
+        $startDate = Carbon::createFromDate($tahun !== 'all' ? $tahun : now()->year, $bulanStart, 1)->startOfMonth();
+        $endDate = Carbon::createFromDate($tahun !== 'all' ? $tahun : now()->year, $bulanEnd, 1)->endOfMonth();
+        $endDateMinusOneMonth = $endDate->copy()->subMonth()->endOfMonth();
+
+        $paguAnggarans = $query->with(['masterAnggarans.groupAnggarans' => function ($query) use ($startDate, $endDate, $endDateMinusOneMonth) {
+            $query->withSum(['belanjas as belanjas_current' => function ($query) use ($endDate) {
+                $query->whereMonth('tanggal_belanja', '=', $endDate->month)
+                    ->whereYear('tanggal_belanja', '=', $endDate->year);
+            }], 'total_belanja')
+            ->withSum(['belanjas as belanjas_before' => function ($query) use ($startDate, $endDateMinusOneMonth) {
+                $query->whereBetween('tanggal_belanja', [$startDate, $endDateMinusOneMonth]);
+            }], 'total_belanja');
+        }])->get();
+
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        $paguAnggarans = PaguAnggaran::all();
 
         // Judul
         $titles = [
@@ -155,61 +187,87 @@ class LaporanController extends Controller
         ];
 
         // Rupiah format
-        $rupiahFormat = [
-            'numberFormat' => [
-                'formatCode' => '[$Rp-421] #,##0',
-            ],
-        ];
-        $sheet->getStyle('D17:N17' . ($row - 1))->applyFromArray($rupiahFormat);
-
+       // $rupiahFormat = [
+       //     'numberFormat' => [
+       //         'formatCode' => '[$Rp-421] #,##0',
+       //     ],
+       // ];
+      //  $sheet->getStyle('D17:N17' . ($row - 1))->applyFromArray($rupiahFormat);
+        
         // Looping isi tabel
         $row = 17;
 
-        // Heading 1
         foreach ($paguAnggarans as $index => $paguAnggaran) {
             $sheet->setCellValue("A$row", $index + 1);
             $sheet->setCellValue("B$row", $paguAnggaran->kode_rekening);
             $sheet->setCellValue("C$row", $paguAnggaran->nama_rekening);
-            $sheet->setCellValue("D$row", $paguAnggaran->anggaran);
+            if ($paguAnggaran->anggaran != 0) {
+                $sheet->setCellValue("D$row", 'Rp ' . number_format($paguAnggaran->anggaran, 0, ',', '.'));
+            }
             $sheet->getStyle("A$row:N$row")->applyFromArray($styleHeading1);
             $row++;
 
-            // Heading 2
+            $sumMasterAnggaran = 0;
+            $sumMasterBelanjaBefore = 0;
+            $sumMasterBelanjaCurrent = 0;
+            $sumMasterBelanjaTotal = 0;
+
             foreach ($paguAnggaran->masterAnggarans as $masterAnggaran) {
                 $sheet->setCellValue("B$row", $masterAnggaran->kode_rekening);
                 $sheet->setCellValue("C$row", $masterAnggaran->nama_rekening);
-                $sheet->setCellValue("D$row", $masterAnggaran->anggaran);
+                if ($masterAnggaran->anggaran != 0) {
+                    $sheet->setCellValue("D$row", 'Rp ' . number_format($masterAnggaran->anggaran, 0, ',', '.'));
+                }
+                $sumMasterAnggaran += $masterAnggaran->anggaran;
+                $sheet->getStyle("B$row:N$row")->applyFromArray($styleHeading2);
 
                 $sumBelanjaBefore = 0;
                 foreach ($masterAnggaran->groupAnggarans as $groupAnggaran) {
                     $sumBelanjaBefore += $groupAnggaran->belanjas_before;
                 }
-                $sheet->setCellValue("F$row", $sumBelanjaBefore);
+                $sumMasterBelanjaBefore += $sumBelanjaBefore;
+                if ($sumBelanjaBefore != 0) {
+                    $sheet->setCellValue("F$row", 'Rp ' . number_format($sumBelanjaBefore, 0, ',', '.'));
+                }
 
                 $sumBelanjaCurrent = 0;
                 foreach ($masterAnggaran->groupAnggarans as $groupAnggaran) {
                     $sumBelanjaCurrent += $groupAnggaran->belanjas_current;
                 }
-                $sheet->setCellValue("I$row", $sumBelanjaCurrent);
-
-                $sumBelanjaTotal = $sumBelanjaBefore + $sumBelanjaCurrent;
-                $sheet->setCellValue("L$row", $sumBelanjaTotal);
-
-                $remainingAnggaran = $masterAnggaran->anggaran - $sumBelanjaTotal;
-                $sheet->setCellValue("N$row", $remainingAnggaran);
-
-                $sheet->getStyle("B$row:N$row")->applyFromArray($styleHeading2);
-                $row++;
-
-                // Heading 3
-                foreach ($masterAnggaran->groupAnggarans as $groupAnggaran) {
-                    $sheet->setCellValue("C$row", $groupAnggaran->nama_group);
-                    $sheet->setCellValue("D$row", $groupAnggaran->anggaran_total);
-                    $row++;
+                $sumMasterBelanjaCurrent += $sumBelanjaCurrent;
+                if ($sumBelanjaCurrent != 0) {
+                    $sheet->setCellValue("I$row", 'Rp ' . number_format($sumBelanjaCurrent, 0, ',', '.'));
                 }
 
-                // Add an empty row after each masterAnggaran
+                $sumBelanjaTotal = $sumBelanjaBefore + $sumBelanjaCurrent;
+                $sumMasterBelanjaTotal += $sumBelanjaTotal;
+                if ($sumBelanjaTotal != 0) {
+                    $sheet->setCellValue("L$row", 'Rp ' . number_format($sumBelanjaTotal, 0, ',', '.'));
+                }
+                if ($masterAnggaran->anggaran - $sumBelanjaTotal != 0) {
+                    $sheet->setCellValue("N$row", 'Rp ' . number_format($masterAnggaran->anggaran - $sumBelanjaTotal, 0, ',', '.'));
+                }
                 $row++;
+
+                foreach ($masterAnggaran->groupAnggarans as $groupAnggaran) {
+                    $sheet->setCellValue("C$row", $groupAnggaran->nama_group);
+                    if ($groupAnggaran->anggaran_total != 0) {
+                        $sheet->setCellValue("D$row", 'Rp ' . number_format($groupAnggaran->anggaran_total, 0, ',', '.'));
+                    }
+                    if ($groupAnggaran->belanjas_before != 0) {
+                        $sheet->setCellValue("F$row", 'Rp ' . number_format($groupAnggaran->belanjas_before ?? 0, 0, ',', '.'));
+                    }
+                    if ($groupAnggaran->belanjas_current != 0) {
+                        $sheet->setCellValue("I$row", 'Rp ' . number_format($groupAnggaran->belanjas_current ?? 0, 0, ',', '.'));
+                    }
+                    if (($groupAnggaran->belanjas_before ?? 0) + ($groupAnggaran->belanjas_current ?? 0) != 0) {
+                        $sheet->setCellValue("L$row", 'Rp ' . number_format(($groupAnggaran->belanjas_before ?? 0) + ($groupAnggaran->belanjas_current ?? 0), 0, ',', '.'));
+                    }
+                    if ($groupAnggaran->anggaran_total - (($groupAnggaran->belanjas_before ?? 0) + ($groupAnggaran->belanjas_current ?? 0)) != 0) {
+                        $sheet->setCellValue("N$row", 'Rp ' . number_format($groupAnggaran->anggaran_total - (($groupAnggaran->belanjas_before ?? 0) + ($groupAnggaran->belanjas_current ?? 0)), 0, ',', '.'));
+                    }
+                    $row++;
+                }
             }
         }
 
