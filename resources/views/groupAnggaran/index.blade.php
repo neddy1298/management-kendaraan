@@ -58,7 +58,7 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $groupAnggaran->kode_rekening }}</td>
-                                        <td>{{ $groupAnggaran->nama_group }}</td>
+                                        <td class="text-start">{{ $groupAnggaran->nama_group }}</td>
                                         <td>Rp {{ number_format($groupAnggaran->anggaran_bahan_bakar_minyak, 0, ',', '.') }}
                                         </td>
                                         <td>Rp {{ number_format($groupAnggaran->anggaran_pelumas_mesin, 0, ',', '.') }}</td>

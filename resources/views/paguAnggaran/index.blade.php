@@ -56,7 +56,7 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $paguAnggaran->kode_rekening }}</td>
-                                        <td>{{ $paguAnggaran->nama_rekening }}</td>
+                                        <td class="text-start">{{ $paguAnggaran->nama_rekening }}</td>
                                         <td>Rp. {{ number_format($paguAnggaran->anggaran, 0, ',', '.') }}</td>
                                         <td>{{ $paguAnggaran->tahun }}</td>
                                         <td>
