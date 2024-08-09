@@ -1,11 +1,5 @@
 @extends('layouts.app', ['page' => 'Anggaran', 'page2' => 'Pertahun', 'page3' => ''])
 
-@section('css')
-    <!-- Data Tables -->
-    <link rel="stylesheet" href="{{ asset('vendor/datatables/dataTables.bs5.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/datatables/dataTables.bs5-custom.css') }}">
-@endsection
-
 @section('content')
     <!-- Row start -->
     <div class="row">
@@ -55,24 +49,26 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $masterAnggaran->kode_rekening }}</td>
-                                        <td>{{ $masterAnggaran->nama_rekening }}</td>
+                                        <td class="text-start">{{ $masterAnggaran->nama_rekening }}</td>
                                         <td>Rp. {{ number_format($masterAnggaran->anggaran, 0, ',', '.') }}</td>
                                         <td>
-                                            <a href="{{ route('masterAnggaran.edit', $masterAnggaran->id) }}"
-                                                class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
-                                                data-bs-placement="top" title="Edit">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
-                                            <form action="{{ route('masterAnggaran.delete', $masterAnggaran->id) }}"
-                                                method="POST" style="display: inline-block">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-danger btn-icon btn-sm"
-                                                    onclick="return confirm('Kamu yakin ingin menghapus data: {{ $masterAnggaran->nomor_registrasi }} ?')"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
+                                            <div class="custom-btn-group">
+                                                <a href="{{ route('masterAnggaran.edit', $masterAnggaran->id) }}"
+                                                    class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" title="Edit">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <form action="{{ route('masterAnggaran.delete', $masterAnggaran->id) }}"
+                                                    method="POST" style="display: inline-block">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-danger btn-icon btn-sm"
+                                                        onclick="return confirm('Kamu yakin ingin menghapus data: {{ $masterAnggaran->nomor_registrasi }} ?')"
+                                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -85,13 +81,4 @@
         </div>
     </div>
     <!-- Row end -->
-@endsection
-
-@section('script')
-    <!-- Data Tables -->
-    <script src="{{ asset('vendor/datatables/dataTables.min.js') }}"></script>
-    <script src="{{ asset('vendor/datatables/dataTables.bootstrap.min.js') }}"></script>
-
-    <!-- Custom Data tables -->
-    <script src="{{ asset('vendor/datatables/custom/custom-datatables.js') }}"></script>
 @endsection

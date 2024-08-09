@@ -37,6 +37,10 @@ class BelanjaController extends Controller
             + $belanjas->sum('belanja_pelumas_mesin')
             + $belanjas->sum('belanja_suku_cadang');
 
+        $belanja_bbm_periode = $belanjas->sum('belanja_bahan_bakar_minyak');
+        $belanja_pelumas_periode = $belanjas->sum('belanja_pelumas_mesin');
+        $belanja_suku_cadang_periode = $belanjas->sum('belanja_suku_cadang');
+
         $belanja_tahun_ini = Belanja::whereYear('tanggal_belanja', Carbon::now()->year)
             ->selectRaw('SUM(belanja_bahan_bakar_minyak + belanja_pelumas_mesin + belanja_suku_cadang) as total')
             ->value('total');
@@ -45,7 +49,7 @@ class BelanjaController extends Controller
             $query->where('berlaku_sampai', '<', Carbon::now());
         })->count();
 
-        return view('belanja.index', compact('belanjas', 'isExpire', 'belanja_periode', 'belanja_tahun_ini', 'dateRange'));
+        return view('belanja.index', compact('belanjas', 'isExpire', 'belanja_periode', 'belanja_bbm_periode', 'belanja_pelumas_periode', 'belanja_suku_cadang_periode', 'dateRange'));
     }
 
 

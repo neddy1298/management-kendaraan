@@ -17,7 +17,15 @@ class KendaraanController extends Controller
     public function index()
     {
         $kendaraans = Kendaraan::with('belanjas')->get();
-        return view('kendaraan.index', compact('kendaraans'));
+
+        $isExpire = 0;
+
+        foreach ($kendaraans as $kendaraan) {
+            if ($kendaraan->berlaku_sampai->isPast()) {
+                $isExpire++;
+            }
+        }
+        return view('kendaraan.index', compact('kendaraans', 'isExpire'));
     }
 
     /**

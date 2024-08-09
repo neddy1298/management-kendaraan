@@ -9,6 +9,19 @@
 @section('content')
     <!-- Row start -->
     <div class="row">
+        <div class="col-xxl-4 col-sm-6 col-12">
+            <a href="#">
+                <div class="stats-tile">
+                    <div class="sale-icon shade-red">
+                        <i class="bi bi-clock-history"></i>
+                    </div>
+                    <div class="sale-details">
+                        <h3 class="text-red">{{ $isExpire }}/{{ $kendaraans->count() }}</h3>
+                        <p>Kadaluarsa Pajak</p>
+                    </div>
+                </div>
+            </a>
+        </div>
         <div class="col-12">
             @php
                 $message =
@@ -58,6 +71,7 @@
                                     <th>CC Kendaraan</th>
                                     <th>BBM Kendaraan</th>
                                     <th>Roda Kendaraan</th>
+                                    <th>Kadaluarsa Pajak</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -72,20 +86,33 @@
                                         <td>{{ $kendaraan->bbm_kendaraan }}</td>
                                         <td>Roda {{ $kendaraan->roda_kendaraan }}</td>
                                         <td>
-                                            <a href="{{ route('kendaraan.edit', $kendaraan->id) }}"
-                                                class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
-                                                data-bs-placement="top" title="Edit">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
-                                            <form action="{{ route('kendaraan.delete', $kendaraan->id) }}" method="POST"
-                                                style="display: inline-block">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-danger btn-icon btn-sm"
-                                                    onclick="return confirm('Kamu yakin ingin menghapus data: {{ $kendaraan->nomor_registrasi }} ?')"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
+                                            <span hidden> {{ $kendaraan->berlaku_sampai }}
+                                            </span>
+                                            @if ($kendaraan->berlaku_sampai->ispast())
+                                                <span class="badge shade-red">
+                                                    {{ $kendaraan->berlaku_sampai->translatedformat('d F Y') }}
+                                                </span>
+                                            @else
+                                                {{ $kendaraan->berlaku_sampai->translatedformat('d F Y') }}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <div class="custom-btn-group">
+                                                <a href="{{ route('kendaraan.edit', $kendaraan->id) }}"
+                                                    class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" title="Edit">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <form action="{{ route('kendaraan.delete', $kendaraan->id) }}"
+                                                    method="POST" style="display: inline-block">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-danger btn-icon btn-sm"
+                                                        onclick="return confirm('Kamu yakin ingin menghapus data: {{ $kendaraan->nomor_registrasi }} ?')"
+                                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                            </div>
                                             </form>
                                         </td>
                                     </tr>

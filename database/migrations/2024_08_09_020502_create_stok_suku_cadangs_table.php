@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('suku_cadangs', function (Blueprint $table) {
+        Schema::create('stok_suku_cadangs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('belanja_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('stok_suku_cadang_id')->constrained()->cascadeOnDelete();
             $table->string('nama_suku_cadang');
-            $table->integer('jumlah');
-            $table->bigInteger('harga_satuan');
-            $table->bigInteger('total_harga')->virtualAs('jumlah * harga_satuan');
+            $table->integer('stok');
+            $table->integer('harga');
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('suku_cadangs');
+        Schema::dropIfExists('stok_suku_cadangs');
     }
 };

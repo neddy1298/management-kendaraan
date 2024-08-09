@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => 'Anggaran', 'page2' => 'Pagu', 'page3' => ''])
+@extends('layouts.app', ['page' => 'Suku Cadang', 'page2' => 'List', 'page3' => ''])
 
 @section('css')
     <!-- Data Tables -->
@@ -18,7 +18,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="custom-btn-group">
-                        <a href="{{ route('paguAnggaran.create') }}" class="btn btn-warning">
+                        <a href="{{ route('sukuCadang.create') }}" class="btn btn-warning">
                             <i class="bi bi-pencil-square"></i> Tambah Baru
                         </a>
                     </div>
@@ -36,7 +36,7 @@
             <!-- Card start -->
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Anggaran Pertahun</div>
+                    <div class="card-title">Suku Cadang</div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -44,39 +44,36 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Kode Rekening</th>
-                                    <th>Nama Rekening</th>
-                                    <th>Anggaran</th>
-                                    <th>Tahun</th>
+                                    <th>Suku Cadang</th>
+                                    <th>Stok</th>
+                                    <th>Harga</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($paguAnggarans as $index => $paguAnggaran)
+                                @foreach ($stokSukuCadangs as $index => $stokSukuCadang)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $paguAnggaran->kode_rekening }}</td>
-                                        <td class="text-start">{{ $paguAnggaran->nama_rekening }}</td>
-                                        <td>Rp. {{ number_format($paguAnggaran->anggaran, 0, ',', '.') }}</td>
-                                        <td>{{ $paguAnggaran->tahun }}</td>
+                                        <td>{{ $stokSukuCadang->nama_suku_cadang }}</td>
+                                        <td>{{ $stokSukuCadang->stok }}</td>
+                                        <td>Rp. {{ number_format($stokSukuCadang->harga, 0, ',', '.') }}</td>
+
                                         <td>
-                                            <div class="custom-btn-group">
-                                                <a href="{{ route('paguAnggaran.edit', $paguAnggaran->id) }}"
-                                                    class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" title="Edit">
-                                                    <i class="bi bi-pencil"></i>
-                                                </a>
-                                                <form action="{{ route('paguAnggaran.delete', $paguAnggaran->id) }}"
-                                                    method="POST" style="display: inline-block">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="btn btn-danger btn-icon btn-sm"
-                                                        onclick="return confirm('Kamu yakin ingin menghapus data: {{ $paguAnggaran->nama_rekening }} ?')"
-                                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
+                                            <a href="{{ route('sukuCadang.edit', $stokSukuCadang->id) }}"
+                                                class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
+                                                data-bs-placement="top" title="Edit">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <form action="{{ route('sukuCadang.delete', $stokSukuCadang->id) }}"
+                                                method="POST" style="display: inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-danger btn-icon btn-sm"
+                                                    onclick="return confirm('Kamu yakin ingin menghapus data: {{ $stokSukuCadang->nama_group }} ?')"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach
