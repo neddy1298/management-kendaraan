@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Belanja;
 use App\Models\GroupAnggaran;
 use App\Models\Kendaraan;
+use App\Models\StokSukuCadang;
 use App\Models\SukuCadang;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -62,7 +63,8 @@ class BelanjaController extends Controller
     {
         $kendaraans = Kendaraan::all();
         $groupAnggarans = GroupAnggaran::all();
-        return view('belanja.create', compact('kendaraans', 'groupAnggarans'));
+        $stokSukuCadangs = StokSukuCadang::all();
+        return view('belanja.create', compact('kendaraans', 'groupAnggarans', 'stokSukuCadangs'));
     }
 
     public function getKendaraan($group_anggaran_id)
@@ -93,10 +95,9 @@ class BelanjaController extends Controller
             'nama_suku_cadang' => 'nullable|array',
             'jumlah_suku_cadang' => 'nullable|array',
             'harga_suku_cadang' => 'nullable|array',
-            'nama_suku_cadang.*' => 'required_with:jumlah_suku_cadang.*,harga_suku_cadang.*|string',
+            'nama_suku_cadang.*' => 'required_with:jumlah_suku_cadang.*,harga_suku_cadang.*|integer',
             'jumlah_suku_cadang.*' => 'required_with:nama_suku_cadang.*,harga_suku_cadang.*|integer|min:1',
             'harga_suku_cadang.*' => 'required_with:nama_suku_cadang.*,jumlah_suku_cadang.*|integer|min:0',
-
         ], [
             'required' => 'Kolom :attribute wajib diisi.',
             'integer' => 'Kolom :attribute harus berupa angka.',
@@ -104,11 +105,16 @@ class BelanjaController extends Controller
         ]);
 
         $validatedData['tanggal_belanja'] = Carbon::createFromFormat('d/m/Y', $validatedData['tanggal_belanja'])->format('Y-m-d');
-        DB::beginTransaction();
-        $belanja = $this->createBelanja($validatedData);
-        $this->createSukuCadangs($validatedData, $belanja);
 
-        DB::commit();
+        DB::beginTransaction();
+        try {
+            $belanja = $this->createBelanja($validatedData);
+            $this->createSukuCadangs($validatedData, $belanja);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
 
         return redirect()->route('belanja.index')->with('success', 'Data berhasil disimpan.');
     }
@@ -128,26 +134,36 @@ class BelanjaController extends Controller
     private function createSukuCadangs($data, $belanja)
     {
         if (!empty($data['nama_suku_cadang'])) {
-            $sukuCadangs = [];
-            foreach ($data['nama_suku_cadang'] as $key => $nama) {
-                if (!empty($nama) && isset($data['jumlah_suku_cadang'][$key]) && isset($data['harga_suku_cadang'][$key])) {
+            foreach ($data['nama_suku_cadang'] as $key => $sukuCadangId) {
+                if (!empty($sukuCadangId) && isset($data['jumlah_suku_cadang'][$key]) && isset($data['harga_suku_cadang'][$key])) {
+                    $stokSukuCadang = StokSukuCadang::findOrFail($sukuCadangId);
+                    $jumlah = $data['jumlah_suku_cadang'][$key];
+                    $harga = $data['harga_suku_cadang'][$key];
+
+                    if ($jumlah > $stokSukuCadang->stok) {
+                        throw new \Exception('Jumlah suku cadang melebihi stok yang tersedia.');
+                    }
+
                     $sukuCadang = new SukuCadang([
                         'belanja_id' => $belanja->id,
-                        'nama_suku_cadang' => $nama,
-                        'jumlah' => $data['jumlah_suku_cadang'][$key],
-                        'harga_satuan' => $data['harga_suku_cadang'][$key],
+                        'stok_suku_cadang_id' => $stokSukuCadang->id,
+                        'jumlah' => $jumlah,
+                        'harga_satuan' => $harga,
                     ]);
                     $sukuCadang->save();
 
                     // Update total belanja_suku_cadang di model Belanja
                     $belanja->belanja_suku_cadang += $sukuCadang->jumlah * $sukuCadang->harga_satuan;
+
+                    // Reduce stock
+                    $stokSukuCadang->stok -= $jumlah;
+                    $stokSukuCadang->save();
                 }
             }
             // Simpan perubahan pada model Belanja
             $belanja->save();
         }
     }
-
 
     /**
      * Display the specified resource.

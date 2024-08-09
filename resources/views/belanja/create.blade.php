@@ -77,12 +77,52 @@
                                 </div>
                             </div>
                             <div id="form_suku_cadang" class="col-12 d-none">
-                                <div class="mb-3">
-                                    <label class="form-label">Suku Cadang</label>
-                                    <div id="sukuCadangContainer"></div>
-                                    <button type="button" class="btn btn-primary btn-sm" id="tambahSukuCadang">Tambah Suku
-                                        Cadang</button>
+                                <div id="sukuCadangContainer">
+                                    <div class="row suku-cadang-item mb-3">
+                                        <div class="col-xl-4 col-sm-12 col-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">Nama Suku Cadang</label>
+                                                <select class="form-control stok-suku-cadang" name="nama_suku_cadang[]">
+                                                    <option value="">Pilih Suku Cadang</option>
+                                                    @foreach ($stokSukuCadangs as $stokSukuCadang)
+                                                        <option value="{{ $stokSukuCadang->id }}"
+                                                            data-stok="{{ $stokSukuCadang->stok }}"
+                                                            data-harga="{{ $stokSukuCadang->harga }}">
+                                                            {{ $stokSukuCadang->nama_suku_cadang }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-sm-12 col-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">Jumlah</label>
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control jumlah-suku-cadang"
+                                                        name="jumlah_suku_cadang[]" min="1">
+                                                    <span class="input-group-text stok-suku-cadang">stok</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-sm-12 col-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">Harga Satuan</label>
+                                                <div class="input-group">
+                                                    <input type="hidden" class="harga-suku-cadang"
+                                                        name="harga_suku_cadang[]" readonly>
+                                                    <input class="form-control harga-display">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-1 col-sm-12 col-12 d-flex align-items-end">
+                                            <div class="mb-3">
+                                                <button type="button"
+                                                    class="btn btn-danger btn-icon btn-sm remove-suku-cadang">Hapus</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                                <button type="button" id="tambahSukuCadang" class="btn btn-primary mb-3">Tambah Suku
+                                    Cadang</button>
                             </div>
 
                             <div class="col-xl-12 col-sm-12 col-12">
@@ -150,8 +190,9 @@
             // Trigger change event to populate initial options
             groupAnggaranSelect.dispatchEvent(new Event('change'));
         });
-    </script>
-    <script>
+
+
+
         document.addEventListener('DOMContentLoaded', function() {
             const jenisBelanja = document.getElementById('jenis_belanja');
             const formBBM = document.getElementById('form_bbm');
@@ -181,19 +222,28 @@
                     <div class="col-xl-4 col-sm-12 col-12">
                         <div class="mb-3">
                             <label class="form-label">Nama Suku Cadang</label>
-                            <input type="text" class="form-control" name="nama_suku_cadang[]">
+                            <select class="form-control stok-suku-cadang" name="nama_suku_cadang[]">
+                                <option value="">Pilih Suku Cadang</option>
+                                @foreach ($stokSukuCadangs as $stokSukuCadang)
+                                    <option value="{{ $stokSukuCadang->id }}" data-stok="{{ $stokSukuCadang->stok }}" data-harga="{{ $stokSukuCadang->harga }}">{{ $stokSukuCadang->nama_suku_cadang }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="col-xl-3 col-sm-12 col-12">
                         <div class="mb-3">
                             <label class="form-label">Jumlah</label>
-                            <input type="number" class="form-control" name="jumlah_suku_cadang[]">
+                            <div class="input-group">
+                                <input type="number" class="form-control jumlah-suku-cadang" name="jumlah_suku_cadang[]" min="1">
+                                <span class="input-group-text stok-suku-cadang">stok</span>
+                            </div>
                         </div>
                     </div>
                     <div class="col-xl-4 col-sm-12 col-12">
                         <div class="mb-3">
-                            <label class="form-label">Harga Satuan</label>
-                            <input type="number" class="form-control" name="harga_suku_cadang[]">
+                            <label class="form-label">Harga</label>
+                            <input type="hidden" class="form-control harga-suku-cadang" name="harga_suku_cadang[]" readonly>
+                            <input type="text" class="form-control harga-display" readonly>
                         </div>
                     </div>
                     <div class="col-xl-1 col-sm-12 col-12 d-flex align-items-end">
@@ -212,6 +262,32 @@
             container.addEventListener('click', function(e) {
                 if (e.target.classList.contains('remove-suku-cadang')) {
                     e.target.closest('.suku-cadang-item').remove();
+                }
+            });
+
+            container.addEventListener('change', function(e) {
+                if (e.target.classList.contains('stok-suku-cadang')) {
+                    const selectedOption = e.target.options[e.target.selectedIndex];
+                    const stok = selectedOption.getAttribute('data-stok');
+                    const harga = selectedOption.getAttribute('data-harga');
+                    const jumlahInput = e.target.closest('.suku-cadang-item').querySelector(
+                        '.jumlah-suku-cadang');
+                    const hargaInput = e.target.closest('.suku-cadang-item').querySelector(
+                        '.harga-suku-cadang');
+                    const hargaDisplay = e.target.closest('.suku-cadang-item').querySelector(
+                        '.harga-display');
+                    const stokSpan = e.target.closest('.suku-cadang-item').querySelector(
+
+                        '.input-group-text.stok-suku-cadang');
+                    jumlahInput.max = stok;
+                    hargaInput.value = harga;
+                    hargaDisplay.value = new Intl.NumberFormat('id-ID', {
+                        style: 'currency',
+                        currency: 'IDR',
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    }).format(Number(harga));
+                    stokSpan.textContent = `Stok: ${stok}`;
                 }
             });
         });
