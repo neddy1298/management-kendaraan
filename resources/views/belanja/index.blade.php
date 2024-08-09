@@ -159,6 +159,7 @@
                                                 data-total-belanja="{{ $belanja->total_belanja }}"
                                                 data-tanggal-belanja="{{ \Carbon\Carbon::parse($belanja->tanggal_belanja)->translatedFormat('d F Y') }}"
                                                 data-keterangan="{{ $belanja->keterangan }}"
+                                                data-suku-cadangs="{{ $belanja->sukuCadangs->toJson() }}"
                                                 data-id="{{ $belanja->id }}">
                                                 <i class="bi bi-search"></i>
                                             </button>
@@ -188,6 +189,22 @@
                     <p><strong>Belanja Suku Cadang:</strong> Rp. <span id="modalSukuCadang"></span>.00</p>
                     <p><strong>Total Belanja:</strong> Rp. <span id="modalTotalBelanja"></span>.00</p>
                     <p><strong>Keterangan:</strong> <span id="modalKeterangan"></span></p>
+                    <div id="modalSukuCadangsContainer">
+                        <h5 class="mt-3">Detail Suku Cadang</h5>
+                        <table id="highlightRowColumn" class="table custom-table text-center v-middle">
+                            <thead>
+                                <tr>
+                                    <th>Nama</th>
+                                    <th>Jumlah</th>
+                                    <th>Harga</th>
+                                    <th>Total Harga</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modalSukuCadangs">
+                                <!-- Suku Cadangs will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <form action="" method="POST" style="display: inline-block" id="modalDeleteBelanja">
@@ -227,6 +244,29 @@
                         .getAttribute('data-total-belanja') || 0).toLocaleString('id-ID');
                     modal.querySelector('#modalKeterangan').textContent = this.getAttribute(
                         'data-keterangan');
+
+                    // Populate Suku Cadangs
+                    const sukuCadangs = JSON.parse(this.getAttribute('data-suku-cadangs'));
+                    const sukuCadangsContainer = modal.querySelector('#modalSukuCadangsContainer');
+                    const sukuCadangsTableBody = modal.querySelector('#modalSukuCadangs');
+                    sukuCadangsTableBody.innerHTML = '';
+
+                    if (sukuCadangs.length > 0) {
+                        sukuCadangsContainer.style.display = 'block';
+                        sukuCadangs.forEach(sukuCadang => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                            <td>${sukuCadang.nama_suku_cadang}</td>
+                            <td>${sukuCadang.jumlah}</td>
+                            <td>Rp. ${parseInt(sukuCadang.total_harga / sukuCadang.jumlah).toLocaleString('id-ID')}</td>
+                            <td>Rp. ${parseInt(sukuCadang.total_harga).toLocaleString('id-ID')}</td>
+                        `;
+                            sukuCadangsTableBody.appendChild(row);
+                        });
+                    } else {
+                        sukuCadangsContainer.style.display = 'none';
+                    }
+
                     document.getElementById('modalDeleteBelanja').action =
                         "{{ route('belanja.delete', 'id') }}".replace('id', this.getAttribute(
                             'data-id'));

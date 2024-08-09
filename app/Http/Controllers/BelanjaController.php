@@ -22,7 +22,7 @@ class BelanjaController extends Controller
     {
         $dateRange = $request->input('date-range');
 
-        $query = Belanja::with('kendaraan');
+        $query = Belanja::with('kendaraan', 'sukuCadangs');
 
         if ($dateRange) {
             $dates = explode(' - ', $dateRange);
@@ -32,7 +32,7 @@ class BelanjaController extends Controller
             $query->whereBetween('tanggal_belanja', [$startDate, $endDate]);
         }
 
-        $belanjas = $query->orderBy('tanggal_belanja', 'desc')->get();
+        $belanjas = $query->orderBy('created_at', 'desc')->get();
 
         $belanja_periode = $belanjas->sum('belanja_bahan_bakar_minyak')
             + $belanjas->sum('belanja_pelumas_mesin')
@@ -42,13 +42,14 @@ class BelanjaController extends Controller
         $belanja_pelumas_periode = $belanjas->sum('belanja_pelumas_mesin');
         $belanja_suku_cadang_periode = $belanjas->sum('belanja_suku_cadang');
 
-        $belanja_tahun_ini = Belanja::whereYear('tanggal_belanja', Carbon::now()->year)
-            ->selectRaw('SUM(belanja_bahan_bakar_minyak + belanja_pelumas_mesin + belanja_suku_cadang) as total')
-            ->value('total');
+        // $belanja_tahun_ini = Belanja::whereYear('tanggal_belanja', Carbon::now()->year)
+        //     ->selectRaw('SUM(belanja_bahan_bakar_minyak + belanja_pelumas_mesin + belanja_suku_cadang) as total')
+        //     ->value('total');
 
         $isExpire = Belanja::whereHas('kendaraan', function ($query) {
             $query->where('berlaku_sampai', '<', Carbon::now());
         })->count();
+
 
         return view('belanja.index', compact('belanjas', 'isExpire', 'belanja_periode', 'belanja_bbm_periode', 'belanja_pelumas_periode', 'belanja_suku_cadang_periode', 'dateRange'));
     }
@@ -173,6 +174,7 @@ class BelanjaController extends Controller
                     $sukuCadang = new SukuCadang([
                         'belanja_id' => $belanja->id,
                         'stok_suku_cadang_id' => $stokSukuCadang->id,
+                        'nama_suku_cadang' => $stokSukuCadang->nama_suku_cadang,
                         'jumlah' => $jumlah,
                         'harga_satuan' => $harga,
                     ]);

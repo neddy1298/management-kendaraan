@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('belanja_id')->constrained()->cascadeOnDelete();
             $table->foreignId('stok_suku_cadang_id')->constrained()->cascadeOnDelete();
+            $table->string('nama_suku_cadang');
             $table->integer('jumlah');
             $table->bigInteger('harga_satuan');
             $table->bigInteger('total_harga')->virtualAs('jumlah * harga_satuan');
