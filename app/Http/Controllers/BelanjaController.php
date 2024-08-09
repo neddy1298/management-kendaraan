@@ -88,21 +88,48 @@ class BelanjaController extends Controller
         $validatedData = $request->validate([
             'group_anggaran_id' => 'required|integer',
             'kendaraan_id' => 'required|integer',
-            'belanja_bahan_bakar_minyak' => 'nullable|integer',
-            'belanja_pelumas_mesin' => 'nullable|integer',
+            'belanja_bahan_bakar_minyak' => 'nullable|integer|min:0',
+            'belanja_pelumas_mesin' => 'nullable|integer|min:0',
             'tanggal_belanja' => 'required|date_format:d/m/Y',
             'keterangan' => 'nullable|string',
             'nama_suku_cadang' => 'nullable|array',
             'jumlah_suku_cadang' => 'nullable|array',
             'harga_suku_cadang' => 'nullable|array',
-            'nama_suku_cadang.*' => 'required_with:jumlah_suku_cadang.*,harga_suku_cadang.*|integer',
-            'jumlah_suku_cadang.*' => 'required_with:nama_suku_cadang.*,harga_suku_cadang.*|integer|min:1',
-            'harga_suku_cadang.*' => 'required_with:nama_suku_cadang.*,jumlah_suku_cadang.*|integer|min:0',
+            'nama_suku_cadang.*' => 'nullable|integer',
+            'jumlah_suku_cadang.*' => 'nullable|integer|min:1',
+            'harga_suku_cadang.*' => 'nullable|integer|min:0',
         ], [
             'required' => 'Kolom :attribute wajib diisi.',
             'integer' => 'Kolom :attribute harus berupa angka.',
             'date_format' => 'Format tanggal harus :format.',
+            'min' => 'Kolom :attribute minimal bernilai :min.',
         ]);
+
+        // Check if at least one of BBM, Pelumas, or Suku Cadang is filled
+        if (
+            empty($validatedData['belanja_bahan_bakar_minyak']) &&
+            empty($validatedData['belanja_pelumas_mesin']) &&
+            empty(array_filter($validatedData['nama_suku_cadang'] ?? []))
+        ) {
+            return redirect()->back()->withErrors(['error' => 'Anda harus memilih setidaknya satu dari BBM, Pelumas, atau Suku Cadang.']);
+        }
+
+        // Validate Suku Cadang if any is provided
+        if (!empty($validatedData['nama_suku_cadang'])) {
+            foreach ($validatedData['nama_suku_cadang'] as $key => $value) {
+                if (!empty($value)) {
+                    $request->validate([
+                        "nama_suku_cadang.$key" => 'required|integer',
+                        "jumlah_suku_cadang.$key" => 'required|integer|min:1',
+                        "harga_suku_cadang.$key" => 'required|integer|min:0',
+                    ], [
+                        'required' => 'Kolom :attribute wajib diisi jika ada suku cadang yang dipilih.',
+                        'integer' => 'Kolom :attribute harus berupa angka.',
+                        'min' => 'Kolom :attribute minimal bernilai :min.',
+                    ]);
+                }
+            }
+        }
 
         $validatedData['tanggal_belanja'] = Carbon::createFromFormat('d/m/Y', $validatedData['tanggal_belanja'])->format('Y-m-d');
 
@@ -111,12 +138,11 @@ class BelanjaController extends Controller
             $belanja = $this->createBelanja($validatedData);
             $this->createSukuCadangs($validatedData, $belanja);
             DB::commit();
+            return redirect()->route('belanja.index')->with('success', 'Data berhasil disimpan.');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
-
-        return redirect()->route('belanja.index')->with('success', 'Data berhasil disimpan.');
     }
 
     private function createBelanja($data)

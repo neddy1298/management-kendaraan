@@ -46,7 +46,7 @@
                                 <div class="mb-3">
                                     <label class="form-label">Kendaraan</label>
                                     <select class="form-select" id="kendaraan_id" name="kendaraan_id">
-                                        <option value="">Pilih Kendaraan</option>
+                                        <option value="" hidden>Pilih Kendaraan</option>
                                     </select>
                                 </div>
                             </div>
@@ -57,7 +57,7 @@
                                 <div class="mb-3">
                                     <label class="form-label">Jenis Belanja</label>
                                     <select class="form-select" id="jenis_belanja" name="jenis_belanja">
-                                        <option value="">Pilih Jenis Belanja</option>
+                                        <option value="" hidden>Pilih Jenis Belanja</option>
                                         <option value="bbm">BBM</option>
                                         <option value="pelumas">Pelumas</option>
                                         <option value="suku_cadang">Suku Cadang</option>
@@ -83,7 +83,7 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Nama Suku Cadang</label>
                                                 <select class="form-control stok-suku-cadang" name="nama_suku_cadang[]">
-                                                    <option value="">Pilih Suku Cadang</option>
+                                                    <option value="" hidden>Pilih Suku Cadang</option>
                                                     @foreach ($stokSukuCadangs as $stokSukuCadang)
                                                         <option value="{{ $stokSukuCadang->id }}"
                                                             data-stok="{{ $stokSukuCadang->stok }}"
