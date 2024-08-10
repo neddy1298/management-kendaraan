@@ -115,8 +115,8 @@ class KendaraanController extends Controller
      */
     public function printAll()
     {
-        $datas = Kendaraan::orderBy('created_at', 'desc')->get();
-        return view('kendaraan.printAll', compact('datas'));
+        $kendaraans = Kendaraan::orderBy('roda_kendaraan', 'asc')->get();
+        return view('kendaraan.printAll', compact('kendaraans'));
     }
 
     /**
