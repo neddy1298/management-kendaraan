@@ -13,7 +13,7 @@ class MasterAnggaranController extends Controller
      */
     public function index()
     {
-        $masterAnggarans = MasterAnggaran::orderBy('created_at', 'desc')->get();
+        $masterAnggarans = MasterAnggaran::with('paguAnggaran')->orderBy('created_at', 'desc')->get();
         return view('masterAnggaran.index', compact('masterAnggarans'));
     }
 
@@ -31,19 +31,7 @@ class MasterAnggaranController extends Controller
      */
     public function store(Request $request)
     {
-
-        $masterAnggaran = $request->validate(
-            [
-                'pagu_anggaran_id' => 'required|integer',
-                'kode_rekening' => 'required|string|max:255',
-                'nama_rekening' => 'required|string|max:255',
-                'anggaran' => 'required|integer',
-            ],
-            [
-                'required' => 'Kolom :attribute wajib diisi.',
-                'integer' => 'Kolom :attribute harus berupa angka.',
-            ]
-        );
+        $masterAnggaran = $this->validateMasterAnggaran($request);
 
         MasterAnggaran::create($masterAnggaran);
 
@@ -60,20 +48,15 @@ class MasterAnggaranController extends Controller
         return view('masterAnggaran.edit', compact('masterAnggaran'));
     }
 
-
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'kode_rekening' => 'required',
-            'nama_rekening' => 'required',
-            'anggaran' => 'required',
-        ]);
+        $masterAnggaran = $this->validateMasterAnggaran($request);
 
-        $masterAnggaran = MasterAnggaran::findOrFail($id);
-        $masterAnggaran->update($request->all());
+        $masterAnggaranModel = MasterAnggaran::findOrFail($id);
+        $masterAnggaranModel->update($masterAnggaran);
 
         return to_route('masterAnggaran.index')
             ->with('success', 'Anggaran Berhasil diubah.');
@@ -92,5 +75,21 @@ class MasterAnggaranController extends Controller
         } else {
             return to_route('masterAnggaran.index')->with('error', 'Data tidak ditemukan.');
         }
+    }
+
+    /**
+     * Validate Master Anggaran data.
+     */
+    protected function validateMasterAnggaran(Request $request)
+    {
+        return $request->validate([
+            'pagu_anggaran_id' => 'required|integer',
+            'kode_rekening' => 'required|string|max:255',
+            'nama_rekening' => 'required|string|max:255',
+            'anggaran' => 'required|integer',
+        ], [
+            'required' => 'Kolom :attribute wajib diisi.',
+            'integer' => 'Kolom :attribute harus berupa angka.',
+        ]);
     }
 }

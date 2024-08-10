@@ -12,7 +12,7 @@ class PaguAnggaranController extends Controller
      */
     public function index()
     {
-        $paguAnggarans = PaguAnggaran::all();
+        $paguAnggarans = PaguAnggaran::get();
 
         return view('paguAnggaran.index', compact('paguAnggarans'));
     }
@@ -30,17 +30,7 @@ class PaguAnggaranController extends Controller
      */
     public function store(Request $request)
     {
-        $paguAnggaran = $request->validate([
-            'kode_rekening' => 'required',
-            'nama_rekening' => 'required',
-            'anggaran' => 'required',
-            'tahun' => 'required',
-        ], [
-            'kode_rekening.required' => 'Kode Rekening wajib diisi',
-            'nama_rekening.required' => 'Nama Rekening wajib diisi',
-            'anggaran.required' => 'Anggaran wajib diisi',
-            'tahun.required' => 'Tahun wajib diisi',
-        ]);
+        $paguAnggaran = $this->validatePaguAnggaran($request);
 
         PaguAnggaran::create($paguAnggaran);
 
@@ -63,20 +53,10 @@ class PaguAnggaranController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'kode_rekening' => 'required',
-            'nama_rekening' => 'required',
-            'anggaran' => 'required',
-            'tahun' => 'required',
-        ], [
-            'kode_rekening.required' => 'Kode Rekening wajib diisi',
-            'nama_rekening.required' => 'Nama Rekening wajib diisi',
-            'anggaran.required' => 'Anggaran wajib diisi',
-            'tahun.required' => 'Tahun wajib diisi',
-        ]);
+        $paguAnggaran = $this->validatePaguAnggaran($request);
 
-        $paguAnggaran = PaguAnggaran::findOrFail($id);
-        $paguAnggaran->update($request->all());
+        $paguAnggaranModel = PaguAnggaran::findOrFail($id);
+        $paguAnggaranModel->update($paguAnggaran);
 
         return redirect()->route('paguAnggaran.index')
             ->with('success', 'Pagu Anggaran berhasil diperbarui');
@@ -93,5 +73,23 @@ class PaguAnggaranController extends Controller
 
         return redirect()->route('paguAnggaran.index')
             ->with('success', 'Pagu Anggaran berhasil dihapus');
+    }
+
+    /**
+     * Validate Pagu Anggaran data.
+     */
+    protected function validatePaguAnggaran(Request $request)
+    {
+        return $request->validate([
+            'kode_rekening' => 'required',
+            'nama_rekening' => 'required',
+            'anggaran' => 'required',
+            'tahun' => 'required',
+        ], [
+            'kode_rekening.required' => 'Kode Rekening wajib diisi',
+            'nama_rekening.required' => 'Nama Rekening wajib diisi',
+            'anggaran.required' => 'Anggaran wajib diisi',
+            'tahun.required' => 'Tahun wajib diisi',
+        ]);
     }
 }

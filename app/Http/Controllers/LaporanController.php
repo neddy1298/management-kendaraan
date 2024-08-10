@@ -70,7 +70,7 @@ class LaporanController extends Controller
         }])->get();
         return view('laporan.print', compact('paguAnggarans', 'tahun', 'startDate', 'endDate'));
     }
-    
+
 
 
     public function exportToExcel(Request $request)
@@ -101,9 +101,9 @@ class LaporanController extends Controller
                 $query->whereMonth('tanggal_belanja', '=', $endDate->month)
                     ->whereYear('tanggal_belanja', '=', $endDate->year);
             }], 'total_belanja')
-            ->withSum(['belanjas as belanjas_before' => function ($query) use ($startDate, $endDateMinusOneMonth) {
-                $query->whereBetween('tanggal_belanja', [$startDate, $endDateMinusOneMonth]);
-            }], 'total_belanja');
+                ->withSum(['belanjas as belanjas_before' => function ($query) use ($startDate, $endDateMinusOneMonth) {
+                    $query->whereBetween('tanggal_belanja', [$startDate, $endDateMinusOneMonth]);
+                }], 'total_belanja');
         }])->get();
 
         $spreadsheet = new Spreadsheet();

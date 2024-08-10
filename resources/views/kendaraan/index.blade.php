@@ -23,10 +23,6 @@
             </a>
         </div>
         <div class="col-12">
-            @php
-                $message =
-                    "Contoh message yang akan dikirim ke WA\n-1. lorem ipsum dolor sit amet consectetur adipiscing elit\n2. lorem ipsum dolor sit amet consectetur adipiscing elit\n3. lorem ipsum dolor sit amet consectetur adipiscing elit\n4. lorem ipsum dolor sit amet consectetur adipiscing elit\n5. lorem ipsum dolor sit amet consectetur adipiscing elit";
-            @endphp
             <!-- Card start -->
             <div class="card">
                 <div class="card-body">
@@ -37,8 +33,7 @@
                         <a href="{{ route('kendaraan.printAll') }}" class="btn btn-primary" target="_blank">
                             <i class="bi bi-printer"></i> Cetak
                         </a>
-                        <a href="{{ route('send-wa', ['message' => urlencode($message)]) }}" class="btn btn-success"
-                            target="_blank">
+                        <a href="{{ route('send-wa') }}" class="btn btn-success" target="_blank">
                             <i class="bi bi-whatsapp"></i> Kirim WA
                         </a>
                     </div>

@@ -22,9 +22,14 @@ class SendMaintenanceNotification extends Command
 
     public function handle()
     {
-        $message = 'This is a scheduled maintenance reminder. now is: ' . now();
+        $kendaran = Kendaraan::where('berlaku_sampai', '<', now())->get();
+
+        if ($kendaran->count() == 0) {
+            $this->info('No vehicles require maintenance.');
+            return;
+        }
         $smsController = new SmsController();
-        $response = $smsController->sendWhatsapp($message);
+        $response = $smsController->sendWhatsapp();
 
         if (isset($response['status']) && $response['status'] == 'success') {
             $this->info('WhatsApp message sent successfully.');

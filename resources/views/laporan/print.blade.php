@@ -119,46 +119,15 @@
             }
         }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     <script>
         function printPage() {
             window.print();
-        }
-
-        function exportBodyToExcel(filename = '') {
-            var body = document.body.innerHTML;
-            var worksheet = XLSX.utils.table_to_sheet(document.createElement('table'));
-            var workbook = XLSX.utils.book_new();
-
-            // Convert body content to worksheet
-            var tempDiv = document.createElement('div');
-            tempDiv.innerHTML = body;
-            var rows = tempDiv.querySelectorAll('tr');
-            rows.forEach((row, rowIndex) => {
-                var cells = row.querySelectorAll('td, th');
-                cells.forEach((cell, cellIndex) => {
-                    var cellValue = cell.innerText || cell.textContent;
-                    XLSX.utils.sheet_add_aoa(worksheet, [
-                        [cellValue]
-                    ], {
-                        origin: {
-                            r: rowIndex,
-                            c: cellIndex
-                        }
-                    });
-                });
-            });
-
-            XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-            XLSX.writeFile(workbook, filename ? filename + '.xlsx' : 'export.xlsx');
         }
     </script>
 </head>
 
 <body>
     <div style="width: 100%">
-        <button onclick="exportBodyToExcel('data_export')" class="no-print"
-            style="height: auto; margin-bottom: 50px; background-color: #00ff66">Export to Excel</button>
         <button onclick="printPage()" class="no-print" style="height: auto; background-color: #00ff66">Print</button>
     </div>
     <div class="container">
@@ -420,7 +389,8 @@
                     <p>Bogor, &nbsp;&nbsp;&nbsp;&nbsp;{{ now()->translatedformat('F Y') }}</p>
                     <p>Pejabat Pelaksana Teknis Kegiatan</p>
                     <br><br><br>
-                    <p><U>(FIRZA FIRANI RIZAL, S.Kom.,M.Ak.)</U></p>
+                    <p><U>( <input type="text" value="FIRZA FIRANI RIZAL, S.Kom.,M.Ak." style="padding-inline: 10px">
+                            )</U></p>
                     <p>NIP: 197509152010012008</p>
                 </div>
             </div>

@@ -100,14 +100,6 @@
                             <a href="{{ route('belanja.printAll') }}" class="btn btn-primary" target="_blank">
                                 <i class="bi bi-printer"></i> Cetak
                             </a>
-                            @php
-                                $message =
-                                    "Contoh message yang akan dikirim ke WA\n-1. lorem ipsum dolor sit amet consectetur adipiscing elit\n2. lorem ipsum dolor sit amet consectetur adipiscing elit\n3. lorem ipsum dolor sit amet consectetur adipiscing elit\n4. lorem ipsum dolor sit amet consectetur adipiscing elit\n5. lorem ipsum dolor sit amet consectetur adipiscing elit";
-                            @endphp
-                            <a href="{{ route('send-wa', ['message' => $message]) }}" class="btn btn-success"
-                                target="_blank">
-                                <i class="bi bi-whatsapp"></i> Kirim WA
-                            </a>
                         </div>
                     </form>
                 </div>
