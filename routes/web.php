@@ -96,11 +96,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 });
 
-<<<<<<< HEAD
-URL::forceScheme('https');
+// URL::forceScheme('https');
 
-require __DIR__.'/auth.php';
-=======
 require __DIR__ . '/auth.php';
-                
->>>>>>> 1ba21f63bf6f41c7a7b4ea4efd98b3fa3506fc24
