@@ -81,8 +81,8 @@ class StokSukuCadangController extends Controller
     {
         return [
             'nama_suku_cadang' => 'required',
-            'stok' => 'required',
-            'harga' => 'required',
+            'stok' => 'required|integer|min:1',
+            'harga' => 'required|numeric|min:0',
         ];
     }
 
@@ -94,7 +94,11 @@ class StokSukuCadangController extends Controller
         return [
             'nama_suku_cadang.required' => 'Nama suku cadang harus diisi',
             'stok.required' => 'Stok harus diisi',
+            'stok.integer' => 'Stok harus berupa angka',
+            'stok.min' => 'Stok minimal 1',
             'harga.required' => 'Harga harus diisi',
+            'harga.numeric' => 'Harga harus berupa angka',
+            'harga.min' => 'Harga minimal 0',
         ];
     }
 }

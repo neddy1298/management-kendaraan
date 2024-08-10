@@ -31,9 +31,9 @@ class MasterAnggaranController extends Controller
      */
     public function store(Request $request)
     {
-        $masterAnggaran = $this->validateMasterAnggaran($request);
+        $validatedData = $this->validateMasterAnggaran($request);
 
-        MasterAnggaran::create($masterAnggaran);
+        MasterAnggaran::create($validatedData);
 
         return to_route('masterAnggaran.index')
             ->with('success', 'Anggaran Berhasil dibuat.');
@@ -45,7 +45,8 @@ class MasterAnggaranController extends Controller
     public function edit($id)
     {
         $masterAnggaran = MasterAnggaran::findOrFail($id);
-        return view('masterAnggaran.edit', compact('masterAnggaran'));
+        $paguAnggarans = PaguAnggaran::all();
+        return view('masterAnggaran.edit', compact('masterAnggaran', 'paguAnggarans'));
     }
 
     /**
@@ -53,10 +54,10 @@ class MasterAnggaranController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $masterAnggaran = $this->validateMasterAnggaran($request);
+        $validatedData = $this->validateMasterAnggaran($request);
 
-        $masterAnggaranModel = MasterAnggaran::findOrFail($id);
-        $masterAnggaranModel->update($masterAnggaran);
+        $masterAnggaran = MasterAnggaran::findOrFail($id);
+        $masterAnggaran->update($validatedData);
 
         return to_route('masterAnggaran.index')
             ->with('success', 'Anggaran Berhasil diubah.');

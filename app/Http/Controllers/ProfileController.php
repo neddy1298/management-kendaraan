@@ -27,13 +27,7 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
-        $user->fill($request->validated());
-
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
-        }
-
-        $user->save();
+        $this->updateUserProfile($user, $request->validated());
 
         return Redirect::route('profile.edit')->with('success', 'Profil berhasil diupdate');
     }
@@ -65,5 +59,19 @@ class ProfileController extends Controller
         $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current_password'],
         ]);
+    }
+
+    /**
+     * Update user profile information.
+     */
+    protected function updateUserProfile($user, array $validatedData)
+    {
+        $user->fill($validatedData);
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        $user->save();
     }
 }
