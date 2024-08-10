@@ -1,5 +1,5 @@
-const cron = require('node-cron');
-const shell = require('shelljs');
+import cron from 'node-cron';
+import shell from 'shelljs';
 
 cron.schedule('* * * * *', () => {
     console.log('running a task every minute');
