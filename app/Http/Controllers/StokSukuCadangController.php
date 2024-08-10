@@ -12,7 +12,7 @@ class StokSukuCadangController extends Controller
      */
     public function index()
     {
-        $stokSukuCadangs = StokSukuCadang::all();
+        $stokSukuCadangs = StokSukuCadang::orderBy('created_at', 'desc')->get();
         return view('sukuCadang.index', compact('stokSukuCadangs'));
     }
 
@@ -29,26 +29,10 @@ class StokSukuCadangController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nama_suku_cadang' => 'required',
-            'stok' => 'required',
-            'harga' => 'required',
-        ], [
-            'nama_suku_cadang.required' => 'Nama suku cadang harus diisi',
-            'stok.required' => 'Stok harus diisi',
-            'harga.required' => 'Harga harus diisi',
-        ]);
+        $this->validateRequest($request);
 
         StokSukuCadang::create($request->all());
         return redirect()->route('sukuCadang.index')->with('success', 'Data suku cadang berhasil ditambahkan');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(StokSukuCadang $stokSukuCadang)
-    {
-        //
     }
 
     /**
@@ -65,27 +49,52 @@ class StokSukuCadangController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nama_suku_cadang' => 'required',
-            'stok' => 'required',
-            'harga' => 'required',
-        ], [
-            'nama_suku_cadang.required' => 'Nama suku cadang harus diisi',
-            'stok.required' => 'Stok harus diisi',
-            'harga.required' => 'Harga harus diisi',
-        ]);
+        $this->validateRequest($request);
 
         $stokSukuCadang = StokSukuCadang::findOrFail($id);
         $stokSukuCadang->update($request->all());
-        
+
         return redirect()->route('sukuCadang.index')->with('success', 'Data suku cadang berhasil diperbarui');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(StokSukuCadang $stokSukuCadang)
+    public function destroy($id)
     {
-        //
+        StokSukuCadang::destroy($id);
+        return redirect()->route('sukuCadang.index')->with('success', 'Data suku cadang berhasil dihapus');
+    }
+
+    /**
+     * Validate the request.
+     */
+    private function validateRequest(Request $request)
+    {
+        $request->validate($this->rules(), $this->messages());
+    }
+
+    /**
+     * Validation rules.
+     */
+    private function rules()
+    {
+        return [
+            'nama_suku_cadang' => 'required',
+            'stok' => 'required',
+            'harga' => 'required',
+        ];
+    }
+
+    /**
+     * Validation messages.
+     */
+    private function messages()
+    {
+        return [
+            'nama_suku_cadang.required' => 'Nama suku cadang harus diisi',
+            'stok.required' => 'Stok harus diisi',
+            'harga.required' => 'Harga harus diisi',
+        ];
     }
 }

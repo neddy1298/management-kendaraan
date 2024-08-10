@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 
 class Kendaraan extends Model
 {
@@ -42,10 +41,6 @@ class Kendaraan extends Model
 
     public function getIsExpireAttribute()
     {
-        if ($this->berlaku_sampai->isPast()) {
-            return 'kadaluarsa';
-        } else {
-            return 'aktif';
-        }
+        return $this->berlaku_sampai->isPast() ? 'kadaluarsa' : 'aktif';
     }
 }

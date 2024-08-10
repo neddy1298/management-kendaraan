@@ -16,15 +16,12 @@ class KendaraanController extends Controller
      */
     public function index()
     {
-        $kendaraans = Kendaraan::with('belanjas')->get();
+        $kendaraans = Kendaraan::with('belanjas')->orderBy('created_at', 'desc')->get();
 
-        $isExpire = 0;
+        $isExpire = $kendaraans->filter(function ($kendaraan) {
+            return $kendaraan->berlaku_sampai->isPast();
+        })->count();
 
-        foreach ($kendaraans as $kendaraan) {
-            if ($kendaraan->berlaku_sampai->isPast()) {
-                $isExpire++;
-            }
-        }
         return view('kendaraan.index', compact('kendaraans', 'isExpire'));
     }
 
@@ -47,23 +44,7 @@ class KendaraanController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'nomor_registrasi' => 'required|string|max:255|unique:kendaraans',
-            'merk_kendaraan' => 'required|string|max:255',
-            'jenis_kendaraan' => 'required|string|max:255',
-            'cc_kendaraan' => 'required|integer',
-            'bbm_kendaraan' => 'required|string|max:255',
-            'roda_kendaraan' => 'required|integer',
-            'berlaku_sampai' => 'required|date_format:d/m/Y',
-            'groupAnggaran_id' => 'required|integer',
-            'groupAnggaran_id' => 'required|array',
-            'groupAnggaran_id.*' => 'exists:group_anggarans,id',
-        ], [
-            'required' => 'Kolom :attribute wajib diisi.',
-            'integer' => 'Kolom :attribute harus berupa angka.',
-            'date_format' => 'Kolom :attribute tidak sesuai format d/m/Y.',
-            'unique' => 'Nomor registrasi sudah digunakan.',
-        ]);
+        $validatedData = $this->validateKendaraan($request);
 
         $validatedData['berlaku_sampai'] = Carbon::createFromFormat('d/m/Y', $validatedData['berlaku_sampai'])->format('Y-m-d');
 
@@ -98,21 +79,7 @@ class KendaraanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validatedData = $request->validate([
-            'nomor_registrasi' => 'required|string|max:255',
-            'merk_kendaraan' => 'required|string|max:255',
-            'jenis_kendaraan' => 'required|string|max:255',
-            'cc_kendaraan' => 'required|integer',
-            'bbm_kendaraan' => 'required|string|max:255',
-            'roda_kendaraan' => 'required|integer',
-            'berlaku_sampai' => 'required|date_format:d/m/Y',
-            'groupAnggaran_id' => 'required|array',
-            'groupAnggaran_id.*' => 'exists:group_anggarans,id',
-        ], [
-            'required' => 'Kolom :attribute wajib diisi.',
-            'integer' => 'Kolom :attribute harus berupa angka.',
-            'date_format' => 'Kolom :attribute tidak sesuai format d/m/Y.',
-        ]);
+        $validatedData = $this->validateKendaraan($request, $id);
 
         $validatedData['berlaku_sampai'] = Carbon::createFromFormat('d/m/Y', $validatedData['berlaku_sampai'])->format('Y-m-d');
 
@@ -141,8 +108,6 @@ class KendaraanController extends Controller
         }
     }
 
-
-
     /**
      * Display the specified resource.
      *
@@ -152,5 +117,36 @@ class KendaraanController extends Controller
     {
         $datas = Kendaraan::orderBy('created_at', 'desc')->get();
         return view('kendaraan.printAll', compact('datas'));
+    }
+
+    /**
+     * Validate kendaraan data.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function validateKendaraan(Request $request, $id = null)
+    {
+        $uniqueRule = 'unique:kendaraans,nomor_registrasi';
+        if ($id) {
+            $uniqueRule .= ',' . $id;
+        }
+
+        return $request->validate([
+            'nomor_registrasi' => ['required', 'string', 'max:255', $uniqueRule],
+            'merk_kendaraan' => 'required|string|max:255',
+            'jenis_kendaraan' => 'required|string|max:255',
+            'cc_kendaraan' => 'required|integer',
+            'bbm_kendaraan' => 'required|string|max:255',
+            'roda_kendaraan' => 'required|integer',
+            'berlaku_sampai' => 'required|date_format:d/m/Y',
+            'groupAnggaran_id' => 'required|array',
+            'groupAnggaran_id.*' => 'exists:group_anggarans,id',
+        ], [
+            'required' => 'Kolom :attribute wajib diisi.',
+            'integer' => 'Kolom :attribute harus berupa angka.',
+            'date_format' => 'Kolom :attribute tidak sesuai format d/m/Y.',
+            'unique' => 'Nomor registrasi sudah digunakan.',
+        ]);
     }
 }
