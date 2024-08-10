@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Print</title>
     <style>
-        body {
+    body {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
@@ -17,7 +17,7 @@
         width: 80%;
         margin: auto;
         padding: 20px;
-        background-color: #fff;
+        background-color: #ffffff;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
     }
@@ -26,8 +26,8 @@
     .footer {
         text-align: center;
         padding: 15px;
-        background-color: #3d6df2;
-        color: #fff;
+        background-color: #4a90e2; /* Slightly softer blue */
+        color: #ffffff;
         border-radius: 8px;
         margin-bottom: 20px;
     }
@@ -51,13 +51,13 @@
     }
 
     .data-table th {
-        background-color: #3d6df2;
-        color: #fff;
+        background-color: #4a90e2; /* Matching header color */
+        color: #ffffff;
         font-weight: bold;
     }
 
     .data-table td {
-        background-color: #fff;
+        background-color: #ffffff;
     }
 
     .data-table tr:nth-child(even) {
@@ -67,7 +67,7 @@
     .data-table tr:hover {
         background-color: #f1f1f1;
     }
-    </style>
+</style>
 </head>
 
 <body>
