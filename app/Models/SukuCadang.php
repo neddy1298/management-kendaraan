@@ -13,6 +13,7 @@ class SukuCadang extends Model
 
     protected $fillable = [
         'belanja_id',
+        'stok_suku_cadang_id',
         'nama_suku_cadang',
         'jumlah',
         'harga_satuan',
@@ -21,5 +22,10 @@ class SukuCadang extends Model
     public function belanja()
     {
         return $this->belongsTo(Belanja::class);
+    }
+
+    public function stokSukuCadang()
+    {
+        return $this->hasOne(StokSukuCadang::class);
     }
 }

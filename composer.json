@@ -9,7 +9,7 @@
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "phpoffice/phpspreadsheet": "^2.2",
-        "vonage/client": "^4.0"
+        "twilio/sdk": "^8.2"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",

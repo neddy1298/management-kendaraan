@@ -55,24 +55,26 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $masterAnggaran->kode_rekening }}</td>
-                                        <td>{{ $masterAnggaran->nama_rekening }}</td>
+                                        <td class="text-start">{{ $masterAnggaran->nama_rekening }}</td>
                                         <td>Rp. {{ number_format($masterAnggaran->anggaran, 0, ',', '.') }}</td>
                                         <td>
-                                            <a href="{{ route('masterAnggaran.edit', $masterAnggaran->id) }}"
-                                                class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
-                                                data-bs-placement="top" title="Edit">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
-                                            <form action="{{ route('masterAnggaran.delete', $masterAnggaran->id) }}"
-                                                method="POST" style="display: inline-block">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-danger btn-icon btn-sm"
-                                                    onclick="return confirm('Kamu yakin ingin menghapus data: {{ $masterAnggaran->nomor_registrasi }} ?')"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
+                                            <div class="custom-btn-group">
+                                                <a href="{{ route('masterAnggaran.edit', $masterAnggaran->id) }}"
+                                                    class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" title="Edit">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <form action="{{ route('masterAnggaran.delete', $masterAnggaran->id) }}"
+                                                    method="POST" style="display: inline-block">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-danger btn-icon btn-sm"
+                                                        onclick="return confirm('Kamu yakin ingin menghapus data: {{ $masterAnggaran->nomor_registrasi }} ?')"
+                                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

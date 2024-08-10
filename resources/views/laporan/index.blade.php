@@ -64,7 +64,8 @@
                                         </div>
                                     </div>
                                     <div class="col-12 mb-3">
-                                        <a href="{{ route('laporan.exportExcel') }}" class="btn btn-primary">Export to Excel</a>
+                                        <a href="{{ route('laporan.exportExcel') }}" class="btn btn-primary">Export to
+                                            Excel</a>
                                         <button type="submit" class="btn btn-success">Lihat Laporan</button>
                                     </div>
                                 </div>

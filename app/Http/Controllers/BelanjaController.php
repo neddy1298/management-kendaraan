@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Belanja;
 use App\Models\GroupAnggaran;
 use App\Models\Kendaraan;
+use App\Models\StokSukuCadang;
 use App\Models\SukuCadang;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -21,7 +22,7 @@ class BelanjaController extends Controller
     {
         $dateRange = $request->input('date-range');
 
-        $query = Belanja::with('kendaraan');
+        $query = Belanja::with('kendaraan', 'sukuCadangs');
 
         if ($dateRange) {
             $dates = explode(' - ', $dateRange);
@@ -31,7 +32,7 @@ class BelanjaController extends Controller
             $query->whereBetween('tanggal_belanja', [$startDate, $endDate]);
         }
 
-        $belanjas = $query->orderBy('tanggal_belanja', 'desc')->get();
+        $belanjas = $query->orderBy('created_at', 'desc')->get();
 
         $belanja_periode = $belanjas->sum('belanja_bahan_bakar_minyak')
             + $belanjas->sum('belanja_pelumas_mesin')
@@ -41,17 +42,12 @@ class BelanjaController extends Controller
         $belanja_pelumas_periode = $belanjas->sum('belanja_pelumas_mesin');
         $belanja_suku_cadang_periode = $belanjas->sum('belanja_suku_cadang');
 
-        $belanja_tahun_ini = Belanja::whereYear('tanggal_belanja', Carbon::now()->year)
-            ->selectRaw('SUM(belanja_bahan_bakar_minyak + belanja_pelumas_mesin + belanja_suku_cadang) as total')
-            ->value('total');
-
         $isExpire = Belanja::whereHas('kendaraan', function ($query) {
             $query->where('berlaku_sampai', '<', Carbon::now());
         })->count();
 
         return view('belanja.index', compact('belanjas', 'isExpire', 'belanja_periode', 'belanja_bbm_periode', 'belanja_pelumas_periode', 'belanja_suku_cadang_periode', 'dateRange'));
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -62,7 +58,8 @@ class BelanjaController extends Controller
     {
         $kendaraans = Kendaraan::all();
         $groupAnggarans = GroupAnggaran::all();
-        return view('belanja.create', compact('kendaraans', 'groupAnggarans'));
+        $stokSukuCadangs = StokSukuCadang::all();
+        return view('belanja.create', compact('kendaraans', 'groupAnggarans', 'stokSukuCadangs'));
     }
 
     public function getKendaraan($group_anggaran_id)
@@ -73,8 +70,6 @@ class BelanjaController extends Controller
         return response()->json($kendaraans);
     }
 
-
-
     /**
      * Store a newly created resource in storage.
      *
@@ -83,34 +78,29 @@ class BelanjaController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'group_anggaran_id' => 'required|integer',
-            'kendaraan_id' => 'required|integer',
-            'belanja_bahan_bakar_minyak' => 'nullable|integer',
-            'belanja_pelumas_mesin' => 'nullable|integer',
-            'tanggal_belanja' => 'required|date_format:d/m/Y',
-            'keterangan' => 'nullable|string',
-            'nama_suku_cadang' => 'nullable|array',
-            'jumlah_suku_cadang' => 'nullable|array',
-            'harga_suku_cadang' => 'nullable|array',
-            'nama_suku_cadang.*' => 'required_with:jumlah_suku_cadang.*,harga_suku_cadang.*|string',
-            'jumlah_suku_cadang.*' => 'required_with:nama_suku_cadang.*,harga_suku_cadang.*|integer|min:1',
-            'harga_suku_cadang.*' => 'required_with:nama_suku_cadang.*,jumlah_suku_cadang.*|integer|min:0',
+        $validatedData = $this->validateBelanja($request);
 
-        ], [
-            'required' => 'Kolom :attribute wajib diisi.',
-            'integer' => 'Kolom :attribute harus berupa angka.',
-            'date_format' => 'Format tanggal harus :format.',
-        ]);
+        // Check if at least one of BBM, Pelumas, or Suku Cadang is filled
+        if (
+            empty($validatedData['belanja_bahan_bakar_minyak']) &&
+            empty($validatedData['belanja_pelumas_mesin']) &&
+            empty(array_filter($validatedData['nama_suku_cadang'] ?? []))
+        ) {
+            return redirect()->back()->withErrors(['error' => 'Anda harus memilih setidaknya satu dari BBM, Pelumas, atau Suku Cadang.']);
+        }
 
         $validatedData['tanggal_belanja'] = Carbon::createFromFormat('d/m/Y', $validatedData['tanggal_belanja'])->format('Y-m-d');
+
         DB::beginTransaction();
-        $belanja = $this->createBelanja($validatedData);
-        $this->createSukuCadangs($validatedData, $belanja);
-
-        DB::commit();
-
-        return redirect()->route('belanja.index')->with('success', 'Data berhasil disimpan.');
+        try {
+            $belanja = $this->createBelanja($validatedData);
+            $this->createSukuCadangs($validatedData, $belanja);
+            DB::commit();
+            return redirect()->route('belanja.index')->with('success', 'Data berhasil disimpan.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
     private function createBelanja($data)
@@ -128,26 +118,31 @@ class BelanjaController extends Controller
     private function createSukuCadangs($data, $belanja)
     {
         if (!empty($data['nama_suku_cadang'])) {
-            $sukuCadangs = [];
-            foreach ($data['nama_suku_cadang'] as $key => $nama) {
-                if (!empty($nama) && isset($data['jumlah_suku_cadang'][$key]) && isset($data['harga_suku_cadang'][$key])) {
+            foreach ($data['nama_suku_cadang'] as $key => $sukuCadangId) {
+                if (!empty($sukuCadangId) && isset($data['jumlah_suku_cadang'][$key]) && isset($data['harga_suku_cadang'][$key])) {
+                    $stokSukuCadang = StokSukuCadang::findOrFail($sukuCadangId);
+                    $jumlah = $data['jumlah_suku_cadang'][$key];
+                    $harga = $data['harga_suku_cadang'][$key];
+
+                    if ($jumlah > $stokSukuCadang->stok) {
+                        throw new \Exception('Jumlah suku cadang melebihi stok yang tersedia.');
+                    }
+
                     $sukuCadang = new SukuCadang([
                         'belanja_id' => $belanja->id,
-                        'nama_suku_cadang' => $nama,
-                        'jumlah' => $data['jumlah_suku_cadang'][$key],
-                        'harga_satuan' => $data['harga_suku_cadang'][$key],
+                        'stok_suku_cadang_id' => $sukuCadangId,
+                        'jumlah' => $jumlah,
+                        'harga_satuan' => $harga,
                     ]);
                     $sukuCadang->save();
 
-                    // Update total belanja_suku_cadang di model Belanja
-                    $belanja->belanja_suku_cadang += $sukuCadang->jumlah * $sukuCadang->harga_satuan;
+                    // Update stok suku cadang
+                    $stokSukuCadang->stok -= $jumlah;
+                    $stokSukuCadang->save();
                 }
             }
-            // Simpan perubahan pada model Belanja
-            $belanja->save();
         }
     }
-
 
     /**
      * Display the specified resource.
@@ -157,7 +152,7 @@ class BelanjaController extends Controller
      */
     public function show(Belanja $belanja)
     {
-        return view('belanja.show', compact('belanjas'));
+        return view('belanja.show', compact('belanja'));
     }
 
     /**
@@ -168,21 +163,56 @@ class BelanjaController extends Controller
      */
     public function destroy($id)
     {
-        $belanja = Belanja::findOrFail($id);
+        $belanja = Belanja::with('sukuCadangs')->findOrFail($id);
+
+        foreach ($belanja->sukuCadangs as $sukuCadang) {
+            $stokSukuCadang = StokSukuCadang::findOrFail($sukuCadang->stok_suku_cadang_id);
+            $stokSukuCadang->stok += $sukuCadang->jumlah;
+            $stokSukuCadang->save();
+            $sukuCadang->delete();
+        }
+
         $belanja->delete();
         return to_route('belanja.index')->with('success', 'Data berhasil dihapus.');
     }
-
 
     /**
      * Display the specified resource.
      *
      * @return \Illuminate\Contracts\View\View
      */
-
     public function printAll()
     {
         $datas = Belanja::with('kendaraan')->get();
         return view('belanja.printAll', compact('datas'));
+    }
+
+    /**
+     * Validate belanja data.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function validateBelanja(Request $request)
+    {
+        return $request->validate([
+            'group_anggaran_id' => 'required|integer',
+            'kendaraan_id' => 'required|integer',
+            'belanja_bahan_bakar_minyak' => 'nullable|integer|min:0',
+            'belanja_pelumas_mesin' => 'nullable|integer|min:0',
+            'tanggal_belanja' => 'required|date_format:d/m/Y',
+            'keterangan' => 'nullable|string',
+            'nama_suku_cadang' => 'nullable|array',
+            'jumlah_suku_cadang' => 'nullable|array',
+            'harga_suku_cadang' => 'nullable|array',
+            'nama_suku_cadang.*' => 'nullable|integer',
+            'jumlah_suku_cadang.*' => 'nullable|integer|min:1',
+            'harga_suku_cadang.*' => 'nullable|integer|min:0',
+        ], [
+            'required' => 'Kolom :attribute wajib diisi.',
+            'integer' => 'Kolom :attribute harus berupa angka.',
+            'date_format' => 'Format tanggal harus :format.',
+            'min' => 'Kolom :attribute minimal bernilai :min.',
+        ]);
     }
 }

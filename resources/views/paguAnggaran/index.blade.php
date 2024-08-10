@@ -56,25 +56,27 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $paguAnggaran->kode_rekening }}</td>
-                                        <td>{{ $paguAnggaran->nama_rekening }}</td>
+                                        <td class="text-start">{{ $paguAnggaran->nama_rekening }}</td>
                                         <td>Rp. {{ number_format($paguAnggaran->anggaran, 0, ',', '.') }}</td>
                                         <td>{{ $paguAnggaran->tahun }}</td>
                                         <td>
-                                            <a href="{{ route('paguAnggaran.edit', $paguAnggaran->id) }}"
-                                                class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
-                                                data-bs-placement="top" title="Edit">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
-                                            <form action="{{ route('paguAnggaran.delete', $paguAnggaran->id) }}"
-                                                method="POST" style="display: inline-block">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-danger btn-icon btn-sm"
-                                                    onclick="return confirm('Kamu yakin ingin menghapus data: {{ $paguAnggaran->nama_rekening }} ?')"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
+                                            <div class="custom-btn-group">
+                                                <a href="{{ route('paguAnggaran.edit', $paguAnggaran->id) }}"
+                                                    class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" title="Edit">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <form action="{{ route('paguAnggaran.delete', $paguAnggaran->id) }}"
+                                                    method="POST" style="display: inline-block">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-danger btn-icon btn-sm"
+                                                        onclick="return confirm('Kamu yakin ingin menghapus data: {{ $paguAnggaran->nama_rekening }} ?')"
+                                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

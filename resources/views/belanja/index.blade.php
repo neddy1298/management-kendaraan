@@ -49,40 +49,36 @@
             </div>
         </div>
         <div class="col-xxl-4 col-sm-6 col-12">
-            <a href="{{ route('masterAnggaran.index') }}">
-                <div class="stats-tile">
-                    <div class="sale-icon shade-blue">
-                        <h4 class="text-white">Rp</h4>
-                    </div>
-                    <div class="sale-details">
-                        <h3 class="text-blue">
-                            {{ number_format($belanja_pelumas_periode, 0, ',', '.') }}
-                        </h3>
-                        <p>Total Belanja Pelumas</p>
-                    </div>
+            <div class="stats-tile">
+                <div class="sale-icon shade-blue">
+                    <h4 class="text-white">Rp</h4>
                 </div>
-            </a>
+                <div class="sale-details">
+                    <h3 class="text-blue">
+                        {{ number_format($belanja_pelumas_periode, 0, ',', '.') }}
+                    </h3>
+                    <p>Total Belanja Pelumas</p>
+                </div>
+            </div>
         </div>
         <div class="col-xxl-4 col-sm-6 col-12">
-            <a href="{{ route('masterAnggaran.index') }}">
-                <div class="stats-tile">
-                    <div class="sale-icon shade-red">
-                        <h4 class="text-white">Rp</h4>
-                    </div>
-                    <div class="sale-details">
-                        <h3 class="text-danger">
-                            {{ number_format($belanja_suku_cadang_periode, 0, ',', '.') }}
-                        </h3>
-                        <p>Total Belanja Suku Cadang</p>
-                    </div>
+            <div class="stats-tile">
+                <div class="sale-icon shade-red">
+                    <h4 class="text-white">Rp</h4>
                 </div>
-            </a>
+                <div class="sale-details">
+                    <h3 class="text-danger">
+                        {{ number_format($belanja_suku_cadang_periode, 0, ',', '.') }}
+                    </h3>
+                    <p>Total Belanja Suku Cadang</p>
+                </div>
+            </div>
         </div>
         <div class="col-sm-12 col-12">
             <div class="card">
                 <div class="card-body">
                     <form action="{{ route('belanja.index') }}" method="GET" class="row align-items-center">
-                        <div class="col-sm-12 col-lg-4 col-xxl-4">
+                        <div class="col-sm-12 col-lg-3 col-xxl-3">
                             <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="bi bi-calendar2"></i>
@@ -97,20 +93,12 @@
                                 <i class="bi bi-arrow-counterclockwise"></i>
                             </a>
                         </div>
-                        <div class="col-sm-12 col-lg-5 col-xxl-5 custom-btn-group justify-content-end">
+                        <div class="col-sm-12 col-lg-6 col-xxl-6 custom-btn-group justify-content-end">
                             <a href="{{ route('belanja.create') }}" class="btn btn-warning">
                                 <i class="bi bi-pencil-square"></i> Tambah Baru
                             </a>
                             <a href="{{ route('belanja.printAll') }}" class="btn btn-primary" target="_blank">
                                 <i class="bi bi-printer"></i> Cetak
-                            </a>
-                            @php
-                                $message =
-                                    "Contoh message yang akan dikirim ke WA\n-1. lorem ipsum dolor sit amet consectetur adipiscing elit\n2. lorem ipsum dolor sit amet consectetur adipiscing elit\n3. lorem ipsum dolor sit amet consectetur adipiscing elit\n4. lorem ipsum dolor sit amet consectetur adipiscing elit\n5. lorem ipsum dolor sit amet consectetur adipiscing elit";
-                            @endphp
-                            <a href="{{ route('send-wa', ['message' => $message]) }}" class="btn btn-success"
-                                target="_blank">
-                                <i class="bi bi-whatsapp"></i> Kirim WA
                             </a>
                         </div>
                     </form>
@@ -163,6 +151,7 @@
                                                 data-total-belanja="{{ $belanja->total_belanja }}"
                                                 data-tanggal-belanja="{{ \Carbon\Carbon::parse($belanja->tanggal_belanja)->translatedFormat('d F Y') }}"
                                                 data-keterangan="{{ $belanja->keterangan }}"
+                                                data-suku-cadangs="{{ $belanja->sukuCadangs->toJson() }}"
                                                 data-id="{{ $belanja->id }}">
                                                 <i class="bi bi-search"></i>
                                             </button>
@@ -192,6 +181,22 @@
                     <p><strong>Belanja Suku Cadang:</strong> Rp. <span id="modalSukuCadang"></span>.00</p>
                     <p><strong>Total Belanja:</strong> Rp. <span id="modalTotalBelanja"></span>.00</p>
                     <p><strong>Keterangan:</strong> <span id="modalKeterangan"></span></p>
+                    <div id="modalSukuCadangsContainer">
+                        <h5 class="mt-3">Detail Suku Cadang</h5>
+                        <table id="highlightRowColumn" class="table custom-table text-center v-middle">
+                            <thead>
+                                <tr>
+                                    <th>Nama</th>
+                                    <th>Jumlah</th>
+                                    <th>Harga</th>
+                                    <th>Total Harga</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modalSukuCadangs">
+                                <!-- Suku Cadangs will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <form action="" method="POST" style="display: inline-block" id="modalDeleteBelanja">
@@ -231,6 +236,29 @@
                         .getAttribute('data-total-belanja') || 0).toLocaleString('id-ID');
                     modal.querySelector('#modalKeterangan').textContent = this.getAttribute(
                         'data-keterangan');
+
+                    // Populate Suku Cadangs
+                    const sukuCadangs = JSON.parse(this.getAttribute('data-suku-cadangs'));
+                    const sukuCadangsContainer = modal.querySelector('#modalSukuCadangsContainer');
+                    const sukuCadangsTableBody = modal.querySelector('#modalSukuCadangs');
+                    sukuCadangsTableBody.innerHTML = '';
+
+                    if (sukuCadangs.length > 0) {
+                        sukuCadangsContainer.style.display = 'block';
+                        sukuCadangs.forEach(sukuCadang => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                            <td>${sukuCadang.nama_suku_cadang}</td>
+                            <td>${sukuCadang.jumlah}</td>
+                            <td>Rp. ${parseInt(sukuCadang.total_harga / sukuCadang.jumlah).toLocaleString('id-ID')}</td>
+                            <td>Rp. ${parseInt(sukuCadang.total_harga).toLocaleString('id-ID')}</td>
+                        `;
+                            sukuCadangsTableBody.appendChild(row);
+                        });
+                    } else {
+                        sukuCadangsContainer.style.display = 'none';
+                    }
+
                     document.getElementById('modalDeleteBelanja').action =
                         "{{ route('belanja.delete', 'id') }}".replace('id', this.getAttribute(
                             'data-id'));

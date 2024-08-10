@@ -41,6 +41,13 @@
                         <span class="menu-text">Kendaraan</span>
                     </a>
                 </li>
+                <li class="{{ $page == 'Suku Cadang' ? 'active' : '' }}">
+                    <a href="{{ route('sukuCadang.index') }}"
+                        class="{{ $page == 'Suku Cadang' ? 'current-page' : '' }}" aria-label="Data Suku Cadang">
+                        <i class="bi bi-gear"></i>
+                        <span class="menu-text">Suku Cadang</span>
+                    </a>
+                </li>
                 <li class="sidebar-dropdown {{ $page == 'Anggaran' ? 'active' : '' }}">
                     <a href="#">
                         <i class="bi bi-pie-chart"></i>

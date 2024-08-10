@@ -1,10 +1,5 @@
 @extends('layouts.app', ['page' => 'Anggaran', 'page2' => 'Group', 'page3' => 'Tambah'])
 
-@section('css')
-    <link rel="stylesheet" href="{{ secure_asset('vendor/daterange/daterange.css') }}">
-    <link rel="stylesheet" href="{{ secure_asset('vendor/bs-select/bs-select.css') }}">
-@endsection
-
 @section('content')
     <div class="row">
         <div class="col-12">
@@ -124,11 +119,4 @@
 
         </div>
     </div>
-@endsection
-
-@section('script')
-    <script src="{{ secure_asset('vendor/bs-select/bs-select.min.js') }}"></script>
-    <script src="{{ secure_asset('vendor/bs-select/bs-select-custom.js') }}"></script>
-    <script src="{{ secure_asset('vendor/daterange/daterange.js') }}"></script>
-    <script src="{{ secure_asset('vendor/daterange/custom-daterange.js') }}"></script>
 @endsection
