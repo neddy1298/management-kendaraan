@@ -5,9 +5,6 @@ namespace App\Console\Commands;
 use App\Http\Controllers\SmsController;
 use App\Models\Kendaraan;
 use Illuminate\Console\Command;
-// use App\Models\Vehicle;
-use App\Models\User;
-use App\Notifications\MaintenanceNotification;
 
 class SendMaintenanceNotification extends Command
 {

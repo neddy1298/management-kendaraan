@@ -7,5 +7,5 @@ use Illuminate\Support\Facades\Schedule;
 // Artisan::command('inspire', function () {
 //     $this->comment(Inspiring::quote());
 // })->purpose('Display an inspiring quote')->hourly();
-Schedule::command('whatsapp:send')->everyMinute();
+Schedule::command('whatsapp:send')->hourly();
 // Schedule::command('whatsapp:send')->dailyAt('09:00')->timezone('Asia/Jakarta');
