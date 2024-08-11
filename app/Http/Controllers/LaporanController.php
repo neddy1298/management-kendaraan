@@ -119,7 +119,7 @@ class LaporanController extends Controller
             'A7' => 'Nama Kegiatan    : Pemeliharaan Barang Milik Daerah Penunjang Urusan Pemerintahan Daerah',
             'A8' => 'Sub Kegiatan        : Penyediaan Jasa Pemeliharaan, Biaya Pemeliharaan, Pajak, dan Perizinan Kendaraan Dinas Operasional atau Lapangan',
             'A9' => 'Nama PPTK           : Firza Firani Rizal, S.Kom, M.Ak.',
-            'A10' => 'Bulan                     : ' . date('F Y')
+            'A10' => 'Bulan                     : ' . $endDate->translatedformat('F Y')
         ];
         foreach ($titles as $cell => $value) {
             $sheet->setCellValue($cell, $value);
@@ -148,20 +148,20 @@ class LaporanController extends Controller
             'B12' => 'Kode Rekening',
             'C12' => 'Nama Rekening',
             'D12' => 'Pagu Anggaran Kegiatan (Rp)',
-            'D14' => '    UP/GU/TU    ',
-            'E14' => '    LS    ',
+            'D14' => '  UP/GU/TU  ',
+            'E14' => '  LS  ',
             'F12' => 'Realisasi Kegiatan (SP2D) (Rp)',
             'F13' => 'S/D Bulan Lalu',
-            'F14' => '    UP/GU/TU    ',
-            'G14' => '    LS    ',
+            'F14' => '  UP/GU/TU  ',
+            'G14' => '  LS  ',
             'H13' => 'Bulan Ini',
-            'H14' => '    UP    ',
-            'I14' => '    GU    ',
-            'J14' => '    TU    ',
-            'K14' => '    LS    ',
+            'H14' => '  UP  ',
+            'I14' => '  GU  ',
+            'J14' => '  TU  ',
+            'K14' => '  LS  ',
             'L13' => 'S/D Bulan Ini',
-            'L14' => '    UP/GU/TU    ',
-            'M14' => '    LS    ',
+            'L14' => '  UP/GU/TU  ',
+            'M14' => '  LS  ',
             'N12' => 'Sisa Pagu Anggaran (Rp)'
         ];
         foreach ($headers as $cell => $value) {
@@ -170,56 +170,79 @@ class LaporanController extends Controller
 
         // Style Tabel
         $styleHeading1 = [
+            'font' => [
+                'bold' => true,
+            ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                 'startColor' => [
-                    'argb' => 'F9F6EE',
+                    'argb' => '64B5F6',
                 ],
             ],
         ];
         $styleHeading2 = [
+            'font' => [
+                'bold' => true,
+            ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                 'startColor' => [
-                    'argb' => 'FFFFA500',
+                    'argb' => 'B7CEEC',
+                ],
+            ],
+        ];
+        $styleJumlah = [
+            'font' => [
+                'bold' => true,
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => [
+                    'argb' => 'A5D6A7',
                 ],
             ],
         ];
 
         // Rupiah format
-        // $rupiahFormat = [
-        //     'numberFormat' => [
-        //         'formatCode' => '[$Rp-421] #,##0',
-        //     ],
-        // ];
-        //  $sheet->getStyle('D17:N17' . ($row - 1))->applyFromArray($rupiahFormat);
-
+        $rupiahFormat = [
+            'numberFormat' => [
+                'formatCode' => '[$Rp-421] #,##0',
+            ],
+        ];
+        $sheet->getStyle('D17:N17' . ($row - 1))->applyFromArray($rupiahFormat);
+        
         // Looping isi tabel
         $row = 17;
 
+        // Heading 1
         foreach ($paguAnggarans as $index => $paguAnggaran) {
             $sheet->setCellValue("A$row", $index + 1);
             $sheet->setCellValue("B$row", $paguAnggaran->kode_rekening);
             $sheet->setCellValue("C$row", $paguAnggaran->nama_rekening);
             if ($paguAnggaran->anggaran != 0) {
-                $sheet->setCellValue("D$row", 'Rp ' . number_format($paguAnggaran->anggaran, 0, ',', '.'));
+                $sheet->setCellValue("D$row", $paguAnggaran->anggaran);
+                $sheet->getStyle("D$row")->applyFromArray($rupiahFormat);
             }
             $sheet->getStyle("A$row:N$row")->applyFromArray($styleHeading1);
-            $row++;
+
 
             $sumMasterAnggaran = 0;
             $sumMasterBelanjaBefore = 0;
             $sumMasterBelanjaCurrent = 0;
             $sumMasterBelanjaTotal = 0;
 
+            // Heading 2
             foreach ($paguAnggaran->masterAnggarans as $masterAnggaran) {
+                $row++;
                 $sheet->setCellValue("B$row", $masterAnggaran->kode_rekening);
                 $sheet->setCellValue("C$row", $masterAnggaran->nama_rekening);
                 if ($masterAnggaran->anggaran != 0) {
-                    $sheet->setCellValue("D$row", 'Rp ' . number_format($masterAnggaran->anggaran, 0, ',', '.'));
+                    $sheet->setCellValue("D$row", $masterAnggaran->anggaran);
+                    $sheet->getStyle("D$row")->applyFromArray($rupiahFormat);
                 }
                 $sumMasterAnggaran += $masterAnggaran->anggaran;
                 $sheet->getStyle("B$row:N$row")->applyFromArray($styleHeading2);
+
 
                 $sumBelanjaBefore = 0;
                 foreach ($masterAnggaran->groupAnggarans as $groupAnggaran) {
@@ -227,8 +250,10 @@ class LaporanController extends Controller
                 }
                 $sumMasterBelanjaBefore += $sumBelanjaBefore;
                 if ($sumBelanjaBefore != 0) {
-                    $sheet->setCellValue("F$row", 'Rp ' . number_format($sumBelanjaBefore, 0, ',', '.'));
+                    $sheet->setCellValue("F$row", $sumBelanjaBefore);
+                    $sheet->getStyle("F$row")->applyFromArray($rupiahFormat);
                 }
+
 
                 $sumBelanjaCurrent = 0;
                 foreach ($masterAnggaran->groupAnggarans as $groupAnggaran) {
@@ -236,40 +261,128 @@ class LaporanController extends Controller
                 }
                 $sumMasterBelanjaCurrent += $sumBelanjaCurrent;
                 if ($sumBelanjaCurrent != 0) {
-                    $sheet->setCellValue("I$row", 'Rp ' . number_format($sumBelanjaCurrent, 0, ',', '.'));
+                    $sheet->setCellValue("I$row", $sumBelanjaCurrent);
+                    $sheet->getStyle("I$row")->applyFromArray($rupiahFormat);
                 }
+
 
                 $sumBelanjaTotal = $sumBelanjaBefore + $sumBelanjaCurrent;
                 $sumMasterBelanjaTotal += $sumBelanjaTotal;
                 if ($sumBelanjaTotal != 0) {
-                    $sheet->setCellValue("L$row", 'Rp ' . number_format($sumBelanjaTotal, 0, ',', '.'));
+                    $sheet->setCellValue("L$row", ($sumBelanjaTotal));
+                    $sheet->getStyle("L$row")->applyFromArray($rupiahFormat);
                 }
                 if ($masterAnggaran->anggaran - $sumBelanjaTotal != 0) {
-                    $sheet->setCellValue("N$row", 'Rp ' . number_format($masterAnggaran->anggaran - $sumBelanjaTotal, 0, ',', '.'));
+                    $sheet->setCellValue("N$row", ($masterAnggaran->anggaran - $sumBelanjaTotal));
+                    $sheet->getStyle("N$row")->applyFromArray($rupiahFormat);
                 }
                 $row++;
 
+                // Heading 3
                 foreach ($masterAnggaran->groupAnggarans as $groupAnggaran) {
                     $sheet->setCellValue("C$row", $groupAnggaran->nama_group);
                     if ($groupAnggaran->anggaran_total != 0) {
-                        $sheet->setCellValue("D$row", 'Rp ' . number_format($groupAnggaran->anggaran_total, 0, ',', '.'));
+                        $sheet->setCellValue("D$row", ($groupAnggaran->anggaran_total));
+                        $sheet->getStyle("D$row")->applyFromArray($rupiahFormat);
                     }
                     if ($groupAnggaran->belanjas_before != 0) {
-                        $sheet->setCellValue("F$row", 'Rp ' . number_format($groupAnggaran->belanjas_before ?? 0, 0, ',', '.'));
+                        $sheet->setCellValue("F$row", ($groupAnggaran->belanjas_before));
+                        $sheet->getStyle("F$row")->applyFromArray($rupiahFormat);
                     }
                     if ($groupAnggaran->belanjas_current != 0) {
-                        $sheet->setCellValue("I$row", 'Rp ' . number_format($groupAnggaran->belanjas_current ?? 0, 0, ',', '.'));
+                        $sheet->setCellValue("I$row", ($groupAnggaran->belanjas_current));
+                        $sheet->getStyle("I$row")->applyFromArray($rupiahFormat);
                     }
-                    if (($groupAnggaran->belanjas_before ?? 0) + ($groupAnggaran->belanjas_current ?? 0) != 0) {
-                        $sheet->setCellValue("L$row", 'Rp ' . number_format(($groupAnggaran->belanjas_before ?? 0) + ($groupAnggaran->belanjas_current ?? 0), 0, ',', '.'));
+                    if (($groupAnggaran->belanjas_before) + ($groupAnggaran->belanjas_current) != 0) {
+                        $sheet->setCellValue("L$row", (($groupAnggaran->belanjas_before) + ($groupAnggaran->belanjas_current)));
+                        $sheet->getStyle("L$row")->applyFromArray($rupiahFormat);
                     }
-                    if ($groupAnggaran->anggaran_total - (($groupAnggaran->belanjas_before ?? 0) + ($groupAnggaran->belanjas_current ?? 0)) != 0) {
-                        $sheet->setCellValue("N$row", 'Rp ' . number_format($groupAnggaran->anggaran_total - (($groupAnggaran->belanjas_before ?? 0) + ($groupAnggaran->belanjas_current ?? 0)), 0, ',', '.'));
+                    if ($groupAnggaran->anggaran_total - (($groupAnggaran->belanjas_before) + ($groupAnggaran->belanjas_current)) != 0) {
+                        $sheet->setCellValue("N$row", ($groupAnggaran->anggaran_total - (($groupAnggaran->belanjas_before) + ($groupAnggaran->belanjas_current))));
+                        $sheet->getStyle("L$row")->applyFromArray($rupiahFormat);
                     }
                     $row++;
                 }
             }
+
+            $sheet->setCellValue("C$row", "Jumlah");
+
+            if ($sumMasterAnggaran != 0) {
+                $sheet->setCellValue("D$row", ($sumMasterAnggaran));
+                $sheet->getStyle("D$row")->applyFromArray($rupiahFormat);
+            }
+
+            if ($sumMasterBelanjaBefore != 0) {
+                $sheet->setCellValue("F$row", ($sumMasterBelanjaBefore));
+                $sheet->getStyle("F$row")->applyFromArray($rupiahFormat);
+            }
+
+            if ($sumMasterBelanjaCurrent != 0) {
+                $sheet->setCellValue("I$row", ($sumMasterBelanjaCurrent));
+                $sheet->getStyle("I$row")->applyFromArray($rupiahFormat);
+            }
+
+            if ($sumMasterBelanjaTotal != 0) {
+                $sheet->setCellValue("L$row", ($sumMasterBelanjaTotal));
+                $sheet->getStyle("L$row")->applyFromArray($rupiahFormat);
+            }
+
+            if ($sumMasterAnggaran - $sumMasterBelanjaTotal != 0) {
+                $sheet->setCellValue("N$row", ($sumMasterAnggaran - $sumMasterBelanjaTotal));
+                $sheet->getStyle("N$row")->applyFromArray($rupiahFormat);
+            }
+
+            $sheet->getStyle("A$row:N$row")->applyFromArray($styleJumlah);
+
+            $row++;
+            $row++;
         }
+
+
+        $row += 2; // Add a couple of empty rows for spacing
+
+        // Left Signature (Mengetahui, Pengguna Anggaran)
+        $sheet->setCellValue("B$row", "Mengetahui,");
+        $sheet->mergeCells("B$row:C$row");
+        $sheet->getStyle("B$row:C$row")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        $row++;
+        $sheet->setCellValue("B$row", "Pengguna Anggaran");
+        $sheet->mergeCells("B$row:C$row");
+        $sheet->getStyle("B$row:C$row")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        $row += 4; // Leave some space for the signature
+        $sheet->setCellValue("B$row", "(MARSE HENDRA SAPUTRA. S.STP)");
+        $sheet->mergeCells("B$row:C$row");
+        $sheet->getStyle("B$row:C$row")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle("B$row:C$row")->getFont()->setUnderline(true);
+
+        $row++;
+        $sheet->setCellValue("B$row", "NIP: 198103101999121001");
+        $sheet->mergeCells("B$row:C$row");
+        $sheet->getStyle("B$row:C$row")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        // Right Signature (Pejabat Pelaksana Teknis Kegiatan)
+        $row -= 6; // Go back to the same row as "Mengetahui,"
+        $sheet->setCellValue("L$row", 'Bogor,    ' . \Carbon\Carbon::now()->translatedformat('F Y'));
+        $sheet->mergeCells("L$row:M$row");
+        $sheet->getStyle("L$row:M$row")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        $row++;
+        $sheet->setCellValue("L$row", "Pejabat Pelaksana Teknis Kegiatan");
+        $sheet->mergeCells("L$row:M$row");
+        $sheet->getStyle("L$row:M$row")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        $row += 4; // Leave some space for the signature
+        $sheet->setCellValue("L$row", "(FIRZA FIRANI RIZAL, S.Kom.,M.Ak.)");
+        $sheet->mergeCells("L$row:M$row");
+        $sheet->getStyle("L$row:M$row")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle("L$row:M$row")->getFont()->setUnderline(true);
+
+        $row++;
+        $sheet->setCellValue("L$row", "NIP: 197509152010012008");
+        $sheet->mergeCells("L$row:M$row");
+        $sheet->getStyle("L$row:M$row")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
         // Merge Cell Tabel Header
         $mergeCells = [
@@ -296,11 +409,12 @@ class LaporanController extends Controller
         $headerStyleArray = [
             'font' => [
                 'bold' => true,
-                'color' => ['argb' => '000000'],
+                'color' => ['argb' => 'FFFFFF'],
+                'size' => 15,
             ],
             'fill' => [
                 'fillType' => Fill::FILL_SOLID,
-                'startColor' => ['argb' => 'A0CFEC'],
+                'startColor' => ['argb' => '1A237E'],
             ],
             'borders' => [
                 'allBorders' => [

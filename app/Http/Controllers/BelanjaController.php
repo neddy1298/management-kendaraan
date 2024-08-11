@@ -92,6 +92,7 @@ class BelanjaController extends Controller
             'kendaraan_id' => $data['kendaraan_id'],
             'belanja_bahan_bakar_minyak' => $data['belanja_bahan_bakar_minyak'] ?? 0,
             'belanja_pelumas_mesin' => $data['belanja_pelumas_mesin'] ?? 0,
+            'belanja_suku_cadang' => array_sum($data['harga_suku_cadang'] ?? []),
             'tanggal_belanja' => $data['tanggal_belanja'],
             'keterangan' => $data['keterangan'],
         ]);
@@ -113,6 +114,7 @@ class BelanjaController extends Controller
                     $sukuCadang = new SukuCadang([
                         'belanja_id' => $belanja->id,
                         'stok_suku_cadang_id' => $sukuCadangId,
+                        'nama_suku_cadang' => $stokSukuCadang->nama_suku_cadang,
                         'jumlah' => $jumlah,
                         'harga_satuan' => $harga,
                     ]);
