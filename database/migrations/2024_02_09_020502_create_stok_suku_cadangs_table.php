@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_suku_cadang');
             $table->integer('stok');
-            $table->integer('harga');
+            $table->bigInteger('harga');
             $table->timestamps();
         });
     }
