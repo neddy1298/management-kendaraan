@@ -11,20 +11,29 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $master_anggaran = MasterAnggaran::orderBy('created_at', 'desc')->first();
-        $kendaraans = Kendaraan::orderBy('created_at', 'desc')->get();
-        $belanja_bulanan = Belanja::whereMonth('tanggal_belanja', date('m'))->sum('belanja_bahan_bakar_minyak', 'belanja_pelumas_mesin', 'belanja_suku_cadang');
-        $belanja_tahunan = Belanja::whereYear('tanggal_belanja', date('Y'))->sum('belanja_bahan_bakar_minyak', 'belanja_pelumas_mesin', 'belanja_suku_cadang');
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+        $startOfMonth = Carbon::now()->startOfMonth();
+        $endOfMonth = Carbon::now()->endOfMonth();
 
-        $isExpire = 0;
+        $master_anggaran = MasterAnggaran::latest()->first();
+        $kendaraans = Kendaraan::all();
 
-        foreach ($kendaraans as $kendaraan) {
-            if ($kendaraan->berlaku_sampai->isPast()) {
-                $isExpire++;
-            }
-        }
+        $belanja_bulanan = Belanja::whereMonth('tanggal_belanja', $currentMonth)
+            ->sum('belanja_bahan_bakar_minyak', 'belanja_pelumas_mesin', 'belanja_suku_cadang');
+
+        $belanja_tahunan = Belanja::whereYear('tanggal_belanja', $currentYear)
+            ->sum('belanja_bahan_bakar_minyak', 'belanja_pelumas_mesin', 'belanja_suku_cadang');
+
+        $isExpire = $kendaraans->filter(function ($kendaraan) {
+            return $kendaraan->berlaku_sampai->isPast();
+        })->count();
+
         $kendaraan = $kendaraans->count();
-        $belanjas = Belanja::whereBetween('tanggal_belanja', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->orderBy('created_at', 'desc')->get();
+
+        $belanjas = Belanja::whereBetween('tanggal_belanja', [$startOfMonth, $endOfMonth])
+            ->latest()
+            ->get();
 
         return view('home', compact('kendaraan', 'belanjas', 'master_anggaran', 'isExpire', 'belanja_bulanan', 'belanja_tahunan'));
     }

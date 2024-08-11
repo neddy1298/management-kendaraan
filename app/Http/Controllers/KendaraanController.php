@@ -46,7 +46,7 @@ class KendaraanController extends Controller
     {
         $validatedData = $this->validateKendaraan($request);
 
-        $validatedData['berlaku_sampai'] = Carbon::createFromFormat('d/m/Y', $validatedData['berlaku_sampai'])->format('Y-m-d');
+        $validatedData['berlaku_sampai'] = $this->formatDate($validatedData['berlaku_sampai']);
 
         $kendaraan = Kendaraan::create($validatedData);
 
@@ -81,7 +81,7 @@ class KendaraanController extends Controller
     {
         $validatedData = $this->validateKendaraan($request, $id);
 
-        $validatedData['berlaku_sampai'] = Carbon::createFromFormat('d/m/Y', $validatedData['berlaku_sampai'])->format('Y-m-d');
+        $validatedData['berlaku_sampai'] = $this->formatDate($validatedData['berlaku_sampai']);
 
         $kendaraan = Kendaraan::findOrFail($id);
         $kendaraan->update($validatedData);
@@ -123,6 +123,7 @@ class KendaraanController extends Controller
      * Validate kendaraan data.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  int|null  $id
      * @return array
      */
     protected function validateKendaraan(Request $request, $id = null)
@@ -148,5 +149,16 @@ class KendaraanController extends Controller
             'date_format' => 'Kolom :attribute tidak sesuai format d/m/Y.',
             'unique' => 'Nomor registrasi sudah digunakan.',
         ]);
+    }
+
+    /**
+     * Format date from d/m/Y to Y-m-d.
+     *
+     * @param  string  $date
+     * @return string
+     */
+    protected function formatDate($date)
+    {
+        return Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
     }
 }

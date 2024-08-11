@@ -12,7 +12,7 @@ class PaguAnggaranController extends Controller
      */
     public function index()
     {
-        $paguAnggarans = PaguAnggaran::get();
+        $paguAnggarans = PaguAnggaran::orderBy('created_at', 'desc')->get();
 
         return view('paguAnggaran.index', compact('paguAnggarans'));
     }
@@ -30,9 +30,9 @@ class PaguAnggaranController extends Controller
      */
     public function store(Request $request)
     {
-        $paguAnggaran = $this->validatePaguAnggaran($request);
+        $validatedData = $this->validatePaguAnggaran($request);
 
-        PaguAnggaran::create($paguAnggaran);
+        PaguAnggaran::create($validatedData);
 
         return redirect()->route('paguAnggaran.index')
             ->with('success', 'Pagu Anggaran berhasil ditambahkan');
@@ -53,10 +53,10 @@ class PaguAnggaranController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $paguAnggaran = $this->validatePaguAnggaran($request);
+        $validatedData = $this->validatePaguAnggaran($request);
 
-        $paguAnggaranModel = PaguAnggaran::findOrFail($id);
-        $paguAnggaranModel->update($paguAnggaran);
+        $paguAnggaran = PaguAnggaran::findOrFail($id);
+        $paguAnggaran->update($validatedData);
 
         return redirect()->route('paguAnggaran.index')
             ->with('success', 'Pagu Anggaran berhasil diperbarui');
@@ -81,15 +81,14 @@ class PaguAnggaranController extends Controller
     protected function validatePaguAnggaran(Request $request)
     {
         return $request->validate([
-            'kode_rekening' => 'required',
-            'nama_rekening' => 'required',
-            'anggaran' => 'required',
-            'tahun' => 'required',
+            'kode_rekening' => 'required|string|max:255',
+            'nama_rekening' => 'required|string|max:255',
+            'anggaran' => 'required|integer',
+            'tahun' => 'required|integer',
         ], [
-            'kode_rekening.required' => 'Kode Rekening wajib diisi',
-            'nama_rekening.required' => 'Nama Rekening wajib diisi',
-            'anggaran.required' => 'Anggaran wajib diisi',
-            'tahun.required' => 'Tahun wajib diisi',
+            'required' => 'Kolom :attribute wajib diisi.',
+            'string' => 'Kolom :attribute harus berupa teks.',
+            'integer' => 'Kolom :attribute harus berupa angka.',
         ]);
     }
 }

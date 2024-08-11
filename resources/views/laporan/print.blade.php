@@ -389,8 +389,7 @@
                     <p>Bogor, &nbsp;&nbsp;&nbsp;&nbsp;{{ now()->translatedformat('F Y') }}</p>
                     <p>Pejabat Pelaksana Teknis Kegiatan</p>
                     <br><br><br>
-                    <p><U>( <input type="text" value="FIRZA FIRANI RIZAL, S.Kom.,M.Ak." style="padding-inline: 10px">
-                            )</U></p>
+                    <p><U>( FIRZA FIRANI RIZAL, S.Kom.,M.Ak. )</U></p>
                     <p>NIP: 197509152010012008</p>
                 </div>
             </div>

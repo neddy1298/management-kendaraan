@@ -250,7 +250,7 @@
                             row.innerHTML = `
                             <td>${sukuCadang.nama_suku_cadang}</td>
                             <td>${sukuCadang.jumlah}</td>
-                            <td>Rp. ${parseInt(sukuCadang.total_harga / sukuCadang.jumlah).toLocaleString('id-ID')}</td>
+                            <td>Rp. ${parseInt(sukuCadang.harga_satuan).toLocaleString('id-ID')}</td>
                             <td>Rp. ${parseInt(sukuCadang.total_harga).toLocaleString('id-ID')}</td>
                         `;
                             sukuCadangsTableBody.appendChild(row);

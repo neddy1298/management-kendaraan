@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\GroupAnggaran;
 use App\Models\MasterAnggaran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class GroupAnggaranController extends Controller
 {
@@ -33,7 +34,9 @@ class GroupAnggaranController extends Controller
     {
         $groupAnggaran = $this->validateGroupAnggaran($request);
 
-        GroupAnggaran::create($groupAnggaran);
+        DB::transaction(function () use ($groupAnggaran) {
+            GroupAnggaran::create($groupAnggaran);
+        });
 
         return to_route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil ditambahkan.');
     }
@@ -55,7 +58,9 @@ class GroupAnggaranController extends Controller
     {
         $groupAnggaran = $this->validateGroupAnggaran($request);
 
-        GroupAnggaran::findOrFail($id)->update($groupAnggaran);
+        DB::transaction(function () use ($groupAnggaran, $id) {
+            GroupAnggaran::findOrFail($id)->update($groupAnggaran);
+        });
 
         return to_route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil diubah.');
     }
@@ -65,14 +70,17 @@ class GroupAnggaranController extends Controller
      */
     public function destroy($id)
     {
-        $groupAnggaran = GroupAnggaran::findOrFail($id);
+        DB::transaction(function () use ($id) {
+            $groupAnggaran = GroupAnggaran::findOrFail($id);
 
-        if ($groupAnggaran) {
-            $groupAnggaran->delete();
-            return to_route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil dihapus.');
-        } else {
-            return to_route('groupAnggaran.index')->with('error', 'Data tidak ditemukan.');
-        }
+            if ($groupAnggaran) {
+                $groupAnggaran->delete();
+            } else {
+                throw new \Exception('Data tidak ditemukan.');
+            }
+        });
+
+        return to_route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil dihapus.');
     }
 
     /**
