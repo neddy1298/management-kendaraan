@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('master_anggarans', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('pagu_anggaran_id')->constrained()->onDelete('cascade');
             $table->string('kode_rekening', 50);
             $table->string('nama_rekening', 100);
             $table->bigInteger('anggaran');

@@ -12,7 +12,8 @@ class Belanja extends Model
     protected $table = 'belanjas';
 
     protected $fillable = [
-        'maintenance_id',
+        'group_anggaran_id',
+        'kendaraan_id',
         'belanja_bahan_bakar_minyak',
         'belanja_pelumas_mesin',
         'belanja_suku_cadang',
@@ -20,9 +21,14 @@ class Belanja extends Model
         'keterangan',
     ];
 
-    public function maintenance()
+    public function groupAnggaran()
     {
-        return $this->belongsTo(Maintenance::class);
+        return $this->belongsTo(GroupAnggaran::class, 'group_anggaran_id');
+    }
+
+    public function kendaraan()
+    {
+        return $this->belongsTo(Kendaraan::class, 'kendaraan_id');
     }
 
     public function totalBelanja()
@@ -30,6 +36,8 @@ class Belanja extends Model
         return $this->belanja_bahan_bakar_minyak + $this->belanja_pelumas_mesin + $this->belanja_suku_cadang;
     }
 
-    
-
+    public function sukuCadangs()
+    {
+        return $this->hasMany(SukuCadang::class);
+    }
 }

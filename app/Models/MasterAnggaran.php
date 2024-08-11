@@ -12,13 +12,37 @@ class MasterAnggaran extends Model
     protected $table = 'master_anggarans';
 
     protected $fillable = [
+        'pagu_anggaran_id',
         'kode_rekening',
         'nama_rekening',
         'anggaran',
     ];
 
-    public function groupAnggaran()
+    public function paguAnggaran()
+    {
+        return $this->belongsTo(PaguAnggaran::class);
+    }
+
+    public function groupAnggarans()
     {
         return $this->hasMany(GroupAnggaran::class);
+    }
+
+    public function getBelanjasSumForDateRange($startDate, $endDate)
+    {
+        return $this->groupAnggarans->sum(function ($groupAnggaran) use ($startDate, $endDate) {
+            return $groupAnggaran->belanjas()
+                ->whereBetween('tanggal_belanja', [$startDate, $endDate])
+                ->sum('total_belanja');
+        });
+    }
+
+    public function getBelanjasSumBeforeDate($endDate)
+    {
+        return $this->groupAnggarans->sum(function ($groupAnggaran) use ($endDate) {
+            return $groupAnggaran->belanjas()
+                ->where('tanggal_belanja', '<', $endDate)
+                ->sum('total_belanja');
+        });
     }
 }

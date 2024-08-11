@@ -12,7 +12,7 @@
             <!-- Card start -->
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Ubah Pagu Anggaran</div>
+                    <div class="card-title">Ubah Anggaran Pertahun</div>
                     <div class="card-options">
                         <span class="text-muted">Tanggal Hari ini: {{ now()->format('d F Y') }}</span>
                     </div>
@@ -30,26 +30,29 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('masterAnggaran.update', $masterAnggaran->id) }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('masterAnggaran.update', $masterAnggaran->id) }}"
+                        enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-xl-12">
                                 <div class="mb-3">
                                     <label for="kode_rekening" class="form-label">Kode Rekening</label>
                                     <input type="text" class="form-control @error('kode_rekening') is-invalid @enderror"
-                                        id="kode_rekening" name="kode_rekening" value="{{ $masterAnggaran->kode_rekening ?? "" }}">
+                                        id="kode_rekening" name="kode_rekening"
+                                        value="{{ $masterAnggaran->kode_rekening ?? '' }}">
                                     @error('kode_rekening')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
 
-                            
+
                             <div class="col-xl-12">
                                 <div class="mb-3">
                                     <label for="nama_rekening" class="form-label">Nama Rekening</label>
                                     <input type="text" class="form-control @error('nama_rekening') is-invalid @enderror"
-                                        id="nama_rekening" name="nama_rekening" value="{{ $masterAnggaran->nama_rekening ?? "" }}">
+                                        id="nama_rekening" name="nama_rekening"
+                                        value="{{ $masterAnggaran->nama_rekening ?? '' }}">
                                     @error('nama_rekening')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

@@ -58,28 +58,33 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $groupAnggaran->kode_rekening }}</td>
-                                        <td>{{ $groupAnggaran->nama_group }}</td>
-                                        <td>Rp {{ number_format($groupAnggaran->anggaran_bahan_bakar_minyak, 0, ',', '.') }}</td>
-                                        <td>Rp {{ number_format($groupAnggaran->anggaran_pelumas_mesin, 0, ',', '.') }}</td>
-                                        <td>Rp {{ number_format($groupAnggaran->anggaran_suku_cadang, 0, ',', '.') }}</td>
-                                        <td>Rp {{ number_format($groupAnggaran->total_anggaran, 0, ',', '.') }}</td>
-                                        
+                                        <td class="text-start">{{ $groupAnggaran->nama_group }}</td>
+                                        <td>Rp
+                                            {{ number_format($groupAnggaran->anggaran_bahan_bakar_minyak ?? 0, 0, ',', '.') }}
+                                        </td>
+                                        <td>Rp {{ number_format($groupAnggaran->anggaran_pelumas_mesin ?? 0, 0, ',', '.') }}
+                                        </td>
+                                        <td>Rp {{ number_format($groupAnggaran->anggaran_suku_cadang ?? 0, 0, ',', '.') }}
+                                        </td>
+                                        <td>Rp {{ number_format($groupAnggaran->total_anggaran ?? 0, 0, ',', '.') }}</td>
                                         <td>
-                                            <a href="{{ route('groupAnggaran.edit', $groupAnggaran->id) }}"
-                                                class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
-                                                data-bs-placement="top" title="Edit">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
-                                            <form action="{{ route('groupAnggaran.delete', $groupAnggaran->id) }}" method="POST"
-                                                style="display: inline-block">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-danger btn-icon btn-sm"
-                                                    onclick="return confirm('Kamu yakin ingin menghapus data: {{ $groupAnggaran->nama_group }} ?')"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
+                                            <div class="custom-btn-group">
+                                                <a href="{{ route('groupAnggaran.edit', $groupAnggaran->id) }}"
+                                                    class="btn btn-warning btn-icon" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" title="Edit">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <form action="{{ route('groupAnggaran.delete', $groupAnggaran->id) }}"
+                                                    method="POST" style="display: inline-block">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-danger btn-icon btn-sm"
+                                                        onclick="return confirm('Kamu yakin ingin menghapus data: {{ $groupAnggaran->nama_group }} ?')"
+                                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

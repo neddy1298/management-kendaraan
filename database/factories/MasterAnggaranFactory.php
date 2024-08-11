@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\PaguAnggaran;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,10 +17,12 @@ class MasterAnggaranFactory extends Factory
      */
     public function definition(): array
     {
+        $paguAnggarans = PaguAnggaran::get()->pluck('id')->toArray();
         return [
+            'pagu_anggaran_id' => $this->faker->randomElement($paguAnggarans),
             'kode_rekening' => $this->faker->unique()->numerify('#.#.#.#'),
             'nama_rekening' => $this->faker->unique()->word(),
-            'anggaran' => fake()->numerify('##00000000'),
+            'anggaran' => fake()->numerify('##0000000000'),
         ];
     }
 }

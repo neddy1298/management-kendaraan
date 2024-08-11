@@ -12,7 +12,7 @@ class Kendaraan extends Model
     protected $table = 'kendaraans';
 
     protected $fillable = [
-        'unit_kerja_id',
+        'group_anggaran_id',
         'nomor_registrasi',
         'merk_kendaraan',
         'jenis_kendaraan',
@@ -21,26 +21,26 @@ class Kendaraan extends Model
         'roda_kendaraan',
         'berlaku_sampai',
     ];
+    protected $dates = ['berlaku_sampai'];
 
-    public function unitKerja()
+    protected $casts = [
+        'berlaku_sampai' => 'datetime',
+    ];
+
+    public function groupAnggarans()
     {
-        return $this->belongsTo(UnitKerja::class);
+        return $this->belongsToMany(GroupAnggaran::class, 'group_anggaran_kendaraan');
     }
 
-    public function maintenance()
+    public function belanjas()
     {
-        return $this->hasMany(Maintenance::class);
+        return $this->hasMany(Belanja::class);
     }
 
     protected $appends = ['isExpire'];
 
     public function getIsExpireAttribute()
     {
-        if ($this->berlaku_sampai->isPast()) {
-            return 'kadaluarsa';
-        } else {
-            return 'aktif';
-        }
+        return $this->berlaku_sampai->isPast() ? 'kadaluarsa' : 'aktif';
     }
-
 }

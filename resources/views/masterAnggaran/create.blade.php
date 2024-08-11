@@ -35,44 +35,61 @@
                         <div class="row">
                             <div class="col-xl-12">
                                 <div class="mb-3">
-                                    <label for="kode_rekening" class="form-label">Kode Rekening</label>
-                                    <input type="text" class="form-control @error('kode_rekening') is-invalid @enderror"
-                                        id="kode_rekening" name="kode_rekening" value="{{ old('kode_rekening') }}">
-                                    @error('kode_rekening')
+                                    <label for="pagu_anggaran_id" class="form-label">Nomor Rekening Pagu</label>
+                                    <select id="pagu_anggaran_id" class="form-select" name="pagu_anggaran_id">
+                                        <option hidden value="{{ old('pagu_anggaran_id') }}">{{ old('pagu_anggaran_id') }}
+                                        </option>
+                                        @foreach ($paguAnggarans as $paguAnggaran)
+                                            <option value="{{ $paguAnggaran->id }}">{{ $paguAnggaran->nama_rekening }} -
+                                                {{ $paguAnggaran->kode_rekening }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('pagu_anggaran_id')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="mb-3">
+                                        <label for="kode_rekening" class="form-label">Kode Rekening</label>
+                                        <input type="text"
+                                            class="form-control @error('kode_rekening') is-invalid @enderror"
+                                            id="kode_rekening" name="kode_rekening" value="{{ old('kode_rekening') }}">
+                                        @error('kode_rekening')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+
+                                <div class="col-xl-12">
+                                    <div class="mb-3">
+                                        <label for="nama_rekening" class="form-label">Nama Rekening</label>
+                                        <input type="text"
+                                            class="form-control @error('nama_rekening') is-invalid @enderror"
+                                            id="nama_rekening" name="nama_rekening" value="{{ old('nama_rekening') }}">
+                                        @error('nama_rekening')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="mb-3">
+                                        <label for="anggaran" class="form-label">Anggaran</label>
+                                        <input type="number" class="form-control @error('anggaran') is-invalid @enderror"
+                                            id="anggaran" name="anggaran" value="{{ old('anggaran') }}">
+                                        @error('anggaran')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
 
-                            
-                            <div class="col-xl-12">
-                                <div class="mb-3">
-                                    <label for="nama_rekening" class="form-label">Nama Rekening</label>
-                                    <input type="text" class="form-control @error('nama_rekening') is-invalid @enderror"
-                                        id="nama_rekening" name="nama_rekening" value="{{ old('nama_rekening') }}">
-                                    @error('nama_rekening')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                            <!-- Form actions footer start -->
+                            <div class="form-actions-footer">
+                                <a class="btn btn-light" href="{{ route('masterAnggaran.index') }}">Batal</a>
+                                <button type="submit" class="btn btn-success">Simpan</button>
                             </div>
-                            <div class="col-xl-12">
-                                <div class="mb-3">
-                                    <label for="anggaran" class="form-label">Anggaran</label>
-                                    <input type="number" class="form-control @error('anggaran') is-invalid @enderror"
-                                        id="anggaran" name="anggaran" value="{{ old('anggaran') }}">
-                                    @error('anggaran')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Form actions footer start -->
-                        <div class="form-actions-footer">
-                            <a class="btn btn-light" href="{{ route('masterAnggaran.index') }}">Batal</a>
-                            <button type="submit" class="btn btn-success">Simpan</button>
-                        </div>
-                        <!-- Form actions footer end -->
+                            <!-- Form actions footer end -->
                     </form>
                 </div>
             </div>

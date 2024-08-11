@@ -11,19 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('unit_kerjas', function (Blueprint $table) {
+        Schema::create('group_anggaran_kendaraan', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_unit_kerja')->unique();
+            $table->foreignId('kendaraan_id')
+                ->constrained('kendaraans')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->foreignId('group_anggaran_id')
                 ->constrained('group_anggarans')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->bigInteger('budget_bahan_bakar_minyak')->nullable();
-            $table->bigInteger('budget_pelumas_mesin')->nullable();
-            $table->bigInteger('budget_suku_cadang')->nullable();
-            $table->bigInteger('budget_total')->virtualAs('IFNULL(budget_bahan_bakar_minyak, 0) + IFNULL(budget_pelumas_mesin, 0) + IFNULL(budget_suku_cadang, 0)');
-            $table->string('_token')->nullable();
             $table->timestamps();
+
+            $table->unique(['kendaraan_id', 'group_anggaran_id']);
         });
     }
 
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('unit_kerjas');
+        Schema::dropIfExists('group_anggaran_kendaraan');
     }
 };

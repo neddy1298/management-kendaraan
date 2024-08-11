@@ -58,7 +58,7 @@
         <div class="login-box">
             <div class="login-form">
                 <a href="" class="login-logo">
-                    <img src="{{ asset('images/kotabogor.png') }}" alt="Kota Bogor"/>&nbsp;&nbsp;
+                    <img src="{{ asset('images/kotabogor.png') }}" alt="Kota Bogor" />&nbsp;&nbsp;
                     <img src="{{ asset('images/dishub.png') }}" alt="Dinas Perhubungan" />
                 </a>
                 <div class="login-welcome">
@@ -66,7 +66,8 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Username</label>
-                    <input type="text" class="form-control" autocomplete="off" name="email">
+                    <input type="text" class="form-control" autocomplete="off" name="email"
+                        value="admin@gmail.com">
                     @if ($errors->has('email'))
                         <div class="text-red">
                             {{ $errors->first('email') }}
@@ -77,7 +78,7 @@
                     <div class="d-flex justify-content-between">
                         <label class="form-label">Password</label>
                     </div>
-                    <input type="password" class="form-control" name="password">
+                    <input type="password" class="form-control" name="password" value="admin">
                     @if ($errors->has('password'))
                         <div class="text-red">
                             {{ $errors->first('password') }}

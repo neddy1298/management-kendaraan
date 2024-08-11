@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\GroupAnggaran;
 use App\Models\MasterAnggaran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class GroupAnggaranController extends Controller
 {
@@ -13,7 +14,7 @@ class GroupAnggaranController extends Controller
      */
     public function index()
     {
-        $groupAnggarans = GroupAnggaran::orderBy('created_at', 'desc')->get();
+        $groupAnggarans = GroupAnggaran::with('masterAnggaran')->orderBy('created_at', 'desc')->paginate(10); // Use pagination and eager loading
         return view('groupAnggaran.index', compact('groupAnggarans'));
     }
 
@@ -31,29 +32,13 @@ class GroupAnggaranController extends Controller
      */
     public function store(Request $request)
     {
-        $groupAnggaran = $request->validate([
-            'nama_group' => 'required|string|max:255',
-            'kode_rekening' => 'required|string|max:255',
-            'master_anggaran_id' => 'required|integer',
-            'anggaran_bahan_bakar_minyak' => 'required|integer',
-            'anggaran_pelumas_mesin' => 'required|integer',
-            'anggaran_suku_cadang' => 'required|integer',
-        ], [
-            'required' => 'Kolom :attribute wajib diisi.',
-            'integer' => 'Kolom :attribute harus berupa angka.',
-        ]);
+        $groupAnggaran = $this->validateGroupAnggaran($request);
 
-        GroupAnggaran::create($groupAnggaran);
+        DB::transaction(function () use ($groupAnggaran) {
+            GroupAnggaran::create($groupAnggaran);
+        });
 
-        return redirect()->route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil ditambahkan.');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(GroupAnggaran $groupAnggaran)
-    {
-        //
+        return to_route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil ditambahkan.');
     }
 
     /**
@@ -61,8 +46,7 @@ class GroupAnggaranController extends Controller
      */
     public function edit($id)
     {
-        $groupAnggaran = GroupAnggaran::with('masterAnggaran')->find($id);
-
+        $groupAnggaran = GroupAnggaran::with('masterAnggaran')->findOrFail($id);
         $masterAnggarans = MasterAnggaran::all();
         return view('groupAnggaran.edit', compact('groupAnggaran', 'masterAnggarans'));
     }
@@ -72,21 +56,13 @@ class GroupAnggaranController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $groupAnggaran = $request->validate([
-            'nama_group' => 'required|string|max:255',
-            'kode_rekening' => 'required|string|max:255',
-            'master_anggaran_id' => 'required|integer',
-            'anggaran_bahan_bakar_minyak' => 'required|integer',
-            'anggaran_pelumas_mesin' => 'required|integer',
-            'anggaran_suku_cadang' => 'required|integer',
-        ], [
-            'required' => 'Kolom :attribute wajib diisi.',
-            'integer' => 'Kolom :attribute harus berupa angka.',
-        ]);
+        $groupAnggaran = $this->validateGroupAnggaran($request);
 
-        GroupAnggaran::find($id)->update($groupAnggaran);
+        DB::transaction(function () use ($groupAnggaran, $id) {
+            GroupAnggaran::findOrFail($id)->update($groupAnggaran);
+        });
 
-        return redirect()->route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil diubah.');
+        return to_route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil diubah.');
     }
 
     /**
@@ -94,8 +70,34 @@ class GroupAnggaranController extends Controller
      */
     public function destroy($id)
     {
-        GroupAnggaran::find($id)->delete();
+        DB::transaction(function () use ($id) {
+            $groupAnggaran = GroupAnggaran::findOrFail($id);
 
-        return redirect()->route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil dihapus.');
+            if ($groupAnggaran) {
+                $groupAnggaran->delete();
+            } else {
+                throw new \Exception('Data tidak ditemukan.');
+            }
+        });
+
+        return to_route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil dihapus.');
+    }
+
+    /**
+     * Validate Group Anggaran data.
+     */
+    protected function validateGroupAnggaran(Request $request)
+    {
+        return $request->validate([
+            'nama_group' => 'required|string|max:255',
+            'kode_rekening' => 'required|string|max:255',
+            'master_anggaran_id' => 'required|integer',
+            'anggaran_bahan_bakar_minyak' => 'nullable|integer',
+            'anggaran_pelumas_mesin' => 'nullable|integer',
+            'anggaran_suku_cadang' => 'nullable|integer',
+        ], [
+            'required' => 'Kolom :attribute wajib diisi.',
+            'integer' => 'Kolom :attribute harus berupa angka.',
+        ]);
     }
 }

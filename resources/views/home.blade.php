@@ -3,7 +3,6 @@
 @section('content')
     <!-- Row start -->
     <div class="row">
-
         <div class="col-xxl-4 col-sm-6 col-12">
             <div class="stats-tile">
                 <div class="sale-icon shade-yellow">
@@ -33,13 +32,13 @@
             </a>
         </div>
         <div class="col-xxl-4 col-sm-6 col-12">
-            <a href="{{ route('maintenance.index') }}">
+            <a href="#">
                 <div class="stats-tile">
                     <div class="sale-icon shade-red">
                         <i class="bi bi-clock-history"></i>
                     </div>
                     <div class="sale-details">
-                        <h3 class="text-red">{{ $isExpire->count() }}/{{ $kendaraan }}</h3>
+                        <h3 class="text-red">{{ $isExpire }}/{{ $kendaraan }}</h3>
                         <p>Kadaluarsa Pajak</p>
                     </div>
                 </div>
@@ -89,7 +88,8 @@
                                     <h4>Bahan Bakar</h4>
                                     <p class="text-truncate">Bensin & Solar</p>
                                 </div>
-                                <div class="transaction-amount text-blue">Rp {{ number_format($belanjas->sum('belanja_bahan_bakar_minyak'), 0, ',', '.') }}</div>
+                                <div class="transaction-amount text-blue">Rp
+                                    {{ number_format($belanjas->sum('belanja_bahan_bakar_minyak'), 0, ',', '.') }}</div>
                             </div>
                             <div class="transaction-block">
                                 <div class="transaction-icon shade-blue">
@@ -99,9 +99,10 @@
                                     <h4>Pelumas</h4>
                                     <p class="text-truncate">Pelumas Mesin</p>
                                 </div>
-                                <div class="transaction-amount text-blue">Rp {{ number_format($belanjas->sum('belanja_pelumas_mesin'), 0, ',', '.') }}</div>
+                                <div class="transaction-amount text-blue">Rp
+                                    {{ number_format($belanjas->sum('belanja_pelumas_mesin'), 0, ',', '.') }}</div>
                             </div>
-                            
+
                             <div class="transaction-block">
                                 <div class="transaction-icon shade-blue">
                                     <i class="bi bi-nut"></i>
@@ -110,7 +111,8 @@
                                     <h4>Suku Cadang</h4>
                                     <p class="text-truncate">Suku Cadang</p>
                                 </div>
-                                <div class="transaction-amount text-blue">Rp {{ number_format($belanjas->sum('belanja_suku_cadang'), 0, ',', '.') }}</div>
+                                <div class="transaction-amount text-blue">Rp
+                                    {{ number_format($belanjas->sum('belanja_suku_cadang'), 0, ',', '.') }}</div>
                             </div>
                         </div>
                     </div>
@@ -132,7 +134,7 @@
                             </div>
                             <div class="task-info">
                                 <h5 class="task-title">Pajak Aktif</h5>
-                                <p class="amount-spend">{{ $kendaraan - $isExpire->count() }}</p>
+                                <p class="amount-spend">{{ $kendaraan - $isExpire }}</p>
                             </div>
                         </li>
                         <li class="task-list-item">
@@ -141,7 +143,7 @@
                             </div>
                             <div class="task-danger">
                                 <h5 class="task-title">Pajak Kadaluarsa</h5>
-                                <p class="amount-spend">{{ $isExpire->count() }}</p>
+                                <p class="amount-spend">{{ $isExpire }}</p>
                             </div>
                         </li>
                     </ul>
@@ -152,7 +154,7 @@
     <!-- Row end -->
 
     <!-- Row start -->
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
@@ -175,7 +177,7 @@
                                 @foreach ($belanja_mingguans as $index => $belanja_mingguan)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $belanja_mingguan->nomor_registrasi }}</td>
+                                        <td>{{ $belanja_mingguan->kendaraan->nomor_registrasi }}</td>
                                         <td>Rp.
                                             {{ number_format($belanja_mingguan->belanja_bahan_bakar_minyak + $belanja_mingguan->belanja_pelumas_mesin + $belanja_mingguan->belanja_suku_cadang, 0, ',', '.') }}
                                         </td>
@@ -190,7 +192,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- Row end -->
 @endsection
 
@@ -199,7 +201,7 @@
     <script src="{{ asset('vendor/apex/custom/sales/salesGraph.js') }}"></script>
     <script src="{{ asset('vendor/apex/custom/sales/revenueGraph.js') }}"></script>
     {{-- <script src="{{ asset('vendor/apex/custom/sales/taskGraph.js') }}"></script> --}}
-    
+
     <script>
         var options = {
             chart: {
@@ -231,7 +233,7 @@
                     }
                 }
             },
-            series: [{{ $kendaraan-$isExpire->count() }}, {{ $isExpire->count() }}],
+            series: [{{ $kendaraan - $isExpire }}, {{ $isExpire }}],
             labels: ['Aktif', 'Kadaluarsa'],
             colors: ['#26ba4f', '#f87957'],
         }

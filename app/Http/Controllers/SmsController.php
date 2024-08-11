@@ -2,76 +2,67 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kendaraan;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Twilio\Rest\Client;
 
 class SmsController extends Controller
 {
     /**
-     * Send a WhatsApp message using Vonage API.
+     * Send a WhatsApp message using Twilio API.
      *
-     * @param string $message The message to be sent.
-     * @return array The response from the API.
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function sendWhatsapp($message)
+    public function sendWhatsapp()
     {
-        // Using vonage API
-        $url = env('VONAGE_URL');
-        // $vonage_username = env('VONAGE_USERNAME');
-        // $vonage_password = env('VONAGE_PASSWORD');
-        $cacertPath = storage_path('cacert.pem'); // Update this path to where you saved cacert.pem
-        $vonage_username = env('VONAGE_USERNAME') ?? '';
-        $vonage_password = env('VONAGE_PASSWORD') ?? '';
-        
-        if (empty($vonage_username) || empty($vonage_password)) {
-            Log::error('Vonage credentials are missing');
-            return ['error' => 'Vonage credentials are not configured'];
-        }
-        $response = Http::withBasicAuth($vonage_username, $vonage_password)
-            ->withHeaders([
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json'
-            ])
-            ->withOptions([
-                'verify' => $cacertPath,
-            ])
-            ->post($url, [
-                'from' => env('VONAGE_FROM_NUMBER'),
-                'to' => env('WHATSAPP_NUMBER'),
-                'message_type' => 'text',
-                'text' => $message,
-                'channel' => 'whatsapp'
-            ]);
-        
-        if ($response->successful()) {
-            return ['status' => 'success'];
-        } else {
-            return ['error' => 'API request failed'];
+        $expireKendaraans = Kendaraan::where('berlaku_sampai', '<', Carbon::now())->get();
+        $message = $this->generateMessage($expireKendaraans);
+
+        try {
+            $this->sendMessage($message);
+            return redirect()->back()->with('success', 'Pesan WhatsApp berhasil dikirim');
+        } catch (\Exception $e) {
+            Log::error('Failed to send WhatsApp message: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Pesan WhatsApp gagal dikirim: ' . $e->getMessage());
         }
     }
 
     /**
-     * Send an SMS using Vonage API.
+     * Generate the message content.
      *
-     * @return \Illuminate\Http\JsonResponse The response indicating the success of the SMS sending.
+     * @param \Illuminate\Database\Eloquent\Collection $expireKendaraans
+     * @return string
      */
-    public function sendSms()
+    protected function generateMessage($expireKendaraans)
     {
-        // Example using Vonage
-        $basic  = new \Vonage\Client\Credentials\Basic(env('VONAGE_USERNAME'), env('VONAGE_PASSWORD'));
-        $client = new \Vonage\Client($basic);
+        $message = 'Pengingat ' . Carbon::now()->isoFormat('D MMMM YYYY') . ', berikut adalah kendaraan yang sudah kadaluarsa:' . "\n";
+        foreach ($expireKendaraans as $index => $kendaraan) {
+            $message .= "\n" . ($index + 1) . '. ' . $kendaraan->nomor_registrasi . ' - ' . $kendaraan->berlaku_sampai->format('d/m/Y');
+        }
+        $message .= "\n\n" . "Segera perpanjang kendaraan yang sudah kadaluarsa.";
+        return $message;
+    }
 
-        // Set the CA bundle path for Guzzle with a relative path
-        $guzzleClient = new \GuzzleHttp\Client([
-            'verify' => storage_path('cacert.pem'),
-        ]);
-        $client->setHttpClient($guzzleClient);
+    /**
+     * Send the message using Twilio API.
+     *
+     * @param string $message
+     * @throws \Twilio\Exceptions\TwilioException
+     */
+    protected function sendMessage($message)
+    {
+        $sid = env('TWILIO_SID');
+        $token = env('TWILIO_TOKEN');
+        $twilio = new Client($sid, $token);
 
-        $message = $client->sms()->send(
-            new \Vonage\SMS\Message\SMS(env('WHATSAPP_NUMBER'), "Contoh Text", 'Ini adalah contoh SMS')
+        $twilio->messages->create(
+            "whatsapp:+6285156678113", // to
+            [
+                "from" => "whatsapp:+14155238886",
+                "body" => $message
+            ]
         );
-
-        // Return a response
-        return response()->json(['message' => 'SMS sent successfully']);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MasterAnggaran;
+use App\Models\PaguAnggaran;
 use Illuminate\Http\Request;
 
 class MasterAnggaranController extends Controller
@@ -12,7 +13,7 @@ class MasterAnggaranController extends Controller
      */
     public function index()
     {
-        $masterAnggarans = MasterAnggaran::orderBy('created_at', 'desc')->get();
+        $masterAnggarans = MasterAnggaran::with('paguAnggaran')->orderBy('created_at', 'desc')->get();
         return view('masterAnggaran.index', compact('masterAnggarans'));
     }
 
@@ -21,7 +22,8 @@ class MasterAnggaranController extends Controller
      */
     public function create()
     {
-        return view('masterAnggaran.create');
+        $paguAnggarans = PaguAnggaran::all();
+        return view('masterAnggaran.create', compact('paguAnggarans'));
     }
 
     /**
@@ -29,31 +31,12 @@ class MasterAnggaranController extends Controller
      */
     public function store(Request $request)
     {
+        $validatedData = $this->validateMasterAnggaran($request);
 
-        $masterAnggaran = $request->validate(
-            [
-                'kode_rekening' => 'required|string|max:255',
-                'nama_rekening' => 'required|string|max:255',
-                'anggaran' => 'required|integer',
-            ],
-            [
-                'required' => 'Kolom :attribute wajib diisi.',
-                'integer' => 'Kolom :attribute harus berupa angka.',
-            ]
-        );
+        MasterAnggaran::create($validatedData);
 
-        MasterAnggaran::create($masterAnggaran);
-
-        return redirect()->route('masterAnggaran.index')
+        return to_route('masterAnggaran.index')
             ->with('success', 'Anggaran Berhasil dibuat.');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
     }
 
     /**
@@ -61,26 +44,22 @@ class MasterAnggaranController extends Controller
      */
     public function edit($id)
     {
-        $masterAnggaran = MasterAnggaran::find($id);
-        return view('masterAnggaran.edit', compact('masterAnggaran'));
+        $masterAnggaran = MasterAnggaran::findOrFail($id);
+        $paguAnggarans = PaguAnggaran::all();
+        return view('masterAnggaran.edit', compact('masterAnggaran', 'paguAnggarans'));
     }
-
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'kode_rekening' => 'required',
-            'nama_rekening' => 'required',
-            'anggaran' => 'required',
-        ]);
+        $validatedData = $this->validateMasterAnggaran($request);
 
-        $masterAnggaran = MasterAnggaran::find($id);
-        $masterAnggaran->update($request->all());
+        $masterAnggaran = MasterAnggaran::findOrFail($id);
+        $masterAnggaran->update($validatedData);
 
-        return redirect()->route('masterAnggaran.index')
+        return to_route('masterAnggaran.index')
             ->with('success', 'Anggaran Berhasil diubah.');
     }
 
@@ -89,13 +68,29 @@ class MasterAnggaranController extends Controller
      */
     public function destroy(string $id)
     {
-        $masterAnggaran = MasterAnggaran::find($id);
+        $masterAnggaran = MasterAnggaran::findOrFail($id);
 
         if ($masterAnggaran) {
             $masterAnggaran->delete();
-            return redirect()->route('masterAnggaran.index')->with('success', 'Data berhasil dihapus.');
+            return to_route('masterAnggaran.index')->with('success', 'Data berhasil dihapus.');
         } else {
-            return redirect()->route('masterAnggaran.index')->with('error', 'Data tidak ditemukan.');
+            return to_route('masterAnggaran.index')->with('error', 'Data tidak ditemukan.');
         }
+    }
+
+    /**
+     * Validate Master Anggaran data.
+     */
+    protected function validateMasterAnggaran(Request $request)
+    {
+        return $request->validate([
+            'pagu_anggaran_id' => 'required|integer',
+            'kode_rekening' => 'required|string|max:255',
+            'nama_rekening' => 'required|string|max:255',
+            'anggaran' => 'required|integer',
+        ], [
+            'required' => 'Kolom :attribute wajib diisi.',
+            'integer' => 'Kolom :attribute harus berupa angka.',
+        ]);
     }
 }
