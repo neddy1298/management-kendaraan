@@ -14,6 +14,8 @@ class StokSukuCadang extends Model
     protected $fillable = [
         'id_suku_cadang',
         'nama_suku_cadang',
+        'group_anggaran',
+        'stok_awal',
         'stok',
         'harga',
     ];
