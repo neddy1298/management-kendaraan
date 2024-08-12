@@ -30,25 +30,22 @@
                     <form method="POST" action="{{ route('belanja.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
-                            <div class="col-xl-12 col-sm-12 col-12">
-                                <div class="mb-3">
-                                    <label class="form-label">Group Anggaran</label>
-                                    <select class="form-select" id="group_anggaran_id" name="group_anggaran_id">
-                                        <option value="" hidden>Pilih Group Anggaran</option>
-                                        @foreach ($groupAnggarans as $groupAnggaran)
-                                            <option value="{{ $groupAnggaran->id }}">{{ $groupAnggaran->nama_group }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                            <div class="mb-3">
+                                <label for="kendaraan_id" class="form-label">Kendaraan</label>
+                                <select id="kendaraan_id" name="kendaraan_id" class="form-control">
+                                    <option value="" hidden>Pilih Kendaraan</option>
+                                    @foreach ($kendaraans as $kendaraan)
+                                        <option value="{{ $kendaraan->id }}">{{ $kendaraan->nomor_registrasi }} -
+                                            {{ $kendaraan->merk_kendaraan }}</option>
+                                    @endforeach
+                                </select>
                             </div>
-                            <div class="col-xl-12 col-sm-12 col-12 d-none" id="kendaraan_container">
-                                <div class="mb-3">
-                                    <label class="form-label">Kendaraan</label>
-                                    <select class="form-select" id="kendaraan_id" name="kendaraan_id">
-                                        <option value="" hidden>Pilih Kendaraan</option>
-                                    </select>
-                                </div>
+
+                            <div class="mb-3 d-none" id="group_anggaran_container">
+                                <label for="group_anggaran_id" class="form-label">Group Anggaran</label>
+                                <select id="group_anggaran_id" name="group_anggaran_id" class="form-control">
+                                    <option value="" hidden>Pilih Group Anggaran</option>
+                                </select>
                             </div>
                             <div class="col-12">
                                 <div class="form-section-title">Total Belanja</div>
@@ -160,38 +157,43 @@
         document.addEventListener('DOMContentLoaded', function() {
             const kendaraanSelect = document.getElementById('kendaraan_id');
             const groupAnggaranSelect = document.getElementById('group_anggaran_id');
-            const kendaraanContainer = document.getElementById('kendaraan_container');
+            const groupAnggaranContainer = document.getElementById('group_anggaran_container');
 
-            groupAnggaranSelect.addEventListener('change', function() {
-                const groupAnggaranId = this.value;
+            kendaraanSelect.addEventListener('change', function() {
+                const kendaraanId = this.value;
 
-                // Clear existing options
-                kendaraanSelect.innerHTML = '';
+                // Clear existing options but retain the class
+                groupAnggaranSelect.innerHTML = '<option value="" hidden>Pilih Group Anggaran</option>';
 
-                if (groupAnggaranId) {
-                    kendaraanContainer.classList.remove('d-none');
-                    fetch(`/get-kendaraan/${groupAnggaranId}`)
+                if (kendaraanId) {
+                    fetch(`/get-group-anggaran/${kendaraanId}`)
                         .then(response => response.json())
                         .then(data => {
-                            data.forEach(kendaraan => {
-                                const option = document.createElement('option');
-                                option.value = kendaraan.id;
-                                option.textContent = kendaraan.nomor_registrasi + ' - ' +
-                                    kendaraan.merk_kendaraan;
-                                kendaraanSelect.appendChild(option);
-                            });
+                            if (data.length > 0) {
+                                groupAnggaranContainer.classList.remove('d-none');
+                                data.forEach(groupAnggaran => {
+                                    const option = document.createElement('option');
+                                    option.value = groupAnggaran.id;
+                                    option.textContent =
+                                        `${groupAnggaran.kode_rekening} - ${groupAnggaran.nama_group}`;
+                                    groupAnggaranSelect.appendChild(option);
+                                });
+                            } else {
+                                groupAnggaranContainer.classList.add('d-none');
+                            }
                         })
-                        .catch(error => console.error('Error fetching kendaraan:', error));
+                        .catch(error => {
+                            console.error('Error fetching group anggaran:', error);
+                            groupAnggaranContainer.classList.add('d-none');
+                        });
                 } else {
-                    kendaraanContainer.classList.add('d-none');
+                    groupAnggaranContainer.classList.add('d-none');
                 }
             });
 
             // Trigger change event to populate initial options
-            groupAnggaranSelect.dispatchEvent(new Event('change'));
+            kendaraanSelect.dispatchEvent(new Event('change'));
         });
-
-
 
         document.addEventListener('DOMContentLoaded', function() {
             const jenisBelanja = document.getElementById('jenis_belanja');
@@ -219,39 +221,41 @@
                 const item = document.createElement('div');
                 item.className = 'row suku-cadang-item mb-3';
                 item.innerHTML = `
-                    <div class="col-xl-4 col-sm-12 col-12">
-                        <div class="mb-3">
-                            <label class="form-label">Nama Suku Cadang</label>
-                            <select class="form-control stok-suku-cadang" name="nama_suku_cadang[]">
-                                <option value="">Pilih Suku Cadang</option>
-                                @foreach ($stokSukuCadangs as $stokSukuCadang)
-                                    <option value="{{ $stokSukuCadang->id }}" data-stok="{{ $stokSukuCadang->stok }}" data-harga="{{ $stokSukuCadang->harga }}">{{ $stokSukuCadang->nama_suku_cadang }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-sm-12 col-12">
-                        <div class="mb-3">
-                            <label class="form-label">Jumlah</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control jumlah-suku-cadang" name="jumlah_suku_cadang[]" min="1">
-                                <span class="input-group-text stok-suku-cadang">stok</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-sm-12 col-12">
-                        <div class="mb-3">
-                            <label class="form-label">Harga</label>
-                            <input type="hidden" class="form-control harga-suku-cadang" name="harga_suku_cadang[]" readonly>
-                            <input type="text" class="form-control harga-display" readonly>
-                        </div>
-                    </div>
-                    <div class="col-xl-1 col-sm-12 col-12 d-flex align-items-end">
-                        <div class="mb-3">
-                            <button type="button" class="btn btn-danger btn-icon btn-sm remove-suku-cadang">Hapus</button>
-                        </div>
-                    </div>
-                `;
+    <div class="col-xl-4 col-sm-12 col-12">
+        <div class="mb-3">
+            <label class="form-label">Nama Suku Cadang</label>
+            <select class="form-control stok-suku-cadang" name="nama_suku_cadang[]">
+                <option value="">Pilih Suku Cadang</option>
+                @foreach ($stokSukuCadangs as $stokSukuCadang)
+                    <option value="{{ $stokSukuCadang->id }}" data-stok="{{ $stokSukuCadang->stok }}"
+                        data-harga="{{ $stokSukuCadang->harga }}">{{ $stokSukuCadang->nama_suku_cadang }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-12 col-12">
+        <div class="mb-3">
+            <label class="form-label">Jumlah</label>
+            <div class="input-group">
+                <input type="number" class="form-control jumlah-suku-cadang" name="jumlah_suku_cadang[]"
+                    min="1">
+                <span class="input-group-text stok-suku-cadang">stok</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-sm-12 col-12">
+        <div class="mb-3">
+            <label class="form-label">Harga</label>
+            <input type="hidden" class="form-control harga-suku-cadang" name="harga_suku_cadang[]" readonly>
+            <input type="text" class="form-control harga-display" readonly>
+        </div>
+    </div>
+    <div class="col-xl-1 col-sm-12 col-12 d-flex align-items-end">
+        <div class="mb-3">
+            <button type="button" class="btn btn-danger btn-icon btn-sm remove-suku-cadang">Hapus</button>
+        </div>
+    </div>
+    `;
                 return item;
             }
 
