@@ -14,7 +14,7 @@ class GroupAnggaranController extends Controller
      */
     public function index()
     {
-        $groupAnggarans = GroupAnggaran::with('masterAnggaran')->orderBy('created_at', 'desc')->paginate(10); // Use pagination and eager loading
+        $groupAnggarans = GroupAnggaran::with('masterAnggaran')->orderBy('created_at', 'desc')->get();
         return view('groupAnggaran.index', compact('groupAnggarans'));
     }
 
