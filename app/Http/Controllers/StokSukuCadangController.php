@@ -12,7 +12,7 @@ class StokSukuCadangController extends Controller
      */
     public function index()
     {
-        $stokSukuCadangs = StokSukuCadang::orderBy('created_at', 'desc')->get();
+        $stokSukuCadangs = StokSukuCadang::orderBy('group_anggaran', 'asc')->get();
         return view('sukuCadang.index', compact('stokSukuCadangs'));
     }
 
