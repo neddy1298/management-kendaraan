@@ -45,6 +45,8 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Suku Cadang</th>
+                                    <th>Roda</th>
+                                    <th>Stok Awal</th>
                                     <th>Stok</th>
                                     <th>Harga</th>
                                     <th>Total</th>
