@@ -344,15 +344,6 @@
                 }
             });
 
-            // Initialize datepicker
-            $('.datepicker').daterangepicker({
-                singleDatePicker: true,
-                showDropdowns: true,
-                locale: {
-                    format: 'DD-MM-YYYY'
-                }
-            });
-
             // Initialize select2 for initial Suku Cadang select
             $('.stok-suku-cadang').select2({
                 theme: 'bootstrap-5',
