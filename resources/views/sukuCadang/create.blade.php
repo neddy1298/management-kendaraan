@@ -41,6 +41,20 @@
                             </div>
                             <div class="col-xl-12">
                                 <div class="mb-3">
+                                    <label for="group_anggaran" class="form-label">Roda</label>
+                                    <select class="form-select" id="group_anggaran" name="group_anggaran">
+                                        <option value="" hidden>Pilih</option>
+                                        <option value="Roda 2">Roda 2</option>
+                                        <option value="Roda 4">Roda 4</option>
+                                        <option value="Roda 6&10">Roda 6&10</option>
+                                    </select>
+                                    @error('group_anggaran')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-12">
+                                <div class="mb-3">
                                     <label for="stok" class="form-label">Jumlah</label>
                                     <input type="number" class="form-control @error('stok') is-invalid @enderror"
                                         id="stok" name="stok" value="{{ old('stok') }}">
