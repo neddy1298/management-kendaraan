@@ -1,8 +1,46 @@
 @extends('layouts.app', ['page' => 'Belanja', 'page2' => 'Tambah', 'page3' => ''])
 
 @section('css')
-    <link rel="stylesheet" href="{{ secure_asset('vendor/daterange/daterange.css') }}">
-    <link rel="stylesheet" href="{{ secure_asset('vendor/bs-select/bs-select.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/daterange/daterange.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/bs-select/bs-select.css') }}">
+    <style>
+        .select2-container--bootstrap-5 .select2-selection {
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+        }
+
+        .select2-container--bootstrap-5 .select2-selection--single {
+            height: calc(1.5em + 0.75rem + 2px);
+            padding: 0.375rem 0.75rem;
+        }
+
+        .select2-container--bootstrap-5 .select2-selection--single .select2-selection__arrow {
+            height: calc(1.5em + 0.75rem);
+        }
+
+        .select2-container--bootstrap-5 .select2-dropdown {
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+        }
+
+        .select2-container--bootstrap-5 .select2-results__option {
+            padding: 0.375rem 0.75rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .select2-container--bootstrap-5 .select2-results__option:last-child {
+            border-bottom: none;
+        }
+
+        .select2-container--bootstrap-5 .select2-results__option--highlighted.select2-results__option--selectable {
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+
+        .select2-container--bootstrap-5 .select2-results__option--selected {
+            background-color: #e9ecef;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -30,25 +68,24 @@
                     <form method="POST" action="{{ route('belanja.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
-                            <div class="col-xl-12 col-sm-12 col-12">
-                                <div class="mb-3">
-                                    <label class="form-label">Group Anggaran</label>
-                                    <select class="form-select" id="group_anggaran_id" name="group_anggaran_id">
-                                        <option value="" hidden>Pilih Group Anggaran</option>
-                                        @foreach ($groupAnggarans as $groupAnggaran)
-                                            <option value="{{ $groupAnggaran->id }}">{{ $groupAnggaran->nama_group }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                            <div class="mb-3">
+                                <label for="kendaraan_id" class="form-label">Kendaraan</label>
+                                <select id="kendaraan_id" name="kendaraan_id" class="form-control select-single js-states"
+                                    data-live-search="true">
+                                    <option value="" hidden>Pilih Kendaraan</option>
+                                    @foreach ($kendaraans as $kendaraan)
+                                        <option value="{{ $kendaraan->id }}">{{ $kendaraan->nomor_registrasi }} -
+                                            {{ $kendaraan->merk_kendaraan }}</option>
+                                    @endforeach
+                                </select>
                             </div>
-                            <div class="col-xl-12 col-sm-12 col-12 d-none" id="kendaraan_container">
-                                <div class="mb-3">
-                                    <label class="form-label">Kendaraan</label>
-                                    <select class="form-select" id="kendaraan_id" name="kendaraan_id">
-                                        <option value="" hidden>Pilih Kendaraan</option>
-                                    </select>
-                                </div>
+
+                            <div class="mb-3 d-none" id="group_anggaran_container">
+                                <label for="group_anggaran_id" class="form-label">Group Anggaran</label>
+                                <select id="group_anggaran_id" name="group_anggaran_id"
+                                    class="form-control select-single js-states" data-live-search="true">
+                                    <option value="" hidden>Pilih Group Anggaran</option>
+                                </select>
                             </div>
                             <div class="col-12">
                                 <div class="form-section-title">Total Belanja</div>
@@ -88,6 +125,7 @@
                                                         <option value="{{ $stokSukuCadang->id }}"
                                                             data-stok="{{ $stokSukuCadang->stok }}"
                                                             data-harga="{{ $stokSukuCadang->harga }}">
+                                                            {{ $stokSukuCadang->group_anggaran }} -
                                                             {{ $stokSukuCadang->nama_suku_cadang }}</option>
                                                     @endforeach
                                                 </select>
@@ -157,49 +195,63 @@
     <script src="{{ secure_asset('vendor/daterange/daterange.js') }}"></script>
     <script src="{{ secure_asset('vendor/daterange/custom-daterange.js') }}"></script>
     <script>
+        $('.select-single.js-states').select2({
+            theme: 'bootstrap-5',
+            width: '100%',
+            dropdownParent: $('body'),
+            selectionCssClass: 'select2--small',
+            dropdownCssClass: 'select2--small',
+        });
         document.addEventListener('DOMContentLoaded', function() {
-            const kendaraanSelect = document.getElementById('kendaraan_id');
-            const groupAnggaranSelect = document.getElementById('group_anggaran_id');
-            const kendaraanContainer = document.getElementById('kendaraan_container');
-
-            groupAnggaranSelect.addEventListener('change', function() {
-                const groupAnggaranId = this.value;
-
-                // Clear existing options
-                kendaraanSelect.innerHTML = '';
-
-                if (groupAnggaranId) {
-                    kendaraanContainer.classList.remove('d-none');
-                    fetch(`/get-kendaraan/${groupAnggaranId}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            data.forEach(kendaraan => {
-                                const option = document.createElement('option');
-                                option.value = kendaraan.id;
-                                option.textContent = kendaraan.nomor_registrasi + ' - ' +
-                                    kendaraan.merk_kendaraan;
-                                kendaraanSelect.appendChild(option);
-                            });
-                        })
-                        .catch(error => console.error('Error fetching kendaraan:', error));
-                } else {
-                    kendaraanContainer.classList.add('d-none');
-                }
+            // Initialize select2 for kendaraan and group anggaran selects
+            $('.select-single.js-states').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                dropdownParent: $('body'),
+                selectionCssClass: 'select2--small',
+                dropdownCssClass: 'select2--small',
             });
 
-            // Trigger change event to populate initial options
-            groupAnggaranSelect.dispatchEvent(new Event('change'));
-        });
-
-
-
-        document.addEventListener('DOMContentLoaded', function() {
+            const kendaraanSelect = document.getElementById('kendaraan_id');
+            const groupAnggaranSelect = document.getElementById('group_anggaran_id');
+            const groupAnggaranContainer = document.getElementById('group_anggaran_container');
             const jenisBelanja = document.getElementById('jenis_belanja');
             const formBBM = document.getElementById('form_bbm');
             const formPelumas = document.getElementById('form_pelumas');
             const formSukuCadang = document.getElementById('form_suku_cadang');
             const container = document.getElementById('sukuCadangContainer');
             const addButton = document.getElementById('tambahSukuCadang');
+
+            // Kendaraan change event
+            $(kendaraanSelect).on('change', function() {
+                const kendaraanId = this.value;
+                $(groupAnggaranSelect).empty().append(
+                    '<option value="" hidden>Pilih Group Anggaran</option>'
+                );
+
+                if (kendaraanId) {
+                    fetch(`/get-group-anggaran/${kendaraanId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            groupAnggaranContainer.classList.toggle('d-none', data.length === 0);
+                            data.forEach(groupAnggaran => {
+                                const option = new Option(
+                                    `${groupAnggaran.kode_rekening} - ${groupAnggaran.nama_group}`,
+                                    groupAnggaran.id
+                                );
+                                $(groupAnggaranSelect).append(option);
+                            });
+                            $(groupAnggaranSelect).trigger(
+                                'change.select2'); // Notify select2 of changes
+                        })
+                        .catch(error => {
+                            console.error('Error fetching group anggaran:', error);
+                            groupAnggaranContainer.classList.add('d-none');
+                        });
+                } else {
+                    groupAnggaranContainer.classList.add('d-none');
+                }
+            });
 
             jenisBelanja.addEventListener('change', function() {
                 formBBM.classList.add('d-none');
@@ -219,39 +271,41 @@
                 const item = document.createElement('div');
                 item.className = 'row suku-cadang-item mb-3';
                 item.innerHTML = `
-                    <div class="col-xl-4 col-sm-12 col-12">
-                        <div class="mb-3">
-                            <label class="form-label">Nama Suku Cadang</label>
-                            <select class="form-control stok-suku-cadang" name="nama_suku_cadang[]">
-                                <option value="">Pilih Suku Cadang</option>
-                                @foreach ($stokSukuCadangs as $stokSukuCadang)
-                                    <option value="{{ $stokSukuCadang->id }}" data-stok="{{ $stokSukuCadang->stok }}" data-harga="{{ $stokSukuCadang->harga }}">{{ $stokSukuCadang->nama_suku_cadang }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+            <div class="col-xl-4 col-sm-12 col-12">
+                <div class="mb-3">
+                    <label class="form-label">Nama Suku Cadang</label>
+                    <select class="form-control stok-suku-cadang" name="nama_suku_cadang[]">
+                        <option value="">Pilih Suku Cadang</option>
+                        @foreach ($stokSukuCadangs as $stokSukuCadang)
+                            <option value="{{ $stokSukuCadang->id }}" data-stok="{{ $stokSukuCadang->stok }}"
+                                data-harga="{{ $stokSukuCadang->harga }}">{{ $stokSukuCadang->group_anggaran }} - {{ $stokSukuCadang->nama_suku_cadang }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-12 col-12">
+                <div class="mb-3">
+                    <label class="form-label">Jumlah</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control jumlah-suku-cadang" name="jumlah_suku_cadang[]"
+                            min="1">
+                        <span class="input-group-text stok-suku-cadang">stok</span>
                     </div>
-                    <div class="col-xl-3 col-sm-12 col-12">
-                        <div class="mb-3">
-                            <label class="form-label">Jumlah</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control jumlah-suku-cadang" name="jumlah_suku_cadang[]" min="1">
-                                <span class="input-group-text stok-suku-cadang">stok</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-sm-12 col-12">
-                        <div class="mb-3">
-                            <label class="form-label">Harga</label>
-                            <input type="hidden" class="form-control harga-suku-cadang" name="harga_suku_cadang[]" readonly>
-                            <input type="text" class="form-control harga-display" readonly>
-                        </div>
-                    </div>
-                    <div class="col-xl-1 col-sm-12 col-12 d-flex align-items-end">
-                        <div class="mb-3">
-                            <button type="button" class="btn btn-danger btn-icon btn-sm remove-suku-cadang">Hapus</button>
-                        </div>
-                    </div>
-                `;
+                </div>
+            </div>
+            <div class="col-xl-4 col-sm-12 col-12">
+                <div class="mb-3">
+                    <label class="form-label">Harga</label>
+                    <input type="hidden" class="form-control harga-suku-cadang" name="harga_suku_cadang[]" readonly>
+                    <input type="text" class="form-control harga-display" readonly>
+                </div>
+            </div>
+            <div class="col-xl-1 col-sm-12 col-12 d-flex align-items-end">
+                <div class="mb-3">
+                    <button type="button" class="btn btn-danger btn-icon btn-sm remove-suku-cadang">Hapus</button>
+                </div>
+            </div>
+        `;
                 return item;
             }
 
@@ -277,7 +331,6 @@
                     const hargaDisplay = e.target.closest('.suku-cadang-item').querySelector(
                         '.harga-display');
                     const stokSpan = e.target.closest('.suku-cadang-item').querySelector(
-
                         '.input-group-text.stok-suku-cadang');
                     jumlahInput.max = stok;
                     hargaInput.value = harga;

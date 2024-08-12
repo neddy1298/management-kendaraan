@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('stok_suku_cadangs', function (Blueprint $table) {
             $table->id();
             $table->string('nama_suku_cadang');
+            $table->string('group_anggaran');
+            $table->integer('stok_awal');
             $table->integer('stok');
             $table->bigInteger('harga');
             $table->timestamps();

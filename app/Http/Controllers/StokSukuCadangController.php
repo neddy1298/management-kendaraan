@@ -12,7 +12,7 @@ class StokSukuCadangController extends Controller
      */
     public function index()
     {
-        $stokSukuCadangs = StokSukuCadang::orderBy('created_at', 'desc')->get();
+        $stokSukuCadangs = StokSukuCadang::orderBy('group_anggaran', 'asc')->get();
         return view('sukuCadang.index', compact('stokSukuCadangs'));
     }
 
@@ -30,7 +30,7 @@ class StokSukuCadangController extends Controller
     public function store(Request $request)
     {
         $this->validateRequest($request);
-
+        $request['stok_awal'] = $request['stok'];
         StokSukuCadang::create($request->all());
         return redirect()->route('sukuCadang.index')->with('success', 'Data suku cadang berhasil ditambahkan');
     }

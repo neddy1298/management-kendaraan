@@ -92,7 +92,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
 
         // Route::get('/get-group-anggaran/{group_id}', [BelanjaController::class, 'getGroupAnggaran']);    
-        Route::get('/get-kendaraan/{group_anggaran_id}', [BelanjaController::class, 'getKendaraan']);
+        Route::get('/get-group-anggaran/{kendaraan_id}', [BelanjaController::class, 'getGroupAnggaran']);
     });
 });
 

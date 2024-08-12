@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Belanja;
 use App\Models\GroupAnggaran;
+use App\Models\GroupAnggaranKendaraan;
 use App\Models\Kendaraan;
 use App\Models\StokSukuCadang;
 use App\Models\SukuCadang;
@@ -43,18 +44,19 @@ class BelanjaController extends Controller
      */
     public function create()
     {
-        $kendaraans = Kendaraan::all();
-        $groupAnggarans = GroupAnggaran::all();
-        $stokSukuCadangs = StokSukuCadang::all();
+        $kendaraans = Kendaraan::orderBy('nomor_registrasi')->get();
+        $groupAnggarans = GroupAnggaran::orderBy('kode_rekening')->get();
+        $stokSukuCadangs = StokSukuCadang::orderBy('group_anggaran')->get();
         return view('belanja.create', compact('kendaraans', 'groupAnggarans', 'stokSukuCadangs'));
     }
 
-    public function getKendaraan($group_anggaran_id)
+    public function getGroupAnggaran($kendaraanId)
     {
-        $kendaraans = Kendaraan::whereHas('groupAnggarans', function ($query) use ($group_anggaran_id) {
-            $query->where('group_anggaran_id', $group_anggaran_id);
-        })->get();
-        return response()->json($kendaraans);
+        $groupAnggarans = GroupAnggaranKendaraan::where('kendaraan_id', $kendaraanId)
+            ->join('group_anggarans', 'group_anggaran_kendaraan.group_anggaran_id', '=', 'group_anggarans.id')
+            ->select('group_anggarans.id', 'group_anggarans.kode_rekening', 'group_anggarans.nama_group')
+            ->get();
+        return response()->json($groupAnggarans);
     }
 
     /**
