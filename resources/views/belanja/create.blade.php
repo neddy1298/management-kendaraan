@@ -205,7 +205,10 @@
             // Initialize select2 for kendaraan and group anggaran selects
             $('.select-single.js-states').select2({
                 theme: 'bootstrap-5',
-                width: '100%'
+                width: '100%',
+                dropdownParent: $('body'),
+                selectionCssClass: 'select2--small',
+                dropdownCssClass: 'select2--small',
             });
 
             const kendaraanSelect = document.getElementById('kendaraan_id');
@@ -222,7 +225,8 @@
             $(kendaraanSelect).on('change', function() {
                 const kendaraanId = this.value;
                 $(groupAnggaranSelect).empty().append(
-                    '<option value="" hidden>Pilih Group Anggaran</option>');
+                    '<option value="" hidden>Pilih Group Anggaran</option>'
+                );
 
                 if (kendaraanId) {
                     fetch(`/get-group-anggaran/${kendaraanId}`)
@@ -232,7 +236,8 @@
                             data.forEach(groupAnggaran => {
                                 const option = new Option(
                                     `${groupAnggaran.kode_rekening} - ${groupAnggaran.nama_group}`,
-                                    groupAnggaran.id);
+                                    groupAnggaran.id
+                                );
                                 $(groupAnggaranSelect).append(option);
                             });
                             $(groupAnggaranSelect).trigger(
@@ -246,22 +251,21 @@
                     groupAnggaranContainer.classList.add('d-none');
                 }
             });
-            // Jenis Belanja change event
+
             jenisBelanja.addEventListener('change', function() {
-                [formBBM, formPelumas, formSukuCadang].forEach(form => form.classList.add('d-none'));
-                if (this.value === 'bbm') formBBM.classList.remove('d-none');
-                else if (this.value === 'pelumas') formPelumas.classList.remove('d-none');
-                else if (this.value === 'suku_cadang') formSukuCadang.classList.remove('d-none');
+                formBBM.classList.add('d-none');
+                formPelumas.classList.add('d-none');
+                formSukuCadang.classList.add('d-none');
+
+                if (this.value === 'bbm') {
+                    formBBM.classList.remove('d-none');
+                } else if (this.value === 'pelumas') {
+                    formPelumas.classList.remove('d-none');
+                } else if (this.value === 'suku_cadang') {
+                    formSukuCadang.classList.remove('d-none');
+                }
             });
 
-            $('.stok-suku-cadang').select2({
-                theme: 'bootstrap-5',
-                width: '100%',
-                dropdownParent: $('body'),
-                selectionCssClass: 'select2--small',
-                dropdownCssClass: 'select2--small',
-            });
-            // Create Suku Cadang Item
             function createSukuCadangItem() {
                 const item = document.createElement('div');
                 item.className = 'row suku-cadang-item mb-3';
@@ -282,7 +286,8 @@
                 <div class="mb-3">
                     <label class="form-label">Jumlah</label>
                     <div class="input-group">
-                        <input type="number" class="form-control jumlah-suku-cadang" name="jumlah_suku_cadang[]" min="1">
+                        <input type="number" class="form-control jumlah-suku-cadang" name="jumlah_suku_cadang[]"
+                            min="1">
                         <span class="input-group-text stok-suku-cadang">stok</span>
                     </div>
                 </div>
@@ -303,35 +308,29 @@
                 return item;
             }
 
-            // Add Suku Cadang button click event
             addButton.addEventListener('click', function() {
-                const newItem = createSukuCadangItem();
-                container.appendChild(newItem);
-                $(newItem).find('.stok-suku-cadang').select2({
-                    theme: 'bootstrap-5',
-                    width: '100%'
-                });
+                container.appendChild(createSukuCadangItem());
             });
 
-            // Remove Suku Cadang button click event
             container.addEventListener('click', function(e) {
                 if (e.target.classList.contains('remove-suku-cadang')) {
                     e.target.closest('.suku-cadang-item').remove();
                 }
             });
 
-            // Suku Cadang select change event
             container.addEventListener('change', function(e) {
                 if (e.target.classList.contains('stok-suku-cadang')) {
                     const selectedOption = e.target.options[e.target.selectedIndex];
                     const stok = selectedOption.getAttribute('data-stok');
                     const harga = selectedOption.getAttribute('data-harga');
-                    const item = e.target.closest('.suku-cadang-item');
-                    const jumlahInput = item.querySelector('.jumlah-suku-cadang');
-                    const hargaInput = item.querySelector('.harga-suku-cadang');
-                    const hargaDisplay = item.querySelector('.harga-display');
-                    const stokSpan = item.querySelector('.input-group-text.stok-suku-cadang');
-
+                    const jumlahInput = e.target.closest('.suku-cadang-item').querySelector(
+                        '.jumlah-suku-cadang');
+                    const hargaInput = e.target.closest('.suku-cadang-item').querySelector(
+                        '.harga-suku-cadang');
+                    const hargaDisplay = e.target.closest('.suku-cadang-item').querySelector(
+                        '.harga-display');
+                    const stokSpan = e.target.closest('.suku-cadang-item').querySelector(
+                        '.input-group-text.stok-suku-cadang');
                     jumlahInput.max = stok;
                     hargaInput.value = harga;
                     hargaDisplay.value = new Intl.NumberFormat('id-ID', {
@@ -342,12 +341,6 @@
                     }).format(Number(harga));
                     stokSpan.textContent = `Stok: ${stok}`;
                 }
-            });
-
-            // Initialize select2 for initial Suku Cadang select
-            $('.stok-suku-cadang').select2({
-                theme: 'bootstrap-5',
-                width: '100%'
             });
         });
     </script>
