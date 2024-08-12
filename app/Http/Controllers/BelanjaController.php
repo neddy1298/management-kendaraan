@@ -57,9 +57,9 @@ class BelanjaController extends Controller
      */
     public function create()
     {
-        $kendaraans = Kendaraan::all();
-        $groupAnggarans = GroupAnggaran::all();
-        $stokSukuCadangs = StokSukuCadang::all();
+        $kendaraans = Kendaraan::orderBy('nomor_registrasi')->get();
+        $groupAnggarans = GroupAnggaran::orderBy('kode_rekening')->get();
+        $stokSukuCadangs = StokSukuCadang::orderBy('nama_suku_cadang')->get();
         return view('belanja.create', compact('kendaraans', 'groupAnggarans', 'stokSukuCadangs'));
     }
 
