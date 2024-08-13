@@ -62,7 +62,8 @@ class MasterAnggaranController extends Controller
      */
     public function edit($id)
     {
-        $masterAnggaran = MasterAnggaran::with('anggaranPerbulan')->findOrFail($id);
+        $masterAnggaran = MasterAnggaran::with('paguAnggaran', 'anggaranPerbulan')->findOrFail($id);
+        dd($masterAnggaran);
         $paguAnggarans = PaguAnggaran::all();
         return view('masterAnggaran.edit', compact('masterAnggaran', 'paguAnggarans'));
     }
