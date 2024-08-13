@@ -54,7 +54,12 @@
                                 @foreach ($masterAnggarans as $index => $masterAnggaran)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $masterAnggaran->kode_rekening }}</td>
+                                        <td>
+                                            <a href="{{ route('masterAnggaran.edit', $masterAnggaran->id) }}"
+                                                class="text-primary">
+                                                {{ $masterAnggaran->kode_rekening }}
+                                            </a>
+                                        </td>
                                         <td class="text-start">{{ $masterAnggaran->nama_rekening }}</td>
                                         <td>Rp. {{ number_format($masterAnggaran->anggaran, 0, ',', '.') }}</td>
                                         <td>

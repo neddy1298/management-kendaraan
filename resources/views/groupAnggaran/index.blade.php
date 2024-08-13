@@ -57,7 +57,12 @@
                                 @foreach ($groupAnggarans as $index => $groupAnggaran)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $groupAnggaran->kode_rekening }}</td>
+                                        <td>
+                                            <a href="{{ route('groupAnggaran.edit', $groupAnggaran->id) }}"
+                                                class="text-primary">
+                                                {{ $groupAnggaran->kode_rekening }}
+                                            </a>
+                                        </td>
                                         <td class="text-start">{{ $groupAnggaran->nama_group }}</td>
                                         <td>Rp
                                             {{ number_format($groupAnggaran->anggaran_bahan_bakar_minyak ?? 0, 0, ',', '.') }}
