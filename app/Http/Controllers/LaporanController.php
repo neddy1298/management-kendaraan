@@ -134,7 +134,6 @@ class LaporanController extends Controller
 
     public function exportToExcel(Request $request)
     {
-
         $tahun = $request->input('tahun');
         $bulanStart = $request->input('bulan_start');
         $bulanEnd = $request->input('bulan_end');
@@ -160,13 +159,15 @@ class LaporanController extends Controller
                 $query->whereMonth('tanggal_belanja', '=', $endDate->month)
                     ->whereYear('tanggal_belanja', '=', $endDate->year);
             }], 'total_belanja')
-                ->withSum(['belanjas as belanjas_before' => function ($query) use ($startDate, $endDateMinusOneMonth) {
-                    $query->whereBetween('tanggal_belanja', [$startDate, $endDateMinusOneMonth]);
-                }], 'total_belanja');
+            ->withSum(['belanjas as belanjas_before' => function ($query) use ($startDate, $endDateMinusOneMonth) {
+                $query->whereBetween('tanggal_belanja', [$startDate, $endDateMinusOneMonth]);
+            }], 'total_belanja');
         }])->get();
+        
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
+        
 
         // Judul
         $titles = [
@@ -328,11 +329,11 @@ class LaporanController extends Controller
                 $sumBelanjaTotal = $sumBelanjaBefore + $sumBelanjaCurrent;
                 $sumMasterBelanjaTotal += $sumBelanjaTotal;
                 if ($sumBelanjaTotal != 0) {
-                    $sheet->setCellValue("L$row", ($sumBelanjaTotal));
+                    $sheet->setCellValue("L$row", $sumBelanjaTotal);
                     $sheet->getStyle("L$row")->applyFromArray($rupiahFormat);
                 }
                 if ($masterAnggaran->anggaran - $sumBelanjaTotal != 0) {
-                    $sheet->setCellValue("N$row", ($masterAnggaran->anggaran - $sumBelanjaTotal));
+                    $sheet->setCellValue("N$row", $masterAnggaran->anggaran - $sumBelanjaTotal);
                     $sheet->getStyle("N$row")->applyFromArray($rupiahFormat);
                 }
                 $row++;
@@ -341,15 +342,15 @@ class LaporanController extends Controller
                 foreach ($masterAnggaran->groupAnggarans as $groupAnggaran) {
                     $sheet->setCellValue("C$row", $groupAnggaran->nama_group);
                     if ($groupAnggaran->anggaran_total != 0) {
-                        $sheet->setCellValue("D$row", ($groupAnggaran->anggaran_total));
+                        $sheet->setCellValue("D$row", $groupAnggaran->anggaran_total);
                         $sheet->getStyle("D$row")->applyFromArray($rupiahFormat);
                     }
                     if ($groupAnggaran->belanjas_before != 0) {
-                        $sheet->setCellValue("F$row", ($groupAnggaran->belanjas_before));
+                        $sheet->setCellValue("F$row", $groupAnggaran->belanjas_before);
                         $sheet->getStyle("F$row")->applyFromArray($rupiahFormat);
                     }
                     if ($groupAnggaran->belanjas_current != 0) {
-                        $sheet->setCellValue("I$row", ($groupAnggaran->belanjas_current));
+                        $sheet->setCellValue("I$row", $groupAnggaran->belanjas_current);
                         $sheet->getStyle("I$row")->applyFromArray($rupiahFormat);
                     }
                     if (($groupAnggaran->belanjas_before) + ($groupAnggaran->belanjas_current) != 0) {
@@ -358,7 +359,7 @@ class LaporanController extends Controller
                     }
                     if ($groupAnggaran->anggaran_total - (($groupAnggaran->belanjas_before) + ($groupAnggaran->belanjas_current)) != 0) {
                         $sheet->setCellValue("N$row", ($groupAnggaran->anggaran_total - (($groupAnggaran->belanjas_before) + ($groupAnggaran->belanjas_current))));
-                        $sheet->getStyle("L$row")->applyFromArray($rupiahFormat);
+                        $sheet->getStyle("N$row")->applyFromArray($rupiahFormat);
                     }
                     $row++;
                 }
