@@ -59,7 +59,7 @@ class LaporanController extends Controller
         $endDate = Carbon::createFromDate($tahun !== 'all' ? $tahun : now()->year, $bulanEnd, 1)->endOfMonth();
         $endDateMinusOneMonth = $endDate->copy()->subMonth()->endOfMonth();
 
-        $paguAnggarans = $query->with(['masterAnggarans.groupAnggarans' => function ($query) use ($startDate, $endDate, $endDateMinusOneMonth) {
+        $paguAnggarans = $query->with(['masterAnggarans.groupAnggarans.belanjas', 'masterAnggarans.groupAnggarans' => function ($query) use ($startDate, $endDate, $endDateMinusOneMonth) {
             $query->withSum(['belanjas as belanjas_current' => function ($query) use ($endDate) {
                 $query->whereMonth('tanggal_belanja', '=', $endDate->month)
                     ->whereYear('tanggal_belanja', '=', $endDate->year);
@@ -68,7 +68,66 @@ class LaporanController extends Controller
                     $query->whereBetween('tanggal_belanja', [$startDate, $endDateMinusOneMonth]);
                 }], 'total_belanja');
         }])->get();
-        return view('laporan.print', compact('paguAnggarans', 'tahun', 'startDate', 'endDate'));
+
+        // $belanjas = Belanja::whereBetween('tanggal_belanja', [$startDate, $endDate])->get();
+        if ($request->input('jenis_laporan') == 1) {
+            return view('laporan.print', compact('paguAnggarans', 'tahun', 'startDate', 'endDate'));
+        } else {
+            $monthlyBelanja = [];
+            for ($month = 1; $month <= 12; $month++) {
+                $monthStart = Carbon::createFromDate($tahun, $month, 1)->startOfMonth();
+                $monthEnd = $monthStart->copy()->endOfMonth();
+
+                $monthlySum = $paguAnggarans->flatMap(function ($paguAnggaran) {
+                    return $paguAnggaran->masterAnggarans->flatMap(function ($masterAnggaran) {
+                        return $masterAnggaran->groupAnggarans->flatMap(function ($groupAnggaran) {
+                            return $groupAnggaran->belanjas;
+                        });
+                    });
+                })
+                    ->whereBetween('tanggal_belanja', [$monthStart, $monthEnd])
+                    ->sum('total_belanja');
+
+                $monthlyBelanja[$month] = number_format($monthlySum, 0, ',', '.');
+            }
+            // dd($monthlyBelanja);
+            return view('laporan.print2', compact('paguAnggarans', 'tahun', 'startDate', 'endDate'));
+        }
+    }
+
+    public function print2(Request $request)
+    {
+        $tahun = $request->input('tahun');
+        $bulanStart = $request->input('bulan_start');
+        $bulanEnd = $request->input('bulan_end');
+
+        $query = PaguAnggaran::query();
+
+        if ($tahun && $tahun !== 'all') {
+            $query->where('tahun', $tahun);
+        }
+
+        if ($bulanStart > $bulanEnd) {
+            $temp = $bulanStart;
+            $bulanStart = $bulanEnd;
+            $bulanEnd = $temp;
+        }
+
+        $startDate = Carbon::createFromDate($tahun !== 'all' ? $tahun : now()->year, $bulanStart, 1)->startOfMonth();
+        $endDate = Carbon::createFromDate($tahun !== 'all' ? $tahun : now()->year, $bulanEnd, 1)->endOfMonth();
+        $endDateMinusOneMonth = $endDate->copy()->subMonth()->endOfMonth();
+
+        $paguAnggarans = $query->with(['anggaranPerbulan', 'masterAnggarans.groupAnggarans' => function ($query) use ($startDate, $endDate, $endDateMinusOneMonth) {
+            $query->withSum(['belanjas as belanjas_current' => function ($query) use ($endDate) {
+                $query->whereMonth('tanggal_belanja', '=', $endDate->month)
+                    ->whereYear('tanggal_belanja', '=', $endDate->year);
+            }], 'total_belanja')
+                ->withSum(['belanjas as belanjas_before' => function ($query) use ($startDate, $endDateMinusOneMonth) {
+                    $query->whereBetween('tanggal_belanja', [$startDate, $endDateMinusOneMonth]);
+                }], 'total_belanja');
+        }])->get();
+
+        return view('laporan.print2', compact('paguAnggarans', 'tahun', 'startDate', 'endDate'));
     }
 
 
@@ -211,7 +270,7 @@ class LaporanController extends Controller
             ],
         ];
         $sheet->getStyle('D17:N17' . ($row - 1))->applyFromArray($rupiahFormat);
-        
+
         // Looping isi tabel
         $row = 17;
 

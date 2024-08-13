@@ -25,11 +25,20 @@
 
                                 <div class="row">
                                     <div class="col-12 mb-3">
+                                        <label for="name" class="form-label">Jenis Laporan</label>
+                                        <div class="input-group">
+                                            <select name="jenis_laporan" class="form-select">
+                                                <option value="1">Laporan 1</option>
+                                                <option value="2">Laporan 2</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mb-3">
                                         <label for="name" class="form-label">Tahun</label>
                                         <div class="input-group">
                                             <select name="tahun" class="form-select">
                                                 <option value="{{ date('Y') }}" hidden>{{ date('Y') }}</option>
-                                                @for ($i = 2021; $i <= date('Y'); $i++)
+                                                @for ($i = 2022; $i <= date('Y') + 1; $i++)
                                                     <option value="{{ $i }}">
                                                         {{ $i }}
                                                     </option>
