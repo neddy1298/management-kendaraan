@@ -14,7 +14,7 @@ class StokSukuCadang extends Model
     protected $fillable = [
         'id_suku_cadang',
         'nama_suku_cadang',
-        'group_anggaran',
+        'group_anggaran_id',
         'stok_awal',
         'stok',
         'harga',
@@ -23,5 +23,10 @@ class StokSukuCadang extends Model
     public function sukuCadang()
     {
         return $this->hasMany(SukuCadang::class);
+    }
+
+    public function groupAnggaran()
+    {
+        return $this->hasOne(GroupAnggaran::class, 'id', 'group_anggaran_id');
     }
 }

@@ -47,4 +47,9 @@ class GroupAnggaran extends Model
     {
         return $this->anggaran_bahan_bakar_minyak + $this->anggaran_pelumas_mesin + $this->anggaran_suku_cadang;
     }
+
+    public function stokSukuCadang()
+    {
+        return $this->hasMany(StokSukuCadang::class);
+    }
 }
