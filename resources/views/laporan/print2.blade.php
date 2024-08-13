@@ -124,39 +124,11 @@
 
 <body>
     <div class="container">
-        <div class="header print-only">
-            <h4>PEMERINTAHAN KOTA BOGOR<br>KARTU KENDALI KEGIATAN<br>TAHUN ANGGARAN {{ $tahun }}</h4>
-            <table class="header-table">
-                <tr>
-                    <td>Sub Unit</td>
-                    <td style="font-weight: 400">: DINAS PERHUBUNGAN KOTA BOGOR</td>
-                </tr>
-                <tr>
-                    <td>Nama Program</td>
-                    <td style="font-weight: 400">: PROGRAM PENUNJANG URUSAN PEMERINTAHAN DAERAH KABUPATEN/KOTA</td>
-                </tr>
-                <tr>
-                    <td>Nama Kegiatan</td>
-                    <td style="font-weight: 400">: Pemeliharaan Barang Milik Daerah Penunjang Urusan Pemerintahan
-                        Daerah</td>
-                </tr>
-                <tr>
-                    <td>Sub Kegiatan</td>
-                    <td style="font-weight: 400">: Penyediaan Jasa Pemeliharaan, Biaya Pemeliharaan, Pajak, dan
-                        Perizinan Kendaraan Dinas
-                        Operasional atau Lapangan</td>
-                </tr>
-                <tr>
-                    <td>Nama PPTK</td>
-                    <td style="font-weight: 400">: Firza Firani Rizal, S.Kom, M.Ak.</td>
-                </tr>
-                <tr>
-                    <td>Bulan</td>
-                    <td style="font-weight: 400">: {{ $endDate->translatedformat('F Y') }}</td>
-                </tr>
-            </table>
+        <div class="header print-only"><br>
+            <h4>RKA BBM DAN PEMELIHARAAN {{ $tahun }} <br><br> Penyediaan Jasa Pemeliharaan, Biaya Pemeliharaan,
+                Pajak dan Perizinan Kendaraan Dinas Operasional atau
+                Lapangan</h4>
         </div>
-
         <table id="data-table" class="data-table">
             <thead>
                 <tr>
