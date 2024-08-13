@@ -15,15 +15,15 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // User::factory()->create([
-        //     'name' => 'admin',
-        //     'email' => 'admin@gmail.com',
-        //     'password' => bcrypt('admin'),
-        // ]);
+        User::factory()->create([
+            'name' => 'admin',
+            'email' => 'admin@gmail.com',
+            'password' => bcrypt('admin'),
+        ]);
 
 
-        $path = storage_path('app/public/db_kendaraan.sql');
-        DB::unprepared(file_get_contents($path));
+        // $path = storage_path('app/public/db_kendaraan.sql');
+        // DB::unprepared(file_get_contents($path));
         // PaguAnggaran::factory()->count(1)->create();
         // MasterAnggaran::factory()->count(5)->create();
         // GroupAnggaran::factory()->count(10)->create();

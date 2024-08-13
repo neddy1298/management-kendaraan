@@ -13,12 +13,18 @@ class GroupAnggaran extends Model
 
     protected $fillable = [
         'master_anggaran_id',
+        'anggaran_perbulan_id',
         'kode_rekening',
         'nama_group',
         'anggaran_bahan_bakar_minyak',
         'anggaran_pelumas_mesin',
         'anggaran_suku_cadang',
     ];
+
+    public function anggaranPerbulan()
+    {
+        return $this->hasOne(AnggaranPerbulan::class);
+    }
 
     public function kendaraans()
     {

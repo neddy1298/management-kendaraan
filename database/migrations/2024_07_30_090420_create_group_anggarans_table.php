@@ -17,6 +17,7 @@ return new class extends Migration
                 ->constrained('master_anggarans')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+            $table->foreignId('anggaran_perbulan_id')->constrained('anggaran_perbulans');
             $table->string('kode_rekening');
             $table->string('nama_group');
             $table->bigInteger('anggaran_bahan_bakar_minyak')->nullable();

@@ -13,10 +13,16 @@ class MasterAnggaran extends Model
 
     protected $fillable = [
         'pagu_anggaran_id',
+        'anggaran_perbulan_id',
         'kode_rekening',
         'nama_rekening',
         'anggaran',
     ];
+
+    public function anggaranPerbulan()
+    {
+        return $this->hasOne(AnggaranPerbulan::class);
+    }
 
     public function paguAnggaran()
     {
