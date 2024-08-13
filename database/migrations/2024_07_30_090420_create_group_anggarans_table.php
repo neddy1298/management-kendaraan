@@ -23,6 +23,7 @@ return new class extends Migration
             $table->bigInteger('anggaran_bahan_bakar_minyak')->nullable();
             $table->bigInteger('anggaran_pelumas_mesin')->nullable();
             $table->bigInteger('anggaran_suku_cadang')->nullable();
+            $table->string('tipe_belanja')->virtualAs('IF(anggaran_bahan_bakar_minyak IS NOT NULL, "Bahan Bakar Minyak", IF(anggaran_pelumas_mesin IS NOT NULL, "Pelumas Mesin", IF(anggaran_suku_cadang IS NOT NULL, "Suku Cadang", "Lainnya")))');
             $table->bigInteger('anggaran_total')->virtualAs('IFNULL(anggaran_bahan_bakar_minyak, 0) + IFNULL(anggaran_pelumas_mesin, 0) + IFNULL(anggaran_suku_cadang, 0)');
             $table->timestamps();
         });
