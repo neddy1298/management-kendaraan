@@ -59,7 +59,7 @@ class LaporanController extends Controller
         $endDate = Carbon::createFromDate($tahun !== 'all' ? $tahun : now()->year, $bulanEnd, 1)->endOfMonth();
         $endDateMinusOneMonth = $endDate->copy()->subMonth()->endOfMonth();
 
-        $paguAnggarans = $query->with(['masterAnggarans.groupAnggarans.belanjas', 'masterAnggarans.groupAnggarans' => function ($query) use ($startDate, $endDate, $endDateMinusOneMonth) {
+        $paguAnggarans = $query->with(['masterAnggarans.groupAnggarans.stokSukuCadang', 'masterAnggarans.groupAnggarans.belanjas', 'masterAnggarans.groupAnggarans' => function ($query) use ($startDate, $endDate, $endDateMinusOneMonth) {
             $query->withSum(['belanjas as belanjas_current' => function ($query) use ($endDate) {
                 $query->whereMonth('tanggal_belanja', '=', $endDate->month)
                     ->whereYear('tanggal_belanja', '=', $endDate->year);
@@ -90,7 +90,7 @@ class LaporanController extends Controller
 
                 $monthlyBelanja[$month] = number_format($monthlySum, 0, ',', '.');
             }
-            // dd($monthlyBelanja);
+            // dd($paguAnggarans[0]->masterAnggarans[0]->groupAnggarans);
             return view('laporan.print2', compact('paguAnggarans', 'tahun', 'startDate', 'endDate'));
         }
     }
@@ -159,15 +159,15 @@ class LaporanController extends Controller
                 $query->whereMonth('tanggal_belanja', '=', $endDate->month)
                     ->whereYear('tanggal_belanja', '=', $endDate->year);
             }], 'total_belanja')
-            ->withSum(['belanjas as belanjas_before' => function ($query) use ($startDate, $endDateMinusOneMonth) {
-                $query->whereBetween('tanggal_belanja', [$startDate, $endDateMinusOneMonth]);
-            }], 'total_belanja');
+                ->withSum(['belanjas as belanjas_before' => function ($query) use ($startDate, $endDateMinusOneMonth) {
+                    $query->whereBetween('tanggal_belanja', [$startDate, $endDateMinusOneMonth]);
+                }], 'total_belanja');
         }])->get();
-        
+
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        
+
 
         // Judul
         $titles = [
