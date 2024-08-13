@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('anggaran_perbulans', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('januari');
-            $table->bigInteger('februari');
-            $table->bigInteger('maret');
-            $table->bigInteger('april');
-            $table->bigInteger('mei');
-            $table->bigInteger('juni');
-            $table->bigInteger('juli');
-            $table->bigInteger('agustus');
-            $table->bigInteger('september');
-            $table->bigInteger('oktober');
-            $table->bigInteger('november');
-            $table->bigInteger('desember');
+            $table->bigInteger('januari')->nullable();
+            $table->bigInteger('februari')->nullable();
+            $table->bigInteger('maret')->nullable();
+            $table->bigInteger('april')->nullable();
+            $table->bigInteger('mei')->nullable();
+            $table->bigInteger('juni')->nullable();
+            $table->bigInteger('juli')->nullable();
+            $table->bigInteger('agustus')->nullable();
+            $table->bigInteger('september')->nullable();
+            $table->bigInteger('oktober')->nullable();
+            $table->bigInteger('november')->nullable();
+            $table->bigInteger('desember')->nullable();
             $table->bigInteger('total')->virtualAs('januari + februari + maret + april + mei + juni + juli + agustus + september + oktober + november + desember');
             $table->timestamps();
         });
