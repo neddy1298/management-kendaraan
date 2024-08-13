@@ -21,7 +21,7 @@ class MasterAnggaran extends Model
 
     public function anggaranPerbulan()
     {
-        return $this->hasOne(AnggaranPerbulan::class);
+        return $this->hasOne(AnggaranPerbulan::class, 'id', 'anggaran_perbulan_id');
     }
 
     public function paguAnggaran()

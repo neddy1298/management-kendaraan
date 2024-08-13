@@ -33,18 +33,18 @@ class AnggaranPerbulan extends Model
         return $this->januari + $this->februari + $this->maret + $this->april + $this->mei + $this->juni + $this->juli + $this->agustus + $this->september + $this->oktober + $this->november + $this->desember;
     }
 
-    public function paguAnggarans()
+    public function paguAnggaran()
     {
-        return $this->hasMany(PaguAnggaran::class);
+        return $this->hasOne(PaguAnggaran::class);
     }
 
-    public function masterAnggarans()
+    public function masterAnggaran()
     {
-        return $this->hasMany(MasterAnggaran::class);
+        return $this->hasOne(MasterAnggaran::class);
     }
 
-    public function groupAnggarans()
+    public function groupAnggaran()
     {
-        return $this->hasMany(GroupAnggaran::class);
+        return $this->hasOne(GroupAnggaran::class);
     }
 }
