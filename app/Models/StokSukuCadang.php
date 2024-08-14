@@ -12,7 +12,6 @@ class StokSukuCadang extends Model
     protected $table = 'stok_suku_cadangs';
 
     protected $fillable = [
-        'id_suku_cadang',
         'nama_suku_cadang',
         'group_anggaran_id',
         'stok_awal',
@@ -20,7 +19,7 @@ class StokSukuCadang extends Model
         'harga',
     ];
 
-    public function sukuCadang()
+    public function sukuCadangs()
     {
         return $this->hasMany(SukuCadang::class);
     }

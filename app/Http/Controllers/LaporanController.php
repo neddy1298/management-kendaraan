@@ -6,6 +6,7 @@ use App\Models\Belanja;
 use App\Models\GroupAnggaran;
 use App\Models\MasterAnggaran;
 use App\Models\PaguAnggaran;
+use App\Models\SukuCadang;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -59,7 +60,7 @@ class LaporanController extends Controller
         $endDate = Carbon::createFromDate($tahun !== 'all' ? $tahun : now()->year, $bulanEnd, 1)->endOfMonth();
         $endDateMinusOneMonth = $endDate->copy()->subMonth()->endOfMonth();
 
-        $paguAnggarans = $query->with(['masterAnggarans.groupAnggarans.stokSukuCadang', 'masterAnggarans.groupAnggarans.belanjas', 'masterAnggarans.groupAnggarans' => function ($query) use ($startDate, $endDate, $endDateMinusOneMonth) {
+        $paguAnggarans = $query->with(['masterAnggarans.groupAnggarans.stokSukuCadang.sukuCadangs.belanja', 'masterAnggarans.groupAnggarans.stokSukuCadang.sukuCadangs', 'masterAnggarans.groupAnggarans.stokSukuCadang', 'masterAnggarans.groupAnggarans.belanjas', 'masterAnggarans.groupAnggarans' => function ($query) use ($startDate, $endDate, $endDateMinusOneMonth) {
             $query->withSum(['belanjas as belanjas_current' => function ($query) use ($endDate) {
                 $query->whereMonth('tanggal_belanja', '=', $endDate->month)
                     ->whereYear('tanggal_belanja', '=', $endDate->year);
@@ -90,8 +91,12 @@ class LaporanController extends Controller
 
                 $monthlyBelanja[$month] = number_format($monthlySum, 0, ',', '.');
             }
+            // $belanjas = Belanja::whereBetween('tanggal_belanja', [$startDate, $endDate])->get();
+            $belanjas = Belanja::get();
+            $sukuCadangs = SukuCadang::get();
+            // dd($sukuCadangs[0]);
             // dd($paguAnggarans[0]->masterAnggarans[0]->groupAnggarans);
-            return view('laporan.print2', compact('paguAnggarans', 'tahun', 'startDate', 'endDate'));
+            return view('laporan.print2', compact('paguAnggarans', 'tahun', 'startDate', 'endDate', 'belanjas', 'sukuCadangs'));
         }
     }
 

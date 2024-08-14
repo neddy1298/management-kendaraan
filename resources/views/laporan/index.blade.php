@@ -25,11 +25,22 @@
 
                                 <div class="row">
                                     <div class="col-12 mb-3">
-                                        <label for="name" class="form-label">Jenis Laporan</label>
+                                        <label for="jenis_laporan" class="form-label">Jenis Laporan</label>
                                         <div class="input-group">
                                             <select name="jenis_laporan" class="form-select">
                                                 <option value="1">Laporan 1</option>
                                                 <option value="2">Laporan 2</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <label for="tipe_laporan" class="form-label">Tipe Laporan</label>
+                                        <div class="input-group">
+                                            <select name="tipe_laporan" class="form-select">
+                                                <option value="0">Semua</option>
+                                                <option value="1">Bahan Bakar Minyak</option>
+                                                <option value="2">Pelumas Mesin</option>
+                                                <option value="3">Suku Cadang</option>
                                             </select>
                                         </div>
                                     </div>
