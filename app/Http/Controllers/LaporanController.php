@@ -404,9 +404,9 @@ class LaporanController extends Controller
         }
 
 
-        $row += 2; // Add a couple of empty rows for spacing
+        $row += 2;
 
-        // Left Signature (Mengetahui, Pengguna Anggaran)
+
         $sheet->setCellValue("B$row", "Mengetahui,");
         $sheet->mergeCells("B$row:C$row");
         $sheet->getStyle("B$row:C$row")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
@@ -416,7 +416,7 @@ class LaporanController extends Controller
         $sheet->mergeCells("B$row:C$row");
         $sheet->getStyle("B$row:C$row")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-        $row += 4; // Leave some space for the signature
+        $row += 4;
         $sheet->setCellValue("B$row", "(MARSE HENDRA SAPUTRA. S.STP)");
         $sheet->mergeCells("B$row:C$row");
         $sheet->getStyle("B$row:C$row")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
@@ -427,8 +427,8 @@ class LaporanController extends Controller
         $sheet->mergeCells("B$row:C$row");
         $sheet->getStyle("B$row:C$row")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-        // Right Signature (Pejabat Pelaksana Teknis Kegiatan)
-        $row -= 6; // Go back to the same row as "Mengetahui,"
+
+        $row -= 6;
         $sheet->setCellValue("L$row", 'Bogor,    ' . \Carbon\Carbon::now()->translatedformat('F Y'));
         $sheet->mergeCells("L$row:M$row");
         $sheet->getStyle("L$row:M$row")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
@@ -438,7 +438,7 @@ class LaporanController extends Controller
         $sheet->mergeCells("L$row:M$row");
         $sheet->getStyle("L$row:M$row")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-        $row += 4; // Leave some space for the signature
+        $row += 4;
         $sheet->setCellValue("L$row", "(FIRZA FIRANI RIZAL, S.Kom.,M.Ak.)");
         $sheet->mergeCells("L$row:M$row");
         $sheet->getStyle("L$row:M$row")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
