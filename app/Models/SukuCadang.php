@@ -21,11 +21,11 @@ class SukuCadang extends Model
 
     public function belanja()
     {
-        return $this->belongsTo(Belanja::class);
+        return $this->belongsTo(Belanja::class, 'belanja_id');
     }
 
     public function stokSukuCadang()
     {
-        return $this->hasOne(StokSukuCadang::class);
+        return $this->hasOne(StokSukuCadang::class, 'stok_suku_cadang_id');
     }
 }
