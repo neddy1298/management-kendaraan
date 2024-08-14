@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GroupAnggaran;
 use App\Models\StokSukuCadang;
+use App\Models\SukuCadang;
 use Illuminate\Http\Request;
 
 class StokSukuCadangController extends Controller
@@ -12,7 +14,20 @@ class StokSukuCadangController extends Controller
      */
     public function index()
     {
+        // $sukuCadangs = SukuCadang::all();
         $stokSukuCadangs = StokSukuCadang::orderBy('group_anggaran_id', 'asc')->get();
+        // foreach ($stokSukuCadangs as $stokSukuCadang) {
+        //     $stokSukuCadang->update([
+        //         'stok' => $stokSukuCadang->stok_awal,
+        //     ]);
+        // }
+
+        // foreach ($sukuCadangs as $sukuCadang) {
+        //     $stokSukuCadang = $stokSukuCadangs->where('id', '=', $sukuCadang->stok_suku_cadang_id)->first();
+        //     $stokSukuCadang->update([
+        //         'stok' => $stokSukuCadang->stok - $sukuCadang->jumlah,
+        //     ]);
+        // }
         return view('sukuCadang.index', compact('stokSukuCadangs'));
     }
 
@@ -21,7 +36,8 @@ class StokSukuCadangController extends Controller
      */
     public function create()
     {
-        return view('sukuCadang.create');
+        $groupAnggarans = GroupAnggaran::where('tipe_belanja', 'Suku Cadang')->get();
+        return view('sukuCadang.create', compact('groupAnggarans'));
     }
 
     /**

@@ -22,6 +22,7 @@ class BelanjaController extends Controller
     public function index(Request $request)
     {
         $dateRange = $request->input('date-range');
+        $search = $request->input('search');
 
         $query = Belanja::with('kendaraan', 'sukuCadangs');
 
@@ -32,7 +33,16 @@ class BelanjaController extends Controller
 
             $query->whereBetween('tanggal_belanja', [$startDate, $endDate]);
         }
-
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('keterangan', 'LIKE', "%{$search}%")
+                    ->orWhere('tanggal_belanja', 'LIKE', "%{$search}%")
+                    ->orWhere('total_belanja', 'LIKE', "%{$search}%")
+                    ->orWhereHas('kendaraan', function ($q) use ($search) {
+                        $q->where('nomor_registrasi', 'LIKE', "%{$search}%");
+                    });
+            });
+        }
         $belanjas = $query->orderBy('created_at', 'desc')->get();
 
         $belanja_periode = $belanjas->sum('belanja_bahan_bakar_minyak')
@@ -47,7 +57,10 @@ class BelanjaController extends Controller
             $query->where('berlaku_sampai', '<', Carbon::now());
         })->count();
 
-        return view('belanja.index', compact('belanjas', 'isExpire', 'belanja_periode', 'belanja_bbm_periode', 'belanja_pelumas_periode', 'belanja_suku_cadang_periode', 'dateRange'));
+        $belanjas = $query->orderBy('created_at', 'desc')->paginate(10);
+
+
+        return view('belanja.index', compact('belanjas', 'isExpire', 'belanja_periode', 'belanja_bbm_periode', 'belanja_pelumas_periode', 'belanja_suku_cadang_periode', 'dateRange', 'search'));
     }
 
     /**

@@ -83,7 +83,8 @@
                                 <span class="input-group-text">
                                     <i class="bi bi-calendar2"></i>
                                 </span>
-                                <input type="text" class="form-control datepicker-range" name="date-range">
+                                <input type="text" class="form-control datepicker-range" name="date-range"
+                                    value="{{ request()->input('date-range') }}">
                             </div>
                         </div>
                         <div class="col-sm-12 col-lg-3 col-xxl-3">
@@ -101,6 +102,9 @@
                                 <i class="bi bi-printer"></i> Cetak
                             </a>
                         </div>
+                        @if (request()->has('search'))
+                            <input type="hidden" name="search" value="{{ request()->input('search') }}">
+                        @endif
                     </form>
                 </div>
             </div>
@@ -115,10 +119,21 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">Data Kendaraan</div>
+                    <div class="card-tools"></div>
+                    <form action="{{ route('belanja.index') }}" method="GET">
+                        <div class="input-group">
+                            <input type="text" name="search" class="form-control" placeholder="Search..."
+                                value="{{ request()->input('search') }}">
+                            <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i></button>
+                        </div>
+                        @if (request()->has('date-range'))
+                            <input type="hidden" name="date-range" value="{{ request()->input('date-range') }}">
+                        @endif
+                    </form>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="highlightRowColumn" class="table custom-table text-center v-middle">
+                        <table id="" class="table custom-table text-center v-middle">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -160,6 +175,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        {{ $belanjas->appends(['search' => request()->input('search'), 'date-range' => request()->input('date-range')])->links('pagination::bootstrap-5') }}
                     </div>
                 </div>
             </div>
