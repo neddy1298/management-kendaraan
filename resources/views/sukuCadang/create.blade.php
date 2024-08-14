@@ -41,14 +41,14 @@
                             </div>
                             <div class="col-xl-12">
                                 <div class="mb-3">
-                                    <label for="group_anggaran" class="form-label">Roda</label>
-                                    <select class="form-select" id="group_anggaran" name="group_anggaran">
+                                    <label for="group_anggaran_id" class="form-label">Roda</label>
+                                    <select class="form-select" id="group_anggaran_id" name="group_anggaran_id">
                                         <option value="" hidden>Pilih</option>
                                         <option value="Roda 2">Roda 2</option>
                                         <option value="Roda 4">Roda 4</option>
                                         <option value="Roda 6&10">Roda 6&10</option>
                                     </select>
-                                    @error('group_anggaran')
+                                    @error('group_anggaran_id')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
