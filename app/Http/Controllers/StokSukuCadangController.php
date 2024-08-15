@@ -28,6 +28,23 @@ class StokSukuCadangController extends Controller
         //         'stok' => $stokSukuCadang->stok - $sukuCadang->jumlah,
         //     ]);
         // }
+        
+        // -- Step 1: Add the column as nullable
+        // ALTER TABLE `suku_cadangs` ADD `tanggal_belanja` DATE NULL AFTER `total_harga`;
+
+        // -- Step 2: Update the new column with data from belanjas table
+        // UPDATE suku_cadangs sc
+        // INNER JOIN belanjas b ON sc.belanja_id = b.id
+        // SET sc.tanggal_belanja = b.tanggal_belanja;
+
+        // -- Step 3: Handle any remaining NULL values (if necessary)
+        // UPDATE suku_cadangs
+        // SET tanggal_belanja = '1970-01-01'
+        // WHERE tanggal_belanja IS NULL;
+
+        // -- Step 4: Alter the column to NOT NULL (if required)
+        // ALTER TABLE `suku_cadangs` MODIFY `tanggal_belanja` DATE NOT NULL;
+
         return view('sukuCadang.index', compact('stokSukuCadangs'));
     }
 
