@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('bbm_kendaraan', 20);
             $table->string('roda_kendaraan', 20);
             $table->date('berlaku_sampai');
+            $table->bigInteger('anggaran_pertahun_kendaraan');
             $table->timestamps();
         });
     }
