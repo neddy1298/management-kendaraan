@@ -143,7 +143,7 @@
 <body>
     <div class="container">
         <div class="header print-only"><br>
-            <h4>Realisasi dab Estimasi Kendaraan <br>Tahun {{ $tahun }} </h4>
+            <h4>Realisasi dan Estimasi Kendaraan <br>Tahun {{ $tahun }} </h4>
         </div>
         <table id="data-table" class="data-table">
             @php
