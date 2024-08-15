@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Belanja;
 use App\Models\GroupAnggaran;
+use App\Models\GroupAnggaranKendaraan;
+use App\Models\Kendaraan;
 use App\Models\MasterAnggaran;
 use App\Models\PaguAnggaran;
 use App\Models\SukuCadang;
@@ -73,7 +75,7 @@ class LaporanController extends Controller
         // $belanjas = Belanja::whereBetween('tanggal_belanja', [$startDate, $endDate])->get();
         if ($request->input('jenis_laporan') == 1) {
             return view('laporan.print', compact('paguAnggarans', 'tahun', 'startDate', 'endDate'));
-        } else {
+        } elseif ($request->input('jenis_laporan') == 2) {
             $monthlyBelanja = [];
             for ($month = 1; $month <= 12; $month++) {
                 $monthStart = Carbon::createFromDate($tahun, $month, 1)->startOfMonth();
@@ -97,6 +99,14 @@ class LaporanController extends Controller
             // dd($sukuCadangs[0]);
             // dd($paguAnggarans[0]->masterAnggarans[0]->groupAnggarans);
             return view('laporan.print2', compact('paguAnggarans', 'tahun', 'startDate', 'endDate', 'belanjas', 'sukuCadangs'));
+        } elseif ($request->input('jenis_laporan') == 3) {
+            $kendaraans = Kendaraan::orderBy('cc_kendaraan')->get();
+            $belanjas = Belanja::get();
+            $sukuCadangs = SukuCadang::get();
+            $semuaGroupAnggaranKendaraans = GroupAnggaranKendaraan::with('groupAnggaran')->get();
+            return view('laporan.print3', compact('tahun', 'kendaraans', 'belanjas', 'sukuCadangs', 'semuaGroupAnggaranKendaraans'));
+        } else {
+            return view('laporan.index')->with('error', 'Pilih jenis laporan terlebih dahulu');
         }
     }
 
