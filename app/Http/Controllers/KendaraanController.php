@@ -141,6 +141,7 @@ class KendaraanController extends Controller
             'bbm_kendaraan' => 'required|string|max:255',
             'roda_kendaraan' => 'required|integer',
             'berlaku_sampai' => 'required|date_format:d/m/Y',
+            'anggaran_pertahun_kendaraan' => 'nullable|integer',
             'groupAnggaran_id' => 'required|array',
             'groupAnggaran_id.*' => 'exists:group_anggarans,id',
         ], [
