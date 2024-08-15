@@ -134,6 +134,18 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-xl-12">
+                                <div class="mb-3">
+                                    <label for="anggaran_pertahun_kendaraan" class="form-label">Anggaran Pertahun</label>
+                                    <input type="number"
+                                        class="form-control @error('anggaran_pertahun_kendaraan') is-invalid @enderror"
+                                        id="anggaran_pertahun_kendaraan" name="anggaran_pertahun_kendaraan"
+                                        value="{{ old('anggaran_pertahun_kendaraan') }}">
+                                    @error('anggaran_pertahun_kendaraan')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Form actions footer start -->
