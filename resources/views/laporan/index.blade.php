@@ -30,10 +30,11 @@
                                             <select name="jenis_laporan" class="form-select">
                                                 <option value="1">Laporan 1</option>
                                                 <option value="2">Laporan 2</option>
+                                                <option value="3">Laporan 3</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-12 mb-3">
+                                    {{-- <div class="col-12 mb-3">
                                         <label for="tipe_laporan" class="form-label">Tipe Laporan</label>
                                         <div class="input-group">
                                             <select name="tipe_laporan" class="form-select">
@@ -43,7 +44,7 @@
                                                 <option value="3">Suku Cadang</option>
                                             </select>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-12 mb-3">
                                         <label for="name" class="form-label">Tahun</label>
                                         <div class="input-group">

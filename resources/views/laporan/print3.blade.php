@@ -125,15 +125,6 @@
             background-color: inherit;
         }
 
-        /* Rest of your existing styles */
-        .pagu-anggaran {
-            background-color: #aae5ff;
-        }
-
-        .master-anggaran {
-            background-color: #fbdd9d;
-        }
-
         .footer {
             text-align: center;
             padding: 10px;
@@ -152,9 +143,7 @@
 <body>
     <div class="container">
         <div class="header print-only"><br>
-            <h4>RKA BBM DAN PEMELIHARAAN {{ $tahun }} <br><br> Penyediaan Jasa Pemeliharaan, Biaya Pemeliharaan,
-                Pajak dan Perizinan Kendaraan Dinas Operasional atau
-                Lapangan</h4>
+            <h4>Realisasi dab Estimasi Kendaraan <br>Tahun {{ $tahun }} </h4>
         </div>
         <table id="data-table" class="data-table">
             @php
@@ -176,41 +165,83 @@
             <thead>
                 <tr>
                     <th style="width: 15px" rowspan="2">No Urut</th>
-                    <th style="width: 90px" rowspan="2">Kode Rekening</th>
-                    <th style="width: 300px" rowspan="2">Nama Rekening</th>
-                    <th style="width: 50px" rowspan="2">Volume</th>
-                    <th style="width: 200px" rowspan="2">Jumlah</th>
+                    <th style="width: 90px" rowspan="2">Plat Nomer</th>
+                    <th style="width: 50px" rowspan="2">CC Kendaraan</th>
+                    <th style="width: 100px" rowspan="2">Pagu Anggaran</th>
                     @foreach ($months as $index => $month)
-                        <th style="width: 300px" colspan="{{ $index == 0 ? 3 : 4 }}" class="color-{{ $index + 1 }}">
+                        <th style="width: 300px" colspan="3" class="color-{{ $index + 1 }}">
                             {{ $month }}</th>
                     @endforeach
+                    <th style="width: 100px" rowspan="2">Jumlah Realisasi</th>
                     <th style="width: 100px" rowspan="2">Sisa Pagu</th>
                 </tr>
                 <tr>
                     @foreach ($months as $index => $month)
-                        <td style="width: 100px; text-align: center" class="color-{{ $index + 1 }}">Anggaran Kas</td>
-                        @if ($index != 0)
-                            <td style="width: 100px; text-align: center" class="color-{{ $index + 1 }}">
-                                {{ substr($month, 0, 3) }}+Silpa</td>
-                        @endif
-                        <td style="width: 100px; text-align: center" class="color-{{ $index + 1 }}">SPJ</td>
-                        <td style="width: 100px; text-align: center" class="color-{{ $index + 1 }}">Silpa</td>
+                        <td style="width: 100px; text-align: center" class="color-{{ $index + 1 }}">BBM</td>
+                        <td style="width: 100px; text-align: center" class="color-{{ $index + 1 }}">Pelumas</td>
+                        <td style="width: 100px; text-align: center" class="color-{{ $index + 1 }}">Suku Cadang</td>
                     @endforeach
                 </tr>
             </thead>
             <tbody>
-                @foreach ($paguAnggarans as $index => $paguAnggaran)
-                    <tr style="background-color: #d4d4fe">
+                @foreach ($kendaraans as $index => $kendaraan)
+                    @php
+                        $total_belanja = 0;
+                        $groupAnggaranKendaraans = $semuaGroupAnggaranKendaraans->where('kendaraan_id', $kendaraan->id);
+                    @endphp
+                    <tr>
                         <td style="text-align: center">{{ $index + 1 }}</td>
-                        <td>{{ $paguAnggaran->kode_rekening }}</td>
-                        <td>{{ $paguAnggaran->nama_rekening }}</td>
-                        <td></td>
-                        <td style="text-align: right"> Rp {{ number_format($paguAnggaran->anggaran, 0, ',', '.') }}
+                        <td style="text-align: center">{{ $kendaraan->nomor_registrasi }}</td>
+                        <td style="text-align: center" class="color-{{ $kendaraan->cc_kendaraan <= 150 ? 1 : 2 }}">
+                            {{ $kendaraan->cc_kendaraan }} CC
                         </td>
-                        <td colspan="48"></td>
+                        <td style="text-align: right">
+                            Rp
+                            {{ number_format($kendaraan->anggaran_pertahun_kendaraan, 0, ',', '.') }} </td>
+                        @foreach (range(1, 12) as $month)
+                            @php
+                                $filteredBelanja = $kendaraan->belanjas->whereBetween('tanggal_belanja', [
+                                    $tahun . '-' . str_pad($month, 2, '0', STR_PAD_LEFT) . '-01',
+                                    $tahun . '-' . str_pad($month, 2, '0', STR_PAD_LEFT) . '-31',
+                                ]);
 
+                                $total_bbm = $filteredBelanja->sum('belanja_bahan_bakar_minyak');
+                                $total_pelumas = $filteredBelanja->sum('belanja_pelumas_mesin');
+                                $total_suku_cadang = $filteredBelanja->sum('belanja_suku_cadang');
+
+                                $total_belanja += $total_bbm + $total_pelumas + $total_suku_cadang;
+                            @endphp
+                            @if ($total_bbm != 0)
+                                <td style="text-align: right">
+                                    Rp {{ number_format($total_bbm, 0, ',', '.') }}
+                                </td>
+                            @else
+                                <td></td>
+                            @endif
+                            @if ($total_pelumas != 0)
+                                <td style="text-align: right">
+                                    Rp {{ number_format($total_pelumas, 0, ',', '.') }}
+                                </td>
+                            @else
+                                <td></td>
+                            @endif
+                            @if ($total_suku_cadang != 0)
+                                <td style="text-align: right">
+                                    Rp {{ number_format($total_suku_cadang, 0, ',', '.') }}
+                                </td>
+                            @else
+                                <td></td>
+                            @endif
+                        @endforeach
+                        <td style="text-align: right">
+                            Rp {{ number_format($total_belanja, 0, ',', '.') }}
+                        </td>
+                        <td style="text-align: right">
+                            Rp
+                            {{ number_format($kendaraan->anggaran_pertahun_kendaraan - $total_belanja, 0, ',', '.') }}
+                        </td>
                     </tr>
-                    @foreach ($paguAnggaran->masterAnggarans as $index2 => $masterAnggaran)
+                    {{-- @foreach ($kendaraan->masterAnggarans as $index2 => $masterAnggaran)
                         @php
                             $months = [
                                 'januari',
@@ -240,7 +271,7 @@
                             </td>
                             @foreach ($months as $index => $month)
                                 <td style="text-align: right">Rp
-                                    {{ number_format($paguAnggaran->anggaranPerbulan->$month, 0, ',', '.') }}</td>
+                                    {{ number_format($kendaraan->anggaranPerbulan->$month, 0, ',', '.') }}</td>
                                 @if ($index == 0)
                                     <td></td>
                                     <td></td>
@@ -254,8 +285,8 @@
                         </tr>
                         @php
                             $jarak = 0;
-                        @endphp
-                        @foreach ($masterAnggaran->groupAnggarans as $groupAnggaran)
+                        @endphp --}}
+                    {{-- @foreach ($masterAnggaran->groupAnggarans as $groupAnggaran)
                             @php
                                 $belanjaJanuari = $groupAnggaran->belanjas
                                     ->whereBetween('tanggal_belanja', [$tahun . '-01-01', $tahun . '-01-31'])
@@ -637,8 +668,8 @@
                                     <td></td>
                                 </tr>
                             @endif
-                        @endforeach
-                    @endforeach
+                        @endforeach --}}
+                    {{-- @endforeach --}}
                 @endforeach
             </tbody>
         </table>
