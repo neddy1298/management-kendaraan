@@ -16,7 +16,9 @@ class KendaraanController extends Controller
      */
     public function index()
     {
-        $kendaraans = Kendaraan::with('belanjas')->orderBy('created_at', 'desc')->get();
+        // $kendaraans = Kendaraan::with('belanjas')->orderBy('cc_kendaraan', 'desc')->get();
+        $kendaraans = Kendaraan::with('belanjas')->orderByRaw('CAST(roda_kendaraan AS UNSIGNED)')->orderBy('cc_kendaraan', 'asc')->orderBy('anggaran_pertahun_kendaraan', 'asc')
+            ->get();
 
         $isExpire = $kendaraans->filter(function ($kendaraan) {
             return $kendaraan->berlaku_sampai->isPast();
@@ -137,7 +139,7 @@ class KendaraanController extends Controller
             'nomor_registrasi' => ['required', 'string', 'max:255', $uniqueRule],
             'merk_kendaraan' => 'required|string|max:255',
             'jenis_kendaraan' => 'required|string|max:255',
-            'cc_kendaraan' => 'required|integer',
+            'cc_kendaraan' => 'required|string',
             'bbm_kendaraan' => 'required|string|max:255',
             'roda_kendaraan' => 'required|integer',
             'berlaku_sampai' => 'required|date_format:d/m/Y',
