@@ -45,7 +45,6 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Suku Cadang</th>
-                                    <th>Roda</th>
                                     <th>Stok Awal</th>
                                     <th>Stok</th>
                                     <th>Harga</th>
@@ -58,7 +57,6 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $stokSukuCadang->nama_suku_cadang }}</td>
-                                        <td>{{ $stokSukuCadang->group_anggaran }}</td>
                                         <td>{{ $stokSukuCadang->stok_awal }}</td>
                                         <td>{{ $stokSukuCadang->stok }}</td>
                                         <td>Rp {{ number_format($stokSukuCadang->harga, 0, ',', '.') }}</td>

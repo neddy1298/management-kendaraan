@@ -36,7 +36,7 @@
             <!-- Card start -->
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Anggaran Pertahun</div>
+                    <div class="card-title">Pagu Anggaran</div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">

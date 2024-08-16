@@ -166,7 +166,7 @@
                 <tr>
                     <th style="width: 15px" rowspan="2">No Urut</th>
                     <th style="width: 90px" rowspan="2">Plat Nomer</th>
-                    <th style="width: 50px" rowspan="2">CC Kendaraan</th>
+                    <th style="width: 90px" rowspan="2">CC Kendaraan</th>
                     <th style="width: 100px" rowspan="2">Pagu Anggaran</th>
                     @foreach ($months as $index => $month)
                         <th style="width: 300px" colspan="3" class="color-{{ $index + 1 }}">
@@ -184,7 +184,63 @@
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $roda_group = 0;
+                @endphp
                 @foreach ($kendaraans as $index => $kendaraan)
+                    @if ($kendaraan->roda_kendaraan == 2)
+                        @if ($roda_group == 0)
+                            <tr style="background-color: #b7c7ff">
+                                <td></td>
+                                <td style="text-align: center">
+                                    <strong>Roda {{ $kendaraan->roda_kendaraan }}</strong>
+                                </td>
+                                <td colspan="40"></td>
+                            </tr>
+                            @php
+                                $roda_group++;
+                            @endphp
+                        @endif
+                    @elseif ($kendaraan->roda_kendaraan == 4)
+                        @if ($roda_group == 1)
+                            <tr style="background-color: #b7c7ff">
+                                <td></td>
+                                <td style="text-align: center">
+                                    <strong>Roda {{ $kendaraan->roda_kendaraan }}</strong>
+                                </td>
+                                <td colspan="40"></td>
+                            </tr>
+                            @php
+                                $roda_group++;
+                            @endphp
+                        @endif
+                    @elseif ($kendaraan->roda_kendaraan == 6)
+                        @if ($roda_group == 2)
+                            <tr style="background-color: #b7c7ff">
+                                <td></td>
+                                <td style="text-align: center">
+                                    <strong>Roda {{ $kendaraan->roda_kendaraan }}</strong>
+                                </td>
+                                <td colspan="40"></td>
+                            </tr>
+                            @php
+                                $roda_group++;
+                            @endphp
+                        @endif
+                    @elseif ($kendaraan->roda_kendaraan == 10)
+                        @if ($roda_group == 3)
+                            <tr style="background-color: #b7c7ff">
+                                <td></td>
+                                <td style="text-align: center">
+                                    <strong>Roda {{ $kendaraan->roda_kendaraan }}</strong>
+                                </td>
+                                <td colspan="40"></td>
+                            </tr>
+                            @php
+                                $roda_group++;
+                            @endphp
+                        @endif
+                    @endif
                     @php
                         $total_belanja = 0;
                         $groupAnggaranKendaraans = $semuaGroupAnggaranKendaraans->where('kendaraan_id', $kendaraan->id);
@@ -193,7 +249,7 @@
                         <td style="text-align: center">{{ $index + 1 }}</td>
                         <td style="text-align: center">{{ $kendaraan->nomor_registrasi }}</td>
                         <td style="text-align: center" class="color-{{ $kendaraan->cc_kendaraan <= 150 ? 1 : 2 }}">
-                            {{ $kendaraan->cc_kendaraan }} CC
+                            {{ $kendaraan->cc_kendaraan }}
                         </td>
                         <td style="text-align: right">
                             Rp
@@ -212,25 +268,25 @@
                                 $total_belanja += $total_bbm + $total_pelumas + $total_suku_cadang;
                             @endphp
                             @if ($total_bbm != 0)
-                                <td style="text-align: right">
+                                <td style="text-align: right" class="color-{{ $month }}">
                                     Rp {{ number_format($total_bbm, 0, ',', '.') }}
                                 </td>
                             @else
-                                <td></td>
+                                <td class="color-{{ $month }}"></td>
                             @endif
                             @if ($total_pelumas != 0)
-                                <td style="text-align: right">
+                                <td style="text-align: right" class="color-{{ $month }}">
                                     Rp {{ number_format($total_pelumas, 0, ',', '.') }}
                                 </td>
                             @else
-                                <td></td>
+                                <td class="color-{{ $month }}"></td>
                             @endif
                             @if ($total_suku_cadang != 0)
-                                <td style="text-align: right">
+                                <td style="text-align: right" class="color-{{ $month }}">
                                     Rp {{ number_format($total_suku_cadang, 0, ',', '.') }}
                                 </td>
                             @else
-                                <td></td>
+                                <td class="color-{{ $month }}"></td>
                             @endif
                         @endforeach
                         <td style="text-align: right">
@@ -241,458 +297,9 @@
                             {{ number_format($kendaraan->anggaran_pertahun_kendaraan - $total_belanja, 0, ',', '.') }}
                         </td>
                     </tr>
-                    {{-- @foreach ($kendaraan->masterAnggarans as $index2 => $masterAnggaran)
-                        @php
-                            $months = [
-                                'januari',
-                                'februari',
-                                'maret',
-                                'april',
-                                'mei',
-                                'juni',
-                                'juli',
-                                'agustus',
-                                'september',
-                                'oktober',
-                                'november',
-                                'desember',
-                            ];
-                        @endphp
-
-                        <tr class="master-anggaran">
-                            <td style="text-align: center">{{ $index2 + 1 }}</td>
-                            <td>{{ $masterAnggaran->kode_rekening }}</td>
-                            <td style="font-weight: bold">{{ $masterAnggaran->nama_rekening }}</td>
-                            <td></td>
-                            <td style="text-align: right">
-                                @if ($masterAnggaran->anggaran != 0)
-                                    Rp {{ number_format($masterAnggaran->anggaran, 0, ',', '.') }}
-                                @endif
-                            </td>
-                            @foreach ($months as $index => $month)
-                                <td style="text-align: right">Rp
-                                    {{ number_format($kendaraan->anggaranPerbulan->$month, 0, ',', '.') }}</td>
-                                @if ($index == 0)
-                                    <td></td>
-                                    <td></td>
-                                @else
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                @endif
-                            @endforeach
-                            <td></td>
-                        </tr>
-                        @php
-                            $jarak = 0;
-                        @endphp --}}
-                    {{-- @foreach ($masterAnggaran->groupAnggarans as $groupAnggaran)
-                            @php
-                                $belanjaJanuari = $groupAnggaran->belanjas
-                                    ->whereBetween('tanggal_belanja', [$tahun . '-01-01', $tahun . '-01-31'])
-                                    ->sum('total_belanja');
-                                $belanjaFebruari = $groupAnggaran->belanjas
-                                    ->whereBetween('tanggal_belanja', [$tahun . '-02-01', $tahun . '-02-31'])
-                                    ->sum('total_belanja');
-                                $belanjaMaret = $groupAnggaran->belanjas
-                                    ->whereBetween('tanggal_belanja', [$tahun . '-03-01', $tahun . '-03-31'])
-                                    ->sum('total_belanja');
-                                $belanjaApril = $groupAnggaran->belanjas
-                                    ->whereBetween('tanggal_belanja', [$tahun . '-04-01', $tahun . '-04-31'])
-                                    ->sum('total_belanja');
-                                $belanjaMei = $groupAnggaran->belanjas
-                                    ->whereBetween('tanggal_belanja', [$tahun . '-05-01', $tahun . '-05-31'])
-                                    ->sum('total_belanja');
-                                $belanjaJuni = $groupAnggaran->belanjas
-                                    ->whereBetween('tanggal_belanja', [$tahun . '-06-01', $tahun . '-06-31'])
-                                    ->sum('total_belanja');
-                                $belanjaJuli = $groupAnggaran->belanjas
-                                    ->whereBetween('tanggal_belanja', [$tahun . '-07-01', $tahun . '-07-31'])
-                                    ->sum('total_belanja');
-                                $belanjaAgustus = $groupAnggaran->belanjas
-                                    ->whereBetween('tanggal_belanja', [$tahun . '-08-01', $tahun . '-08-31'])
-                                    ->sum('total_belanja');
-                                $belanjaSeptember = $groupAnggaran->belanjas
-                                    ->whereBetween('tanggal_belanja', [$tahun . '-09-01', $tahun . '-09-31'])
-                                    ->sum('total_belanja');
-                                $belanjaOktober = $groupAnggaran->belanjas
-                                    ->whereBetween('tanggal_belanja', [$tahun . '-10-01', $tahun . '-10-31'])
-                                    ->sum('total_belanja');
-                                $belanjaNovember = $groupAnggaran->belanjas
-                                    ->whereBetween('tanggal_belanja', [$tahun . '-11-01', $tahun . '-11-31'])
-                                    ->sum('total_belanja');
-                                $belanjaDesember = $groupAnggaran->belanjas
-                                    ->whereBetween('tanggal_belanja', [$tahun . '-12-01', $tahun . '-12-31'])
-                                    ->sum('total_belanja');
-                                if (
-                                    $groupAnggaran->tipe_belanja == 'Bahan Bakar Minyak' ||
-                                    $groupAnggaran->tipe_belanja == 'Suku Cadang'
-                                ) {
-                                    $jansilpa = 0;
-                                    $febsilpa = 0;
-                                    $maretsilpa = 0;
-                                    $aprilsilpa = 0;
-                                    $meisilpa = 0;
-                                    $junisilpa = 0;
-                                    $julisilpa = 0;
-                                    $agusilpa = 0;
-                                    $sepsilpa = 0;
-                                    $oktsilpa = 0;
-                                    $novsilpa = 0;
-                                    $dessilpa = 0;
-                                } else {
-                                    $jansilpa = $groupAnggaran->anggaranPerbulan->januari;
-                                    $febsilpa =
-                                        $jansilpa + $groupAnggaran->anggaranPerbulan->februari - $belanjaJanuari;
-                                    $maretsilpa =
-                                        $febsilpa + $groupAnggaran->anggaranPerbulan->maret - $belanjaFebruari;
-                                    $aprilsilpa = $maretsilpa + $groupAnggaran->anggaranPerbulan->april - $belanjaMaret;
-                                    $meisilpa = $aprilsilpa + $groupAnggaran->anggaranPerbulan->mei - $belanjaApril;
-                                    $junisilpa = $meisilpa + $groupAnggaran->anggaranPerbulan->juni - $belanjaMei;
-                                    $julisilpa = $junisilpa + $groupAnggaran->anggaranPerbulan->juli - $belanjaJuni;
-                                    $agusilpa = $julisilpa + $groupAnggaran->anggaranPerbulan->agustus - $belanjaJuli;
-                                    $sepsilpa =
-                                        $agusilpa + $groupAnggaran->anggaranPerbulan->september - $belanjaAgustus;
-                                    $oktsilpa =
-                                        $sepsilpa + $groupAnggaran->anggaranPerbulan->oktober - $belanjaSeptember;
-                                    $novsilpa =
-                                        $oktsilpa + $groupAnggaran->anggaranPerbulan->november - $belanjaOktober;
-                                    $dessilpa =
-                                        $novsilpa + $groupAnggaran->anggaranPerbulan->desember - $belanjaNovember;
-                                }
-                            @endphp
-                            @if ($groupAnggaran->tipe_belanja == 'Pelumas Mesin')
-                                @if ($jarak == 0)
-                                    <tr class="master-anggaran">
-                                        <td></td>
-                                        <td>{{ $groupAnggaran->kode_rekening }}</td>
-                                        <td style="font-weight: bold">Belanja Pelumas Kendaraan Ops Dinas Perhubungan
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td colspan="48"></td>
-                                    </tr>
-                                    @php
-                                        $jarak += 1;
-                                    @endphp
-                                @endif
-                            @endif
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td style="font-weight: bold">
-                                    {{ $groupAnggaran->nama_group }}</td>
-                                <td style="text-align: right">
-                                    @php
-                                        $hargaSatuan = 0;
-                                    @endphp
-                                    @if ($groupAnggaran->tipe_belanja == 'Bahan Bakar Minyak' || $groupAnggaran->tipe_belanja == 'Pelumas Mesin')
-                                        {{ $hargaSatuan = $groupAnggaran->kendaraans->count() }} Unit
-                                    @endif
-                                </td>
-                                <td style="text-align: right">
-                                    @if ($groupAnggaran->anggaran_total != 0)
-                                        Rp {{ number_format($groupAnggaran->anggaran_total, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align:
-                                    right" class="color-1">Rp
-                                    {{ number_format($groupAnggaran->anggaranPerbulan->januari, 0, ',', '.') }}
-                                </td>
-                                <td style="text-align: right" class="color-1">Rp
-                                    {{ number_format($belanjaJanuari, 0, ',', '.') }}</td>
-                                </td>
-                                <td style="text-align: right" class="color-1">Rp
-                                    {{ number_format($groupAnggaran->anggaranPerbulan->januari - $belanjaJanuari, 0, ',', '.') }}
-                                </td>
-                                <td style="text-align: right" class="color-2">Rp
-                                    {{ number_format($groupAnggaran->anggaranPerbulan->februari, 0, ',', '.') }}
-                                </td>
-                                <td style="text-align: right" class="color-2">
-                                    @if ($febsilpa != 0)
-                                        Rp {{ number_format($febsilpa, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align: right" class="color-2">Rp
-                                    {{ number_format($belanjaFebruari, 0, ',', '.') }}</td>
-                                </td>
-                                <td style="text-align: right" class="color-2">Rp
-                                    @if ($febsilpa != 0)
-                                        {{ number_format($febsilpa - $belanjaFebruari, 0, ',', '.') }}
-                                    @else
-                                        {{ number_format($groupAnggaran->anggaranPerbulan->februari - $belanjaFebruari, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align: right" class="color-3">Rp
-                                    {{ number_format($groupAnggaran->anggaranPerbulan->maret, 0, ',', '.') }}</td>
-                                <td style="text-align: right" class="color-3">
-                                    @if ($maretsilpa != 0)
-                                        Rp {{ number_format($maretsilpa, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align: right" class="color-3">Rp
-                                    {{ number_format($belanjaMaret, 0, ',', '.') }}</td>
-                                </td>
-                                <td style="text-align: right" class="color-3">Rp
-                                    @if ($maretsilpa != 0)
-                                        {{ number_format($maretsilpa - $belanjaMaret, 0, ',', '.') }}
-                                    @else
-                                        {{ number_format($groupAnggaran->anggaranPerbulan->maret - $belanjaMaret, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align: right" class="color-4">Rp
-                                    {{ number_format($groupAnggaran->anggaranPerbulan->april, 0, ',', '.') }}</td>
-                                <td style="text-align: right" class="color-4">
-                                    @if ($aprilsilpa != 0)
-                                        Rp {{ number_format($aprilsilpa, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align: right" class="color-4">Rp
-                                    {{ number_format($belanjaApril, 0, ',', '.') }}</td>
-                                </td>
-                                <td style="text-align: right" class="color-4">Rp
-                                    @if ($aprilsilpa != 0)
-                                        {{ number_format($aprilsilpa - $belanjaApril, 0, ',', '.') }}
-                                    @else
-                                        {{ number_format($groupAnggaran->anggaranPerbulan->april - $belanjaApril, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align: right" class="color-5">Rp
-                                    {{ number_format($groupAnggaran->anggaranPerbulan->mei, 0, ',', '.') }}</td>
-                                <td style="text-align: right" class="color-5">
-                                    @if ($meisilpa != 0)
-                                        Rp {{ number_format($meisilpa, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align: right" class="color-5">Rp
-                                    {{ number_format($belanjaMei, 0, ',', '.') }}</td>
-                                </td>
-                                <td style="text-align: right" class="color-5">Rp
-                                    @if ($meisilpa != 0)
-                                        {{ number_format($meisilpa - $belanjaMei, 0, ',', '.') }}
-                                    @else
-                                        {{ number_format($groupAnggaran->anggaranPerbulan->mei - $belanjaMei, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align: right" class="color-6">Rp
-                                    {{ number_format($groupAnggaran->anggaranPerbulan->juni, 0, ',', '.') }}</td>
-                                <td style="text-align: right" class="color-6">
-                                    @if ($junisilpa != 0)
-                                        Rp {{ number_format($junisilpa, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align: right" class="color-6">Rp
-                                    {{ number_format($belanjaJuni, 0, ',', '.') }}</td>
-                                </td>
-                                <td style="text-align: right" class="color-6">Rp
-                                    @if ($junisilpa != 0)
-                                        {{ number_format($junisilpa - $belanjaJuni, 0, ',', '.') }}
-                                    @else
-                                        {{ number_format($groupAnggaran->anggaranPerbulan->juni - $belanjaJuni, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align: right" class="color-7">Rp
-                                    {{ number_format($groupAnggaran->anggaranPerbulan->juli, 0, ',', '.') }}</td>
-                                <td style="text-align: right" class="color-7">
-                                    @if ($julisilpa != 0)
-                                        Rp {{ number_format($julisilpa, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align: right" class="color-7">Rp
-                                    {{ number_format($belanjaJuli, 0, ',', '.') }}</td>
-                                </td>
-                                <td style="text-align: right" class="color-7">Rp
-                                    @if ($julisilpa != 0)
-                                        {{ number_format($julisilpa - $belanjaJuli, 0, ',', '.') }}
-                                    @else
-                                        {{ number_format($groupAnggaran->anggaranPerbulan->juli - $belanjaJuli, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align: right" class="color-8">Rp
-                                    {{ number_format($groupAnggaran->anggaranPerbulan->agustus, 0, ',', '.') }}
-                                </td>
-                                <td style="text-align: right" class="color-8">
-                                    @if ($agusilpa != 0)
-                                        Rp {{ number_format($agusilpa, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align: right" class="color-8">Rp
-                                    {{ number_format($belanjaAgustus, 0, ',', '.') }}</td>
-                                </td>
-                                <td style="text-align: right" class="color-8">Rp
-                                    @if ($agusilpa != 0)
-                                        {{ number_format($agusilpa - $belanjaAgustus, 0, ',', '.') }}
-                                    @else
-                                        {{ number_format($groupAnggaran->anggaranPerbulan->agustus - $belanjaAgustus, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align: right" class="color-9">Rp
-                                    {{ number_format($groupAnggaran->anggaranPerbulan->september, 0, ',', '.') }}
-                                </td>
-                                <td style="text-align: right" class="color-9">
-                                    @if ($sepsilpa != 0)
-                                        Rp {{ number_format($sepsilpa, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align: right" class="color-9">Rp
-                                    {{ number_format($belanjaSeptember, 0, ',', '.') }}</td>
-                                </td>
-                                <td style="text-align: right" class="color-9">Rp
-                                    @if ($sepsilpa != 0)
-                                        {{ number_format($sepsilpa - $belanjaSeptember, 0, ',', '.') }}
-                                    @else
-                                        {{ number_format($groupAnggaran->anggaranPerbulan->september - $belanjaSeptember, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align: right" class="color-10">Rp
-                                    {{ number_format($groupAnggaran->anggaranPerbulan->oktober, 0, ',', '.') }}
-                                </td>
-                                <td style="text-align: right" class="color-10">
-                                    @if ($oktsilpa != 0)
-                                        Rp {{ number_format($oktsilpa, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align: right" class="color-10">Rp
-                                    {{ number_format($belanjaOktober, 0, ',', '.') }}</td>
-                                </td>
-                                <td style="text-align: right" class="color-10">Rp
-                                    @if ($oktsilpa != 0)
-                                        {{ number_format($oktsilpa - $belanjaOktober, 0, ',', '.') }}
-                                    @else
-                                        {{ number_format($groupAnggaran->anggaranPerbulan->oktober - $belanjaOktober, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align: right" class="color-11">Rp
-                                    {{ number_format($groupAnggaran->anggaranPerbulan->november, 0, ',', '.') }}
-                                </td>
-                                <td style="text-align: right" class="color-11">
-                                    @if ($novsilpa != 0)
-                                        Rp {{ number_format($novsilpa, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align: right" class="color-11">Rp
-                                    {{ number_format($belanjaNovember, 0, ',', '.') }}</td>
-                                </td>
-                                <td style="text-align: right" class="color-11">Rp
-                                    @if ($novsilpa != 0)
-                                        {{ number_format($novsilpa - $belanjaNovember, 0, ',', '.') }}
-                                    @else
-                                        {{ number_format($groupAnggaran->anggaranPerbulan->november - $belanjaNovember, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align: right" class="color-12">Rp
-                                    {{ number_format($groupAnggaran->anggaranPerbulan->desember, 0, ',', '.') }}
-                                </td>
-                                <td style="text-align: right" class="color-12">
-                                    @if ($dessilpa != 0)
-                                        Rp {{ number_format($dessilpa, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align: right" class="color-12">Rp
-                                    {{ number_format($belanjaDesember, 0, ',', '.') }}
-                                </td>
-                                <td style="text-align: right" class="color-12">Rp
-                                    @if ($dessilpa != 0)
-                                        {{ number_format($dessilpa - $belanjaDesember, 0, ',', '.') }}
-                                    @else
-                                        {{ number_format($groupAnggaran->anggaranPerbulan->desember - $belanjaDesember, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                                <td style="text-align: right">
-                                    Rp
-                                    @if ($dessilpa != 0)
-                                        {{ number_format($dessilpa - $belanjaDesember, 0, ',', '.') }}
-                                    @else
-                                        {{ number_format($groupAnggaran->anggaranPerbulan->desember - $belanjaDesember, 0, ',', '.') }}
-                                    @endif
-                                </td>
-                            </tr>
-                            @php
-                                $months = [
-                                    '01' => 'Jan',
-                                    '02' => 'Feb',
-                                    '03' => 'Mar',
-                                    '04' => 'Apr',
-                                    '05' => 'Mei',
-                                    '06' => 'Jun',
-                                    '07' => 'Jul',
-                                    '08' => 'Agu',
-                                    '09' => 'Sep',
-                                    '10' => 'Okt',
-                                    '11' => 'Nov',
-                                    '12' => 'Des',
-                                ];
-                            @endphp
-
-                            @foreach ($groupAnggaran->stokSukuCadang as $stokSukuCadang)
-                                @php
-                                    $stokAwal = $stokSukuCadang->stok_awal;
-                                    $belanjaSukuCadang = [];
-                                    foreach ($months as $month => $abbr) {
-                                        $belanjaSukuCadang[$abbr] = $stokSukuCadang->sukuCadangs
-                                            ->whereBetween('tanggal_belanja', ["$tahun-$month-01", "$tahun-$month-31"])
-                                            ->sum('jumlah');
-                                    }
-                                @endphp
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td>{{ $stokSukuCadang->nama_suku_cadang }}</td>
-                                    <td style="text-align: right">{{ $stokAwal }}</td>
-                                    <td style="text-align: right">
-                                        Rp {{ number_format($stokAwal * $stokSukuCadang->harga, 0, ',', '.') }}
-                                    </td>
-                                    @php
-                                        $colorNum = 0;
-                                    @endphp
-                                    <td style="text-align: right" class="color-{{ $colorNum + 1 }}">
-                                        {{ $stokAwal }}</td>
-                                    @foreach ($months as $index => $abbr)
-                                        <td style="text-align: right" class="color-{{ $colorNum + 1 }}">
-                                            {{ $belanjaSukuCadang[$abbr] }}
-                                        </td>
-                                        <td style="text-align: right" class="color-{{ $colorNum + 1 }}">
-                                            {{ $stokAwal -= $belanjaSukuCadang[$abbr] }}
-                                        </td>
-                                        <td style="text-align: right" class="color-{{ $colorNum + 2 }}">
-                                            {{ $stokAwal }}</td>
-                                        <td class="color-{{ $colorNum + 2 }}"></td>
-                                        @php
-                                            $colorNum += 1;
-                                        @endphp
-                                    @endforeach
-                                </tr>
-                            @endforeach
-                            @if ($groupAnggaran->tipe_belanja == 'Suku Cadang')
-                                <tr>
-                                    <td></td>
-                                </tr>
-                            @endif
-                        @endforeach --}}
-                    {{-- @endforeach --}}
                 @endforeach
             </tbody>
         </table>
-        <br>
-        <div class="footer">
-            <div style="width: 100%">
-                <div style="width: 35%; float: left; text-align: center">
-                    <p>Mengetahui,</p>
-                    <p>Pengguna Anggaran</p>
-                    <br><br><br>
-                    <p><u>(MARSE HENDRA SAPUTRA. S.STP)</u></p>
-                    <p>NIP: 198103101999121001</p>
-                </div>
-                <div style="width: 30%"></div>
-                <div style="width: 35%; float: right; text-align: center">
-                    <p>Bogor, &nbsp;&nbsp;&nbsp;&nbsp;{{ now()->translatedformat('F Y') }}</p>
-                    <p>Pejabat Pelaksana Teknis Kegiatan</p>
-                    <br><br><br>
-                    <p><U>( FIRZA FIRANI RIZAL, S.Kom.,M.Ak. )</U></p>
-                    <p>NIP: 197509152010012008</p>
-                </div>
-            </div>
-        </div>
     </div>
 </body>
 

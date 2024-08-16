@@ -34,7 +34,6 @@
             </div>
         </div>
 
-        <!-- Row start -->
         <div class="col-xxl-4 col-sm-6 col-12">
             <div class="stats-tile">
                 <div class="sale-icon shade-yellow">
@@ -199,7 +198,7 @@
                     <p><strong>Keterangan:</strong> <span id="modalKeterangan"></span></p>
                     <div id="modalSukuCadangsContainer">
                         <h5 class="mt-3">Detail Suku Cadang</h5>
-                        <table id="highlightRowColumn" class="table custom-table text-center v-middle">
+                        <table id="" class="table custom-table text-center v-middle">
                             <thead>
                                 <tr>
                                     <th>Nama</th>
@@ -209,7 +208,7 @@
                                 </tr>
                             </thead>
                             <tbody id="modalSukuCadangs">
-                                <!-- Suku Cadangs will be populated here -->
+
                             </tbody>
                         </table>
                     </div>
