@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Belanja;
 use App\Models\Kendaraan;
 use App\Models\MasterAnggaran;
+use App\Models\PaguAnggaran;
 use Carbon\Carbon;
 
 class HomeController extends Controller
@@ -16,14 +17,15 @@ class HomeController extends Controller
         $startOfMonth = Carbon::now()->startOfMonth();
         $endOfMonth = Carbon::now()->endOfMonth();
 
-        $master_anggaran = MasterAnggaran::latest()->first();
+        // $master_anggaran = ;
+        $paguAnggaran = PaguAnggaran::where('tahun', $currentYear)->sum('anggaran');
         $kendaraans = Kendaraan::all();
 
         $belanja_bulanan = Belanja::whereMonth('tanggal_belanja', $currentMonth)
-            ->sum('belanja_bahan_bakar_minyak', 'belanja_pelumas_mesin', 'belanja_suku_cadang');
+            ->sum('total_belanja');
 
         $belanja_tahunan = Belanja::whereYear('tanggal_belanja', $currentYear)
-            ->sum('belanja_bahan_bakar_minyak', 'belanja_pelumas_mesin', 'belanja_suku_cadang');
+            ->sum('total_belanja');
 
         $isExpire = $kendaraans->filter(function ($kendaraan) {
             return $kendaraan->berlaku_sampai->isPast();
@@ -35,6 +37,6 @@ class HomeController extends Controller
             ->latest()
             ->get();
 
-        return view('home', compact('kendaraan', 'belanjas', 'master_anggaran', 'isExpire', 'belanja_bulanan', 'belanja_tahunan'));
+        return view('home', compact('kendaraan', 'belanjas', 'paguAnggaran', 'isExpire', 'belanja_bulanan', 'belanja_tahunan'));
     }
 }
