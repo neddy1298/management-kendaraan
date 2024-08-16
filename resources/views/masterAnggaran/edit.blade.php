@@ -12,7 +12,7 @@
             <!-- Card start -->
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Ubah Anggaran Pertahun</div>
+                    <div class="card-title">Ubah Rincian Objek</div>
                     <div class="card-options">
                         <span class="text-muted">Tanggal Hari ini: {{ now()->format('d F Y') }}</span>
                     </div>
@@ -34,6 +34,24 @@
                         enctype="multipart/form-data">
                         @csrf
                         <div class="row">
+                            <div class="col-xl-12">
+                                <div class="mb-3">
+                                    <label for="pagu_anggaran_id" class="form-label">Nomor Rekening Pagu</label>
+                                    <select id="pagu_anggaran_id" class="form-select" name="pagu_anggaran_id">
+                                        <option hidden value="{{ $masterAnggaran->pagu_anggaran_id }}">
+                                            {{ $masterAnggaran->paguAnggaran->nama_rekening }} -
+                                            {{ $masterAnggaran->paguAnggaran->kode_rekening }}
+                                        </option>
+                                        @foreach ($paguAnggarans as $paguAnggaran)
+                                            <option value="{{ $paguAnggaran->id }}">{{ $paguAnggaran->nama_rekening }} -
+                                                {{ $paguAnggaran->kode_rekening }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('pagu_anggaran_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                             <div class="col-xl-12">
                                 <div class="mb-3">
                                     <label for="kode_rekening" class="form-label">Kode Rekening</label>
@@ -64,6 +82,144 @@
                                     <input type="number" class="form-control @error('anggaran') is-invalid @enderror"
                                         id="anggaran" name="anggaran" value="{{ $masterAnggaran->anggaran }}">
                                     @error('anggaran')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-section-title">Perencanaan Anggaran Perbulan <br>
+                                    <p class="text-dark">Kosongkan jika belum ada</p>
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="januari" class="form-label">Januari</label>
+                                    <input type="number" class="form-control @error('januari') is-invalid @enderror"
+                                        id="januari" name="januari"
+                                        value="{{ $masterAnggaran->anggaranPerbulan->januari }}">
+                                    @error('januari')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="februari" class="form-label">Februari</label>
+                                    <input type="number" class="form-control @error('februari') is-invalid @enderror"
+                                        id="februari" name="februari"
+                                        value="{{ $masterAnggaran->anggaranPerbulan->februari }}">
+                                    @error('februari')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="maret" class="form-label">Maret</label>
+                                    <input type="number" class="form-control @error('maret') is-invalid @enderror"
+                                        id="maret" name="maret"
+                                        value="{{ $masterAnggaran->anggaranPerbulan->maret }}">
+                                    @error('maret')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="april" class="form-label">April</label>
+                                    <input type="number" class="form-control @error('april') is-invalid @enderror"
+                                        id="april" name="april"
+                                        value="{{ $masterAnggaran->anggaranPerbulan->april }}">
+                                    @error('april')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="mei" class="form-label">Mei</label>
+                                    <input type="number" class="form-control @error('mei') is-invalid @enderror"
+                                        id="mei" name="mei"
+                                        value="{{ $masterAnggaran->anggaranPerbulan->mei }}">
+                                    @error('mei')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="juni" class="form-label">Juni</label>
+                                    <input type="number" class="form-control @error('juni') is-invalid @enderror"
+                                        id="juni" name="juni"
+                                        value="{{ $masterAnggaran->anggaranPerbulan->juni }}">
+                                    @error('juni')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="juli" class="form-label">Juli</label>
+                                    <input type="number" class="form-control @error('juli') is-invalid @enderror"
+                                        id="juli" name="juli"
+                                        value="{{ $masterAnggaran->anggaranPerbulan->juli }}">
+                                    @error('juli')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="agustus" class="form-label">Agustus</label>
+                                    <input type="number" class="form-control @error('agustus') is-invalid @enderror"
+                                        id="agustus" name="agustus"
+                                        value="{{ $masterAnggaran->anggaranPerbulan->agustus }}">
+                                    @error('agustus')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="september" class="form-label">September</label>
+                                    <input type="number" class="form-control @error('september') is-invalid @enderror"
+                                        id="september" name="september"
+                                        value="{{ $masterAnggaran->anggaranPerbulan->september }}">
+                                    @error('september')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="oktober" class="form-label">Oktober</label>
+                                    <input type="number" class="form-control @error('oktober') is-invalid @enderror"
+                                        id="oktober" name="oktober"
+                                        value="{{ $masterAnggaran->anggaranPerbulan->oktober }}">
+                                    @error('oktober')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="november" class="form-label">November</label>
+                                    <input type="number" class="form-control @error('november') is-invalid @enderror"
+                                        id="november" name="november"
+                                        value="{{ $masterAnggaran->anggaranPerbulan->november }}">
+                                    @error('november')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="desember" class="form-label">Desember</label>
+                                    <input type="number" class="form-control @error('desember') is-invalid @enderror"
+                                        id="desember" name="desember"
+                                        value="{{ $masterAnggaran->anggaranPerbulan->desember }}">
+                                    @error('desember')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>

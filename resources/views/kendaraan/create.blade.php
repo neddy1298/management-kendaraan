@@ -60,9 +60,25 @@
                             <div class="col-xl-6">
                                 <div class="mb-3">
                                     <label for="cc_kendaraan" class="form-label">CC Kendaraan</label>
-                                    <input type="number" class="form-control @error('cc_kendaraan') is-invalid @enderror"
-                                        id="cc_kendaraan" name="cc_kendaraan" value="{{ old('cc_kendaraan') }}">
-                                    @error('cc_kendaraan')
+                                    <select id="cc_kendaraan" class="form-select" name="cc_kendaraan">
+                                        <option hidden value="{{ old('cc_kendaraan') }}">{{ old('cc_kendaraan') }}
+                                        </option>
+                                        <option value="100-150cc">100-150cc</option>
+                                        <option value="250cc">250cc</option>
+                                        <option value="Staff">Staff</option>
+                                        <option value="APJ">APJ</option>
+                                        <option value="OPS Pejabat">OPS Pejabat</option>
+                                        <option value="OPS Patroli B">OPS Patroli B</option>
+                                        <option value="OPS Patroli D">OPS Patroli D</option>
+                                        <option value="OPS D + Genset APJ">OPS D + Genset APJ</option>
+                                        <option value="Pejabat Eselonll">Pejabat Eselonll</option>
+                                        <option value="Diesel">Diesel</option>
+                                        <option value="Uncal">Uncal</option>
+                                        <option value="Bus Sekolah">Bus Sekolah</option>
+                                        <option value="Bus Summarecon">Bus Summarecon</option>
+                                        <option value="No BBM">No BBM</option>
+                                    </select>
+                                    @error('jenis_kendaraan')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -132,6 +148,18 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-12">
+                                <div class="mb-3">
+                                    <label for="anggaran_pertahun_kendaraan" class="form-label">Anggaran Pertahun</label>
+                                    <input type="number"
+                                        class="form-control @error('anggaran_pertahun_kendaraan') is-invalid @enderror"
+                                        id="anggaran_pertahun_kendaraan" name="anggaran_pertahun_kendaraan"
+                                        value="{{ old('anggaran_pertahun_kendaraan') }}">
+                                    @error('anggaran_pertahun_kendaraan')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>

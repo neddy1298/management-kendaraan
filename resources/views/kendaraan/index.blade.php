@@ -77,7 +77,7 @@
                                         <td>{{ $kendaraan->nomor_registrasi }}</td>
                                         <td>{{ $kendaraan->merk_kendaraan }}</td>
                                         <td>{{ $kendaraan->jenis_kendaraan }}</td>
-                                        <td>{{ $kendaraan->cc_kendaraan }} CC</td>
+                                        <td>{{ $kendaraan->cc_kendaraan }}</td>
                                         <td>{{ $kendaraan->bbm_kendaraan }}</td>
                                         <td>Roda {{ $kendaraan->roda_kendaraan }}</td>
                                         <td>

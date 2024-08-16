@@ -12,7 +12,7 @@
             <!-- Card start -->
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Ubah Group</div>
+                    <div class="card-title">Ubah Sub Rincian Objek</div>
                     <div class="card-options">
                         <span class="text-muted">Tanggal Hari ini: {{ now()->format('d F Y') }}</span>
                     </div>
@@ -38,9 +38,12 @@
                                 <div class="mb-3">
                                     <label for="master_anggaran_id" class="form-label">Master Anggaran</label>
                                     <select id="master_anggaran_id" class="form-select" name="master_anggaran_id">
-                                        <option hidden value="{{ $groupAnggaran->master_anggaran_id }}">{{ $groupAnggaran->masterAnggaran->nama_rekening }} - {{ $groupAnggaran->masterAnggaran->kode_rekening }}</option>
+                                        <option hidden value="{{ $groupAnggaran->master_anggaran_id }}">
+                                            {{ $groupAnggaran->masterAnggaran->nama_rekening }} -
+                                            {{ $groupAnggaran->masterAnggaran->kode_rekening }}</option>
                                         @foreach ($masterAnggarans as $masterAnggaran)
-                                        <option value="{{ $masterAnggaran->id }}">{{ $masterAnggaran->nama_rekening }} - {{ $masterAnggaran->kode_rekening }}</option>
+                                            <option value="{{ $masterAnggaran->id }}">{{ $masterAnggaran->nama_rekening }} -
+                                                {{ $masterAnggaran->kode_rekening }}</option>
                                         @endforeach
                                     </select>
                                     @error('master_anggaran_id')
@@ -52,7 +55,8 @@
                                 <div class="mb-3">
                                     <label for="kode_rekening" class="form-label">Kode Rekening</label>
                                     <input type="text" class="form-control @error('kode_rekening') is-invalid @enderror"
-                                        id="kode_rekening" name="kode_rekening" value="{{ $groupAnggaran->kode_rekening }}">
+                                        id="kode_rekening" name="kode_rekening"
+                                        value="{{ $groupAnggaran->kode_rekening }}">
                                     @error('kode_rekening')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -73,8 +77,10 @@
                             <div class="col-xl-4">
                                 <div class="mb-3">
                                     <label for="anggaran_bahan_bakar_minyak" class="form-label">Anggaran BBM</label>
-                                    <input type="number" class="form-control @error('anggaran_bahan_bakar_minyak') is-invalid @enderror"
-                                        id="anggaran_bahan_bakar_minyak" name="anggaran_bahan_bakar_minyak" value="{{ $groupAnggaran->anggaran_bahan_bakar_minyak }}">
+                                    <input type="number"
+                                        class="form-control @error('anggaran_bahan_bakar_minyak') is-invalid @enderror"
+                                        id="anggaran_bahan_bakar_minyak" name="anggaran_bahan_bakar_minyak"
+                                        value="{{ $groupAnggaran->anggaran_bahan_bakar_minyak }}">
                                     @error('anggaran_bahan_bakar_minyak')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -83,8 +89,10 @@
                             <div class="col-xl-4">
                                 <div class="mb-3">
                                     <label for="anggaran_pelumas_mesin" class="form-label">Anggaran Pelumas</label>
-                                    <input type="number" class="form-control @error('anggaran_pelumas_mesin') is-invalid @enderror"
-                                        id="anggaran_pelumas_mesin" name="anggaran_pelumas_mesin" value="{{ $groupAnggaran->anggaran_pelumas_mesin }}">
+                                    <input type="number"
+                                        class="form-control @error('anggaran_pelumas_mesin') is-invalid @enderror"
+                                        id="anggaran_pelumas_mesin" name="anggaran_pelumas_mesin"
+                                        value="{{ $groupAnggaran->anggaran_pelumas_mesin }}">
                                     @error('anggaran_pelumas_mesin')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -93,9 +101,149 @@
                             <div class="col-xl-4">
                                 <div class="mb-3">
                                     <label for="anggaran_suku_cadang" class="form-label">Anggaran Suku Cadang</label>
-                                    <input type="number" class="form-control @error('anggaran_suku_cadang') is-invalid @enderror"
-                                        id="anggaran_suku_cadang" name="anggaran_suku_cadang" value="{{ $groupAnggaran->anggaran_suku_cadang }}">
+                                    <input type="number"
+                                        class="form-control @error('anggaran_suku_cadang') is-invalid @enderror"
+                                        id="anggaran_suku_cadang" name="anggaran_suku_cadang"
+                                        value="{{ $groupAnggaran->anggaran_suku_cadang }}">
                                     @error('anggaran_suku_cadang')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-section-title">Perencanaan Anggaran Perbulan <br>
+                                    <p class="text-dark">Kosongkan jika belum ada</p>
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="januari" class="form-label">Januari</label>
+                                    <input type="number" class="form-control @error('januari') is-invalid @enderror"
+                                        id="januari" name="januari"
+                                        value="{{ $groupAnggaran->anggaranPerbulan->januari }}">
+                                    @error('januari')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="februari" class="form-label">Februari</label>
+                                    <input type="number" class="form-control @error('februari') is-invalid @enderror"
+                                        id="februari" name="februari"
+                                        value="{{ $groupAnggaran->anggaranPerbulan->februari }}">
+                                    @error('februari')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="maret" class="form-label">Maret</label>
+                                    <input type="number" class="form-control @error('maret') is-invalid @enderror"
+                                        id="maret" name="maret"
+                                        value="{{ $groupAnggaran->anggaranPerbulan->maret }}">
+                                    @error('maret')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="april" class="form-label">April</label>
+                                    <input type="number" class="form-control @error('april') is-invalid @enderror"
+                                        id="april" name="april"
+                                        value="{{ $groupAnggaran->anggaranPerbulan->april }}">
+                                    @error('april')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="mei" class="form-label">Mei</label>
+                                    <input type="number" class="form-control @error('mei') is-invalid @enderror"
+                                        id="mei" name="mei"
+                                        value="{{ $groupAnggaran->anggaranPerbulan->mei }}">
+                                    @error('mei')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="juni" class="form-label">Juni</label>
+                                    <input type="number" class="form-control @error('juni') is-invalid @enderror"
+                                        id="juni" name="juni"
+                                        value="{{ $groupAnggaran->anggaranPerbulan->juni }}">
+                                    @error('juni')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="juli" class="form-label">Juli</label>
+                                    <input type="number" class="form-control @error('juli') is-invalid @enderror"
+                                        id="juli" name="juli"
+                                        value="{{ $groupAnggaran->anggaranPerbulan->juli }}">
+                                    @error('juli')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="agustus" class="form-label">Agustus</label>
+                                    <input type="number" class="form-control @error('agustus') is-invalid @enderror"
+                                        id="agustus" name="agustus"
+                                        value="{{ $groupAnggaran->anggaranPerbulan->agustus }}">
+                                    @error('agustus')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="september" class="form-label">September</label>
+                                    <input type="number" class="form-control @error('september') is-invalid @enderror"
+                                        id="september" name="september"
+                                        value="{{ $groupAnggaran->anggaranPerbulan->september }}">
+                                    @error('september')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="oktober" class="form-label">Oktober</label>
+                                    <input type="number" class="form-control @error('oktober') is-invalid @enderror"
+                                        id="oktober" name="oktober"
+                                        value="{{ $groupAnggaran->anggaranPerbulan->oktober }}">
+                                    @error('oktober')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="november" class="form-label">November</label>
+                                    <input type="number" class="form-control @error('november') is-invalid @enderror"
+                                        id="november" name="november"
+                                        value="{{ $groupAnggaran->anggaranPerbulan->november }}">
+                                    @error('november')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="mb-3">
+                                    <label for="desember" class="form-label">Desember</label>
+                                    <input type="number" class="form-control @error('desember') is-invalid @enderror"
+                                        id="desember" name="desember"
+                                        value="{{ $groupAnggaran->anggaranPerbulan->desember }}">
+                                    @error('desember')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>

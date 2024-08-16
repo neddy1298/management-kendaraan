@@ -125,7 +125,7 @@
                                                         <option value="{{ $stokSukuCadang->id }}"
                                                             data-stok="{{ $stokSukuCadang->stok }}"
                                                             data-harga="{{ $stokSukuCadang->harga }}">
-                                                            {{ $stokSukuCadang->group_anggaran }} -
+                                                            {{ $stokSukuCadang->groupAnggaran->nama_group }} -
                                                             {{ $stokSukuCadang->nama_suku_cadang }}</option>
                                                     @endforeach
                                                 </select>
@@ -278,7 +278,7 @@
                         <option value="">Pilih Suku Cadang</option>
                         @foreach ($stokSukuCadangs as $stokSukuCadang)
                             <option value="{{ $stokSukuCadang->id }}" data-stok="{{ $stokSukuCadang->stok }}"
-                                data-harga="{{ $stokSukuCadang->harga }}">{{ $stokSukuCadang->group_anggaran }} - {{ $stokSukuCadang->nama_suku_cadang }}</option>
+                                data-harga="{{ $stokSukuCadang->harga }}">{{ $stokSukuCadang->groupAnggaran->nama_group }} - {{ $stokSukuCadang->nama_suku_cadang }}</option>
                         @endforeach
                     </select>
                 </div>

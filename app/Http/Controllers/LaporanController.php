@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Belanja;
 use App\Models\GroupAnggaran;
+use App\Models\GroupAnggaranKendaraan;
+use App\Models\Kendaraan;
 use App\Models\MasterAnggaran;
 use App\Models\PaguAnggaran;
+use App\Models\SukuCadang;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -59,7 +62,7 @@ class LaporanController extends Controller
         $endDate = Carbon::createFromDate($tahun !== 'all' ? $tahun : now()->year, $bulanEnd, 1)->endOfMonth();
         $endDateMinusOneMonth = $endDate->copy()->subMonth()->endOfMonth();
 
-        $paguAnggarans = $query->with(['masterAnggarans.groupAnggarans' => function ($query) use ($startDate, $endDate, $endDateMinusOneMonth) {
+        $paguAnggarans = $query->with(['masterAnggarans.groupAnggarans.stokSukuCadang.sukuCadangs.belanja', 'masterAnggarans.groupAnggarans.stokSukuCadang.sukuCadangs', 'masterAnggarans.groupAnggarans.stokSukuCadang', 'masterAnggarans.groupAnggarans.belanjas', 'masterAnggarans.groupAnggarans' => function ($query) use ($startDate, $endDate, $endDateMinusOneMonth) {
             $query->withSum(['belanjas as belanjas_current' => function ($query) use ($endDate) {
                 $query->whereMonth('tanggal_belanja', '=', $endDate->month)
                     ->whereYear('tanggal_belanja', '=', $endDate->year);
@@ -68,14 +71,82 @@ class LaporanController extends Controller
                     $query->whereBetween('tanggal_belanja', [$startDate, $endDateMinusOneMonth]);
                 }], 'total_belanja');
         }])->get();
-        return view('laporan.print', compact('paguAnggarans', 'tahun', 'startDate', 'endDate'));
+
+        // $belanjas = Belanja::whereBetween('tanggal_belanja', [$startDate, $endDate])->get();
+        if ($request->input('jenis_laporan') == 1) {
+            return view('laporan.print', compact('paguAnggarans', 'tahun', 'startDate', 'endDate'));
+        } elseif ($request->input('jenis_laporan') == 2) {
+            $monthlyBelanja = [];
+            for ($month = 1; $month <= 12; $month++) {
+                $monthStart = Carbon::createFromDate($tahun, $month, 1)->startOfMonth();
+                $monthEnd = $monthStart->copy()->endOfMonth();
+
+                $monthlySum = $paguAnggarans->flatMap(function ($paguAnggaran) {
+                    return $paguAnggaran->masterAnggarans->flatMap(function ($masterAnggaran) {
+                        return $masterAnggaran->groupAnggarans->flatMap(function ($groupAnggaran) {
+                            return $groupAnggaran->belanjas;
+                        });
+                    });
+                })
+                    ->whereBetween('tanggal_belanja', [$monthStart, $monthEnd])
+                    ->sum('total_belanja');
+
+                $monthlyBelanja[$month] = number_format($monthlySum, 0, ',', '.');
+            }
+            $belanjas = Belanja::get();
+            $sukuCadangs = SukuCadang::get();
+            return view('laporan.print2', compact('paguAnggarans', 'tahun', 'startDate', 'endDate', 'belanjas', 'sukuCadangs'));
+        } elseif ($request->input('jenis_laporan') == 3) {
+            $kendaraans = Kendaraan::orderByRaw('CAST(roda_kendaraan AS UNSIGNED)')->orderBy('cc_kendaraan', 'asc')->orderBy('anggaran_pertahun_kendaraan', 'asc')
+                ->get();
+            $belanjas = Belanja::get();
+            $sukuCadangs = SukuCadang::get();
+            $semuaGroupAnggaranKendaraans = GroupAnggaranKendaraan::with('groupAnggaran')->get();
+            return view('laporan.print3', compact('tahun', 'kendaraans', 'belanjas', 'sukuCadangs', 'semuaGroupAnggaranKendaraans'));
+        } else {
+            return view('laporan.index')->with('error', 'Pilih jenis laporan terlebih dahulu');
+        }
+    }
+
+    public function print2(Request $request)
+    {
+        $tahun = $request->input('tahun');
+        $bulanStart = $request->input('bulan_start');
+        $bulanEnd = $request->input('bulan_end');
+
+        $query = PaguAnggaran::query();
+
+        if ($tahun && $tahun !== 'all') {
+            $query->where('tahun', $tahun);
+        }
+
+        if ($bulanStart > $bulanEnd) {
+            $temp = $bulanStart;
+            $bulanStart = $bulanEnd;
+            $bulanEnd = $temp;
+        }
+
+        $startDate = Carbon::createFromDate($tahun !== 'all' ? $tahun : now()->year, $bulanStart, 1)->startOfMonth();
+        $endDate = Carbon::createFromDate($tahun !== 'all' ? $tahun : now()->year, $bulanEnd, 1)->endOfMonth();
+        $endDateMinusOneMonth = $endDate->copy()->subMonth()->endOfMonth();
+
+        $paguAnggarans = $query->with(['anggaranPerbulan', 'masterAnggarans.groupAnggarans' => function ($query) use ($startDate, $endDate, $endDateMinusOneMonth) {
+            $query->withSum(['belanjas as belanjas_current' => function ($query) use ($endDate) {
+                $query->whereMonth('tanggal_belanja', '=', $endDate->month)
+                    ->whereYear('tanggal_belanja', '=', $endDate->year);
+            }], 'total_belanja')
+                ->withSum(['belanjas as belanjas_before' => function ($query) use ($startDate, $endDateMinusOneMonth) {
+                    $query->whereBetween('tanggal_belanja', [$startDate, $endDateMinusOneMonth]);
+                }], 'total_belanja');
+        }])->get();
+
+        return view('laporan.print2', compact('paguAnggarans', 'tahun', 'startDate', 'endDate'));
     }
 
 
 
     public function exportToExcel(Request $request)
     {
-
         $tahun = $request->input('tahun');
         $bulanStart = $request->input('bulan_start');
         $bulanEnd = $request->input('bulan_end');
@@ -106,8 +177,10 @@ class LaporanController extends Controller
                 }], 'total_belanja');
         }])->get();
 
+
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
+
 
         // Judul
         $titles = [
@@ -210,7 +283,7 @@ class LaporanController extends Controller
             ],
         ];
         $sheet->getStyle('D17:N17' . ($row - 1))->applyFromArray($rupiahFormat);
-        
+
         // Looping isi tabel
         $row = 17;
 
@@ -269,11 +342,11 @@ class LaporanController extends Controller
                 $sumBelanjaTotal = $sumBelanjaBefore + $sumBelanjaCurrent;
                 $sumMasterBelanjaTotal += $sumBelanjaTotal;
                 if ($sumBelanjaTotal != 0) {
-                    $sheet->setCellValue("L$row", ($sumBelanjaTotal));
+                    $sheet->setCellValue("L$row", $sumBelanjaTotal);
                     $sheet->getStyle("L$row")->applyFromArray($rupiahFormat);
                 }
                 if ($masterAnggaran->anggaran - $sumBelanjaTotal != 0) {
-                    $sheet->setCellValue("N$row", ($masterAnggaran->anggaran - $sumBelanjaTotal));
+                    $sheet->setCellValue("N$row", $masterAnggaran->anggaran - $sumBelanjaTotal);
                     $sheet->getStyle("N$row")->applyFromArray($rupiahFormat);
                 }
                 $row++;
@@ -282,15 +355,15 @@ class LaporanController extends Controller
                 foreach ($masterAnggaran->groupAnggarans as $groupAnggaran) {
                     $sheet->setCellValue("C$row", $groupAnggaran->nama_group);
                     if ($groupAnggaran->anggaran_total != 0) {
-                        $sheet->setCellValue("D$row", ($groupAnggaran->anggaran_total));
+                        $sheet->setCellValue("D$row", $groupAnggaran->anggaran_total);
                         $sheet->getStyle("D$row")->applyFromArray($rupiahFormat);
                     }
                     if ($groupAnggaran->belanjas_before != 0) {
-                        $sheet->setCellValue("F$row", ($groupAnggaran->belanjas_before));
+                        $sheet->setCellValue("F$row", $groupAnggaran->belanjas_before);
                         $sheet->getStyle("F$row")->applyFromArray($rupiahFormat);
                     }
                     if ($groupAnggaran->belanjas_current != 0) {
-                        $sheet->setCellValue("I$row", ($groupAnggaran->belanjas_current));
+                        $sheet->setCellValue("I$row", $groupAnggaran->belanjas_current);
                         $sheet->getStyle("I$row")->applyFromArray($rupiahFormat);
                     }
                     if (($groupAnggaran->belanjas_before) + ($groupAnggaran->belanjas_current) != 0) {
@@ -299,7 +372,7 @@ class LaporanController extends Controller
                     }
                     if ($groupAnggaran->anggaran_total - (($groupAnggaran->belanjas_before) + ($groupAnggaran->belanjas_current)) != 0) {
                         $sheet->setCellValue("N$row", ($groupAnggaran->anggaran_total - (($groupAnggaran->belanjas_before) + ($groupAnggaran->belanjas_current))));
-                        $sheet->getStyle("L$row")->applyFromArray($rupiahFormat);
+                        $sheet->getStyle("N$row")->applyFromArray($rupiahFormat);
                     }
                     $row++;
                 }
@@ -339,9 +412,9 @@ class LaporanController extends Controller
         }
 
 
-        $row += 2; // Add a couple of empty rows for spacing
+        $row += 2;
 
-        // Left Signature (Mengetahui, Pengguna Anggaran)
+
         $sheet->setCellValue("B$row", "Mengetahui,");
         $sheet->mergeCells("B$row:C$row");
         $sheet->getStyle("B$row:C$row")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
@@ -351,7 +424,7 @@ class LaporanController extends Controller
         $sheet->mergeCells("B$row:C$row");
         $sheet->getStyle("B$row:C$row")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-        $row += 4; // Leave some space for the signature
+        $row += 4;
         $sheet->setCellValue("B$row", "(MARSE HENDRA SAPUTRA. S.STP)");
         $sheet->mergeCells("B$row:C$row");
         $sheet->getStyle("B$row:C$row")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
@@ -362,8 +435,8 @@ class LaporanController extends Controller
         $sheet->mergeCells("B$row:C$row");
         $sheet->getStyle("B$row:C$row")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-        // Right Signature (Pejabat Pelaksana Teknis Kegiatan)
-        $row -= 6; // Go back to the same row as "Mengetahui,"
+
+        $row -= 6;
         $sheet->setCellValue("L$row", 'Bogor,    ' . \Carbon\Carbon::now()->translatedformat('F Y'));
         $sheet->mergeCells("L$row:M$row");
         $sheet->getStyle("L$row:M$row")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
@@ -373,7 +446,7 @@ class LaporanController extends Controller
         $sheet->mergeCells("L$row:M$row");
         $sheet->getStyle("L$row:M$row")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-        $row += 4; // Leave some space for the signature
+        $row += 4;
         $sheet->setCellValue("L$row", "(FIRZA FIRANI RIZAL, S.Kom.,M.Ak.)");
         $sheet->mergeCells("L$row:M$row");
         $sheet->getStyle("L$row:M$row")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);

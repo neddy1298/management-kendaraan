@@ -17,13 +17,8 @@
     <meta property="og:site_name" content="Management Kendaraan">
     <link rel="shortcut icon" href="{{ secure_asset('images/logokbr.ico') }}">
 
-    <!-- Title -->
     <title>Management Kendaraan</title>
 
-
-    <!-- *************
-   ************ Common Css Files *************
-  ************ -->
 
     <!-- Animated css -->
     <link rel="stylesheet" href="{{ secure_asset('css/animate.css') }}">

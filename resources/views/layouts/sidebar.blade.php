@@ -59,15 +59,17 @@
                         <ul>
                             <li>
                                 <a href="{{ route('paguAnggaran.index') }}"
-                                    class="{{ $page2 == 'Pagu' ? 'current-page' : 'text-white' }}">Pagu</a>
+                                    class="{{ $page2 == 'Pagu' ? 'current-page' : 'text-white' }}">Objek</a>
                             </li>
                             <li>
                                 <a href="{{ route('masterAnggaran.index') }}"
-                                    class="{{ $page2 == 'Pertahun' ? 'current-page' : 'text-white' }}">Pertahun</a>
+                                    class="{{ $page2 == 'Pertahun' ? 'current-page' : 'text-white' }}">Rincian
+                                    Objek</a>
                             </li>
                             <li>
                                 <a href="{{ route('groupAnggaran.index') }}"
-                                    class="{{ $page2 == 'Group' ? 'current-page' : 'text-white' }}">Group</a>
+                                    class="{{ $page2 == 'Group' ? 'current-page' : 'text-white' }}">Sub Rincian
+                                    Objek</a>
                             </li>
                         </ul>
                     </div>
