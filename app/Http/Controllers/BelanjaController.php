@@ -57,7 +57,7 @@ class BelanjaController extends Controller
             $query->where('berlaku_sampai', '<', Carbon::now());
         })->count();
 
-        $belanjas = $query->orderBy('created_at', 'desc')->paginate(10);
+        $belanjas = $query->orderBy('created_at', 'desc')->paginate(20);
 
 
         return view('belanja.index', compact('belanjas', 'isExpire', 'belanja_periode', 'belanja_bbm_periode', 'belanja_pelumas_periode', 'belanja_suku_cadang_periode', 'dateRange', 'search'));

@@ -93,11 +93,8 @@ class LaporanController extends Controller
 
                 $monthlyBelanja[$month] = number_format($monthlySum, 0, ',', '.');
             }
-            // $belanjas = Belanja::whereBetween('tanggal_belanja', [$startDate, $endDate])->get();
             $belanjas = Belanja::get();
             $sukuCadangs = SukuCadang::get();
-            // dd($sukuCadangs[0]);
-            // dd($paguAnggarans[0]->masterAnggarans[0]->groupAnggarans);
             return view('laporan.print2', compact('paguAnggarans', 'tahun', 'startDate', 'endDate', 'belanjas', 'sukuCadangs'));
         } elseif ($request->input('jenis_laporan') == 3) {
             $kendaraans = Kendaraan::orderByRaw('CAST(roda_kendaraan AS UNSIGNED)')->orderBy('cc_kendaraan', 'asc')->orderBy('anggaran_pertahun_kendaraan', 'asc')

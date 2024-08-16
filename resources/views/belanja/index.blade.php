@@ -139,6 +139,7 @@
                                     <th>Nomor Registrasi</th>
                                     <th>Total Belanja</th>
                                     <th>Tanggal Belanja</th>
+                                    <th>Jenis Belanja</th>
                                     <th>Keterangan</th>
                                     <th>Action</th>
                                 </tr>
@@ -153,6 +154,15 @@
                                         </td>
                                         <td>
                                             {{ \Carbon\Carbon::parse($belanja->tanggal_belanja)->translatedFormat('d F Y') }}
+                                        </td>
+                                        <td>
+                                            @if ($belanja->belanja_bahan_bakar_minyak != 0)
+                                                <span class="badge bg-primary">BBM</span>
+                                            @elseif ($belanja->belanja_pelumas_mesin != 0)
+                                                <span class="badge bg-info">Pelumas</span>
+                                            @elseif ($belanja->belanja_suku_cadang != 0)
+                                                <span class="badge bg-success">Suku Cadang</span>
+                                            @endif
                                         </td>
                                         <td>{{ $belanja->keterangan }}</td>
                                         <td>
