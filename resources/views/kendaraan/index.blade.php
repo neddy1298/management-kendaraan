@@ -2,8 +2,8 @@
 
 @section('css')
     <!-- Data Tables -->
-    <link rel="stylesheet" href="{{ secure_asset('vendor/datatables/dataTables.bs5.css') }}" />
-    <link rel="stylesheet" href="{{ secure_asset('vendor/datatables/dataTables.bs5-custom.css') }}" />
+    <link rel="stylesheet" href="{{ secure_asset('vendor/datatables/dataTables.bs5.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('vendor/datatables/dataTables.bs5-custom.css') }}">
 @endsection
 
 @section('content')

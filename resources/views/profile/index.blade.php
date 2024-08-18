@@ -46,7 +46,8 @@
                                             password</small>
                                     </div>
                                     <div class="col-12 mb-3">
-                                        <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()"> <label for="showPassword">Show Password</label>
+                                        <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()">
+                                        <label for="showPassword">Show Password</label>
                                     </div>
                                     <div class="col-12 mb-3">
                                         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>

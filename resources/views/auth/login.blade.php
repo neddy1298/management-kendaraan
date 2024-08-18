@@ -53,7 +53,7 @@
         <div class="login-box">
             <div class="login-form">
                 <a href="" class="login-logo">
-                    <img src="{{ secure_asset('images/kotabogor.png') }}" alt="Kota Bogor"/>&nbsp;&nbsp;
+                    <img src="{{ secure_asset('images/kotabogor.png') }}" alt="Kota Bogor" />&nbsp;&nbsp;
                     <img src="{{ secure_asset('images/dishub.png') }}" alt="Dinas Perhubungan" />
                 </a>
                 <div class="login-welcome">

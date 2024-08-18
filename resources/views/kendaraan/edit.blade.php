@@ -188,11 +188,8 @@
 @endsection
 
 @section('script')
-    <!-- Bootstra{{ secure_asset JS -->
     <script src="{{ secure_asset('vendor/bs-select/bs-select.min.js') }}"></script>
     <script src="{{ secure_asset('vendor/bs-select/bs-select-custom.js') }}"></script>
-{{ secure_asset
-    <!-- Date Range JS -->
     <script src="{{ secure_asset('vendor/daterange/daterange.js') }}"></script>
     <script src="{{ secure_asset('vendor/daterange/custom-daterange.js') }}"></script>
 @endsection
