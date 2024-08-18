@@ -97,9 +97,6 @@
                             <a href="{{ route('belanja.create') }}" class="btn btn-warning">
                                 <i class="bi bi-pencil-square"></i> Tambah Baru
                             </a>
-                            <a href="{{ route('belanja.printAll') }}" class="btn btn-primary" target="_blank">
-                                <i class="bi bi-printer"></i> Cetak
-                            </a>
                         </div>
                         @if (request()->has('search'))
                             <input type="hidden" name="search" value="{{ request()->input('search') }}">
