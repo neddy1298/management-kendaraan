@@ -1,8 +1,8 @@
 @extends('layouts.app', ['page' => 'Belanja', 'page2' => 'Tambah', 'page3' => ''])
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('vendor/daterange/daterange.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/bs-select/bs-select.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('vendor/daterange/daterange.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('vendor/bs-select/bs-select.css') }}">
     <style>
         .select2-container--bootstrap-5 .select2-selection {
             border: 1px solid #ced4da;
