@@ -15,11 +15,11 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // User::factory()->create([
-        //     'name' => 'admin',
-        //     'email' => 'admin@gmail.com',
-        //     'password' => bcrypt('admin'),
-        // ]);
+        User::factory()->create([
+            'name' => 'admin',
+            'email' => 'admin@gmail.com',
+            'password' => bcrypt('admin'),
+        ]);
 
 
         // $path = storage_path('app/public/db_management_kendaraan.sql');
