@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('stok_suku_cadangs', function (Blueprint $table) {
             $table->id();
             $table->string('nama_suku_cadang');
-            $table->foreign('group_anggaran_id')
-                ->references('id')
-                ->on('group_anggarans')
+            $table->foreignId('group_anggaran_id')
+                ->constrained('group_anggarans')
+                ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->integer('stok_awal');
             $table->integer('stok');
