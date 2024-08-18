@@ -14,11 +14,6 @@ use Illuminate\Support\Facades\DB;
 
 class BelanjaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
     public function index(Request $request)
     {
         $dateRange = $request->input('date-range');
@@ -27,7 +22,10 @@ class BelanjaController extends Controller
         $query = Belanja::with('kendaraan', 'sukuCadangs');
 
         if ($dateRange) {
-            [$startDate, $endDate] = $this->parseDateRange($dateRange);
+            $dates = explode(' - ', $dateRange);
+            $startDate = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->startOfDay();
+            $endDate = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->endOfDay();
+
             $query->whereBetween('tanggal_belanja', [$startDate, $endDate]);
         }
         if ($search) {
@@ -42,8 +40,9 @@ class BelanjaController extends Controller
         }
         $belanjas = $query->orderBy('created_at', 'desc')->get();
 
-        $belanja_periode = $this->calculateBelanjaPeriode($belanjas);
-        $isExpire = $this->checkExpiredKendaraan();
+        $belanja_periode = $belanjas->sum('belanja_bahan_bakar_minyak')
+            + $belanjas->sum('belanja_pelumas_mesin')
+            + $belanjas->sum('belanja_suku_cadang');
 
         $belanja_bbm_periode = $belanjas->sum('belanja_bahan_bakar_minyak');
         $belanja_pelumas_periode = $belanjas->sum('belanja_pelumas_mesin');
@@ -58,12 +57,6 @@ class BelanjaController extends Controller
 
         return view('belanja.index', compact('belanjas', 'isExpire', 'belanja_periode', 'belanja_bbm_periode', 'belanja_pelumas_periode', 'belanja_suku_cadang_periode', 'dateRange', 'search'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
     public function create()
     {
         $kendaraans = Kendaraan::orderBy('nomor_registrasi')->get();
@@ -80,18 +73,15 @@ class BelanjaController extends Controller
             ->get();
         return response()->json($groupAnggarans);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function store(Request $request)
     {
         $validatedData = $this->validateBelanja($request);
 
-        if ($this->isBelanjaEmpty($validatedData)) {
+        if (
+            empty($validatedData['belanja_bahan_bakar_minyak']) &&
+            empty($validatedData['belanja_pelumas_mesin']) &&
+            empty(array_filter($validatedData['nama_suku_cadang'] ?? []))
+        ) {
             return redirect()->back()->withErrors(['error' => 'Anda harus memilih setidaknya satu dari BBM, Pelumas, atau Suku Cadang.']);
         }
 
@@ -126,7 +116,7 @@ class BelanjaController extends Controller
     {
         if (!empty($data['nama_suku_cadang'])) {
             foreach ($data['nama_suku_cadang'] as $key => $sukuCadangId) {
-                if ($this->isValidSukuCadang($data, $key, $sukuCadangId)) {
+                if (!empty($sukuCadangId) && isset($data['jumlah_suku_cadang'][$key]) && isset($data['harga_suku_cadang'][$key])) {
                     $stokSukuCadang = StokSukuCadang::findOrFail($sukuCadangId);
                     $jumlah = $data['jumlah_suku_cadang'][$key];
                     $harga = $data['harga_suku_cadang'][$key];
@@ -144,6 +134,7 @@ class BelanjaController extends Controller
                     ]);
                     $sukuCadang->save();
 
+                    // Update stok suku cadang
                     $stokSukuCadang->stok -= $jumlah;
                     $stokSukuCadang->save();
                 }
@@ -151,28 +142,6 @@ class BelanjaController extends Controller
         }
     }
 
-    private function isValidSukuCadang($data, $key, $sukuCadangId)
-    {
-        return !empty($sukuCadangId) && isset($data['jumlah_suku_cadang'][$key]) && isset($data['harga_suku_cadang'][$key]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Belanja  $belanja
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function show(Belanja $belanja)
-    {
-        return view('belanja.show', compact('belanja'));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function destroy($id)
     {
         $belanja = Belanja::with('sukuCadangs')->findOrFail($id);
@@ -185,20 +154,8 @@ class BelanjaController extends Controller
         }
 
         $belanja->delete();
-        return redirect()->route('belanja.index')->with('success', 'Data berhasil dihapus.');
+        return to_route('belanja.index')->with('success', 'Data berhasil dihapus.');
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function printAll()
-    {
-        $datas = Belanja::with('kendaraan')->get();
-        return view('belanja.printAll', compact('datas'));
-    }
-
     /**
      * Validate belanja data.
      *
@@ -207,17 +164,7 @@ class BelanjaController extends Controller
      */
     protected function validateBelanja(Request $request)
     {
-        return $request->validate($this->rules(), $this->messages());
-    }
-
-    /**
-     * Validation rules.
-     *
-     * @return array
-     */
-    private function rules()
-    {
-        return [
+        return $request->validate([
             'group_anggaran_id' => 'required|integer',
             'kendaraan_id' => 'required|integer',
             'belanja_bahan_bakar_minyak' => 'nullable|integer|min:0',
@@ -230,78 +177,11 @@ class BelanjaController extends Controller
             'nama_suku_cadang.*' => 'nullable|integer',
             'jumlah_suku_cadang.*' => 'nullable|integer|min:1',
             'harga_suku_cadang.*' => 'nullable|integer|min:0',
-        ];
-    }
-
-    /**
-     * Validation messages.
-     *
-     * @return array
-     */
-    private function messages()
-    {
-        return [
+        ], [
             'required' => 'Kolom :attribute wajib diisi.',
             'integer' => 'Kolom :attribute harus berupa angka.',
             'date_format' => 'Format tanggal harus :format.',
             'min' => 'Kolom :attribute minimal bernilai :min.',
-        ];
-    }
-
-    /**
-     * Parse date range.
-     *
-     * @param string $dateRange
-     * @return array
-     */
-    private function parseDateRange($dateRange)
-    {
-        $dates = explode(' - ', $dateRange);
-        $startDate = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->startOfDay();
-        $endDate = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->endOfDay();
-        return [$startDate, $endDate];
-    }
-
-    /**
-     * Calculate belanja periode.
-     *
-     * @param \Illuminate\Support\Collection $belanjas
-     * @return array
-     */
-    private function calculateBelanjaPeriode($belanjas)
-    {
-        return [
-            'total' => $belanjas->sum('belanja_bahan_bakar_minyak')
-                + $belanjas->sum('belanja_pelumas_mesin')
-                + $belanjas->sum('belanja_suku_cadang'),
-            'bbm' => $belanjas->sum('belanja_bahan_bakar_minyak'),
-            'pelumas' => $belanjas->sum('belanja_pelumas_mesin'),
-            'suku_cadang' => $belanjas->sum('belanja_suku_cadang'),
-        ];
-    }
-
-    /**
-     * Check expired kendaraan.
-     *
-     * @return int
-     */
-    private function checkExpiredKendaraan()
-    {
-        return Belanja::whereHas('kendaraan', function ($query) {
-            $query->where('berlaku_sampai', '<', Carbon::now());
-        })->count();
-    }
-
-    /**
-     * Check if belanja is empty.
-     *
-     * @param array $validatedData
-     * @return bool
-     */
-    private function isBelanjaEmpty($validatedData)
-    {
-        return empty($validatedData['belanja_bahan_bakar_minyak']) &&
-            empty($validatedData['belanja_pelumas_mesin']) &&
-            empty(array_filter($validatedData['nama_suku_cadang'] ?? []));
+        ]);
     }
 }

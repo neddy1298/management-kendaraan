@@ -10,11 +10,7 @@ use Twilio\Rest\Client;
 
 class SmsController extends Controller
 {
-    /**
-     * Send a WhatsApp message using Twilio API.
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
+
     public function sendWhatsapp()
     {
         // $expireKendaraans = Kendaraan::where('berlaku_sampai', '<', Carbon::now())->get();
@@ -29,12 +25,6 @@ class SmsController extends Controller
         // }
     }
 
-    /**
-     * Generate the message content.
-     *
-     * @param \Illuminate\Database\Eloquent\Collection $expireKendaraans
-     * @return string
-     */
     protected function generateMessage($expireKendaraans)
     {
         // $message = 'Pengingat ' . Carbon::now()->isoFormat('D MMMM YYYY') . ', berikut adalah kendaraan yang sudah kadaluarsa:' . "\n";
@@ -45,12 +35,6 @@ class SmsController extends Controller
         // return $message;
     }
 
-    /**
-     * Send the message using Twilio API.
-     *
-     * @param string $message
-     * @throws \Twilio\Exceptions\TwilioException
-     */
     protected function sendMessage($message)
     {
         // $sid = env('TWILIO_SID');
