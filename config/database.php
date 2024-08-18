@@ -55,11 +55,13 @@ return [
             'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
             'prefix' => '',
             'prefix_indexes' => true,
+            // 'sslmode' => 'verify-ca',
+            // 'sslrootcert' => storage_path('app/public/ca.pem'),
             'strict' => true,
             'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
+            // 'options' => extension_loaded('pdo_mysql') ? array_filter([
+            //     PDO::MYSQL_ATTR_SSL_CA => storage_path('app/public/cacert.pem'),
+            // ]) : [],
         ],
 
         'mariadb' => [
