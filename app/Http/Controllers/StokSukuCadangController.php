@@ -8,19 +8,19 @@ use Illuminate\Http\Request;
 
 class StokSukuCadangController extends Controller
 {
-    
+
     public function index()
     {
         $stokSukuCadangs = StokSukuCadang::orderBy('group_anggaran_id', 'asc')->get();
-
         return view('sukuCadang.index', compact('stokSukuCadangs'));
     }
-    
+
     public function create()
     {
         $groupAnggarans = GroupAnggaran::where('tipe_belanja', 'Suku Cadang')->get();
         return view('sukuCadang.create', compact('groupAnggarans'));
     }
+
     public function store(Request $request)
     {
         $this->validateRequest($request);
@@ -28,11 +28,13 @@ class StokSukuCadangController extends Controller
         StokSukuCadang::create($request->all());
         return redirect()->route('sukuCadang.index')->with('success', 'Data suku cadang berhasil ditambahkan');
     }
+
     public function edit($id)
     {
         $stokSukuCadang = StokSukuCadang::findOrFail($id);
         return view('sukuCadang.edit', compact('stokSukuCadang'));
     }
+
     public function update(Request $request, $id)
     {
         $this->validateRequest($request);
@@ -42,15 +44,18 @@ class StokSukuCadangController extends Controller
 
         return redirect()->route('sukuCadang.index')->with('success', 'Data suku cadang berhasil diperbarui');
     }
+
     public function destroy($id)
     {
         StokSukuCadang::destroy($id);
         return redirect()->route('sukuCadang.index')->with('success', 'Data suku cadang berhasil dihapus');
     }
+
     private function validateRequest(Request $request)
     {
         $request->validate($this->rules(), $this->messages());
     }
+
     private function rules()
     {
         return [
@@ -59,6 +64,7 @@ class StokSukuCadangController extends Controller
             'harga' => 'required|numeric|min:0',
         ];
     }
+
     private function messages()
     {
         return [

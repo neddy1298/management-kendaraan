@@ -68,7 +68,7 @@ class LaporanController extends Controller
                     $query->whereBetween('tanggal_belanja', [$startDate, $endDateMinusOneMonth]);
                 }], 'total_belanja');
         }])->get();
-        
+
         if ($request->input('jenis_laporan') == 1) {
             return view('laporan.print', compact('paguAnggarans', 'tahun', 'startDate', 'endDate'));
         } elseif ($request->input('jenis_laporan') == 2) {
@@ -138,7 +138,7 @@ class LaporanController extends Controller
 
         return view('laporan.print2', compact('paguAnggarans', 'tahun', 'startDate', 'endDate'));
     }
-    
+
     public function exportToExcel(Request $request)
     {
         $tahun = $request->input('tahun');
@@ -170,10 +170,10 @@ class LaporanController extends Controller
                     $query->whereBetween('tanggal_belanja', [$startDate, $endDateMinusOneMonth]);
                 }], 'total_belanja');
         }])->get();
-        
+
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        
+
         // Judul
         $titles = [
             'A1' => 'PEMERINTAH KOTA BOGOR',
