@@ -9,11 +9,7 @@ use Illuminate\Http\Request;
 
 class KendaraanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
+    
     public function index()
     {
         // $kendaraans = Kendaraan::with('belanjas')->orderBy('cc_kendaraan', 'desc')->get();
@@ -26,24 +22,13 @@ class KendaraanController extends Controller
 
         return view('kendaraan.index', compact('kendaraans', 'isExpire'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
+    
     public function create()
     {
         $groupAnggarans = GroupAnggaran::orderBy('created_at', 'desc')->get();
         return view('kendaraan.create', compact('groupAnggarans'));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
+    
     public function store(Request $request)
     {
         $validatedData = $this->validateKendaraan($request);
@@ -57,13 +42,7 @@ class KendaraanController extends Controller
 
         return redirect()->route('kendaraan.index')->with('success', 'Kendaraan berhasil ditambahkan');
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Contracts\View\View
-     */
+    
     public function edit($id)
     {
         $kendaraan = Kendaraan::with('belanjas')->findOrFail($id);
@@ -71,14 +50,7 @@ class KendaraanController extends Controller
         $selectedGroupAnggarans = $kendaraan->groupAnggarans->pluck('id')->toArray();
         return view('kendaraan.edit', compact('kendaraan', 'groupAnggarans', 'selectedGroupAnggarans'));
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
+    
     public function update(Request $request, $id)
     {
         $validatedData = $this->validateKendaraan($request, $id);
@@ -91,13 +63,7 @@ class KendaraanController extends Controller
 
         return to_route('kendaraan.index')->with('success', 'Data berhasil diperbarui.');
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
+    
     public function destroy($id)
     {
         $kendaraan = Kendaraan::findOrFail($id);
@@ -109,25 +75,13 @@ class KendaraanController extends Controller
             return to_route('kendaraan.index')->with('error', 'Data tidak ditemukan.');
         }
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
+    
     public function printAll()
     {
         $kendaraans = Kendaraan::orderBy('roda_kendaraan', 'asc')->get();
         return view('kendaraan.printAll', compact('kendaraans'));
     }
-
-    /**
-     * Validate kendaraan data.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int|null  $id
-     * @return array
-     */
+    
     protected function validateKendaraan(Request $request, $id = null)
     {
         $uniqueRule = 'unique:kendaraans,nomor_registrasi';
@@ -153,13 +107,7 @@ class KendaraanController extends Controller
             'unique' => 'Nomor registrasi sudah digunakan.',
         ]);
     }
-
-    /**
-     * Format date from d/m/Y to Y-m-d.
-     *
-     * @param  string  $date
-     * @return string
-     */
+    
     protected function formatDate($date)
     {
         return Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');

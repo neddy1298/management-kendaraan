@@ -8,27 +8,19 @@ use Illuminate\Http\Request;
 
 class StokSukuCadangController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $stokSukuCadangs = StokSukuCadang::orderBy('group_anggaran_id', 'asc')->get();
         return view('sukuCadang.index', compact('stokSukuCadangs'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $groupAnggarans = GroupAnggaran::where('tipe_belanja', 'Suku Cadang')->get();
         return view('sukuCadang.create', compact('groupAnggarans'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $this->validateRequest($request);
@@ -37,18 +29,12 @@ class StokSukuCadangController extends Controller
         return redirect()->route('sukuCadang.index')->with('success', 'Data suku cadang berhasil ditambahkan');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
         $stokSukuCadang = StokSukuCadang::findOrFail($id);
         return view('sukuCadang.edit', compact('stokSukuCadang'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         $this->validateRequest($request);
@@ -59,26 +45,17 @@ class StokSukuCadangController extends Controller
         return redirect()->route('sukuCadang.index')->with('success', 'Data suku cadang berhasil diperbarui');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         StokSukuCadang::destroy($id);
         return redirect()->route('sukuCadang.index')->with('success', 'Data suku cadang berhasil dihapus');
     }
 
-    /**
-     * Validate the request.
-     */
     private function validateRequest(Request $request)
     {
         $request->validate($this->rules(), $this->messages());
     }
 
-    /**
-     * Validation rules.
-     */
     private function rules()
     {
         return [
@@ -88,9 +65,6 @@ class StokSukuCadangController extends Controller
         ];
     }
 
-    /**
-     * Validation messages.
-     */
     private function messages()
     {
         return [

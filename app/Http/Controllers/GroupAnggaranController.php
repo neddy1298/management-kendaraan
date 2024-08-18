@@ -10,27 +10,19 @@ use Illuminate\Support\Facades\DB;
 
 class GroupAnggaranController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $groupAnggarans = GroupAnggaran::with('masterAnggaran')->orderBy('created_at', 'desc')->get();
         return view('groupAnggaran.index', compact('groupAnggarans'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $masterAnggarans = MasterAnggaran::orderBy('created_at', 'desc')->get();
         return view('groupAnggaran.create', compact('masterAnggarans'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validatedData = $this->validateGroupAnggaran($request);
@@ -57,9 +49,6 @@ class GroupAnggaranController extends Controller
         return to_route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil ditambahkan.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
         $groupAnggaran = GroupAnggaran::with('masterAnggaran', 'anggaranPerbulan')->findOrFail($id);
@@ -67,9 +56,6 @@ class GroupAnggaranController extends Controller
         return view('groupAnggaran.edit', compact('groupAnggaran', 'masterAnggarans'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         $validatedData = $this->validateGroupAnggaran($request);
@@ -96,9 +82,6 @@ class GroupAnggaranController extends Controller
         return to_route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil diubah.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         $groupAnggaran = GroupAnggaran::findOrFail($id);
@@ -111,9 +94,6 @@ class GroupAnggaranController extends Controller
         return to_route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil dihapus.');
     }
 
-    /**
-     * Validate Group Anggaran data.
-     */
     protected function validateGroupAnggaran(Request $request)
     {
         return $request->validate([

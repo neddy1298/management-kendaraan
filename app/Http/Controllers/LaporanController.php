@@ -3,15 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Belanja;
-use App\Models\GroupAnggaran;
 use App\Models\GroupAnggaranKendaraan;
 use App\Models\Kendaraan;
-use App\Models\MasterAnggaran;
 use App\Models\PaguAnggaran;
 use App\Models\SukuCadang;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
@@ -72,7 +69,6 @@ class LaporanController extends Controller
                 }], 'total_belanja');
         }])->get();
 
-        // $belanjas = Belanja::whereBetween('tanggal_belanja', [$startDate, $endDate])->get();
         if ($request->input('jenis_laporan') == 1) {
             return view('laporan.print', compact('paguAnggarans', 'tahun', 'startDate', 'endDate'));
         } elseif ($request->input('jenis_laporan') == 2) {
@@ -142,8 +138,6 @@ class LaporanController extends Controller
 
         return view('laporan.print2', compact('paguAnggarans', 'tahun', 'startDate', 'endDate'));
     }
-
-
 
     public function exportToExcel(Request $request)
     {

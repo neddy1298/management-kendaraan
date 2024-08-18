@@ -14,11 +14,7 @@ use Illuminate\Support\Facades\DB;
 
 class BelanjaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
+
     public function index(Request $request)
     {
         $dateRange = $request->input('date-range');
@@ -63,11 +59,6 @@ class BelanjaController extends Controller
         return view('belanja.index', compact('belanjas', 'isExpire', 'belanja_periode', 'belanja_bbm_periode', 'belanja_pelumas_periode', 'belanja_suku_cadang_periode', 'dateRange', 'search'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
     public function create()
     {
         $kendaraans = Kendaraan::orderBy('nomor_registrasi')->get();
@@ -85,17 +76,10 @@ class BelanjaController extends Controller
         return response()->json($groupAnggarans);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function store(Request $request)
     {
         $validatedData = $this->validateBelanja($request);
 
-        // Check if at least one of BBM, Pelumas, or Suku Cadang is filled
         if (
             empty($validatedData['belanja_bahan_bakar_minyak']) &&
             empty($validatedData['belanja_pelumas_mesin']) &&
@@ -161,23 +145,11 @@ class BelanjaController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Belanja  $belanja
-     * @return \Illuminate\Contracts\View\View
-     */
     public function show(Belanja $belanja)
     {
         return view('belanja.show', compact('belanja'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function destroy($id)
     {
         $belanja = Belanja::with('sukuCadangs')->findOrFail($id);
@@ -193,23 +165,6 @@ class BelanjaController extends Controller
         return to_route('belanja.index')->with('success', 'Data berhasil dihapus.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function printAll()
-    {
-        $datas = Belanja::with('kendaraan')->get();
-        return view('belanja.printAll', compact('datas'));
-    }
-
-    /**
-     * Validate belanja data.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
     protected function validateBelanja(Request $request)
     {
         return $request->validate([

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Belanja;
 use App\Models\Kendaraan;
-use App\Models\MasterAnggaran;
 use App\Models\PaguAnggaran;
 use Carbon\Carbon;
 
@@ -17,7 +16,6 @@ class HomeController extends Controller
         $startOfMonth = Carbon::now()->startOfMonth();
         $endOfMonth = Carbon::now()->endOfMonth();
 
-        // $master_anggaran = ;
         $paguAnggaran = PaguAnggaran::where('tahun', $currentYear)->sum('anggaran');
         $kendaraans = Kendaraan::all();
 
