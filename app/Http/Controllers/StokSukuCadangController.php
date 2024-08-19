@@ -39,7 +39,7 @@ class StokSukuCadangController extends Controller
     public function update(Request $request, $id)
     {
         $this->validateRequest($request);
-
+        $request['stok_awal'] = $request['stok'];
         $stokSukuCadang = StokSukuCadang::findOrFail($id);
         $stokSukuCadang->update($request->all());
 

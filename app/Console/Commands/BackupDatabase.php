@@ -37,13 +37,13 @@ class TargetedYearlyBackup extends Command
             if (Schema::hasTable($tableName)) {
                 // Copy structure
                 DB::statement("CREATE TABLE $newDatabaseName.$tableName LIKE " . env('DB_DATABASE') . ".$tableName");
-                
+
                 // Copy data
                 DB::statement("INSERT INTO $newDatabaseName.$tableName SELECT * FROM " . env('DB_DATABASE') . ".$tableName");
-                
+
                 // Clear data from current table
                 DB::table($tableName)->truncate();
-                
+
                 $this->info("Backed up and cleared table: $tableName");
             } else {
                 $this->warn("Table $tableName does not exist. Skipping.");

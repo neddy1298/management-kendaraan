@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\{
+    BackupController,
     BelanjaController,
     GroupAnggaranController,
     HomeController,
@@ -86,7 +87,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             });
         });
 
-        // Route::get('/get-group-anggaran/{group_id}', [BelanjaController::class, 'getGroupAnggaran']);    
         Route::get('/get-group-anggaran/{kendaraan_id}', [BelanjaController::class, 'getGroupAnggaran']);
     });
 
@@ -95,7 +95,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
-    
     Route::post('/perform-backup', [BackupController::class, 'performBackup'])->name('perform.backup');
 });
 
