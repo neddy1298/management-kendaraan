@@ -245,7 +245,7 @@
                             </td>
                             @foreach ($months as $index => $month)
                                 <td style="text-align: right">Rp
-                                    {{ number_format($paguAnggaran->anggaranPerbulan->$month, 0, ',', '.') }}</td>
+                                    {{ number_format($masterAnggaran->anggaranPerbulan->$month, 0, ',', '.') }}</td>
                                 @if ($index == 0)
                                     <td></td>
                                     <td></td>
