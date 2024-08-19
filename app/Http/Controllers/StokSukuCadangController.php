@@ -32,14 +32,14 @@ class StokSukuCadangController extends Controller
 
     public function edit($id)
     {
-        $stokSukuCadang = StokSukuCadang::findOrFail($id);
-        return view('sukuCadang.edit', compact('stokSukuCadang'));
+        $stokSukuCadang = StokSukuCadang::with('groupAnggaran')->findOrFail($id);
+        $groupAnggarans = GroupAnggaran::where('tipe_belanja', 'Suku Cadang')->get();
+        return view('sukuCadang.edit', compact('stokSukuCadang', 'groupAnggarans'));
     }
 
     public function update(Request $request, $id)
     {
         $this->validateRequest($request);
-        $request['stok_awal'] = $request['stok'];
         $stokSukuCadang = StokSukuCadang::findOrFail($id);
         $stokSukuCadang->update($request->all());
 
@@ -76,7 +76,7 @@ class StokSukuCadangController extends Controller
     {
         return [
             'nama_suku_cadang' => 'required',
-            'stok' => 'required|integer|min:1',
+            'stok_awal' => 'required|integer|min:1',
             'harga' => 'required|numeric|min:0',
         ];
     }
@@ -85,9 +85,9 @@ class StokSukuCadangController extends Controller
     {
         return [
             'nama_suku_cadang.required' => 'Nama suku cadang harus diisi',
-            'stok.required' => 'Stok harus diisi',
-            'stok.integer' => 'Stok harus berupa angka',
-            'stok.min' => 'Stok minimal 1',
+            'stok_awal.required' => 'Stok harus diisi',
+            'stok_awal.integer' => 'Stok harus berupa angka',
+            'stok_awal.min' => 'Stok minimal 1',
             'harga.required' => 'Harga harus diisi',
             'harga.numeric' => 'Harga harus berupa angka',
             'harga.min' => 'Harga minimal 0',

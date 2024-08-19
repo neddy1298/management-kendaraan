@@ -57,10 +57,10 @@
                             </div>
                             <div class="col-xl-12">
                                 <div class="mb-3">
-                                    <label for="stok" class="form-label">Jumlah</label>
-                                    <input type="number" class="form-control @error('stok') is-invalid @enderror"
-                                        id="stok" name="stok" value="{{ old('stok') }}">
-                                    @error('stok')
+                                    <label for="stok_awal" class="form-label">Stok Awal</label>
+                                    <input type="number" class="form-control @error('stok_awal') is-invalid @enderror"
+                                        id="stok_awal" name="stok_awal" value="{{ old('stok_awal') }}">
+                                    @error('stok_awal')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
