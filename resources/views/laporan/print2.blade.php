@@ -202,8 +202,14 @@
                 @foreach ($paguAnggarans as $index => $paguAnggaran)
                     <tr style="background-color: #d4d4fe">
                         <td style="text-align: center">{{ $index + 1 }}</td>
-                        <td>{{ $paguAnggaran->kode_rekening }}</td>
-                        <td>{{ $paguAnggaran->nama_rekening }}</td>
+                        <td>
+                            <a style="text-decoration: none; font-weight: bold; color: black"
+                                href="{{ route('paguAnggaran.edit', $paguAnggaran->id) }}">{{ $paguAnggaran->kode_rekening }}</a>
+                        </td>
+                        <td>
+                            <a style="text-decoration: none; font-weight: bold; color: black"
+                                href="{{ route('paguAnggaran.edit', $paguAnggaran->id) }}">{{ $paguAnggaran->nama_rekening }}</a>
+                        </td>
                         <td></td>
                         <td style="text-align: right"> Rp {{ number_format($paguAnggaran->anggaran, 0, ',', '.') }}
                         </td>
@@ -230,8 +236,14 @@
 
                         <tr class="master-anggaran">
                             <td style="text-align: center">{{ $index2 + 1 }}</td>
-                            <td>{{ $masterAnggaran->kode_rekening }}</td>
-                            <td style="font-weight: bold">{{ $masterAnggaran->nama_rekening }}</td>
+                            <td>
+                                <a style="text-decoration: none;font-weight: bold; color: black"
+                                    href="{{ route('masterAnggaran.edit', $masterAnggaran->id) }}">{{ $masterAnggaran->kode_rekening }}</a>
+                            </td>
+                            <td>
+                                <a style="text-decoration: none;font-weight: bold; color: black"
+                                    href="{{ route('masterAnggaran.edit', $masterAnggaran->id) }}">{{ $masterAnggaran->nama_rekening }}</a>
+                            </td>
                             <td></td>
                             <td style="text-align: right">
                                 @if ($masterAnggaran->anggaran != 0)
@@ -349,8 +361,11 @@
                             <tr>
                                 <td></td>
                                 <td></td>
-                                <td style="font-weight: bold">
-                                    {{ $groupAnggaran->nama_group }}</td>
+
+                                <td>
+                                    <a style="text-decoration: none;font-weight: bold; color: black"
+                                        href="{{ route('groupAnggaran.edit', $groupAnggaran->id) }}">{{ $groupAnggaran->nama_group }}</a>
+                                </td>
                                 <td style="text-align: right">
                                     @php
                                         $hargaSatuan = 0;

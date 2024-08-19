@@ -247,7 +247,9 @@
                     @endphp
                     <tr>
                         <td style="text-align: center">{{ $index + 1 }}</td>
-                        <td style="text-align: center">{{ $kendaraan->nomor_registrasi }}</td>
+                        <td style="text-align: center"><a style="text-decoration: none; color: black"
+                                href="{{ route('kendaraan.edit', $kendaraan->id) }}">{{ $kendaraan->nomor_registrasi }}</a>
+                        </td>
                         <td style="text-align: center" class="color-{{ $kendaraan->cc_kendaraan <= 150 ? 1 : 2 }}">
                             {{ $kendaraan->cc_kendaraan }}
                         </td>
