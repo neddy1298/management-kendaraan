@@ -39,11 +39,14 @@
                                     <label for="master_anggaran_id" class="form-label">Master Anggaran</label>
                                     <select id="master_anggaran_id" class="form-select" name="master_anggaran_id">
                                         <option hidden value="{{ $groupAnggaran->master_anggaran_id }}">
-                                            {{ $groupAnggaran->masterAnggaran->nama_rekening }} -
-                                            {{ $groupAnggaran->masterAnggaran->kode_rekening }}</option>
+                                            {{ $groupAnggaran->masterAnggaran->created_at->format('Y') }}
+                                            - {{ $groupAnggaran->masterAnggaran->nama_rekening }}
+                                            - {{ $groupAnggaran->masterAnggaran->kode_rekening }}</option>
                                         @foreach ($masterAnggarans as $masterAnggaran)
-                                            <option value="{{ $masterAnggaran->id }}">{{ $masterAnggaran->nama_rekening }} -
-                                                {{ $masterAnggaran->kode_rekening }}</option>
+                                            <option value="{{ $masterAnggaran->id }}">
+                                                {{ $masterAnggaran->created_at->format('Y') }}
+                                                - {{ $masterAnggaran->nama_rekening }}
+                                                - {{ $masterAnggaran->kode_rekening }}</option>
                                         @endforeach
                                     </select>
                                     @error('master_anggaran_id')

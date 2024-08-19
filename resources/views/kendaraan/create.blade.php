@@ -143,7 +143,9 @@
                                     <select class="select-multiple js-states form-control" title="Select Group Anggaran"
                                         multiple="multiple" name="groupAnggaran_id[]">
                                         @foreach ($groupAnggarans as $groupAnggaran)
-                                            <option value="{{ $groupAnggaran->id }}">{{ $groupAnggaran->kode_rekening }}
+                                            <option value="{{ $groupAnggaran->id }}">
+                                                {{ $groupAnggaran->created_at->format('Y') }}
+                                                - {{ $groupAnggaran->kode_rekening }}
                                                 - {{ $groupAnggaran->nama_group }}
                                             </option>
                                         @endforeach
