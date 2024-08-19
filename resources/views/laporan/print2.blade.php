@@ -134,13 +134,6 @@
             background-color: #fbdd9d;
         }
 
-        .footer {
-            text-align: center;
-            padding: 10px;
-            color: #000000;
-            position: running(footer);
-        }
-
         @page {
             @bottom-center {
                 content: element(footer);
@@ -658,25 +651,6 @@
             </tbody>
         </table>
         <br>
-        <div class="footer">
-            <div style="width: 100%">
-                <div style="width: 35%; float: left; text-align: center">
-                    <p>Mengetahui,</p>
-                    <p>Pengguna Anggaran</p>
-                    <br><br><br>
-                    <p><u>(MARSE HENDRA SAPUTRA. S.STP)</u></p>
-                    <p>NIP: 198103101999121001</p>
-                </div>
-                <div style="width: 30%"></div>
-                <div style="width: 35%; float: right; text-align: center">
-                    <p>Bogor, &nbsp;&nbsp;&nbsp;&nbsp;{{ now()->translatedformat('F Y') }}</p>
-                    <p>Pejabat Pelaksana Teknis Kegiatan</p>
-                    <br><br><br>
-                    <p><U>( FIRZA FIRANI RIZAL, S.Kom.,M.Ak. )</U></p>
-                    <p>NIP: 197509152010012008</p>
-                </div>
-            </div>
-        </div>
     </div>
 </body>
 
