@@ -162,7 +162,7 @@ class BelanjaController extends Controller
         }
 
         $belanja->delete();
-        return to_route('belanja.index')->with('success', 'Data berhasil dihapus.');
+        return redirect()->back()->with('success', 'Data berhasil dihapus.');
     }
 
     protected function validateBelanja(Request $request)
