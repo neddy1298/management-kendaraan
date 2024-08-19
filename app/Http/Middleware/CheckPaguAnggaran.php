@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\Cache;
 
 class CheckPaguAnggaran
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle(Request $request, Closure $next)
     {
         $paguAnggaranCount = Cache::remember('pagu_anggaran_count', 60, function () {

@@ -10,19 +10,16 @@ use Illuminate\Support\Facades\DB;
 
 class GroupAnggaranController extends Controller
 {
-    
     public function index()
     {
         $groupAnggarans = GroupAnggaran::with('masterAnggaran')->orderBy('created_at', 'desc')->get();
         return view('groupAnggaran.index', compact('groupAnggarans'));
     }
-    
     public function create()
     {
         $masterAnggarans = MasterAnggaran::orderBy('created_at', 'desc')->get();
         return view('groupAnggaran.create', compact('masterAnggarans'));
     }
-    
     public function store(Request $request)
     {
         $validatedData = $this->validateGroupAnggaran($request);
@@ -48,14 +45,12 @@ class GroupAnggaranController extends Controller
 
         return to_route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil ditambahkan.');
     }
-    
     public function edit($id)
     {
         $groupAnggaran = GroupAnggaran::with('masterAnggaran', 'anggaranPerbulan')->findOrFail($id);
         $masterAnggarans = MasterAnggaran::all();
         return view('groupAnggaran.edit', compact('groupAnggaran', 'masterAnggarans'));
     }
-    
     public function update(Request $request, $id)
     {
         $validatedData = $this->validateGroupAnggaran($request);
@@ -81,7 +76,6 @@ class GroupAnggaranController extends Controller
 
         return to_route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil diubah.');
     }
-    
     public function destroy($id)
     {
         $groupAnggaran = GroupAnggaran::findOrFail($id);
@@ -93,7 +87,6 @@ class GroupAnggaranController extends Controller
 
         return to_route('groupAnggaran.index')->with('success', 'Group Anggaran berhasil dihapus.');
     }
-    
     protected function validateGroupAnggaran(Request $request)
     {
         return $request->validate([

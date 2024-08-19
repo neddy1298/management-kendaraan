@@ -74,7 +74,6 @@ class BelanjaController extends Controller
             ->get();
         return response()->json($groupAnggarans);
     }
-    
     public function store(Request $request)
     {
         $validatedData = $this->validateBelanja($request);
@@ -145,12 +144,10 @@ class BelanjaController extends Controller
             }
         }
     }
-    
     public function show(Belanja $belanja)
     {
         return view('belanja.show', compact('belanja'));
     }
-    
     public function destroy($id)
     {
         $belanja = Belanja::with('sukuCadangs')->findOrFail($id);
@@ -163,9 +160,8 @@ class BelanjaController extends Controller
         }
 
         $belanja->delete();
-        return to_route('belanja.index')->with('success', 'Data berhasil dihapus.');
+        return redirect()->back()->with('success', 'Data berhasil dihapus.');
     }
-    
     protected function validateBelanja(Request $request)
     {
         return $request->validate([
