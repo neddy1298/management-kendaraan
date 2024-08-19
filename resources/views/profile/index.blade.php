@@ -58,6 +58,10 @@
                         </div>
                     </div>
                     <!-- Row end -->
+                    <form action="{{ route('perform.backup') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-primary">Perform Yearly Backup</button>
+                    </form>
                 </div>
             </div>
             <!-- Card end -->
