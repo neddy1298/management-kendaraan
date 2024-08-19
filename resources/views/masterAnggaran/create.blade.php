@@ -40,7 +40,9 @@
                                         <option hidden value="{{ old('pagu_anggaran_id') }}">{{ old('pagu_anggaran_id') }}
                                         </option>
                                         @foreach ($paguAnggarans as $paguAnggaran)
-                                            <option value="{{ $paguAnggaran->id }}">{{ $paguAnggaran->nama_rekening }} -
+                                            <option value="{{ $paguAnggaran->id }}">
+                                                {{ $paguAnggaran->created_at->format('Y') }}
+                                                - {{ $paguAnggaran->nama_rekening }} -
                                                 {{ $paguAnggaran->kode_rekening }}</option>
                                         @endforeach
                                     </select>

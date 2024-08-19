@@ -153,7 +153,8 @@
                                         @foreach ($groupAnggarans as $groupAnggaran)
                                             <option value="{{ $groupAnggaran->id }}"
                                                 {{ in_array($groupAnggaran->id, $selectedGroupAnggarans) ? 'selected' : '' }}>
-                                                {{ $groupAnggaran->kode_rekening }} - {{ $groupAnggaran->nama_group }}
+                                                {{ $groupAnggaran->created_at->format('Y') }}
+                                                - {{ $groupAnggaran->kode_rekening }} - {{ $groupAnggaran->nama_group }}
                                             </option>
                                         @endforeach
                                     </select>

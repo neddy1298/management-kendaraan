@@ -39,6 +39,12 @@ class LaporanController extends Controller
 
     public function print(Request $request)
     {
+        $request->validate([
+            'jenis_laporan' => 'required',
+        ], [
+            'jenis_laporan.required' => 'Pilih jenis laporan terlebih dahulu',
+        ]);
+
         $tahun = $request->input('tahun');
         $bulanStart = $request->input('bulan_start');
         $bulanEnd = $request->input('bulan_end');

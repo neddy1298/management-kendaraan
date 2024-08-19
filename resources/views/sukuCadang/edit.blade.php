@@ -43,10 +43,29 @@
                             </div>
                             <div class="col-xl-12">
                                 <div class="mb-3">
-                                    <label for="stok" class="form-label">Jumlah</label>
-                                    <input type="number" class="form-control @error('stok') is-invalid @enderror"
-                                        id="stok" name="stok" value="{{ old('stok', $stokSukuCadang->stok) }}">
-                                    @error('stok')
+                                    <label for="group_anggaran_id" class="form-label">Roda</label>
+                                    <select class="form-select" id="group_anggaran_id" name="group_anggaran_id">
+                                        <option value="{{ $stokSukuCadang->groupAnggaran->id }}" hidden>
+                                            {{ $stokSukuCadang->groupAnggaran->nama_group }}
+                                        </option>
+                                        @foreach ($groupAnggarans as $groupAnggaran)
+                                            <option value="{{ $groupAnggaran->id }}"
+                                                {{ old('group_anggaran_id') == $groupAnggaran->id ? 'selected' : '' }}>
+                                                {{ $groupAnggaran->nama_group }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('group_anggaran_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-xl-12">
+                                <div class="mb-3">
+                                    <label for="stok_awal" class="form-label">Stok Awal</label>
+                                    <input type="number" class="form-control @error('stok_awal') is-invalid @enderror"
+                                        id="stok_awal" name="stok_awal"
+                                        value="{{ old('stok_awal', $stokSukuCadang->stok_awal) }}">
+                                    @error('stok_awal')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
