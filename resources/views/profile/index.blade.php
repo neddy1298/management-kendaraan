@@ -46,7 +46,8 @@
                                             password</small>
                                     </div>
                                     <div class="col-12 mb-3">
-                                        <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()"> <label for="showPassword">Show Password</label>
+                                        <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()">
+                                        <label for="showPassword">Show Password</label>
                                     </div>
                                     <div class="col-12 mb-3">
                                         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
@@ -57,6 +58,10 @@
                         </div>
                     </div>
                     <!-- Row end -->
+                    <form action="{{ route('perform.backup') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-primary">Perform Yearly Backup</button>
+                    </form>
                 </div>
             </div>
             <!-- Card end -->
