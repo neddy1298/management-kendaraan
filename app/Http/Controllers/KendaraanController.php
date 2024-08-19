@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class KendaraanController extends Controller
 {
-    
+
     public function index()
     {
         // $kendaraans = Kendaraan::with('belanjas')->orderBy('cc_kendaraan', 'desc')->get();
@@ -22,13 +22,13 @@ class KendaraanController extends Controller
 
         return view('kendaraan.index', compact('kendaraans', 'isExpire'));
     }
-    
+
     public function create()
     {
         $groupAnggarans = GroupAnggaran::orderBy('created_at', 'desc')->get();
         return view('kendaraan.create', compact('groupAnggarans'));
     }
-    
+
     public function store(Request $request)
     {
         $validatedData = $this->validateKendaraan($request);
@@ -41,7 +41,7 @@ class KendaraanController extends Controller
 
         return redirect()->route('kendaraan.index')->with('success', 'Kendaraan berhasil ditambahkan');
     }
-    
+
     public function edit($id)
     {
         $kendaraan = Kendaraan::with('belanjas')->findOrFail($id);
@@ -49,7 +49,7 @@ class KendaraanController extends Controller
         $selectedGroupAnggarans = $kendaraan->groupAnggarans->pluck('id')->toArray();
         return view('kendaraan.edit', compact('kendaraan', 'groupAnggarans', 'selectedGroupAnggarans'));
     }
-    
+
     public function update(Request $request, $id)
     {
         $validatedData = $this->validateKendaraan($request, $id);
@@ -62,7 +62,7 @@ class KendaraanController extends Controller
 
         return to_route('kendaraan.index')->with('success', 'Data berhasil diperbarui.');
     }
-    
+
     public function destroy($id)
     {
         $kendaraan = Kendaraan::findOrFail($id);
@@ -74,13 +74,13 @@ class KendaraanController extends Controller
             return to_route('kendaraan.index')->with('error', 'Data tidak ditemukan.');
         }
     }
-    
+
     public function printAll()
     {
         $kendaraans = Kendaraan::orderBy('roda_kendaraan', 'asc')->get();
         return view('kendaraan.printAll', compact('kendaraans'));
     }
-    
+
     protected function validateKendaraan(Request $request, $id = null)
     {
         $uniqueRule = 'unique:kendaraans,nomor_registrasi';
@@ -97,7 +97,7 @@ class KendaraanController extends Controller
             'roda_kendaraan' => 'required|integer',
             'berlaku_sampai' => 'required|date_format:d/m/Y',
             'anggaran_pertahun_kendaraan' => 'nullable|integer',
-            'groupAnggaran_id' => 'required|array',
+            'groupAnggaran_id' => 'nullable|array',
             'groupAnggaran_id.*' => 'exists:group_anggarans,id',
         ], [
             'required' => 'Kolom :attribute wajib diisi.',
@@ -106,7 +106,7 @@ class KendaraanController extends Controller
             'unique' => 'Nomor registrasi sudah digunakan.',
         ]);
     }
-    
+
     protected function formatDate($date)
     {
         return Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
