@@ -147,15 +147,27 @@
 
                             <div class="col-xl-12">
                                 <div class="mb-3">
-                                    <label for="group_anggaran_id" class="form-label">Group Anggaran</label>
-                                    <select class="select-multiple js-states form-control" title="Select Group Anggaran"
-                                        multiple="multiple" name="groupAnggaran_id[]">
-                                        @foreach ($groupAnggarans as $groupAnggaran)
-                                            <option value="{{ $groupAnggaran->id }}"
-                                                {{ in_array($groupAnggaran->id, $selectedGroupAnggarans) ? 'selected' : '' }}>
-                                                {{ $groupAnggaran->created_at->format('Y') }}
-                                                - {{ $groupAnggaran->kode_rekening }} - {{ $groupAnggaran->nama_group }}
-                                            </option>
+                                    <label class="form-label d-flex">Group Anggaran</label>
+                                    <select id="groupAnggaran_id[]" class="select-single js-states form-control"
+                                        title="Select Sub Rincian Objek" data-live-search="true"
+                                        name="groupAnggaran_id[]" multiple="multiple">
+                                        <option hidden value="{{ old('groupAnggaran_id[]') }}"></option>
+                                        @php
+                                            $groupedgroupAnggaran = $groupAnggarans
+                                                ->sortByDesc('masterAnggaran.paguAnggaran.tahun')
+                                                ->groupBy('masterAnggaran.paguAnggaran.tahun');
+                                        @endphp
+                                        @foreach ($groupedgroupAnggaran as $tahun => $group)
+                                            <optgroup label="{{ $tahun }}">
+                                                @foreach ($group as $groupAnggaran)
+                                                    <option value="{{ $groupAnggaran->id }}"
+                                                        {{ in_array($groupAnggaran->id, $selectedGroupAnggarans) ? 'selected' : '' }}>
+                                                        {{ $tahun }}
+                                                        - {{ $groupAnggaran->kode_rekening }} -
+                                                        {{ $groupAnggaran->nama_group }}
+                                                    </option>
+                                                @endforeach
+                                            </optgroup>
                                         @endforeach
                                     </select>
                                 </div>
