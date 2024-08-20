@@ -1,7 +1,7 @@
 @extends('layouts.app', ['page' => 'Suku Cadang', 'page2' => 'Edit', 'page3' => ''])
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('vendor/bs-select/bs-select.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('vendor/bs-select/bs-select.css') }}">
 @endsection
 
 @section('content')
@@ -112,6 +112,6 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset('vendor/bs-select/bs-select.min.js') }}"></script>
-    <script src="{{ asset('vendor/bs-select/bs-select-custom.js') }}"></script>
+    <script src="{{ secure_asset('vendor/bs-select/bs-select.min.js') }}"></script>
+    <script src="{{ secure_asset('vendor/bs-select/bs-select-custom.js') }}"></script>
 @endsection
