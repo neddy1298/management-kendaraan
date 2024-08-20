@@ -36,19 +36,28 @@
                             <div class="col-xl-12">
                                 <div class="mb-3">
                                     <label for="pagu_anggaran_id" class="form-label">Nomor Rekening Pagu</label>
-                                    <select id="pagu_anggaran_id" class="form-select" name="pagu_anggaran_id">
-                                        <option hidden value="{{ old('pagu_anggaran_id') }}">{{ old('pagu_anggaran_id') }}
+                                    <select id="pagu_anggaran_id" class="select-single js-states form-control"
+                                        title="Select Product Category" data-live-search="true" name="pagu_anggaran_id">
+                                        <option hidden value="{{ old('pagu_anggaran_id') }}">
+                                            {{ old('pagu_anggaran_id') }}
                                         </option>
-                                        @foreach ($paguAnggarans as $paguAnggaran)
-                                            <option value="{{ $paguAnggaran->id }}">
-                                                {{ $paguAnggaran->created_at->format('Y') }}
-                                                - {{ $paguAnggaran->nama_rekening }} -
-                                                {{ $paguAnggaran->kode_rekening }}</option>
+                                        @php
+                                            $groupedPaguAnggarans = $paguAnggarans
+                                                ->sortByDesc('tahun')
+                                                ->groupBy('tahun');
+                                        @endphp
+                                        @foreach ($groupedPaguAnggarans as $tahun => $group)
+                                            <optgroup label="{{ $tahun }}">
+                                                @foreach ($group as $paguAnggaran)
+                                                    <option value="{{ $paguAnggaran->id }}">
+                                                        {{ $tahun }} -
+                                                        {{ $paguAnggaran->kode_rekening }} -
+                                                        {{ $paguAnggaran->nama_rekening }}
+                                                    </option>
+                                                @endforeach
+                                            </optgroup>
                                         @endforeach
                                     </select>
-                                    @error('pagu_anggaran_id')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
                                 </div>
                                 <div class="col-xl-12">
                                     <div class="mb-3">

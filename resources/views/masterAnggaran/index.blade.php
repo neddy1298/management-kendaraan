@@ -47,6 +47,7 @@
                                     <th>Kode Rekening</th>
                                     <th>Nama Rekening</th>
                                     <th>Anggaran</th>
+                                    <th>Tahun</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -62,6 +63,7 @@
                                         </td>
                                         <td class="text-start">{{ $masterAnggaran->nama_rekening }}</td>
                                         <td>Rp. {{ number_format($masterAnggaran->anggaran, 0, ',', '.') }}</td>
+                                        <td class="text-start">{{ $masterAnggaran->paguAnggaran->tahun }}</td>
                                         <td>
                                             <div class="custom-btn-group">
                                                 <a href="{{ route('masterAnggaran.edit', $masterAnggaran->id) }}"
