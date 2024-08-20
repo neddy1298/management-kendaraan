@@ -36,7 +36,7 @@
                         <div class="row">
                             <div class="col-xl-12">
                                 <div class="mb-3">
-                                    <label for="master_anggaran_id" class="form-label">Master Anggaran</label>
+                                    <label for="master_anggaran_id" class="form-label">Rincian Objek</label>
                                     <select id="master_anggaran_id" class="select-single js-states form-control"
                                         title="Select Rincian Objek" data-live-search="true" name="master_anggaran_id">
                                         <optgroup label="Pilihan Awal">

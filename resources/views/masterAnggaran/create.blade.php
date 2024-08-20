@@ -35,7 +35,7 @@
                         <div class="row">
                             <div class="col-xl-12">
                                 <div class="mb-3">
-                                    <label for="pagu_anggaran_id" class="form-label">Nomor Rekening Pagu</label>
+                                    <label for="pagu_anggaran_id" class="form-label">Objek</label>
                                     <select id="pagu_anggaran_id" class="select-single js-states form-control"
                                         title="Select Product Category" data-live-search="true" name="pagu_anggaran_id">
                                         <option hidden value="{{ old('pagu_anggaran_id') }}">
