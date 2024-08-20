@@ -39,11 +39,13 @@
                                     <label for="pagu_anggaran_id" class="form-label">Nomor Rekening Pagu</label>
                                     <select id="pagu_anggaran_id" class="select-single js-states form-control"
                                         title="Select Product Category" data-live-search="true" name="pagu_anggaran_id">
-                                        <option hidden value="{{ $masterAnggaran->pagu_anggaran_id }}">
-                                            {{ $masterAnggaran->paguAnggaran->tahun }} -
-                                            {{ $masterAnggaran->paguAnggaran->nama_rekening }} -
-                                            {{ $masterAnggaran->paguAnggaran->kode_rekening }}
-                                        </option>
+                                        <optgroup label="Pilihan Awal">
+                                            <option hidden value="{{ $masterAnggaran->pagu_anggaran_id }}">
+                                                {{ $masterAnggaran->paguAnggaran->tahun }} -
+                                                {{ $masterAnggaran->paguAnggaran->nama_rekening }} -
+                                                {{ $masterAnggaran->paguAnggaran->kode_rekening }}
+                                            </option>
+                                        </optgroup>
                                         @php
                                             $groupedPaguAnggarans = $paguAnggarans
                                                 ->sortByDesc('tahun')

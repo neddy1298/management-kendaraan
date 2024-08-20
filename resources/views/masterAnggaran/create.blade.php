@@ -39,7 +39,6 @@
                                     <select id="pagu_anggaran_id" class="select-single js-states form-control"
                                         title="Select Product Category" data-live-search="true" name="pagu_anggaran_id">
                                         <option hidden value="{{ old('pagu_anggaran_id') }}">
-                                            {{ old('pagu_anggaran_id') }}
                                         </option>
                                         @php
                                             $groupedPaguAnggarans = $paguAnggarans
