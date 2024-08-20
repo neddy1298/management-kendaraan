@@ -151,7 +151,6 @@
                                     <select id="groupAnggaran_id[]" class="select-single js-states form-control"
                                         title="Select Sub Rincian Objek" data-live-search="true"
                                         name="groupAnggaran_id[]" multiple="multiple">
-                                        <option hidden value="{{ old('groupAnggaran_id[]') }}"></option>
                                         @php
                                             $groupedgroupAnggaran = $groupAnggarans
                                                 ->sortByDesc('masterAnggaran.paguAnggaran.tahun')
