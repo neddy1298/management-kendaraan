@@ -36,22 +36,32 @@
                         <div class="row">
                             <div class="col-xl-12">
                                 <div class="mb-3">
-                                    <label for="master_anggaran_id" class="form-label">Master Anggaran</label>
-                                    <select id="master_anggaran_id" class="form-select" name="master_anggaran_id">
-                                        <option hidden value="{{ $groupAnggaran->master_anggaran_id }}">
-                                            {{ $groupAnggaran->masterAnggaran->created_at->format('Y') }}
-                                            - {{ $groupAnggaran->masterAnggaran->nama_rekening }}
-                                            - {{ $groupAnggaran->masterAnggaran->kode_rekening }}</option>
-                                        @foreach ($masterAnggarans as $masterAnggaran)
-                                            <option value="{{ $masterAnggaran->id }}">
-                                                {{ $masterAnggaran->created_at->format('Y') }}
-                                                - {{ $masterAnggaran->nama_rekening }}
-                                                - {{ $masterAnggaran->kode_rekening }}</option>
+                                    <label for="master_anggaran_id" class="form-label">Rincian Objek</label>
+                                    <select id="master_anggaran_id" class="select-single js-states form-control"
+                                        title="Select Rincian Objek" data-live-search="true" name="master_anggaran_id">
+                                        <optgroup label="Pilihan Awal">
+                                            <option hidden value="{{ $groupAnggaran->master_anggaran_id }}">
+                                                {{ $groupAnggaran->masterAnggaran->paguAnggaran->tahun }}
+                                                - {{ $groupAnggaran->masterAnggaran->kode_rekening }}
+                                                - {{ $groupAnggaran->masterAnggaran->nama_rekening }}</option>
+                                        </optgroup>
+                                        @php
+                                            $groupedmasterAnggarans = $masterAnggarans
+                                                ->sortByDesc('paguAnggaran.tahun')
+                                                ->groupBy('paguAnggaran.tahun');
+                                        @endphp
+                                        @foreach ($groupedmasterAnggarans as $tahun => $group)
+                                            <optgroup label="{{ $tahun }}">
+                                                @foreach ($group as $masterAnggaran)
+                                                    <option value="{{ $masterAnggaran->id }}">
+                                                        {{ $tahun }} -
+                                                        {{ $masterAnggaran->kode_rekening }} -
+                                                        {{ $masterAnggaran->nama_rekening }}
+                                                    </option>
+                                                @endforeach
+                                            </optgroup>
                                         @endforeach
                                     </select>
-                                    @error('master_anggaran_id')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
                                 </div>
                             </div>
                             <div class="col-xl-6">

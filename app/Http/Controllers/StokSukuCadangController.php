@@ -25,7 +25,7 @@ class StokSukuCadangController extends Controller
     public function store(Request $request)
     {
         $this->validateRequest($request);
-        $request['stok_awal'] = $request['stok'];
+        $request['stok'] = $request['stok_awal'];
         StokSukuCadang::create($request->all());
         return redirect()->route('sukuCadang.index')->with('success', 'Data suku cadang berhasil ditambahkan');
     }
