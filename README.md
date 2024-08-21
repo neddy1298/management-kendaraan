@@ -45,16 +45,23 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek:
    DB_DATABASE=db_management_kendaraan
    DB_USERNAME=root
    DB_PASSWORD=
+   
+   // TWILIO SDK untuk pesan whatsapp
+   TWILIO_SID=AC4d7eae89ab0a0f09cc17b6e119632d38
+   TWILIO_TOKEN=3846cca1d0c431a4923cc3257b7129a0
    ```
 
-6. Jalankan migrasi database dengan dummy data
+6. Jika sudah ada data real gunakan data real
+   
+   <span style="color:red">(Optional)</span> Jalankan migrasi database dengan dummy data
    ```
    php artisan migrate
 
    php artisan db:seed
    ```
+    
 
-7. (optional) Jika tidak ingin menjalankan `php artisan optimize` setiap kali mengubah `web.php` jalankan
+7. <span style="color:red">(Optional)</span> Jika tidak ingin menjalankan `php artisan optimize` setiap kali mengubah `web.php` jalankan
 
    ```
    php artisan optimize:clear
