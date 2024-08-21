@@ -6,8 +6,8 @@
         <div class="offset-1 col-sm-10 col-10">
             @if (session('success'))
                 @include('partials.alert', ['type' => 'success', 'message' => session('success')])
-            @elseif (session('error'))
-                @include('partials.alert', ['type' => 'danger', 'message' => session('error')])
+            @else
+                @include('partials.alert', ['type' => 'danger', 'message' => $errors->all()])
             @endif
             <!-- Card start -->
             <div class="card">
@@ -40,6 +40,26 @@
                                             value="{{ old('email', auth()->user()->email) }}" required>
                                     </div>
                                     <div class="col-12 mb-3">
+                                        <label for="phone" class="form-label">Nomor Whatsapp</label>
+                                        <input type="number" class="form-control" id="phone" name="phone"
+                                            value="{{ old('phone', auth()->user()->phone) }}" required
+                                            oninput="validatePhoneNumber(this)" placeholder="Contoh: 82134567891">
+                                        <div id="phone-error" class="text-danger" style="display: none;">Nomor tidak boleh
+                                            dimulai dengan 0.</div>
+                                    </div>
+
+                                    <script>
+                                        function validatePhoneNumber(input) {
+                                            const phoneError = document.getElementById('phone-error');
+                                            if (input.value.startsWith('0')) {
+                                                phoneError.style.display = 'block';
+                                                input.value = '';
+                                            } else {
+                                                phoneError.style.display = 'none';
+                                            }
+                                        }
+                                    </script>
+                                    <div class="col-12 mb-3">
                                         <label for="password" class="form-label">Password</label>
                                         <input type="password" class="form-control" id="password" name="password">
                                         <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah
@@ -52,16 +72,29 @@
                                     <div class="col-12 mb-3">
                                         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                                     </div>
+                                    <div class="text-center mt-5">
+                                        <label for="whatsapp">Nomor Whatsapp baru?</label>
+                                        <div class="col-12 mb-2">
+                                            <span for="">gunakan WhatsApp dan kirim pesan dari device kamu ke
+                                                <br><i class="bi bi-whatsapp primary"></i> <strong> +14155238886</strong>
+                                                <br>dengan pesan: <strong>join both-break</strong>
+                                                <br>Atau klik tombol:
+                                            </span>
+                                        </div>
+                                        <div class="col-12 mb-3">
+                                            <a href="https://wa.me/+14155238886?text=join%20both-break"
+                                                class="btn btn-icon btn-success" target="_blank"><i
+                                                    class="bi bi-whatsapp"></i>
+                                                Aktivasi nomor
+                                                whatsapp</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
                             <!-- Form end -->
                         </div>
                     </div>
                     <!-- Row end -->
-                    <form action="{{ route('perform.backup') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="btn btn-primary">Perform Yearly Backup</button>
-                    </form>
                 </div>
             </div>
             <!-- Card end -->

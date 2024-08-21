@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kendaraan;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Twilio\Rest\Client;
 
@@ -58,7 +58,7 @@ class SmsController extends Controller
         $twilio = new Client($sid, $token);
 
         $twilio->messages->create(
-            "whatsapp:" . env("TWILIO_RECEIVER"), // to
+            "whatsapp:+62" . Auth::user()->phone, // to
             [
                 "from" => "whatsapp:+14155238886",
                 "body" => $message
