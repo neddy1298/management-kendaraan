@@ -20,16 +20,50 @@
 
                         <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <!-- Form start -->
+                            @if ($errors->any())
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <i class="bi bi-x-circle alert-icon"></i>
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                </div>
+                            @endif
                             <form method="GET" action="{{ route('laporan.print') }}" target="_blank">
                                 @csrf
 
                                 <div class="row">
                                     <div class="col-12 mb-3">
+                                        <label for="jenis_laporan" class="form-label">Jenis Laporan</label>
+                                        <div class="input-group">
+                                            <select name="jenis_laporan" class="form-select" onchange="">
+                                                <option value="" hidden></option>
+                                                <option value="1">Kartu Kendali Kegiatan</option>
+                                                <option value="2">RKA BBM dan Pemeliharaan </option>
+                                                <option value="3">Realisasi dan Estimasi Kendaraan</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    {{-- <div class="col-12 mb-3">
+                                        <label for="tipe_laporan" class="form-label">Tipe Laporan</label>
+                                        <div class="input-group">
+                                            <select name="tipe_laporan" class="form-select">
+                                                <option value="0">Semua</option>
+                                                <option value="1">Bahan Bakar Minyak</option>
+                                                <option value="2">Pelumas Mesin</option>
+                                                <option value="3">Suku Cadang</option>
+                                            </select>
+                                        </div>
+                                    </div> --}}
+                                    <div class="col-12 mb-3">
                                         <label for="name" class="form-label">Tahun</label>
                                         <div class="input-group">
                                             <select name="tahun" class="form-select">
                                                 <option value="{{ date('Y') }}" hidden>{{ date('Y') }}</option>
-                                                @for ($i = 2021; $i <= date('Y'); $i++)
+                                                @for ($i = 2022; $i <= date('Y') + 1; $i++)
                                                     <option value="{{ $i }}">
                                                         {{ $i }}
                                                     </option>
@@ -37,7 +71,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-12 mb-3">
+                                    <div class="col-12 mb-3" hidden id="bulan-form1">
                                         <label for="name" class="form-label">Dari Bulan</label>
                                         <div class="input-group">
                                             <select name="bulan_start" class="form-select">
@@ -50,7 +84,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-12 mb-3">
+                                    <div class="col-12 mb-3" hidden id="bulan-form2">
                                         <label for="name" class="form-label">Sampai Bulan</label>
                                         <div class="input-group">
                                             <select name="bulan_end" class="form-select">
@@ -80,4 +114,20 @@
         </div>
     </div>
     <!-- Row end -->
+@endsection
+
+@section('script')
+    <script>
+        $(document).ready(function() {
+            $('select[name="jenis_laporan"]').change(function() {
+                if ($(this).val() == 1) {
+                    $('#bulan-form1').removeAttr('hidden');
+                    $('#bulan-form2').removeAttr('hidden');
+                } else {
+                    $('#bulan-form1').attr('hidden', 'hidden');
+                    $('#bulan-form2').attr('hidden', 'hidden');
+                }
+            });
+        });
+    </script>
 @endsection

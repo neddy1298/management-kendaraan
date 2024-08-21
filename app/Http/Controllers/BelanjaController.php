@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Belanja;
 use App\Models\GroupAnggaran;
+use App\Models\GroupAnggaranKendaraan;
 use App\Models\Kendaraan;
 use App\Models\StokSukuCadang;
 use App\Models\SukuCadang;
@@ -13,14 +14,11 @@ use Illuminate\Support\Facades\DB;
 
 class BelanjaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
+
     public function index(Request $request)
     {
         $dateRange = $request->input('date-range');
+        $search = $request->input('search');
 
         $query = Belanja::with('kendaraan', 'sukuCadangs');
 
@@ -31,7 +29,16 @@ class BelanjaController extends Controller
 
             $query->whereBetween('tanggal_belanja', [$startDate, $endDate]);
         }
-
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('keterangan', 'LIKE', "%{$search}%")
+                    ->orWhere('tanggal_belanja', 'LIKE', "%{$search}%")
+                    ->orWhere('total_belanja', 'LIKE', "%{$search}%")
+                    ->orWhereHas('kendaraan', function ($q) use ($search) {
+                        $q->where('nomor_registrasi', 'LIKE', "%{$search}%");
+                    });
+            });
+        }
         $belanjas = $query->orderBy('created_at', 'desc')->get();
 
         $belanja_periode = $belanjas->sum('belanja_bahan_bakar_minyak')
@@ -46,41 +53,33 @@ class BelanjaController extends Controller
             $query->where('berlaku_sampai', '<', Carbon::now());
         })->count();
 
-        return view('belanja.index', compact('belanjas', 'isExpire', 'belanja_periode', 'belanja_bbm_periode', 'belanja_pelumas_periode', 'belanja_suku_cadang_periode', 'dateRange'));
+        $belanjas = $query->orderBy('created_at', 'desc')->paginate(20);
+
+
+        return view('belanja.index', compact('belanjas', 'isExpire', 'belanja_periode', 'belanja_bbm_periode', 'belanja_pelumas_periode', 'belanja_suku_cadang_periode', 'dateRange', 'search'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
     public function create()
     {
-        $kendaraans = Kendaraan::all();
-        $groupAnggarans = GroupAnggaran::all();
-        $stokSukuCadangs = StokSukuCadang::all();
+        $kendaraans = Kendaraan::orderBy('nomor_registrasi')->get();
+        $groupAnggarans = GroupAnggaran::orderBy('kode_rekening')->get();
+        $stokSukuCadangs = StokSukuCadang::with('groupAnggaran')->orderBy('group_anggaran_id')->get();
         return view('belanja.create', compact('kendaraans', 'groupAnggarans', 'stokSukuCadangs'));
     }
 
-    public function getKendaraan($group_anggaran_id)
+    public function getGroupAnggaran($kendaraanId)
     {
-        $kendaraans = Kendaraan::whereHas('groupAnggarans', function ($query) use ($group_anggaran_id) {
-            $query->where('group_anggaran_id', $group_anggaran_id);
-        })->get();
-        return response()->json($kendaraans);
+        $groupAnggarans = GroupAnggaranKendaraan::where('kendaraan_id', $kendaraanId)
+            ->join('group_anggarans', 'group_anggaran_kendaraan.group_anggaran_id', '=', 'group_anggarans.id')
+            ->select('group_anggarans.id', 'group_anggarans.kode_rekening', 'group_anggarans.nama_group')
+            ->get();
+        return response()->json($groupAnggarans);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function store(Request $request)
     {
         $validatedData = $this->validateBelanja($request);
 
-        // Check if at least one of BBM, Pelumas, or Suku Cadang is filled
         if (
             empty($validatedData['belanja_bahan_bakar_minyak']) &&
             empty($validatedData['belanja_pelumas_mesin']) &&
@@ -146,23 +145,11 @@ class BelanjaController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Belanja  $belanja
-     * @return \Illuminate\Contracts\View\View
-     */
     public function show(Belanja $belanja)
     {
         return view('belanja.show', compact('belanja'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function destroy($id)
     {
         $belanja = Belanja::with('sukuCadangs')->findOrFail($id);
@@ -175,26 +162,9 @@ class BelanjaController extends Controller
         }
 
         $belanja->delete();
-        return to_route('belanja.index')->with('success', 'Data berhasil dihapus.');
+        return redirect()->back()->with('success', 'Data berhasil dihapus.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function printAll()
-    {
-        $datas = Belanja::with('kendaraan')->get();
-        return view('belanja.printAll', compact('datas'));
-    }
-
-    /**
-     * Validate belanja data.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
     protected function validateBelanja(Request $request)
     {
         return $request->validate([

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Print</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,69 +13,56 @@
             padding: 0;
             background-color: #f4f4f4;
         }
-
         .container {
             width: 80%;
-            margin: auto;
+            margin: 0 auto;
             padding: 20px;
             background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-
-        .header,
-        .footer {
+        .header {
             text-align: center;
-            padding: 15px;
-            background-color: #3d6df2;
-            color: #fff;
-            border-radius: 8px;
             margin-bottom: 20px;
         }
-
-        .header h1,
-        .footer p {
+        .header h1 {
             margin: 0;
+            color: #333;
         }
-
         .data-table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
-
-        .data-table th,
-        .data-table td {
+        .data-table th, .data-table td {
             border: 1px solid #ddd;
-            padding: 12px;
+            padding: 10px;
             text-align: left;
         }
-
         .data-table th {
-            background-color: #3d6df2;
-            color: #fff;
-            font-weight: bold;
+            background-color: #f2f2f2;
         }
-
-        .data-table td {
-            background-color: #fff;
-        }
-
         .data-table tr:nth-child(even) {
             background-color: #f9f9f9;
         }
-
         .data-table tr:hover {
             background-color: #f1f1f1;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .footer p {
+            margin: 0;
+            color: #777;
         }
     </style>
 </head>
 
 <body>
-
     <div class="container">
         <div class="header">
-            <h1>Data Belanja</h1>
+            <h1>Data Kendaraan</h1>
         </div>
         <table class="data-table">
             <thead>
@@ -103,7 +91,7 @@
             </tbody>
         </table>
         <div class="footer">
-            <p>&copy; Data Belanja Dishub Kota Bogor</p>
+            <p>&copy; Data Kendaraan Dishub Kota Bogor</p>
         </div>
     </div>
 </body>

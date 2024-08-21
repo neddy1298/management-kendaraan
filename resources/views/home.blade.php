@@ -10,21 +10,21 @@
                 </div>
                 <div class="sale-details">
                     <h3 class="text-yellow">
-                        {{ number_format($master_anggaran->anggaran - $belanja_tahunan, 0, ',', '.') }}
+                        {{ number_format($paguAnggaran - $belanja_tahunan, 0, ',', '.') }}
                     </h3>
                     <p>Sisa Anggaran Tahun {{ \Carbon\Carbon::now()->translatedFormat('Y') }}</p>
                 </div>
             </div>
         </div>
         <div class="col-xxl-4 col-sm-6 col-12">
-            <a href="{{ route('masterAnggaran.index') }}">
+            <a href="{{ route('paguAnggaran.index') }}">
                 <div class="stats-tile">
                     <div class="sale-icon shade-blue">
                         <h4 class="text-white">Rp</h4>
                     </div>
                     <div class="sale-details">
                         <h3 class="text-blue">
-                            {{ number_format($master_anggaran->anggaran, 0, ',', '.') }}
+                            {{ number_format($paguAnggaran, 0, ',', '.') }}
                         </h3>
                         <p>Pagu Anggaran Tahun {{ \Carbon\Carbon::now()->translatedFormat('Y') }}</p>
                     </div>
@@ -102,7 +102,6 @@
                                 <div class="transaction-amount text-blue">Rp
                                     {{ number_format($belanjas->sum('belanja_pelumas_mesin'), 0, ',', '.') }}</div>
                             </div>
-
                             <div class="transaction-block">
                                 <div class="transaction-icon shade-blue">
                                     <i class="bi bi-nut"></i>
@@ -127,7 +126,6 @@
                 <div class="card-body">
                     <div id="taskGraph"></div>
                     <ul class="task-list-container">
-
                         <li class="task-list-item">
                             <div class="task-icon shade-green">
                                 <i class="bi bi-clipboard-check"></i>
@@ -152,55 +150,12 @@
         </div>
     </div>
     <!-- Row end -->
-
-    <!-- Row start -->
-    {{-- <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">Belanja Minggu Ini</div>
-                </div>
-                <div class="card-body">
-
-                    <div class="table-responsive">
-                        <table class="table v-middle">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Nomor Registrasi</th>
-                                    <th>Total Belanja</th>
-                                    <th>Tanggal Belanja</th>
-                                    <th>Keterangan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($belanja_mingguans as $index => $belanja_mingguan)
-                                    <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $belanja_mingguan->kendaraan->nomor_registrasi }}</td>
-                                        <td>Rp.
-                                            {{ number_format($belanja_mingguan->belanja_bahan_bakar_minyak + $belanja_mingguan->belanja_pelumas_mesin + $belanja_mingguan->belanja_suku_cadang, 0, ',', '.') }}
-                                        </td>
-                                        <td>{{ $belanja_mingguan->tanggal_belanja }}</td>
-                                        <td>{{ $belanja_mingguan->keterangan }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div> --}}
-    <!-- Row end -->
 @endsection
 
 @section('script')
     <script src="{{ asset('vendor/apex/apexcharts.min.js') }}"></script>
     <script src="{{ asset('vendor/apex/custom/sales/salesGraph.js') }}"></script>
     <script src="{{ asset('vendor/apex/custom/sales/revenueGraph.js') }}"></script>
-    {{-- <script src="{{ asset('vendor/apex/custom/sales/taskGraph.js') }}"></script> --}}
 
     <script>
         var options = {
@@ -233,7 +188,7 @@
                     }
                 }
             },
-            series: [{{ $kendaraan - $isExpire }}, {{ $isExpire }}],
+            series: [{{ (($kendaraan - $isExpire) / $kendaraan) * 100 }}, {{ ($isExpire / $kendaraan) * 100 }}],
             labels: ['Aktif', 'Kadaluarsa'],
             colors: ['#26ba4f', '#f87957'],
         }

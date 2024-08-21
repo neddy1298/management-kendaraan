@@ -30,7 +30,6 @@
 
 <body>
 
-    <!-- Loading wrapper start -->
     <div id="loading-wrapper">
         <div class="spinner">
             <div class="line1"></div>
@@ -41,24 +40,17 @@
             <div class="line6"></div>
         </div>
     </div>
-    <!-- Loading wrapper end -->
 
-    <!-- Page wrapper start -->
     <div class="page-wrapper">
 
-        <!-- Sidebar wrapper start -->
         @include('layouts.sidebar')
-        <!-- Sidebar wrapper end -->
 
-        <!-- Main container start -->
         <div class="main-container">
 
-            <!-- Page header starts -->
             <div class="page-header">
                 <div class="toggle-sidebar" id="toggle-sidebar"><i class="bi bi-list" aria-label="Toggle Sidebar"></i>
                 </div>
 
-                <!-- Breadcrumb start -->
                 <ol class="breadcrumb d-md-flex d-none">
                     @php
                         $pages = [
@@ -114,28 +106,18 @@
                         <li class="breadcrumb-item">{{ $pages3[$page3] }}</li>
                     @endif
                 </ol>
-                <!-- Breadcrumb end -->
             </div>
-            <!-- Page header ends -->
-
-            <!-- Content wrapper scroll start -->
             <div class="content-wrapper-scroll">
                 <div class="content-wrapper">
                     @yield('content')
                 </div>
 
-                <!-- App Footer start -->
                 <div class="app-footer">
                     <span>© Dinas Perhubungan Kota Bogor 2024. All rights reserved.</span>
                 </div>
-                <!-- App footer end -->
             </div>
-            <!-- Content wrapper scroll end -->
         </div>
-        <!-- Main container end -->
-
     </div>
-    <!-- Page wrapper end -->
 
     <!-- Required JavaScript Files -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>

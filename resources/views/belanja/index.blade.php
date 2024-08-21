@@ -34,7 +34,6 @@
             </div>
         </div>
 
-        <!-- Row start -->
         <div class="col-xxl-4 col-sm-6 col-12">
             <div class="stats-tile">
                 <div class="sale-icon shade-yellow">
@@ -83,7 +82,8 @@
                                 <span class="input-group-text">
                                     <i class="bi bi-calendar2"></i>
                                 </span>
-                                <input type="text" class="form-control datepicker-range" name="date-range">
+                                <input type="text" class="form-control datepicker-range" name="date-range"
+                                    value="{{ request()->input('date-range') }}">
                             </div>
                         </div>
                         <div class="col-sm-12 col-lg-3 col-xxl-3">
@@ -97,10 +97,10 @@
                             <a href="{{ route('belanja.create') }}" class="btn btn-warning">
                                 <i class="bi bi-pencil-square"></i> Tambah Baru
                             </a>
-                            <a href="{{ route('belanja.printAll') }}" class="btn btn-primary" target="_blank">
-                                <i class="bi bi-printer"></i> Cetak
-                            </a>
                         </div>
+                        @if (request()->has('search'))
+                            <input type="hidden" name="search" value="{{ request()->input('search') }}">
+                        @endif
                     </form>
                 </div>
             </div>
@@ -115,16 +115,28 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">Data Kendaraan</div>
+                    <div class="card-tools"></div>
+                    <form action="{{ route('belanja.index') }}" method="GET">
+                        <div class="input-group">
+                            <input type="text" name="search" class="form-control" placeholder="Search..."
+                                value="{{ request()->input('search') }}">
+                            <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i></button>
+                        </div>
+                        @if (request()->has('date-range'))
+                            <input type="hidden" name="date-range" value="{{ request()->input('date-range') }}">
+                        @endif
+                    </form>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="highlightRowColumn" class="table custom-table text-center v-middle">
+                        <table id="" class="table custom-table text-center v-middle">
                             <thead>
                                 <tr>
                                     <th>No</th>
                                     <th>Nomor Registrasi</th>
                                     <th>Total Belanja</th>
                                     <th>Tanggal Belanja</th>
+                                    <th>Jenis Belanja</th>
                                     <th>Keterangan</th>
                                     <th>Action</th>
                                 </tr>
@@ -139,6 +151,15 @@
                                         </td>
                                         <td>
                                             {{ \Carbon\Carbon::parse($belanja->tanggal_belanja)->translatedFormat('d F Y') }}
+                                        </td>
+                                        <td>
+                                            @if ($belanja->belanja_bahan_bakar_minyak != 0)
+                                                <span class="badge bg-primary">BBM</span>
+                                            @elseif ($belanja->belanja_pelumas_mesin != 0)
+                                                <span class="badge bg-info">Pelumas</span>
+                                            @elseif ($belanja->belanja_suku_cadang != 0)
+                                                <span class="badge bg-success">Suku Cadang</span>
+                                            @endif
                                         </td>
                                         <td>{{ $belanja->keterangan }}</td>
                                         <td>
@@ -160,6 +181,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        {{ $belanjas->appends(['search' => request()->input('search'), 'date-range' => request()->input('date-range')])->links('pagination::bootstrap-5') }}
                     </div>
                 </div>
             </div>
@@ -183,7 +205,7 @@
                     <p><strong>Keterangan:</strong> <span id="modalKeterangan"></span></p>
                     <div id="modalSukuCadangsContainer">
                         <h5 class="mt-3">Detail Suku Cadang</h5>
-                        <table id="highlightRowColumn" class="table custom-table text-center v-middle">
+                        <table id="" class="table custom-table text-center v-middle">
                             <thead>
                                 <tr>
                                     <th>Nama</th>
@@ -193,7 +215,7 @@
                                 </tr>
                             </thead>
                             <tbody id="modalSukuCadangs">
-                                <!-- Suku Cadangs will be populated here -->
+
                             </tbody>
                         </table>
                     </div>

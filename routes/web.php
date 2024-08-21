@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\{
+    BackupController,
     BelanjaController,
     GroupAnggaranController,
     HomeController,
@@ -64,6 +65,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::get('', [LaporanController::class, 'index'])->name('laporan.index');
                 Route::get('/export-excel', [LaporanController::class, 'exportToExcel'])->name('laporan.exportExcel');
                 Route::get('/print', [LaporanController::class, 'print'])->name('laporan.print');
+                Route::get('/print2', [LaporanController::class, 'print2'])->name('laporan.print2');
             });
 
             Route::prefix('belanja')->group(function () {
@@ -82,18 +84,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::post('/update/{id}', [GroupAnggaranController::class, 'update'])->name('groupAnggaran.update');
                 Route::delete('/delete/{id}', [GroupAnggaranController::class, 'destroy'])->name('groupAnggaran.delete');
             });
-
-            Route::prefix('profile')->group(function () {
-                Route::get('', [ProfileController::class, 'edit'])->name('profile.edit');
-                Route::post('', [ProfileController::class, 'update'])->name('profile.update');
-                Route::delete('', [ProfileController::class, 'destroy'])->name('profile.destroy');
-            });
         });
 
-        // Route::get('/get-group-anggaran/{group_id}', [BelanjaController::class, 'getGroupAnggaran']);    
-        Route::get('/get-kendaraan/{group_anggaran_id}', [BelanjaController::class, 'getKendaraan']);
+        Route::get('/get-group-anggaran/{kendaraan_id}', [BelanjaController::class, 'getGroupAnggaran']);
     });
+
+
+    Route::prefix('profile')->group(function () {
+        Route::get('', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::post('', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });
+
+    Route::post('/perform-backup', [BackupController::class, 'performBackup'])->name('perform.backup');
 });
 
 require __DIR__ . '/auth.php';
-                

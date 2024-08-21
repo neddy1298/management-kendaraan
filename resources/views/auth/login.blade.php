@@ -17,13 +17,8 @@
     <meta property="og:site_name" content="Management Kendaraan">
     <link rel="shortcut icon" href="{{ asset('images/logokbr.ico') }}">
 
-    <!-- Title -->
     <title>Management Kendaraan</title>
 
-
-    <!-- *************
-   ************ Common Css Files *************
-  ************ -->
 
     <!-- Animated css -->
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
@@ -66,8 +61,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Username</label>
-                    <input type="text" class="form-control" autocomplete="off" name="email"
-                        value="admin@gmail.com">
+                    <input type="text" class="form-control" autocomplete="off" name="email" value="">
                     @if ($errors->has('email'))
                         <div class="text-red">
                             {{ $errors->first('email') }}
@@ -78,7 +72,7 @@
                     <div class="d-flex justify-content-between">
                         <label class="form-label">Password</label>
                     </div>
-                    <input type="password" class="form-control" name="password" value="admin">
+                    <input type="password" class="form-control" name="password" value="">
                     @if ($errors->has('password'))
                         <div class="text-red">
                             {{ $errors->first('password') }}

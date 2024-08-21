@@ -74,10 +74,13 @@
                                 @foreach ($kendaraans as $index => $kendaraan)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $kendaraan->nomor_registrasi }}</td>
+                                        <td>
+                                            <a href="{{ route('kendaraan.edit', $kendaraan->id) }}" class="text-primary">
+                                                {{ $kendaraan->nomor_registrasi }}</a>
+                                        </td>
                                         <td>{{ $kendaraan->merk_kendaraan }}</td>
                                         <td>{{ $kendaraan->jenis_kendaraan }}</td>
-                                        <td>{{ $kendaraan->cc_kendaraan }} CC</td>
+                                        <td>{{ $kendaraan->cc_kendaraan }}</td>
                                         <td>{{ $kendaraan->bbm_kendaraan }}</td>
                                         <td>Roda {{ $kendaraan->roda_kendaraan }}</td>
                                         <td>

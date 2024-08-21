@@ -36,7 +36,7 @@
             <!-- Card start -->
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Anggaran Pertahun</div>
+                    <div class="card-title">Sub Rincian Objek</div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -46,10 +46,9 @@
                                     <th>No</th>
                                     <th>Kode Rekening</th>
                                     <th>Nama Rekening</th>
-                                    <th>BBM</th>
-                                    <th>Pelumas</th>
-                                    <th>Suku Cadang</th>
+                                    <th>Kebutuhan Belanja</th>
                                     <th>Total</th>
+                                    <th>Tahun</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -57,16 +56,16 @@
                                 @foreach ($groupAnggarans as $index => $groupAnggaran)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $groupAnggaran->kode_rekening }}</td>
+                                        <td>
+                                            <a href="{{ route('groupAnggaran.edit', $groupAnggaran->id) }}"
+                                                class="text-primary">
+                                                {{ $groupAnggaran->kode_rekening }}
+                                            </a>
+                                        </td>
                                         <td class="text-start">{{ $groupAnggaran->nama_group }}</td>
-                                        <td>Rp
-                                            {{ number_format($groupAnggaran->anggaran_bahan_bakar_minyak ?? 0, 0, ',', '.') }}
-                                        </td>
-                                        <td>Rp {{ number_format($groupAnggaran->anggaran_pelumas_mesin ?? 0, 0, ',', '.') }}
-                                        </td>
-                                        <td>Rp {{ number_format($groupAnggaran->anggaran_suku_cadang ?? 0, 0, ',', '.') }}
-                                        </td>
+                                        <td>{{ $groupAnggaran->tipe_belanja }}</td>
                                         <td>Rp {{ number_format($groupAnggaran->total_anggaran ?? 0, 0, ',', '.') }}</td>
+                                        <td>{{ $groupAnggaran->masterAnggaran->paguAnggaran->tahun }}</td>
                                         <td>
                                             <div class="custom-btn-group">
                                                 <a href="{{ route('groupAnggaran.edit', $groupAnggaran->id) }}"

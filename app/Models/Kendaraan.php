@@ -18,6 +18,7 @@ class Kendaraan extends Model
         'jenis_kendaraan',
         'cc_kendaraan',
         'bbm_kendaraan',
+        'anggaran_pertahun_kendaraan',
         'roda_kendaraan',
         'berlaku_sampai',
     ];

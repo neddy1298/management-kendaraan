@@ -36,7 +36,7 @@
             <!-- Card start -->
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Anggaran Pertahun</div>
+                    <div class="card-title">Pagu Anggaran</div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -55,7 +55,11 @@
                                 @foreach ($paguAnggarans as $index => $paguAnggaran)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $paguAnggaran->kode_rekening }}</td>
+                                        <td>
+                                            <a href="{{ route('paguAnggaran.edit', $paguAnggaran->id) }}"
+                                                class="text-primary">{{ $paguAnggaran->kode_rekening }}
+                                            </a>
+                                        </td>
                                         <td class="text-start">{{ $paguAnggaran->nama_rekening }}</td>
                                         <td>Rp. {{ number_format($paguAnggaran->anggaran, 0, ',', '.') }}</td>
                                         <td>{{ $paguAnggaran->tahun }}</td>

@@ -13,12 +13,18 @@ class GroupAnggaran extends Model
 
     protected $fillable = [
         'master_anggaran_id',
+        'anggaran_perbulan_id',
         'kode_rekening',
         'nama_group',
         'anggaran_bahan_bakar_minyak',
         'anggaran_pelumas_mesin',
         'anggaran_suku_cadang',
     ];
+
+    public function anggaranPerbulan()
+    {
+        return $this->hasOne(AnggaranPerbulan::class, 'id', 'anggaran_perbulan_id');
+    }
 
     public function kendaraans()
     {
@@ -40,5 +46,10 @@ class GroupAnggaran extends Model
     public function getTotalAnggaranAttribute()
     {
         return $this->anggaran_bahan_bakar_minyak + $this->anggaran_pelumas_mesin + $this->anggaran_suku_cadang;
+    }
+
+    public function stokSukuCadang()
+    {
+        return $this->hasMany(StokSukuCadang::class);
     }
 }

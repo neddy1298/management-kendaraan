@@ -2,100 +2,92 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GroupAnggaran;
 use App\Models\StokSukuCadang;
+use App\Models\SukuCadang;
 use Illuminate\Http\Request;
 
 class StokSukuCadangController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-        $stokSukuCadangs = StokSukuCadang::orderBy('created_at', 'desc')->get();
+        $stokSukuCadangs = StokSukuCadang::orderBy('nama_suku_cadang', 'asc')->get();
         return view('sukuCadang.index', compact('stokSukuCadangs'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        return view('sukuCadang.create');
+        $groupAnggarans = GroupAnggaran::where('tipe_belanja', 'Suku Cadang')->get();
+        return view('sukuCadang.create', compact('groupAnggarans'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $this->validateRequest($request);
-
+        $request['stok'] = $request['stok_awal'];
         StokSukuCadang::create($request->all());
         return redirect()->route('sukuCadang.index')->with('success', 'Data suku cadang berhasil ditambahkan');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
-        $stokSukuCadang = StokSukuCadang::findOrFail($id);
-        return view('sukuCadang.edit', compact('stokSukuCadang'));
+        $stokSukuCadang = StokSukuCadang::with('groupAnggaran')->findOrFail($id);
+        $groupAnggarans = GroupAnggaran::where('tipe_belanja', 'Suku Cadang')->get();
+        return view('sukuCadang.edit', compact('stokSukuCadang', 'groupAnggarans'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         $this->validateRequest($request);
-
         $stokSukuCadang = StokSukuCadang::findOrFail($id);
         $stokSukuCadang->update($request->all());
+
+        $sukuCadangs = SukuCadang::all();
+        $stokSukuCadangs = StokSukuCadang::orderBy('group_anggaran_id', 'asc')->get();
+        foreach ($stokSukuCadangs as $stokSukuCadang) {
+            $stokSukuCadang->update([
+                'stok' => $stokSukuCadang->stok_awal,
+            ]);
+        }
+
+        foreach ($sukuCadangs as $sukuCadang) {
+            $stokSukuCadang = $stokSukuCadangs->where('id', '=', $sukuCadang->stok_suku_cadang_id)->first();
+            $stokSukuCadang->update([
+                'stok' => $stokSukuCadang->stok - $sukuCadang->jumlah,
+            ]);
+        }
 
         return redirect()->route('sukuCadang.index')->with('success', 'Data suku cadang berhasil diperbarui');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         StokSukuCadang::destroy($id);
         return redirect()->route('sukuCadang.index')->with('success', 'Data suku cadang berhasil dihapus');
     }
 
-    /**
-     * Validate the request.
-     */
     private function validateRequest(Request $request)
     {
         $request->validate($this->rules(), $this->messages());
     }
 
-    /**
-     * Validation rules.
-     */
     private function rules()
     {
         return [
             'nama_suku_cadang' => 'required',
-            'stok' => 'required|integer|min:1',
+            'stok_awal' => 'required|integer|min:1',
             'harga' => 'required|numeric|min:0',
         ];
     }
 
-    /**
-     * Validation messages.
-     */
     private function messages()
     {
         return [
             'nama_suku_cadang.required' => 'Nama suku cadang harus diisi',
-            'stok.required' => 'Stok harus diisi',
-            'stok.integer' => 'Stok harus berupa angka',
-            'stok.min' => 'Stok minimal 1',
+            'stok_awal.required' => 'Stok harus diisi',
+            'stok_awal.integer' => 'Stok harus berupa angka',
+            'stok_awal.min' => 'Stok minimal 1',
             'harga.required' => 'Harga harus diisi',
             'harga.numeric' => 'Harga harus berupa angka',
             'harga.min' => 'Harga minimal 0',
