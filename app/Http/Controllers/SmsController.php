@@ -58,7 +58,7 @@ class SmsController extends Controller
         $twilio = new Client($sid, $token);
 
         $twilio->messages->create(
-            "whatsapp:+6285156678113", // to
+            "whatsapp:" . env("TWILIO_RECEIVER"), // to
             [
                 "from" => "whatsapp:+14155238886",
                 "body" => $message
