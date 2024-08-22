@@ -74,7 +74,7 @@
                                         <option value="{{ $paguAnggaran->tahun }}">{{ $paguAnggaran->tahun }}
                                         </option>
                                         @php
-                                            $now = now()->year;
+                                            $now = $paguAnggaran->tahun;
                                         @endphp
                                         @for ($i = $now - 1; $i <= $now + 2; $i++)
                                             <option value="{{ $i }}"
