@@ -105,6 +105,12 @@ class LaporanController extends Controller
             $sukuCadangs = SukuCadang::get();
             $semuaGroupAnggaranKendaraans = GroupAnggaranKendaraan::with('groupAnggaran')->get();
             return view('laporan.print3', compact('tahun', 'kendaraans', 'belanjas', 'sukuCadangs', 'semuaGroupAnggaranKendaraans'));
+        } elseif ($request->input('jenis_laporan') == 4) {
+            $kendaraans = Kendaraan::with('belanjas')->orderByRaw('CAST(roda_kendaraan AS UNSIGNED)')->orderBy('cc_kendaraan', 'asc')->orderBy('anggaran_pertahun_kendaraan', 'asc')
+                ->get();
+            $belanjas = Belanja::get();
+            $sukuCadangs = SukuCadang::get();
+            return view('laporan.print4', compact('tahun', 'kendaraans', 'belanjas', 'sukuCadangs'));
         } else {
             return view('laporan.index')->with('error', 'Pilih jenis laporan terlebih dahulu');
         }

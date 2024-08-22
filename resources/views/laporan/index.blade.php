@@ -44,20 +44,10 @@
                                                 <option value="1">Kartu Kendali Kegiatan</option>
                                                 <option value="2">RKA BBM dan Pemeliharaan </option>
                                                 <option value="3">Realisasi dan Estimasi Kendaraan</option>
+                                                <option value="4">Realisasi Suku Cadang Kendaraan</option>
                                             </select>
                                         </div>
                                     </div>
-                                    {{-- <div class="col-12 mb-3">
-                                        <label for="tipe_laporan" class="form-label">Tipe Laporan</label>
-                                        <div class="input-group">
-                                            <select name="tipe_laporan" class="form-select">
-                                                <option value="0">Semua</option>
-                                                <option value="1">Bahan Bakar Minyak</option>
-                                                <option value="2">Pelumas Mesin</option>
-                                                <option value="3">Suku Cadang</option>
-                                            </select>
-                                        </div>
-                                    </div> --}}
                                     <div class="col-12 mb-3">
                                         <label for="name" class="form-label">Tahun</label>
                                         <div class="input-group">
