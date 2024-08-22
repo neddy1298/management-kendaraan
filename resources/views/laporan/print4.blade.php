@@ -183,58 +183,26 @@
                     $roda_group = 0;
                 @endphp
                 @foreach ($kendaraans as $index => $kendaraan)
-                    @if ($kendaraan->roda_kendaraan == 2)
-                        @if ($roda_group == 0)
-                            <tr style="background-color: #b7c7ff">
-                                <td></td>
-                                <td style="text-align: center">
-                                    <strong>Roda {{ $kendaraan->roda_kendaraan }}</strong>
-                                </td>
-                                <td colspan="40"></td>
-                            </tr>
-                            @php
-                                $roda_group++;
-                            @endphp
-                        @endif
-                    @elseif ($kendaraan->roda_kendaraan == 4)
-                        @if ($roda_group == 1)
-                            <tr style="background-color: #b7c7ff">
-                                <td></td>
-                                <td style="text-align: center">
-                                    <strong>Roda {{ $kendaraan->roda_kendaraan }}</strong>
-                                </td>
-                                <td colspan="40"></td>
-                            </tr>
-                            @php
-                                $roda_group++;
-                            @endphp
-                        @endif
-                    @elseif ($kendaraan->roda_kendaraan == 6)
-                        @if ($roda_group == 2)
-                            <tr style="background-color: #b7c7ff">
-                                <td></td>
-                                <td style="text-align: center">
-                                    <strong>Roda {{ $kendaraan->roda_kendaraan }}</strong>
-                                </td>
-                                <td colspan="40"></td>
-                            </tr>
-                            @php
-                                $roda_group++;
-                            @endphp
-                        @endif
-                    @elseif ($kendaraan->roda_kendaraan == 10)
-                        @if ($roda_group == 3)
-                            <tr style="background-color: #b7c7ff">
-                                <td></td>
-                                <td style="text-align: center">
-                                    <strong>Roda {{ $kendaraan->roda_kendaraan }}</strong>
-                                </td>
-                                <td colspan="40"></td>
-                            </tr>
-                            @php
-                                $roda_group++;
-                            @endphp
-                        @endif
+                    @php
+                        $rodaGroups = [
+                            2 => 0,
+                            4 => 1,
+                            6 => 2,
+                            10 => 3,
+                        ];
+                    @endphp
+
+                    @if (isset($rodaGroups[$kendaraan->roda_kendaraan]) && $roda_group == $rodaGroups[$kendaraan->roda_kendaraan])
+                        <tr style="background-color: #b7c7ff">
+                            <td></td>
+                            <td style="text-align: center">
+                                <strong>Roda {{ $kendaraan->roda_kendaraan }}</strong>
+                            </td>
+                            <td colspan="40"></td>
+                        </tr>
+                        @php
+                            $roda_group++;
+                        @endphp
                     @endif
                     <tr>
                         <td style="text-align: center">{{ $index + 1 }}</td>
