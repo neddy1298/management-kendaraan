@@ -134,6 +134,7 @@ class BelanjaController extends Controller
                         'nama_suku_cadang' => $stokSukuCadang->nama_suku_cadang,
                         'jumlah' => $jumlah,
                         'harga_satuan' => $harga,
+                        'tanggal_belanja' => $data['tanggal_belanja'],
                     ]);
                     $sukuCadang->save();
 

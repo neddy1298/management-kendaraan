@@ -17,6 +17,7 @@ class SukuCadang extends Model
         'nama_suku_cadang',
         'jumlah',
         'harga_satuan',
+        'tanggal_belanja',
     ];
 
     public function belanja()
