@@ -1,5 +1,11 @@
 @extends('layouts.app', ['page' => 'Laporan', 'page2' => '', 'page3' => ''])
 
+
+@section('css')
+    <link rel="stylesheet" href="{{ asset('vendor/daterange/daterange.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/bs-select/bs-select.css') }}">
+@endsection
+
 @section('content')
     <!-- Row start -->
     <div class="row mt-3">
@@ -39,7 +45,8 @@
                                     <div class="col-12 mb-3">
                                         <label for="jenis_laporan" class="form-label">Jenis Laporan</label>
                                         <div class="input-group">
-                                            <select name="jenis_laporan" class="form-select" onchange="">
+                                            <select name="jenis_laporan" class="select-single js-states form-control"
+                                                onchange="">
                                                 <option value="" hidden></option>
                                                 <option value="1">Kartu Kendali Kegiatan</option>
                                                 <option value="2">RKA BBM dan Pemeliharaan </option>
@@ -51,7 +58,7 @@
                                     <div class="col-12 mb-3">
                                         <label for="name" class="form-label">Tahun</label>
                                         <div class="input-group">
-                                            <select name="tahun" class="form-select">
+                                            <select name="tahun" class="select-single js-states form-control">
                                                 <option value="{{ date('Y') }}" hidden>{{ date('Y') }}</option>
                                                 @for ($i = 2022; $i <= date('Y') + 1; $i++)
                                                     <option value="{{ $i }}">
@@ -120,4 +127,8 @@
             });
         });
     </script>
+
+
+    <script src="{{ asset('vendor/bs-select/bs-select.min.js') }}"></script>
+    <script src="{{ asset('vendor/bs-select/bs-select-custom.js') }}"></script>
 @endsection

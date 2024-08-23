@@ -65,7 +65,7 @@
                                         <td class="text-start">{{ $groupAnggaran->nama_group }}</td>
                                         <td>{{ $groupAnggaran->tipe_belanja }}</td>
                                         <td>Rp {{ number_format($groupAnggaran->total_anggaran ?? 0, 0, ',', '.') }}</td>
-                                        <td>{{ $groupAnggaran->masterAnggaran->paguAnggaran->tahun }}</td>
+                                        <td>{{ $groupAnggaran->masterAnggaran->paguAnggaran->tahun ?? 'N/A' }}</td>
                                         <td>
                                             <div class="custom-btn-group">
                                                 <a href="{{ route('groupAnggaran.edit', $groupAnggaran->id) }}"
