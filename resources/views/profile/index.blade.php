@@ -72,7 +72,7 @@
                                     <div class="col-12 mb-3">
                                         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                                     </div>
-                                    <div class="text-center mt-5">
+                                    {{-- <div class="text-center mt-5">
                                         <label for="whatsapp">Nomor Whatsapp baru?</label>
                                         <div class="col-12 mb-2">
                                             <span for="">gunakan WhatsApp dan kirim pesan dari device kamu ke
@@ -88,7 +88,7 @@
                                                 Aktivasi nomor
                                                 whatsapp</a>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </form>
                             <!-- Form end -->
