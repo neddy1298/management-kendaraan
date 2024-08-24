@@ -45,10 +45,6 @@ Ikuti langkah-langkah berikut untuk menginstal dan menjalankan proyek:
    DB_DATABASE=db_management_kendaraan
    DB_USERNAME=root
    DB_PASSWORD=
-   
-   // TWILIO SDK untuk pesan whatsapp
-   TWILIO_SID=AC4d7eae89ab0a0f09cc17b6e119632d38
-   TWILIO_TOKEN=3846cca1d0c431a4923cc3257b7129a0
    ```
 
 6. Jika sudah ada data real gunakan data real
