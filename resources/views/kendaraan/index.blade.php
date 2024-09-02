@@ -33,9 +33,9 @@
                         <a href="{{ route('kendaraan.printAll') }}" class="btn btn-primary" target="_blank">
                             <i class="bi bi-printer"></i> Cetak
                         </a>
-                        <a href="{{ route('send-wa') }}" class="btn btn-success" target="_blank">
+                        {{-- <a href="{{ route('send-wa') }}" class="btn btn-success" target="_blank">
                             <i class="bi bi-whatsapp"></i> Kirim WA
-                        </a>
+                        </a> --}}
                     </div>
                 </div>
             </div>

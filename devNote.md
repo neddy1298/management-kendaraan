@@ -32,3 +32,7 @@ if suku cadang dont have tanggal_belanja:
 
     -- Step 4: Alter the column to NOT NULL (if required)
     ALTER TABLE `suku_cadangs` MODIFY `tanggal_belanja` DATE NOT NULL;
+
+Backup Database:
+
+mysqldump -h dishub-kendaraan.mysql.database.azure.com -P 3306 -u managementKendaraan -p db_kendaraan>db_management_kendaraan.sql

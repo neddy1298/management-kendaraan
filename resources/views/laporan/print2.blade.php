@@ -177,6 +177,7 @@
                         <th style="width: 300px" colspan="{{ $index == 0 ? 3 : 4 }}" class="color-{{ $index + 1 }}">
                             {{ $month }}</th>
                     @endforeach
+                    <th style="width: 100px" rowspan="2">Total Realisasi</th>
                     <th style="width: 100px" rowspan="2">Sisa Pagu</th>
                 </tr>
                 <tr>
@@ -186,7 +187,7 @@
                             <td style="width: 100px; text-align: center" class="color-{{ $index + 1 }}">
                                 {{ substr($month, 0, 3) }}+Silpa</td>
                         @endif
-                        <td style="width: 100px; text-align: center" class="color-{{ $index + 1 }}">SPJ</td>
+                        <td style="width: 100px; text-align: center" class="color-{{ $index + 1 }}">Realisasi</td>
                         <td style="width: 100px; text-align: center" class="color-{{ $index + 1 }}">Silpa</td>
                     @endforeach
                 </tr>
@@ -206,7 +207,7 @@
                         <td></td>
                         <td style="text-align: right"> Rp {{ number_format($paguAnggaran->anggaran, 0, ',', '.') }}
                         </td>
-                        <td colspan="48"></td>
+                        <td colspan="49"></td>
 
                     </tr>
                     @foreach ($paguAnggaran->masterAnggarans as $index2 => $masterAnggaran)
@@ -256,6 +257,7 @@
                                 @endif
                             @endforeach
                             <td></td>
+                            <td></td>
                         </tr>
                         @php
                             $jarak = 0;
@@ -298,6 +300,20 @@
                                 $belanjaDesember = $groupAnggaran->belanjas
                                     ->whereBetween('tanggal_belanja', [$tahun . '-12-01', $tahun . '-12-31'])
                                     ->sum('total_belanja');
+
+                                $totalBelanja =
+                                    $belanjaJanuari +
+                                    $belanjaFebruari +
+                                    $belanjaMaret +
+                                    $belanjaApril +
+                                    $belanjaMei +
+                                    $belanjaJuni +
+                                    $belanjaJuli +
+                                    $belanjaAgustus +
+                                    $belanjaSeptember +
+                                    $belanjaOktober +
+                                    $belanjaNovember +
+                                    $belanjaDesember;
                                 if (
                                     $groupAnggaran->tipe_belanja == 'Bahan Bakar Minyak' ||
                                     $groupAnggaran->tipe_belanja == 'Suku Cadang'
@@ -344,7 +360,7 @@
                                         </td>
                                         <td></td>
                                         <td></td>
-                                        <td colspan="48"></td>
+                                        <td colspan="49"></td>
                                     </tr>
                                     @php
                                         $jarak += 1;
@@ -575,13 +591,12 @@
                                         {{ number_format($groupAnggaran->anggaranPerbulan->desember - $belanjaDesember, 0, ',', '.') }}
                                     @endif
                                 </td>
+                                <td style="text-align: right">Rp
+                                    {{ number_format($totalBelanja, 0, ',', '.') }}
+                                </td>
                                 <td style="text-align: right">
                                     Rp
-                                    @if ($dessilpa != 0)
-                                        {{ number_format($dessilpa - $belanjaDesember, 0, ',', '.') }}
-                                    @else
-                                        {{ number_format($groupAnggaran->anggaranPerbulan->desember - $belanjaDesember, 0, ',', '.') }}
-                                    @endif
+                                    {{ number_format($groupAnggaran->anggaran_total - $totalBelanja, 0, ',', '.') }}
                                 </td>
                             </tr>
                             @php
@@ -621,6 +636,7 @@
                                     </td>
                                     @php
                                         $colorNum = 0;
+                                        $totalBelanja = $stokAwal;
                                     @endphp
                                     <td style="text-align: right" class="color-{{ $colorNum + 1 }}">
                                         {{ $stokAwal }}</td>
@@ -633,7 +649,11 @@
                                         </td>
                                         <td style="text-align: right" class="color-{{ $colorNum + 2 }}">
                                             {{ $stokAwal }}</td>
-                                        <td class="color-{{ $colorNum + 2 }}"></td>
+                                        @if ($colorNum == 11)
+                                            <td style="text-align: right">{{ $totalBelanja - $stokAwal }}</td>
+                                        @else
+                                            <td class="color-{{ $colorNum + 2 }}"></td>
+                                        @endif
                                         @php
                                             $colorNum += 1;
                                         @endphp
