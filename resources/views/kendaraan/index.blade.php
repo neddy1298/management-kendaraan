@@ -49,6 +49,12 @@
                 @include('partials.alert', ['type' => 'danger', 'message' => session('error')])
             @endif
 
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle alert-icon"></i>
+                <strong>Perhatian!</strong> Plat Nomor sudah di rubah menggunakan angka random tidak menggunakan data asli.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
             <!-- Card start -->
             <div class="card">
                 <div class="card-header">
