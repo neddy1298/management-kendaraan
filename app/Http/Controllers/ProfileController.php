@@ -11,22 +11,22 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    
+
     public function edit(Request $request): View
     {
         return view('profile.index', [
             'user' => $request->user(),
         ]);
     }
-    
+
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $user = $request->user();
-        $this->updateUserProfile($user, $request->validated());
+        // $user = $request->user();
+        // $this->updateUserProfile($user, $request->validated());
 
-        return Redirect::route('profile.edit')->with('success', 'Profil berhasil diupdate');
+        return Redirect::route('profile.edit')->with('success', 'fungsi update dimatikan untuk kebutuhan demo supaya yang lain bisa login :)');
     }
-    
+
     public function destroy(Request $request): RedirectResponse
     {
         $this->validateUserDeletion($request);
@@ -42,14 +42,14 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
-    
+
     protected function validateUserDeletion(Request $request)
     {
         $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current_password'],
         ]);
     }
-    
+
     protected function updateUserProfile($user, array $validatedData)
     {
         $user->fill($validatedData);
