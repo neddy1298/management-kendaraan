@@ -2,8 +2,8 @@
 
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('vendor/daterange/daterange.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/bs-select/bs-select.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('vendor/daterange/daterange.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('vendor/bs-select/bs-select.css') }}">
 @endsection
 
 @section('content')
@@ -129,6 +129,6 @@
     </script>
 
 
-    <script src="{{ asset('vendor/bs-select/bs-select.min.js') }}"></script>
-    <script src="{{ asset('vendor/bs-select/bs-select-custom.js') }}"></script>
+    <script src="{{ secure_asset('vendor/bs-select/bs-select.min.js') }}"></script>
+    <script src="{{ secure_asset('vendor/bs-select/bs-select-custom.js') }}"></script>
 @endsection

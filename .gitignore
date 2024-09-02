@@ -20,6 +20,6 @@ yarn-error.log
 /.idea
 /.vscode
 /composer-home
-devNote.md
+.devNote.md
 .vercel
 .aider*

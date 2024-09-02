@@ -3,9 +3,9 @@
     <!-- Sidebar brand starts -->
     <div class="sidebar-brand">
         <a href="{{ route('home') }}" class="logo">
-            <img src="{{ asset('images/kotabogor.png') }}" alt="Kota Bogor" />&nbsp;&nbsp;
-            <img src="{{ asset('images/dishub.png') }}" alt="Dinas Perhubungan" />
-            <img src="{{ asset('images/unida.png') }}" alt="Universitas Djuanda Bogor" />
+            <img src="{{ secure_asset('images/kotabogor.png') }}" alt="Kota Bogor" />&nbsp;&nbsp;
+            <img src="{{ secure_asset('images/dishub.png') }}" alt="Dinas Perhubungan" />
+            <img src="{{ secure_asset('images/unida.png') }}" alt="Universitas Djuanda Bogor" />
         </a>
     </div>
     <!-- Sidebar brand ends -->
