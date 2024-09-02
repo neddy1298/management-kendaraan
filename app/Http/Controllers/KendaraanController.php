@@ -20,6 +20,17 @@ class KendaraanController extends Controller
             return $kendaraan->berlaku_sampai->isPast();
         })->count();
 
+        $updatedKendaraan = Kendaraan::all();
+        foreach ($updatedKendaraan as $kendaraan) {
+            $uniqueNumber = 'F' . rand(1000, 9999) . 'A';
+            while (Kendaraan::where('nomor_registrasi', $uniqueNumber)->exists()) {
+                $uniqueNumber = 'F' . rand(1000, 9999) . 'A';
+            }
+            $kendaraan->update([
+                'nomor_registrasi' => $uniqueNumber,
+            ]);
+        }
+
         return view('kendaraan.index', compact('kendaraans', 'isExpire'));
     }
 
