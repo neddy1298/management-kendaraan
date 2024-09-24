@@ -113,7 +113,7 @@
                 </div>
 
                 <div class="app-footer">
-                    <span>© Dinas Perhubungan Kota Bogor 2024. All rights reserved.</span>
+                    <span>© Neddy Avgha Prasetio. All rights reserved.</span>
                 </div>
             </div>
         </div>
