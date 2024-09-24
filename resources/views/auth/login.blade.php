@@ -57,11 +57,14 @@
                     <img src="{{ secure_asset('images/dishub.png') }}" alt="Dinas Perhubungan" />
                 </a>
                 <div class="login-welcome">
-                    Selamat Datang, <br />Silahkan login menggunakan akun admin.
+                    Selamat Datang, <br />Silahkan login menggunakan akun admin. <br />
+                    <strong style="color: red">ini adalah aplikasi demo tidak menggunakan data asli dinas perhubungan
+                        kota bogor</strong>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Username</label>
-                    <input type="text" class="form-control" autocomplete="off" name="email" value="">
+                    <input type="text" class="form-control" autocomplete="off" name="email"
+                        value="admin@gmail.com">
                     @if ($errors->has('email'))
                         <div class="text-red">
                             {{ $errors->first('email') }}
@@ -72,7 +75,7 @@
                     <div class="d-flex justify-content-between">
                         <label class="form-label">Password</label>
                     </div>
-                    <input type="password" class="form-control" name="password" value="">
+                    <input type="password" class="form-control" name="password" value="admin">
                     @if ($errors->has('password'))
                         <div class="text-red">
                             {{ $errors->first('password') }}
